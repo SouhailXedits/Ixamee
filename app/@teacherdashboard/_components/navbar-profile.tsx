@@ -13,8 +13,6 @@ const NavbarProfile = () => {
         />
       </div>
       <div className="flex flex-col items-start ">
-        {/* Name of the CLient  😌 */}
-
         <span className="w-[120px] text-[#1B8392] text-sm font-semibold ">Firas Latrach </span>
         <span className="w-[120px] text-[#99C6D3] text-xs font-thin ">Professeur</span>
       </div>

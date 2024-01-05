@@ -35,6 +35,7 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
       <div className={cn('flex items-center w-full text-lg w gap-x-3 p-1', isActive && 'p-1')}>
         <Image
           src={isActive ? Clickedicon : Defaulticon}
+          // src={'/icons/kebab-menu.svg'}
           alt={Clickedicon}
           width={collapsed ? 20 : 17}
           height={collapsed ? 20 : 17}
