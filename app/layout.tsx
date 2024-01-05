@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+
 const poppins = Poppins({
   weight: '300',
   subsets: ['latin'],
@@ -29,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <ToastProvider />
-        {teacherdashboard}
+        {auth}
       </body>
     </html>
   );
