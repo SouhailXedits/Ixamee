@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import React from 'react';
+import Logo from '../../_components/Logo';
 import Link from 'next/link';
-import LoginSvg from '../../_components/LoginSvg';
 export default function page() {
   return (
     <div
@@ -9,9 +9,16 @@ export default function page() {
       className=" bg-[#f0f6f8] flex flex-col overflow-x-hidden md:flex-row w-full"
     >
       {/* left */}
-
+      <div className=" hidden flex-col justify-center  items-center gap-10 md:flex md:w-[70%]">
+        <Logo />
+        <div className="text-center mt-[5%] text-[#4c4c4d] w-full text-4xl max-lg:text-2xl    ">
+          Une seule plateforme
+          <br />
+          pour tous vos <span className=" text-[#1b8392]">examens</span>
+        </div>
+      </div>
       {/* right */}
-      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-br-[100px] md:rounded-tr-[100px]  ">
+      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-bl-[100px] md:rounded-tl-[100px] md:rounded-tr-none  ">
         <div className="flex flex-col ml-3  items-start">
           <div className="text-center text-[#1b8392] text-4xl max-lg:text-2xl">
             Créez un compte
@@ -31,10 +38,6 @@ export default function page() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className=" hidden flex-col justify-center  items-center gap-10 md:flex md:w-[70%]">
-        <LoginSvg />
       </div>
     </div>
   );
