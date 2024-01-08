@@ -40,10 +40,10 @@ export const RegisterEtudSchema = z.object({
   classe: z.string().min(3, {
     message: 'La classe est requis',
   }),
-  // .refine((value, data: any) => value === data.password, {
-  //   message: "Les mots de passe ne correspondent pas",
-  // }),
-});
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Le mot de passe et la confirmation doivent être identiques',
+    path: ['confirmPassword'],
+  });
 
 export const RegisterProfSchema = z.object({
   role: z.string().default('professeur'),

@@ -13,4 +13,5 @@ export default function RegisterForm() {
   } else {
     return <EtudiantForm handleRole={handleRole} />;
   }
+
 }
