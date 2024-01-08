@@ -32,6 +32,12 @@ export const EtudiantAjouteAvecSucces = ({ children }: EtudiantAjouteAvecSucces)
             width={300}
             height={300}
           />
+          <Image
+            src={'/etudiantajouteravecsucces.svg'}
+            alt=" add etudiant icon"
+            width={300}
+            height={300}
+          />
         </div>
 
         <DialogFooter>

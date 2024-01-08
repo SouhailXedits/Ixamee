@@ -36,7 +36,7 @@ const NavbarNotification = () => {
 
           {/*  notification */}
 
-          <div className="w-full text-start text-[#959595]    font-thin   cursor-pointer duration-300 flex flex-col gap-2  overflow-scroll max-h-[170px] ">
+          <div className="w-full text-start text-[#959595]    font-thin   cursor-pointer duration-300 flex flex-col gap-2  overflow-auto max-h-[170px] ">
             <span className="p-2 rounded-lg hover:bg-secondeColor ">
               Nouha Khlif a accepté votre invitation.
             </span>

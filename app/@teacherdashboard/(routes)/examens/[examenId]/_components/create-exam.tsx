@@ -1,3 +1,8 @@
+'use client';
+import React, { useState, ChangeEvent } from 'react';
+import Editor from './toolbar-editor';
+import Image from 'next/image';
+import { Input } from '@/components/ui/input';
 // 'use client';
 // import React, { useState, ChangeEvent } from 'react';
 // import Editor from './toolbar-editor';
@@ -55,48 +60,49 @@
 //     setEditMode((prevState) => !prevState);
 //   };
 
-//   const generateQuestion = (parentExerciseIndex: number, parentQuestionIndex?: number) => {
-//     const newQuestion: Question = {
-//       content: '',
-//       score: '0.00',
-//       subquestions: [],
-//     };
+const generateQuestion = (parentExerciseIndex: number, parentQuestionIndex?: number) => {
+  console.log('gen question');
+  // const newQuestion: Question = {
+  //   content: '',
+  //   score: '0.00',
+  //   subquestions: [],
+  // };
 
-//     if (parentQuestionIndex !== undefined) {
-//       exercises[parentExerciseIndex].questions[parentQuestionIndex].subquestions.push(newQuestion);
-//     } else {
-//       exercises[parentExerciseIndex].questions.push(newQuestion);
-//     }
+  // if (parentQuestionIndex !== undefined) {
+  //   exercises[parentExerciseIndex].questions[parentQuestionIndex].subquestions.push(newQuestion);
+  // } else {
+  //   exercises[parentExerciseIndex].questions.push(newQuestion);
+  // }
 
-//     setExercises([...exercises]);
-//   };
+  // setExercises([...exercises]);
+};
 
 //   const deleteQuestion = (exerciseIndex: number, questionIndex: number) => {
 //     // Your existing deleteQuestion logic
 //   };
 
-//   const deleteSubQuestion = (
-//     exerciseIndex: number,
-//     questionIndex: number,
-//     subQuestionIndex: number
-//   ) => {
-//     setExercises((prevExercises) => {
-//       const updatedExercises = [...prevExercises];
-//       const exercise = updatedExercises[exerciseIndex];
+// const deleteSubQuestion = (
+//   exerciseIndex: number,
+//   questionIndex: number,
+//   subQuestionIndex: number
+// ) => {
+//   setExercises((prevExercises) => {
+//     const updatedExercises = [...prevExercises];
+//     const exercise = updatedExercises[exerciseIndex];
 
-//       if (
-//         exercise &&
-//         exercise.questions.length > questionIndex &&
-//         exercise.questions[questionIndex].subquestions.length > subQuestionIndex
-//       ) {
-//         exercise.questions[questionIndex].subquestions = exercise.questions[
-//           questionIndex
-//         ].subquestions.filter((_, index) => index !== subQuestionIndex);
-//       }
+//     if (
+//       exercise &&
+//       exercise.questions.length > questionIndex &&
+//       exercise.questions[questionIndex].subquestions.length > subQuestionIndex
+//     ) {
+//       exercise.questions[questionIndex].subquestions = exercise.questions[
+//         questionIndex
+//       ].subquestions.filter((_, index) => index !== subQuestionIndex);
+//     }
 
-//       return updatedExercises;
-//     });
-//   };
+//     return updatedExercises;
+//   });
+// };
 
 //   const deleteExercise = (exerciseIndex: number) => {
 //     setExercises((prevExercises) => {

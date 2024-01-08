@@ -1,4 +1,4 @@
-"use client"
+ "use client"
 import { useSidebar } from "@/store/use-sidebar";
 import Sidebar from "./_components/sidebar";
 import { cn } from "@/lib/utils";
