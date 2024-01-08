@@ -95,7 +95,7 @@ export default function RegisterForm() {
           </div>
         </div>
 
-        <div className="w-full flex flex-row gap-4">
+        <div className="flex flex-row w-full gap-4">
           <FormField
             control={form.control}
             name="nom"
@@ -109,7 +109,7 @@ export default function RegisterForm() {
                     {...field}
                     placeholder="Entrez votre nom"
                     type="text"
-                    icon={<LucidePencil className="text-gray w-5 h-5" />}
+                    icon={<LucidePencil className="w-5 h-5 text-gray" />}
                     disabled={isPending}
                     className="flex-1"
                   />
@@ -131,7 +131,7 @@ export default function RegisterForm() {
                     {...field}
                     type="text"
                     placeholder="Entrez votre prénom"
-                    icon={<LucidePencil className="text-gray w-5 h-5" />}
+                    icon={<LucidePencil className="w-5 h-5 text-gray" />}
                     disabled={isPending}
                     className="flex-1"
                   />
@@ -141,7 +141,7 @@ export default function RegisterForm() {
             )}
           />
         </div>
-        <div className="w-full flex flex-row gap-4">
+        <div className="flex flex-row w-full gap-4">
           <FormField
             control={form.control}
             name="email"
@@ -155,7 +155,7 @@ export default function RegisterForm() {
                     {...field}
                     placeholder="Entrez votre e-mail"
                     type="email"
-                    icon={<MdOutlineEmail className="text-gray w-5 h-5" />}
+                    icon={<MdOutlineEmail className="w-5 h-5 text-gray" />}
                     disabled={isPending}
                     className="flex-1"
                   />
@@ -169,7 +169,7 @@ export default function RegisterForm() {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="whitespace-nowrap	">
+                <FormLabel className="whitespace-nowrap ">
                   Numéro de téléphone<span className="text-red"> *</span>
                 </FormLabel>
                 <FormControl className="relative">
@@ -188,7 +188,7 @@ export default function RegisterForm() {
             )}
           />
         </div>
-        <div className="w-full flex flex-row gap-4">
+        <div className="flex flex-row w-full gap-4">
           <FormField
             control={form.control}
             name="gouvernorat"
@@ -202,7 +202,7 @@ export default function RegisterForm() {
                     {...field}
                     type="list"
                     options={govOptions}
-                    icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
+                    icon={<RiGovernmentLine className="w-5 h-5 text-gray" />}
                     disabled={isPending}
                     className="flex-1"
                   />
@@ -225,7 +225,7 @@ export default function RegisterForm() {
                     {...field}
                     placeholder="Entrez votre mot de passe"
                     type={showPassword ? 'text' : 'password'}
-                    icon={<IoKeyOutline className="text-gray w-5 h-5" />}
+                    icon={<IoKeyOutline className="w-5 h-5 text-gray" />}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -235,7 +235,7 @@ export default function RegisterForm() {
           />
         </div>
         <Button className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
-          S'inscrire
+          S&apos;inscrire
         </Button>
       </form>
     </Form>
