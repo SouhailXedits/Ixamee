@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+
 import React from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
@@ -6,10 +6,8 @@ import Social from '../../_components/Social';
 import RegisterForm from '../../_components/RegisterForm';
 export default function page() {
   return (
-    <div
-      id="SignUpRoot"
-      className=" bg-[#f0f6f8] flex flex-col overflow-x-hidden md:flex-row w-full"
-    >
+    <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
+
       {/* left */}
       <div className=" hidden flex-col justify-center  items-center gap-8 lg:flex md:w-[70%]">
         <Logo className={' max-xl:w-[50%]'} width={300} height={200} />{' '}
@@ -20,14 +18,11 @@ export default function page() {
         </div>
       </div>
       {/* right */}
-      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-bl-[100px] md:rounded-tl-[100px] md:rounded-tr-none  gap-10">
+      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-bl-[100px] md:rounded-tl-[100px] md:rounded-tr-none  gap-10 max-md:mt-12">
         <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">Créez un compte</div>
-
         <div className="flex flex-col gap-5 w-3/5 items-start">
-          <div className="w-full">
+          <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <RegisterForm />
-          </div>
-          <div className="flex flex-col gap-3 w-full items-center">
             <Social />
 
             <div className="flex ">
