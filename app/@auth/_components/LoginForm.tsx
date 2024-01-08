@@ -2,6 +2,7 @@
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Checkbox } from '@/components/ui/auth-checkbox';
 import {
   Form,
   FormControl,
@@ -38,6 +39,8 @@ export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    console.log(values);
+
     setError('');
     setSuccess('');
     startTransition(() => {
@@ -100,8 +103,17 @@ export default function LoginForm() {
             render={({ field }) => (
               <FormLabel className="flex w-full justify-between">
                 <div className="flex items-center ">
-                  <Input {...field} type="checkbox" disabled={isPending} />
-                  <span className="text-sm max-md:text-xs ">Rester connecté</span>
+                  <Checkbox
+                    className="mr-1 checked:bg-transparent border-gray"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Rester connecté
+                  </label>
                 </div>
 
                 <Link
