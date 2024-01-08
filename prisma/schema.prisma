@@ -14,17 +14,39 @@ model User {
   last_name        String?
   email            String?   @unique
   emailVerified    DateTime?
-  phone_number     String?   @unique
   government_id    Int
-  establishment_id Int
-  image            String?
   photo            String?
   password         String?
   accounts         Account[]
-  roles            Role[]
+  roles            Role?
   teacher          Teacher?   
-  student          Student?   // One-to-one relation with Student
+  student          Student?  
 }
+model Student {
+  student_id       Int            @id @default(autoincrement())
+  user             User           @relation(fields: [userId], references: [id])
+  establishment_id Int @unique
+  establishment    Establishment  @relation(fields: [establishment_id], references: [establishment_id])
+  userId           String         @unique
+  rang             Int   @unique 
+
+}
+
+model Teacher {
+  teacher_id       Int              @id @default(autoincrement())
+  user             User             @relation(fields: [userId], references: [id])
+  userId           String           @unique
+  phone_number     String?   @unique
+  establishments   Establishment[]
+}
+
+model Establishment {
+  establishment_id Int        @id @default(autoincrement())
+  teacher_id       Int
+  teacher          Teacher    @relation(fields: [teacher_id], references: [teacher_id])
+  student          Student?
+}
+
 
 model Role {
   id      String @id @default(cuid())
@@ -33,117 +55,14 @@ model Role {
   user    User   @relation(fields: [user_id], references: [id])
 }
 
-model Term {
-  term_id    Int      @id @default(autoincrement())
-  name       String
-  teacher_id String   
-  teacher    Teacher? @relation(fields: [teacher_id], references: [user_id])
-  exams      Exam[]   
-}
 
-model Teacher {
-  teacher_id  String  @id @default(auto())
-  user        User    @relation(fields: [user_id], references: [id])
-  user_id     String  @unique
-  classes     Class[] // One-to-many relation with Class
-  subjects    Subject[] // One-to-many relation with Subject
-  term        Term?   // One-to-one relation with Term
-}
-
-model Class {
-  class_id  Int      @id @default(autoincrement())
-  name      String
-  teachers  Teacher[] // Many-to-many relation with Teacher
-  students  Student[] // Many-to-many relation with Student
-  exams     Exam[]    // One-to-many relation with Exam
-}
-
-model Subject {
-  subject_id  Int     @id @default(autoincrement())
-  name        String
-  teachers    Teacher[] 
-  exams       Exam[]    
-}
-
-model Exam {
-  exam_id       Int       @id @default(autoincrement())
-  teacher_id    String    
-  establishment String
-  name          String
-  term_id       Int
-  class_id      Int
-  subject_id    Int
-  marks         Int
-  coefficient   Int
-  style         String
-  exercises     Exercise[] // One-to-many relation with Exercise
-  is_archived   Boolean
-  term          Term       @relation(fields: [term_id], references: [term_id])
-  teacher       Teacher    @relation(fields: [teacher_id], references: [user_id])
-  subject       Subject    @relation(fields: [subject_id], references: [subject_id])
-  class         Class      @relation(fields: [class_id], references: [class_id])
-}
-
-model Exercise {
-  ex_id    Int     @id @default(autoincrement())
-  content String
-  marks   Int
-  questions Question[] // One-to-many relation with Question
-}
-
-model Question {
-  question_id  Int      @id @default(autoincrement())
-  content      String
-  marks        Int
-  type         QuestionType? 
-
-  level        String
-}
-
-model QuestionType {
-  id        Int       @id @default(autoincrement())
-  name      String
-  questions Question[]
-}
 
 model Government {
   government_id Int    @id @default(autoincrement())
   name          String
 }
 
-model MarksSheet {
-  exam_id         Int    @id
-  establishment   String
-  term_id         Int
-  class_id        Int
-  student_id      String
-  exam            Exam   @relation(fields: [exam_id], references: [exam_id])
-  term            Term   @relation(fields: [term_id], references: [term_id])
-  class           Class  @relation(fields: [class_id], references: [class_id])
-  student         Student @relation(fields: [student_id], references: [user_id])
-}
 
-model StudentResult {
-  result_id       Int    @id @default(autoincrement())
-  exam_id         Int
-  student_id      String
-  class_id        Int
-  true_answers    Int
-  coef            Int
-  marks_obtained  Int
-  is_absent       Boolean
-  is_unranked     Boolean
-  exam            Exam   @relation(fields: [exam_id], references: [exam_id])
-  student         Student @relation(fields: [student_id], references: [user_id])
-  class           Class  @relation(fields: [class_id], references: [class_id])
-}
-
-model Student {
-  student_id Int    @id @default(autoincrement())
-  user       User   @relation(fields: [user_id], references: [id])
-  user_id    String @unique
-  class      Class? // One-to-one relation with Class
-}
 
 model Account {
   id                 String  @id @default(cuid())
@@ -163,3 +82,6 @@ model Account {
 
   @@unique([provider, providerAccountId])
 }
+
+
+
