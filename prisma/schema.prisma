@@ -1,13 +1,13 @@
 datasource db {
   provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-
+ 
 generator client {
   provider = "prisma-client-js"
 }
-
+ 
 model User {
   id               String    @id @default(cuid())
   first_name       String?
@@ -18,7 +18,7 @@ model User {
   photo            String?
   password         String?
   accounts         Account[]
-  roles            Role? 
+  roles            Role?
   teacher          Teacher?   
   student          Student?  
 }
@@ -33,10 +33,10 @@ model Student {
   establishment_id Int            @unique
   establishment    Establishment  @relation(fields: [establishment_id], references: [establishment_id])
   userId           String         @unique
-  rang             Int   @unique 
-
+  rang             Int   @unique
+ 
 }
-
+ 
 model Teacher {
   teacher_id       Int              @id @default(autoincrement())
   user             User             @relation(fields: [userId], references: [id])
@@ -44,26 +44,26 @@ model Teacher {
   phone_number     String?   @unique
   establishments   Establishment[]
 }
-
+ 
 model Establishment {
   establishment_id Int        @id @default(autoincrement())
   teacher_id       Int
   teacher          Teacher    @relation(fields: [teacher_id], references: [teacher_id])
   student          Student?
 }
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
 model Government {
   government_id Int    @id @default(autoincrement())
   name          String
 }
-
-
-
+ 
+ 
+ 
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -77,11 +77,8 @@ model Account {
   scope              String?
   id_token           String?  @db.Text
   session_state      String?
-
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@unique([provider, providerAccountId])
 }
-
-
-
