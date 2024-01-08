@@ -45,6 +45,7 @@ export const RegisterEtudSchema = z
       message: 'La classe est requis',
     }),
   })
+
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Le mot de passe et la confirmation doivent être identiques',
     path: ['confirmPassword'],

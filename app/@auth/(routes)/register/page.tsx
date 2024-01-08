@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
@@ -6,6 +7,7 @@ import RegisterForm from '../../_components/RegisterForm';
 export default function page() {
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
+
       {/* left */}
       <div className=" hidden flex-col justify-center  items-center gap-8 lg:flex md:w-[70%]">
         <Logo className={' max-xl:w-[50%]'} width={300} height={200} />{' '}
