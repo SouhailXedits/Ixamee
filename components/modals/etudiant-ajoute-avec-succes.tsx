@@ -29,7 +29,7 @@ export const EtudiantAjouteAvecSucces = ({
         </DialogHeader>
 
         <div>
-          <Image src={"/etudiantajouteravecsucces.svg"} alt= width={300} height={300} className=/>
+          <Image src={"/etudiantajouteravecsucces.svg"} alt=" add etudiant icon" width={300} height={300}/>
 
         </div>
     

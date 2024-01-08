@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import { SidebarItem } from './sidebar-item';
 import Etablissement from './etablissement';
 const guestRoutes = [
