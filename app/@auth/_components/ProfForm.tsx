@@ -23,8 +23,15 @@ import { RiGovernmentLine } from 'react-icons/ri';
 import TnFlag from './TnFlag';
 import { RegisterProfSchema } from '@/schemas';
 import { register } from '@/actions/registerProf';
-export default function ProfForm({ handleRole }: any) {
-  const [role, setRole] = useState<string>('professeur');
+import { SelectScrollable } from './SelectScrollable';
+
+
+interface ProfFormProps {
+  handleRole: (role: string) => void;
+}
+
+export default function ProfForm({ handleRole }: ProfFormProps) {
+  const [role, setRole] = useState<string>('teacher');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -50,6 +57,7 @@ export default function ProfForm({ handleRole }: any) {
 
   const onSubmit = async (values: z.infer<typeof RegisterProfSchema>) => {
     values.role = role;
+    console.log('🚀 ~ file: ProfForm.tsx:55 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
     startTransition(() => {
@@ -76,8 +84,8 @@ export default function ProfForm({ handleRole }: any) {
               role === 'professeur' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('professeur');
-              handleRole('professeur');
+              setRole('teacher');
+              handleRole('teacher');
             }}
           >
             Professeur
@@ -88,8 +96,8 @@ export default function ProfForm({ handleRole }: any) {
               role === 'etudiant' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('etudiant');
-              handleRole('etudiant');
+              setRole('student');
+              handleRole('student');
             }}
           >
             Étudiant
@@ -190,7 +198,6 @@ export default function ProfForm({ handleRole }: any) {
                       className=" max-w-full"
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -208,16 +215,11 @@ export default function ProfForm({ handleRole }: any) {
                     Gouvernorat<span className="text-red"> *</span>
                   </FormLabel>
                   <FormControl className="flex-grow ">
-                    <Input
-                      {...field}
-                      type="list"
-                      options={[
-                        { value: '', label: 'Choisissez votre gouvernorat' },
-                        ...govOptions,
-                      ]}
+                    <SelectScrollable
+                      field={field}
+                      placeholder={'Choisissez votre gouvernorat'}
+                      options={govOptions}
                       icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
-                      disabled={isPending}
-                      className=" max-w-full"
                     />
                   </FormControl>
                   <FormMessage />
