@@ -12,7 +12,7 @@ export const LoginSchema = z.object({
 
 export const RegisterEtudSchema = z
   .object({
-    role: z.string().default('professeur'),
+    role: z.string().default('teacher'),
     nom: z.string().min(2, {
       message: 'le nom est requis (3 lettre au minimum)',
     }),
@@ -51,7 +51,7 @@ export const RegisterEtudSchema = z
   });
 
 export const RegisterProfSchema = z.object({
-  role: z.string().default('professeur'),
+  role: z.string().default('teacher'),
   nom: z.string().min(2, {
     message: 'le nom est requis (3 lettre au minimum)',
   }),
