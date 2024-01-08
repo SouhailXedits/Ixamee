@@ -82,6 +82,7 @@ module.exports = {
       white: '#ffffff',
       black: '#102528',
       mainGreen: '#1B8392',
+      gray: '#959595',
       secondeColor: '#F0F6F8',
       beugeColor: '#F3F6F6',
       orangeColor: '#FBB800',
