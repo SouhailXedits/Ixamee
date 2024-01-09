@@ -9,59 +9,129 @@ generator client {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  first_name       String?
-  last_name        String?
-  email            String?   @unique
-  emailVerified    DateTime?
-  government_id    Int
-  photo            String?
-  password         String?
-  accounts         Account[]
-  roles            Role? 
-  teacher          Teacher?   
-  student          Student?  
+  id             String           @id @default(cuid())
+  first_name     String
+  last_name      String
+  email          String        @unique
+  governmentId  Int?   // One-to-one relationship with Government
+  government     Government?      @relation(fields: [governmentId], references: [id])
+  photo          String?
+  password       String?
+  role           Role        // Consider using an enum for role
+  phone_number   String?
+  establishments Establishment[]   // Many-to-many relationship with Establishment
+  classes        Classes[]   // Many-to-many relationship with Classe
+  rang           String?
+  subjects       Subject[]
+  Accounts        Account[]    // Many-to-many relationship with Subject
 }
+// Government Tablez
+model Government {
+  id             Int    @id @default(autoincrement())
+  users          User[] // One-to-many relationship with User
+  Government     String
+  // Add other fields as needed
+}
+// Establishment Table
+model Establishment {
+  id             Int       @id @default(autoincrement())
+  name           String
+  classes        Classes[]  
+  users          User[]  @relation()  
+  usersId          String    
+
+  // Add other fields as needed
+}
+// Classe Table
+model Classes {
+  id               Int       @id @default(autoincrement())
+  name             String
+  range            String
+  establishment Establishment  @relation(fields: [establishment_id], references: [id]) // Many-to-one relationship with Establishment
+  establishment_id Int
+  teacher_id       Int             // One-to-one relationship with User
+  students         User[]          // Many-to-many relationship with User
+  // subjects         Subject[]       // Many-to-many relationship with Subject
+  is_archived      Boolean
+}
+// Subject Table
+model Subject {
+  id          Int      @id @default(autoincrement())
+  name        String
+  users       User[]   // Many-to-many relationship with User
+  exams       Exam[]   // One-to-many relationship with Exam
+}
+// Exam Table
+model Exam {
+  id          Int       @id @default(autoincrement())
+  name        String
+  exercises   Exercice[]
+  total_mark  Float
+  coefficient Float
+  teacher_id  Int       // One-to-one relationship with User
+  class_id   Int       // One-to-one relationship with Classe
+subject     Subject   @relation(fields: [subjectId], references: [id]) // One-to-one relationship with Subject
+subjectId   Int
+
+  // style       String    // Consider using an enum for style
+}
+// Exercise Table
+model Exercice {
+  id       Int         @id @default(autoincrement())
+  name     String
+  exam         Exam?     @relation(fields: [examId], references: [id])
+  examId       Int?
+  marks    Float
+}
+// Question Table
+model Question {
+  id              Int         @id @default(autoincrement())
+  subquestions    Subquestion[]
+  marks           Float
+  content         String
+  question_type   String[]
+}
+// Subquestion Table
+model Subquestion {
+  id              Int    @id @default(autoincrement())
+  ssubquestions   Ssubquestion[]
+  marks           Float
+  content         String
+  question_type   String[]
+  questions       Question[]
+}
+// Ssubquestion Table
+model Ssubquestion {
+  id              Int    @id @default(autoincrement())
+  marks           Float
+  content         String
+  question_type   String[]
+  subquestions    Subquestion[]   // Add this line to create the opposite relation
+}
+
+model QuestionType {
+  id              Int    @id @default(autoincrement())
+  name            String
+}
+
 enum Role {
   STUDENT
   TEACHER
   ADMIN
 }
-model Student {
-  student_id       Int            @id @default(autoincrement())
-  user             User           @relation(fields: [userId], references: [id])
-  establishment_id Int            @unique
-  establishment    Establishment  @relation(fields: [establishment_id], references: [establishment_id])
-  userId           String         @unique
-  rang             Int   @unique 
-
+// ExamCorrection Table
+model ExamCorrection {
+  id        Int    @id @default(autoincrement())
+  exam_id   Int    // One-to-one relationship with Exam
+  student_id Int   // One-to-one relationship with User
+  mark_option Float
+  question  String
 }
-
-model Teacher {
-  teacher_id       Int              @id @default(autoincrement())
-  user             User             @relation(fields: [userId], references: [id])
-  userId           String           @unique
-  phone_number     String?   @unique
-  establishments   Establishment[]
+model Term {
+  id   Int    @id @default(autoincrement())
+  name String
+  // 
 }
-
-model Establishment {
-  establishment_id Int        @id @default(autoincrement())
-  teacher_id       Int
-  teacher          Teacher    @relation(fields: [teacher_id], references: [teacher_id])
-  student          Student?
-}
-
-
-
-
-
-
-model Government {
-  government_id Int    @id @default(autoincrement())
-  name          String
-}
-
 
 
 model Account {
@@ -82,6 +152,3 @@ model Account {
 
   @@unique([provider, providerAccountId])
 }
-
-
-
