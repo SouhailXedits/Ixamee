@@ -12,7 +12,7 @@ export const LoginSchema = z.object({
 
 export const RegisterEtudSchema = z
   .object({
-    role: z.string().default('teacher'),
+    role: z.string().default('TEACHER'),
     nom: z.string().min(2, {
       message: 'le nom est requis (3 lettre au minimum)',
     }),
@@ -22,7 +22,7 @@ export const RegisterEtudSchema = z
     email: z.string().email({
       message: "L'email est requis",
     }),
-    gouvernorat: z.string().min(3, {
+    government: z.string().min(3, {
       message: 'La gouvernorat est requis',
     }),
     password: z
@@ -51,7 +51,7 @@ export const RegisterEtudSchema = z
   });
 
 export const RegisterProfSchema = z.object({
-  role: z.string().default('teacher'),
+  role: z.string().default('TEACHER'),
   nom: z.string().min(2, {
     message: 'le nom est requis (3 lettre au minimum)',
   }),
@@ -61,13 +61,10 @@ export const RegisterProfSchema = z.object({
   email: z.string().email({
     message: "L'email est requis",
   }),
-  phone: z
-    .string()
-    .min(8, {
-      message: 'Le numéro de téléphone est requis (8 chiffres)',
-    })
-    .max(8),
-  gouvernorat: z.string().min(3, {
+  phone: z.string().refine((value) => /^[2459]\d{7}$/.test(value), {
+    message: 'Le numéro de téléphone doit commencer par 2, 4, 5, ou 9 et avoir 8 chiffres au total',
+  }),
+  government: z.string().min(3, {
     message: 'La gouvernorat est requis',
   }),
   password: z
@@ -78,5 +75,16 @@ export const RegisterProfSchema = z.object({
     .refine((value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value), {
       message:
         'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+    }),
+});
+
+export const VerifSchema = z.object({
+  code: z
+    .string()
+    .min(6, {
+      message: 'code de 6 chiffres',
+    })
+    .max(6, {
+      message: 'code de 6 chiffres',
     }),
 });

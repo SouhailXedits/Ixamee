@@ -4,11 +4,11 @@ import ProfForm from './ProfForm';
 import EtudiantForm from './EtudiantForm';
 import { useState } from 'react';
 export default function RegisterForm() {
-  const [role, setRole] = useState<string>('teacher');
-  const handleRole = (role:string) => {
+  const [role, setRole] = useState<string>('TEACHER');
+  const handleRole = (role: string) => {
     setRole(role);
   };
-  if (role === 'teacher') {
+  if (role === 'TEACHER') {
     return <ProfForm handleRole={handleRole} />;
   } else {
     return <EtudiantForm handleRole={handleRole} />;

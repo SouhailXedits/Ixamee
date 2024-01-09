@@ -25,13 +25,12 @@ import { RegisterProfSchema } from '@/schemas';
 import { register } from '@/actions/registerProf';
 import { SelectScrollable } from './SelectScrollable';
 
-
 interface ProfFormProps {
   handleRole: (role: string) => void;
 }
 
 export default function ProfForm({ handleRole }: ProfFormProps) {
-  const [role, setRole] = useState<string>('teacher');
+  const [role, setRole] = useState<string>('TEACHER');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -43,21 +42,20 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
       prenom: '',
       email: '',
       phone: '',
-      gouvernorat: '',
+      government: '',
       password: '',
     },
   });
   const [showPassword, setShowPassword] = useState(false);
   const govOptions = [
-    { value: 'tunis', label: 'Tunis' },
-    { value: 'sousse', label: 'Sousse' },
-    { value: 'beja', label: 'Beja' },
+    { id: 1, value: 'tunis', label: 'Tunis' },
+    { id: 1, value: 'sousse', label: 'Sousse' },
+    { id: 1, value: 'beja', label: 'Beja' },
   ];
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = async (values: z.infer<typeof RegisterProfSchema>) => {
     values.role = role;
-    console.log('🚀 ~ file: ProfForm.tsx:55 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
     startTransition(() => {
@@ -81,11 +79,11 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           <div
             id="Buttons"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'teacher' ? 'bg-[#1b8392] ' : ''
+              role === 'TEACHER' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('teacher');
-              handleRole('teacher');
+              setRole('TEACHER');
+              handleRole('TEACHER');
             }}
           >
             Professeur
@@ -93,11 +91,11 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           <div
             id="Buttons1"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'student' ? 'bg-[#1b8392] ' : ''
+              role === 'STUDENT' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('student');
-              handleRole('student');
+              setRole('STUDENT');
+              handleRole('STUDENT');
             }}
           >
             Étudiant
@@ -208,7 +206,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           <div className="w-full">
             <FormField
               control={form.control}
-              name="gouvernorat"
+              name="government"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>

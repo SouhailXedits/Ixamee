@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -12,29 +9,194 @@ generator client {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String? 
-  accounts      Account[]
+  id                String              @id @default(cuid())
+  first_name        String
+  last_name         String
+  email             String              @unique
+  password          String? //optional because we want to add singup with Google
+  role              Role // Consider using an enum for role
+  accounts          Account[] // Many-to-many relationship with Subject
+  government        Government?         @relation(fields: [government_id], references: [id])
+  government_id     Int? // One-to-one relationship with Government
+  photo             String?
+  phone_number      String?
+  classes           StudentClass[]
+  subjects          TeacherSubject[]
+  subject_id        Int?
+  UserEstablishment UserEstablishment[]
 }
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                  String  @id @default(cuid())
+  user_id             String
+  type                String
+  provider            String
+  provider_account_id String
+  refresh_token       String? @db.Text
+  access_token        String? @db.Text
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String? @db.Text
+  session_state       String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([provider, provider_account_id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Government Tablez
+model Government {
+  id         Int    @id @default(autoincrement())
+  users      User[] // One-to-many relationship with User
+  government String
+}
+
+// Establishment Table
+model Establishment {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  UserEstablishment UserEstablishment[]
+  classes           Classe[]
+}
+
+model UserEstablishment {
+  establishement    Establishment? @relation(fields: [establishement_id], references: [id])
+  establishement_id Int // relation scalar field (used in the `@relation` attribute above)
+  user              User?          @relation(fields: [user_id], references: [id])
+  user_id           String // relation scalar field (used in the `@relation` attribute above)
+  assignedAt        DateTime       @default(now())
+  assignedBy        String
+
+  @@id([establishement_id, user_id])
+}
+
+// Classe Table
+model Classe {
+  id                    String         @id @default(cuid())
+  name                  String
+  range                 String
+  establishment         Establishment  @relation(fields: [establishment_id], references: [id]) // Many-to-one relationship with Establishment
+  establishment_id      Int
+  users                 StudentClass[] // Many-to-many relationship with User
+  // subjects         Subject[]       // Many-to-many relationship with Subject
+  is_archived           Boolean
+  studentClassClasse_id Int
+  studentClassUser_id   Int
+}
+
+model StudentClass {
+  class      Classe?  @relation(fields: [classe_id], references: [id])
+  classe_id  String // relation scalar field (used in the `@relation` attribute above)
+  user       User?    @relation(fields: [user_id], references: [id])
+  user_id    String // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([classe_id, user_id])
+}
+
+// Subject Table
+model Subject {
+  id    Int              @id @default(autoincrement())
+  name  String
+  user  TeacherSubject[] // Many-to-one relationship with Establishment
+  exams Exam[] // One-to-many relationship with Exam
+}
+
+model TeacherSubject {
+  subject    Subject? @relation(fields: [subject_id], references: [id])
+  subject_id Int // relation scalar field (used in the `@relation` attribute above)
+  user       User?    @relation(fields: [user_id], references: [id])
+  user_id    String // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([subject_id, user_id])
+}
+
+// Exam Table
+model Exam {
+  id          Int        @id @default(autoincrement())
+  name        String
+  exercises   Exercice[]
+  total_mark  Float
+  coefficient Float
+  teacher_id  Int // One-to-one relationship with User
+  class_id    Int // One-to-one relationship with Classe
+  subject     Subject    @relation(fields: [subject_id], references: [id]) // One-to-one relationship with Subject
+  subject_id  Int
+
+  // style       String    // Consider using an enum for style
+}
+
+// Exercise Table
+model Exercice {
+  id      Int    @id @default(autoincrement())
+  name    String
+  exam    Exam?  @relation(fields: [exam_id], references: [id])
+  exam_id Int?
+  marks   Float
+}
+
+// Question Table
+model Question {
+  id            Int           @id @default(autoincrement())
+  subquestions  Subquestion[]
+  marks         Float
+  content       String
+  question_type String[]
+}
+
+// Subquestion Table
+model Subquestion {
+  id            Int            @id @default(autoincrement())
+  ssubquestions Ssubquestion[]
+  marks         Float
+  content       String
+  question_type String[]
+  questions     Question[]
+}
+
+// Ssubquestion Table
+model Ssubquestion {
+  id            Int           @id @default(autoincrement())
+  marks         Float
+  content       String
+  question_type String[]
+  subquestions  Subquestion[] // Add this line to create the opposite relation
+}
+
+model QuestionType {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+// ExamCorrection Table
+model ExamCorrection {
+  id          Int    @id @default(autoincrement())
+  exam_id     Int // One-to-one relationship with Exam
+  student_id  Int // One-to-one relationship with User
+  mark_option Float
+  question    String
+}
+
+model Term {
+  id   Int    @id @default(autoincrement())
+  name String
+  //
 }
