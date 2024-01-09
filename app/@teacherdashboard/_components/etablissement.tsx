@@ -8,19 +8,19 @@ const Etablissement = () => {
   const {collapsed } =useSidebar((state) =>state)
   const lyceDetails = [
     {
-      id: '1',
-      lyceName: 'Lycée Bourguiba Sousse',
-      subLyceName: 'LBS',
+      lyceName: "Lycée Bourguiba Sousse",
+      subLyceName :"LBS",
 
-      isChecked: false,
+      isChecked :false
     },
     {
-      id: '2',
-      lyceName: 'Lycée Privé Élite Nabeul',
-      subLyceName: 'LPÉN',
-      isChecked: true,
-    },
-  ];
+      lyceName: "Lycée Privé Élite Nabeul",
+      subLyceName :"LPÉN",
+      isChecked :true
+
+
+    }
+  ]
   return ( 
     <div className="border-t border-[#99C6D3]">
       <div className="flex items-center gap-3 p-4">

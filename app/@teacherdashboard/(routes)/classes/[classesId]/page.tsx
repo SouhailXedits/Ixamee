@@ -41,7 +41,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
               <SelectValue
                 placeholder={
                   <div className="flex items-center">
-                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
+                    <Image src={'/icons/kebab-menu.svg'} alt="filtericon" width={20} height={20} />
                     <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
                   </div>
                 }

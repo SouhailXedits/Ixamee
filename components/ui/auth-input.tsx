@@ -40,35 +40,35 @@ const Input = React.forwardRef<HTMLInputElement | HTMLSelectElement, InputProps>
       );
     }
 
-    if (type === 'list' && options) {
-      return (
-        <div className="relative">
-          {icon && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 ">{icon}</div>
-          )}
+    // if (type === 'list' && options) {
+    //   return (
+    //     <div className="relative">
+    //       {icon && (
+    //         <div className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10 ">{icon}</div>
+    //       )}
 
-          <select
-            className={cn(
-              'flex h-10 w-full text-gray rounded-md border border-input bg-background px-8 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ',
-              className
-            )}
-            ref={ref as React.RefObject<HTMLSelectElement>}
-            {...props}
-            style={{ overflowY: 'auto' }}
-          >
-            <option value="" disabled hidden>
-              {options[0].label}
-            </option>
-            {options.map((option: any, index: number) => (
-              <option key={index} value={option.value} className="text-black ">
-                {option.icon && <span className="mr-2">{option.icon}</span>}
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      );
-    }
+    //       <select
+    //         className={cn(
+    //           'flex h-10 w-full text-gray rounded-md border border-input bg-background px-8 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ',
+    //           className
+    //         )}
+    //         ref={ref as React.RefObject<HTMLSelectElement>}
+    //         {...props}
+    //         style={{ overflowY: 'auto' }}
+    //       >
+    //         <option value="" disabled hidden>
+    //           {options[0].label}
+    //         </option>
+    //         {options.map((option: any, index: number) => (
+    //           <option key={index} value={option.value} className="text-black ">
+    //             {option.icon && <span className="mr-2">{option.icon}</span>}
+    //             {option.label}
+    //           </option>
+    //         ))}
+    //       </select>
+    //     </div>
+    //   );
+    // }
 
     return (
       <div className="relative">
