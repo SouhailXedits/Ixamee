@@ -47,7 +47,6 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
     }
   };
 
-
   useEffect(() => {
     if (
       typeof window !== 'undefined' &&
@@ -56,10 +55,10 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
     ) {
       setInLocalStorage('selectedLycee', data[0].id);
     }
-        
   }, [data]);
-  const defaultSelectedLycee = getFromLocalStorage('selectedLycee') || data[0].id
-  console.log(defaultSelectedLycee + '', data)
+  const defaultSelectedLycee = data[0].id;
+  // const defaultSelectedLycee = getFromLocalStorage('selectedLycee') || data[0].id;
+  console.log(defaultSelectedLycee + '', data);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full p-3 space-y-6">

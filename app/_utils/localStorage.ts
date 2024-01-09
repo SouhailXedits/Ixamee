@@ -9,8 +9,10 @@ export const setInLocalStorage = (key: string, value: string) => {
 // Function to get a value from localStorage
 export const getFromLocalStorage = (key: string) => {
   try {
-    const storedValue = localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : null;
+    if (typeof window !== 'undefined') {
+      const storedValue = localStorage.getItem(key);
+      return storedValue ? JSON.parse(storedValue) : null;
+    }
   } catch (error) {
     console.error('Error getting value from localStorage:', error);
     return null;

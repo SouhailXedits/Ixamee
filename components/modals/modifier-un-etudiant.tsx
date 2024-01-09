@@ -56,7 +56,7 @@ export const ModifierUnEtudiant = ({ children }: ModifierUnEtudiant) => {
         <div className="flex flex-col gap-6 placeholder:text-[#727272]">
           <div className="flex flex-col gap-2">
             <Label className="text-[#959595]">Photo de profil</Label>
-            <Input
+            <input
               type="file"
               className="w-[200px] h-[60px] absolute opacity-0 cursor-pointer"
               accept="image/*"

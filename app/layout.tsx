@@ -9,6 +9,7 @@ const poppins = Poppins({
 });
 import './globals.css';
 import { ToastProvider } from '@/components/providers/toaster-provider';
+import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,15 +17,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-  student,
   teacherdashboard,
-  auth,
+  auth
 }: {
-  children: React.ReactNode;
-  student: React.ReactNode;
-  teacherdashboard: React.ReactNode;
-  auth: React.ReactNode;
+
+  teacherdashboard: ReactNode;
+  auth: ReactNode
+
 }) {
   return (
     <html lang="en">
@@ -35,3 +34,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

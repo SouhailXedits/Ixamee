@@ -100,7 +100,7 @@ export default function LoginForm() {
             render={({ field }) => (
               <FormLabel className="flex w-full justify-between">
                 <div className="flex items-center ">
-                  <Input {...field} type="checkbox" disabled={isPending} />
+                  {/* <Input {...field} type="checkbox" disabled={isPending} /> */}
                   <span className="text-sm max-md:text-xs ">Rester connecté</span>
                 </div>
 
