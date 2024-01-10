@@ -1,12 +1,14 @@
 import { useSidebar } from '@/store/use-sidebar';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { boolean } from 'zod';
 
 interface settingBtnProps {
   onClick: () => void;
   isActive: boolean;
 }
-function SettingsBtn({ isActive }: settingBtnProps) {
+function SettingsBtn({ onClick, isActive }: settingBtnProps) {
   const { collapsed } = useSidebar((state) => state);
 
   return (

@@ -1,14 +1,30 @@
+'use client';
+
+import { cn } from '@/lib/utils';
 import { useSidebar } from '@/store/use-sidebar';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
-function SettingsBtn() {
+interface SidebarItemProps {
+  Clickedicon: string;
+  Defaulticon: string;
+  label: string;
+  href?: string;
+}
+export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarItemProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
   const { collapsed } = useSidebar((state) => state);
-  const [isActive, setIsActive] = useState<Boolean>()
-  function onClick() {
-    setIsActive(prev => !prev)
-  }
+  const isActive =
+    (pathname === '/' && href === '/') || pathname === href || pathname.startsWith(`${href}/`);
+
+ function generateDynamicId() {
+   return 1;
+ }
+ const onClick = () => {
+   if (href) router.push(`/${generateDynamicId()}${href}`);
+ };
+
   return (
     <button
       onClick={onClick}
@@ -21,18 +37,16 @@ function SettingsBtn() {
     >
       <div className={cn('flex items-center w-full text-lg w gap-x-3 p-1', isActive && 'p-1')}>
         <Image
-          src={isActive ? '/settings-fill.svg' : '/settings-fill.svg'}
+          src={isActive ? Clickedicon : Defaulticon}
           // src={'/icons/kebab-menu.svg'}
-          alt="settings icon"
+          alt={Clickedicon}
           width={collapsed ? 20 : 17}
           height={collapsed ? 20 : 17}
           className={cn('relative ', isActive && 'text-white  ')}
         />
 
-        {collapsed ? '' : 'Paramètres'}
+        {collapsed ? '' : label}
       </div>
     </button>
   );
-}
-
-export default SettingsBtn;
+};
