@@ -14,10 +14,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { toast } from '@/components/ui/use-toast';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
-import { useEffect } from 'react';
-import { getFromLocalStorage, setInLocalStorage } from '@/app/_utils/localStorage';
 
 const FormSchema = z.object({
   type: z.enum(['all', 'mentions', 'none'], {
@@ -25,12 +24,8 @@ const FormSchema = z.object({
   }),
 });
 interface EtablissementItemProps {
-  data: { id: string; lyceName: string; isChecked: boolean; subLyceName: string }[];
+  data: { lyceName: string; isChecked: boolean; subLyceName: string }[];
 }
-
-// ... (previous imports and code)
-
-// ... (previous imports and code)
 
 export function EtablissementItem({ data }: EtablissementItemProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -41,25 +36,6 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {}
 
-  const handleRadioChange = (value: string) => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      window.localStorage.setItem('selectedLycee', value);
-    }
-  };
-
-
-  useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      window.localStorage &&
-      !getFromLocalStorage('selectedLycee')
-    ) {
-      setInLocalStorage('selectedLycee', data[0].id);
-    }
-        
-  }, [data]);
-  const defaultSelectedLycee = getFromLocalStorage('selectedLycee') || data[0].id
-  console.log(defaultSelectedLycee + '', data)
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full p-3 space-y-6">
@@ -70,15 +46,12 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
             <FormItem className="space-y-3">
               <FormControl>
                 <RadioGroup
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                    handleRadioChange(value);
-                  }}
-                  defaultValue={defaultSelectedLycee + ''}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
                   className="flex flex-col space-y-1"
                 >
                   {data.map((lyce) => (
-                    <FormItem
+                    <FormItem // Add a unique key for each item
                       key={lyce.lyceName}
                       className={cn(
                         'flex items-center space-x-3',
@@ -87,10 +60,11 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
                     >
                       <FormControl>
                         <RadioGroupItem
-                          id={lyce.lyceName}
-                          value={lyce.id}
+                          id={lyce.lyceName} // Add an id for each item
+                          value={lyce.lyceName}
                           className="text-[#FBB800] border-[#F0F6F8] w-4 h-4"
-                          defaultChecked={lyce.id === defaultSelectedLycee + ''}
+                          // checked={lyce.isChecked}
+                          defaultChecked={lyce.isChecked}
                         />
                       </FormControl>
                       <FormLabel className="w-full h-10 font-normal">

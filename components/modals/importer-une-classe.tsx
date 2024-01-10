@@ -67,7 +67,7 @@ export const ImportUneClasse = ({ children }: ImportUneClasseProps) => {
         <div className="transition-all duration-300 ease-in">
           {!file ? (
             <div className="flex items-center justify-center p-3 pb-5">
-              <Input
+              <input
                 id="picture"
                 type="file"
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
