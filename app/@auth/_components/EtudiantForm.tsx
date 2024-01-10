@@ -22,8 +22,16 @@ import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
 import { register } from '@/actions/registerEtudiant';
-export default function EtudiantForm({ handleRole }: any) {
-  const [role, setRole] = useState<string>('etudiant');
+import { SelectScrollable } from './SelectScrollable';
+import { MdOutlineClass } from 'react-icons/md';
+import { FaGraduationCap } from 'react-icons/fa';
+
+interface ProfFormProps {
+  handleRole: (role: string) => void;
+}
+
+export default function EtudiantForm({ handleRole }: ProfFormProps) {
+  const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -34,7 +42,7 @@ export default function EtudiantForm({ handleRole }: any) {
       nom: '',
       prenom: '',
       email: '',
-      gouvernorat: '',
+      government: '',
       password: '',
       confirmPassword: '',
       etablissement: '',
@@ -51,6 +59,7 @@ export default function EtudiantForm({ handleRole }: any) {
 
   const onSubmit = async (values: z.infer<typeof RegisterEtudSchema>) => {
     values.role = role;
+    console.log('🚀 ~ file: EtudiantForm.tsx:58 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
     startTransition(() => {
@@ -74,11 +83,11 @@ export default function EtudiantForm({ handleRole }: any) {
           <div
             id="Buttons"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'professeur' ? 'bg-[#1b8392] ' : ''
+              role === 'TEACHER' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('professeur');
-              handleRole('professeur');
+              setRole('TEACHER');
+              handleRole('TEACHER');
             }}
           >
             Professeur
@@ -86,11 +95,11 @@ export default function EtudiantForm({ handleRole }: any) {
           <div
             id="Buttons1"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'etudiant' ? 'bg-[#1b8392] ' : ''
+              role === 'STUDENT' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('etudiant');
-              handleRole('etudiant');
+              setRole('STUDENT');
+              handleRole('STUDENT');
             }}
           >
             Étudiant
@@ -175,23 +184,18 @@ export default function EtudiantForm({ handleRole }: any) {
           <div className="w-full">
             <FormField
               control={form.control}
-              name="gouvernorat"
+              name="government"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     Gouvernorat<span className="text-red"> *</span>
                   </FormLabel>
                   <FormControl className="flex-grow ">
-                    <Input
-                      {...field}
-                      type="list"
-                      options={[
-                        { value: '', label: 'Choisissez votre gouvernorat' },
-                        ...govOptions,
-                      ]}
+                    <SelectScrollable
+                      field={field}
+                      placeholder={'Choisissez votre gouvernorat'}
+                      options={govOptions}
                       icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
-                      disabled={isPending}
-                      className=" max-w-full"
                     />
                   </FormControl>
                   <FormMessage />
@@ -211,16 +215,11 @@ export default function EtudiantForm({ handleRole }: any) {
                     Établissement<span className="text-red"> *</span>
                   </FormLabel>
                   <FormControl className="flex-grow ">
-                    <Input
-                      {...field}
-                      type="list"
-                      options={[
-                        { value: '', label: 'Choisissez votre établissement' },
-                        ...govOptions,
-                      ]}
-                      icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
-                      disabled={isPending}
-                      className=" max-w-full"
+                    <SelectScrollable
+                      field={field}
+                      placeholder={'Choisissez votre établissement'}
+                      options={govOptions}
+                      icon={<FaGraduationCap className="text-gray w-5 h-5" />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -238,13 +237,11 @@ export default function EtudiantForm({ handleRole }: any) {
                     Classe<span className="text-red"> *</span>
                   </FormLabel>
                   <FormControl className="flex-grow ">
-                    <Input
-                      {...field}
-                      type="list"
-                      options={[{ value: '', label: 'Sélectionnez votre classe' }, ...govOptions]}
-                      icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
-                      disabled={isPending}
-                      className=" max-w-full"
+                    <SelectScrollable
+                      field={field}
+                      placeholder={'Sélectionnez votre classe'}
+                      options={govOptions}
+                      icon={<MdOutlineClass className="text-gray w-5 h-5" />}
                     />
                   </FormControl>
                   <FormMessage />

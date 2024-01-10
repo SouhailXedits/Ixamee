@@ -16,13 +16,12 @@ export default function page() {
         </div>
       </div>
       {/* right */}
-      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-bl-[100px] md:rounded-tl-[100px] md:rounded-tr-none  gap-10 max-md:mt-12">
+      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-bl-[100px] md:rounded-tl-[100px] md:rounded-tr-none  gap-10 max-sm:mt-28">
         <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">Créez un compte</div>
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <RegisterForm />
             <Social />
-
             <div className="flex ">
               <p className="text-center text-[#727272] ">Vous avez déjà un compte? </p>
               &nbsp;

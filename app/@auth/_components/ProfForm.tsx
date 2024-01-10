@@ -23,8 +23,14 @@ import { RiGovernmentLine } from 'react-icons/ri';
 import TnFlag from './TnFlag';
 import { RegisterProfSchema } from '@/schemas';
 import { register } from '@/actions/registerProf';
-export default function ProfForm({ handleRole }: any) {
-  const [role, setRole] = useState<string>('professeur');
+import { SelectScrollable } from './SelectScrollable';
+
+interface ProfFormProps {
+  handleRole: (role: string) => void;
+}
+
+export default function ProfForm({ handleRole }: ProfFormProps) {
+  const [role, setRole] = useState<string>('TEACHER');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -36,15 +42,15 @@ export default function ProfForm({ handleRole }: any) {
       prenom: '',
       email: '',
       phone: '',
-      gouvernorat: '',
+      government: '',
       password: '',
     },
   });
   const [showPassword, setShowPassword] = useState(false);
   const govOptions = [
-    { value: 'tunis', label: 'Tunis' },
-    { value: 'sousse', label: 'Sousse' },
-    { value: 'beja', label: 'Beja' },
+    { id: 1, value: 'tunis', label: 'Tunis' },
+    { id: 1, value: 'sousse', label: 'Sousse' },
+    { id: 1, value: 'beja', label: 'Beja' },
   ];
   const [isPending, startTransition] = useTransition();
 
@@ -73,11 +79,11 @@ export default function ProfForm({ handleRole }: any) {
           <div
             id="Buttons"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'professeur' ? 'bg-[#1b8392] ' : ''
+              role === 'TEACHER' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('professeur');
-              handleRole('professeur');
+              setRole('TEACHER');
+              handleRole('TEACHER');
             }}
           >
             Professeur
@@ -85,11 +91,11 @@ export default function ProfForm({ handleRole }: any) {
           <div
             id="Buttons1"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'etudiant' ? 'bg-[#1b8392] ' : ''
+              role === 'STUDENT' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('etudiant');
-              handleRole('etudiant');
+              setRole('STUDENT');
+              handleRole('STUDENT');
             }}
           >
             Étudiant
@@ -190,7 +196,6 @@ export default function ProfForm({ handleRole }: any) {
                       className=" max-w-full"
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -201,23 +206,18 @@ export default function ProfForm({ handleRole }: any) {
           <div className="w-full">
             <FormField
               control={form.control}
-              name="gouvernorat"
+              name="government"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     Gouvernorat<span className="text-red"> *</span>
                   </FormLabel>
                   <FormControl className="flex-grow ">
-                    <Input
-                      {...field}
-                      type="list"
-                      options={[
-                        { value: '', label: 'Choisissez votre gouvernorat' },
-                        ...govOptions,
-                      ]}
+                    <SelectScrollable
+                      field={field}
+                      placeholder={'Choisissez votre gouvernorat'}
+                      options={govOptions}
                       icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
-                      disabled={isPending}
-                      className=" max-w-full"
                     />
                   </FormControl>
                   <FormMessage />

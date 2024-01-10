@@ -10,8 +10,48 @@ export const LoginSchema = z.object({
   rememberMe: z.boolean(),
 });
 
-export const RegisterEtudSchema = z.object({
-  role: z.string().default('professeur'),
+export const RegisterEtudSchema = z
+  .object({
+    role: z.string().default('TEACHER'),
+    nom: z.string().min(2, {
+      message: 'le nom est requis (3 lettre au minimum)',
+    }),
+    prenom: z.string().min(2, {
+      message: 'le prenom est requis (3 lettre au minimum)',
+    }),
+    email: z.string().email({
+      message: "L'email est requis",
+    }),
+    government: z.string().min(3, {
+      message: 'La gouvernorat est requis',
+    }),
+    password: z
+      .string()
+      .min(8, {
+        message: 'Minimum 8 caractères',
+      })
+      .refine(
+        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value),
+        {
+          message:
+            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+        }
+      ),
+    confirmPassword: z.string(),
+    etablissement: z.string().min(3, {
+      message: "L'etablissement est requis",
+    }),
+    classe: z.string().min(3, {
+      message: 'La classe est requis',
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Le mot de passe et la confirmation doivent être identiques',
+    path: ['confirmPassword'],
+  });
+
+export const RegisterProfSchema = z.object({
+  role: z.string().default('TEACHER'),
   nom: z.string().min(2, {
     message: 'le nom est requis (3 lettre au minimum)',
   }),
@@ -21,7 +61,10 @@ export const RegisterEtudSchema = z.object({
   email: z.string().email({
     message: "L'email est requis",
   }),
-  gouvernorat: z.string().min(3, {
+  phone: z.string().refine((value) => /^[2459]\d{7}$/.test(value), {
+    message: 'Le numéro de téléphone doit commencer par 2, 4, 5, ou 9 et avoir 8 chiffres au total',
+  }),
+  government: z.string().min(3, {
     message: 'La gouvernorat est requis',
   }),
   password: z
@@ -33,45 +76,15 @@ export const RegisterEtudSchema = z.object({
       message:
         'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
     }),
-  confirmPassword: z.string(),
-  etablissement: z.string().min(3, {
-    message: "L'etablissement est requis",
-  }),
-  classe: z.string().min(3, {
-    message: 'La classe est requis',
-  }),
-  // .refine((value, data: any) => value === data.password, {
-  //   message: "Les mots de passe ne correspondent pas",
-  // }),
 });
 
-export const RegisterProfSchema = z.object({
-  role: z.string().default('professeur'),
-  nom: z.string().min(2, {
-    message: 'le nom est requis (3 lettre au minimum)',
-  }),
-  prenom: z.string().min(2, {
-    message: 'le prenom est requis (3 lettre au minimum)',
-  }),
-  email: z.string().email({
-    message: "L'email est requis",
-  }),
-  phone: z
+export const VerifSchema = z.object({
+  code: z
     .string()
-    .min(8, {
-      message: 'Le numéro de téléphone est requis (8 chiffres)',
+    .min(6, {
+      message: 'code de 6 chiffres',
     })
-    .max(8),
-  gouvernorat: z.string().min(3, {
-    message: 'La gouvernorat est requis',
-  }),
-  password: z
-    .string()
-    .min(8, {
-      message: 'Minimum 8 caractères',
-    })
-    .refine((value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value), {
-      message:
-        'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+    .max(6, {
+      message: 'code de 6 chiffres',
     }),
 });

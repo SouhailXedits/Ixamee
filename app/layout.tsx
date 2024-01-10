@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <ToastProvider />
-        {teacherdashboard}
+        {children}
       </body>
     </html>
   );
