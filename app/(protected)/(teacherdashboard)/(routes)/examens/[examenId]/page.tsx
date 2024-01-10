@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
-import CreateExam from './_components/create-exam';
+import { CreateExam } from './_components/create-exam';
+// import { Editor } from './_components/toolbar-editor';
 export default function page({ params }: { params: { examenId: string } }) {
   const { examenId } = params;
 
