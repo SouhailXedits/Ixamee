@@ -39,14 +39,11 @@ export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    console.log(values);
-
     setError('');
     setSuccess('');
     startTransition(() => {
       login(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        setError(data?.error);
       });
     });
   };
