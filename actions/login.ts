@@ -8,7 +8,7 @@ import { AuthError } from 'next-auth';
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
 
-  if (!validatedFields.success)    
+  if (!validatedFields.success)
     return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
 
   const { email, password, rememberMe } = validatedFields?.data;
@@ -18,7 +18,9 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       email,
       password,
       rememberMe,
-      // redirectTo: DEFAULT_LOGIN_REDIRECT+"12/",
+      // redirectTo: DEFAULT_LOGIN_REDIRECT,
+    }).then(() => {
+      return { success: 'Bienvenue' };
     });
   } catch (error) {
     if (error instanceof AuthError) {
