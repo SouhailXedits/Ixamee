@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/@teacherdashboard/(routes)/examens/[examenId]/_components/toolbar-editor.jsx",
+    "app/(protected)/(teacherdashboard)/(routes)/examens/[examenId]/_components/toolbar-editor.jsx",
   ],
   "exclude": [
     "node_modules"
