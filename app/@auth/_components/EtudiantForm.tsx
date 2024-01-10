@@ -31,7 +31,7 @@ interface ProfFormProps {
 }
 
 export default function EtudiantForm({ handleRole }: ProfFormProps) {
-  const [role, setRole] = useState<string>('student');
+  const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -42,7 +42,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
       nom: '',
       prenom: '',
       email: '',
-      gouvernorat: '',
+      government: '',
       password: '',
       confirmPassword: '',
       etablissement: '',
@@ -83,11 +83,11 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
           <div
             id="Buttons"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'teacher' ? 'bg-[#1b8392] ' : ''
+              role === 'TEACHER' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('teacher');
-              handleRole('teacher');
+              setRole('TEACHER');
+              handleRole('TEACHER');
             }}
           >
             Professeur
@@ -95,11 +95,11 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
           <div
             id="Buttons1"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'student' ? 'bg-[#1b8392] ' : ''
+              role === 'STUDENT' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
-              setRole('student');
-              handleRole('student');
+              setRole('STUDENT');
+              handleRole('STUDENT');
             }}
           >
             Étudiant
@@ -184,7 +184,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
           <div className="w-full">
             <FormField
               control={form.control}
-              name="gouvernorat"
+              name="government"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
