@@ -2,7 +2,7 @@
 import * as z from 'zod';
 import { db } from '@/lib/db';
 import { RegisterEtudSchema } from '@/schemas';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
 export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
   const validatedFields = RegisterEtudSchema.safeParse(values);
@@ -21,7 +21,7 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
     etablissement: establishment,
     classe,
   } = validatedFields.data;
-  const hashesPassword = await bcrypt.hash(password, 10);
+  const hashesPassword = await bcryptjs.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
