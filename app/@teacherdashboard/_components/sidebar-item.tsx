@@ -9,7 +9,7 @@ interface SidebarItemProps {
   Clickedicon: string;
   Defaulticon: string;
   label: string;
-  href: string;
+  href?: string;
 }
 export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarItemProps) => {
   const pathname = usePathname();
@@ -19,6 +19,7 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
     (pathname === '/' && href === '/') || pathname === href || pathname.startsWith(`${href}/`);
 
   const onClick = () => {
+    if (href)
     router.push(href);
   };
 
