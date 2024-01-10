@@ -18,9 +18,14 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
   const isActive =
     (pathname === '/' && href === '/') || pathname === href || pathname.startsWith(`${href}/`);
 
+
+  function generateDynamicId() {
+    return 1
+  }
   const onClick = () => {
-    if (href)
-    router.push(href);
+    if (href) 
+      router.push(`/${generateDynamicId()}${href}`);
+    
   };
 
   return (
