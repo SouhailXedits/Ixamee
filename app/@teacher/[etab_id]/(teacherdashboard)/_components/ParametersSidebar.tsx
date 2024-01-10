@@ -7,6 +7,7 @@ import {
 import { SidebarItem } from './sidebar-item';
 import SettingsBtn from './SettingsBtn';
 
+
 const parametersRoutes = [
   {
     Clickedicon: '/teacherbag-fill.svg',
@@ -27,6 +28,7 @@ const parametersRoutes = [
     href: '/settings/subjects',
   },
 ];
+
 function ParametersSidebar() {
   const paramroutes = parametersRoutes;
   
