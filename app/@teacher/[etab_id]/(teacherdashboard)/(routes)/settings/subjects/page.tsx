@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/select';
 import Image from 'next/image';
 import Link from 'next/link';
-import  {EstablishementsList}  from './_components/EstablishementsList';
+import  {EstablishementsList}  from './_components/SubjectsList';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { AddEstab } from '@/components/modals/AddEstab';
