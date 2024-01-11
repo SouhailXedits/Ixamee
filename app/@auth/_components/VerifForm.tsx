@@ -3,13 +3,15 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { VerifSchema } from '@/schemas';
+import { VerifSchema } from '@/actions/auth/schemas';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
 import { useState } from 'react';
 import { useTransition } from 'react';
-import ReactCodeInput from 'react-verification-code-input';
+import { GoShieldCheck } from 'react-icons/go';
+
+import { Input } from '@/components/ui/auth-input';
 export default function VerifForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -47,11 +49,12 @@ export default function VerifForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <ReactCodeInput
+                  <Input
                     {...field}
-                    className='w-full justify-between border-mainGreen'
-                    autoFocus
-                    loading={false}
+                    placeholder="Entrer le code ici"
+                    type="email"
+                    icon={<GoShieldCheck className="text-gray w-5 h-5" />}
+                    disabled={isPending}
                   />
                 </FormControl>
                 <FormMessage />

@@ -11,12 +11,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { LoginSchema } from '@/schemas';
+import { LoginSchema } from '@/actions/auth/schemas';
 import { Input } from '@/components/ui/auth-input';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { login } from '@/actions/login';
+import { login } from '@/actions/auth/login';
 import { useState } from 'react';
 import Link from 'next/link';
 import { MdOutlineEmail } from 'react-icons/md';
@@ -44,6 +44,7 @@ export default function LoginForm() {
     startTransition(() => {
       login(values).then((data) => {
         setError(data?.error);
+        setSuccess(data?.success);
       });
     });
   };

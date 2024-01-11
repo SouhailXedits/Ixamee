@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { RegisterEtudSchema } from '@/schemas';
+import { RegisterEtudSchema } from '@/actions/auth/schemas';
 import { Input } from '@/components/ui/auth-input';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
@@ -21,7 +21,7 @@ import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
-import { register } from '@/actions/registerEtudiant';
+import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from './SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';

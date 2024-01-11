@@ -21,8 +21,8 @@ import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
 import TnFlag from './TnFlag';
-import { RegisterProfSchema } from '@/schemas';
-import { register } from '@/actions/registerProf';
+import { RegisterProfSchema } from '@/actions/auth/schemas';
+import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
 
 interface ProfFormProps {

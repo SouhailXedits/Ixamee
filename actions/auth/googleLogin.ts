@@ -6,7 +6,7 @@ import { AuthError } from 'next-auth';
 export const googleLogin = async () => {
   try {
     await signIn('google', {
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      // redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
     if (error instanceof AuthError) {

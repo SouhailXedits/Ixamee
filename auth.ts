@@ -11,16 +11,36 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  pages: {
+    signIn: '/login',
+    error: '/error',
+  },
+
+  events: {
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          emailVerified: new Date(),
+        },
+      });
+    },
+  },
   callbacks: {
-    async signIn({ user }) {
-      console.log('🚀 ~ signIn ~ { user }:', { user });
+    async signIn({ user, account }) {
+      console.log('🚀 ~ signIn ~ account:', account);
+      console.log('🚀 ~ signIn ~ user:', user);
+      //Allow OAuth without email verification
+
+      if (account?.provider !== 'credentials') {
+        return true;
+      }
+
       const existingUser = await getUserById(user.id);
-      console.log('🚀 ~ signIn ~ existingUser:', existingUser);
 
-      // if (!existingUser || !existingUser.emailVerified) {
-      //   return false;
-      // }
-
+      if (!existingUser || !existingUser.emailVerified) {
+        return false;
+      }
       return true;
     },
     async session({ token, session }) {

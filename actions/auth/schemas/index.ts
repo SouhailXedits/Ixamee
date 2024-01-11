@@ -89,3 +89,28 @@ export const VerifSchema = z.object({
       message: 'code de 6 chiffres',
     }),
 });
+
+export const EtudiantAfterSchema = z.object({
+  role: z.string().default('TEACHER'),
+  government: z.string().min(3, {
+    message: 'La gouvernorat est requis',
+  }),
+  etablissement: z.string().min(3, {
+    message: "L'etablissement est requis",
+  }),
+  classe: z.string().min(3, {
+    message: 'La classe est requis',
+  }),
+});
+export const ProfAfterSchema = z.object({
+  role: z.string().default('TEACHER'),
+  subject: z.string().min(3, {
+    message: 'La matière est requis',
+  }),
+  etablissement: z.string().min(3, {
+    message: "L'etablissement est requis",
+  }),
+  systeme: z.string().min(3, {
+    message: 'Le système pédagogique est requis',
+  }),
+});

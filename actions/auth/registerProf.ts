@@ -1,16 +1,17 @@
 'use server';
-import * as z from 'zod';
 import { db } from '@/lib/db';
-import { RegisterEtudSchema } from '@/schemas';
+
+import * as z from 'zod';
+import { RegisterProfSchema } from '@/actions/auth/schemas';
 import bcryptjs from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
-export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
-  const validatedFields = RegisterEtudSchema.safeParse(values);
-
+import { generateVerificationToken } from '@/lib/tokens';
+import { sendVerificationEmail } from '@/lib/mail';
+export const register = async (values: z.infer<typeof RegisterProfSchema>) => {
+  const validatedFields = RegisterProfSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
   }
-
   const {
     nom: first_name,
     prenom: last_name,
@@ -18,12 +19,13 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
     password,
     government,
     role,
-    etablissement: establishment,
-    classe,
+    phone: phone_number,
   } = validatedFields.data;
   const hashesPassword = await bcryptjs.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
+  console.log("🚀 ~ register ~ existingUser:", existingUser)
+  
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
   }
@@ -33,23 +35,22 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
   //   },
   // });
   const government_id = 1;
-  const establishement_id = 1;
-  const classe_id = 1;
 
   await db.user.create({
     data: {
+      name: `${first_name} ${last_name}`,
       first_name,
       last_name,
       email,
       password: hashesPassword,
-      classe,
+      phone_number,
       role,
-      government_id,
-      establishement_id,
-      classe_id,
+      // government_id,
     },
   });
 
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
   return {
     success: `Bienvenue ${values.prenom}! Veuillez vérifier votre e-mail pour terminer l'inscription.`,
   };

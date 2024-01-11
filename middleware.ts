@@ -17,13 +17,11 @@ export default auth(async (req) => {
   }
   console.log('🚀 ~ auth ~ isAuthRoute:', isAuthRoute);
   if (isAuthRoute) {
-    console.log(isLoggedIn, 'isllll');
     const session = await authentification();
     const estabId = session?.user?.establishement_id || '1';
     if (isLoggedIn) {
       return Response.redirect(new URL(`${DEFAULT_LOGIN_REDIRECT}${estabId}/`, nextUrl));
     }
-
     return null;
   }
 

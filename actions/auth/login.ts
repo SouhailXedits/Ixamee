@@ -1,9 +1,12 @@
 'use server';
 import * as z from 'zod';
-import { LoginSchema } from '@/schemas';
+import { LoginSchema } from '@/actions/auth/schemas';
 import { signIn } from '@/auth';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { AuthError } from 'next-auth';
+import { getUserByEmail } from '@/data/user';
+import { generateVerificationToken } from '@/lib/tokens';
+import { sendVerificationEmail } from '@/lib/mail';
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -12,6 +15,19 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
 
   const { email, password, rememberMe } = validatedFields?.data;
+
+  const existingUser = await getUserByEmail(email);
+
+  if (!existingUser || !existingUser.email || !existingUser.password) {
+    return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
+  }
+
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken(existingUser.email);
+
+    await sendVerificationEmail(verificationToken.email, verificationToken.token);
+    return { success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.' };
+  }
 
   try {
     await signIn('credentials', {
