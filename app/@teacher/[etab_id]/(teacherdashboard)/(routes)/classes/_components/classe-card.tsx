@@ -17,7 +17,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
         <span className="text-xl font-semibold  text-[#727272]">{data.className}</span>
         <DropdownMenuItemSelect>
           <Image
-            src="icons/kebab-menu.svg"
+            src="/icons/kebab-menu.svg"
             alt="kebabMenu "
             width={19}
             height={19}

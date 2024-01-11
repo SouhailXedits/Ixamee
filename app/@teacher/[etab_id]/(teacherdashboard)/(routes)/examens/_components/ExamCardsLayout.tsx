@@ -1,16 +1,16 @@
-import ExamCards from "./ExamCards";
+import ExamCards from './ExamCards';
 
 function ExamCardsLayout() {
-    return (
-      <div className="flex flex-wrap items-center gap-5">
-        <ExamCards />
-        <ExamCards />
-        <ExamCards />
+  return (
+    <div className="flex flex-wrap items-center gap-5">
+      <ExamCards />
+      <ExamCards />
+      <ExamCards />
 
-        <ExamCards />
-        <ExamCards />
-      </div>
-    );
+      <ExamCards />
+      <ExamCards />
+    </div>
+  );
 }
 
-export default ExamCardsLayout
+export default ExamCardsLayout;
