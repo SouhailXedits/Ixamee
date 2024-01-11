@@ -33,13 +33,14 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <ToastProvider />
-        {session === null
+        {teacher}
+        {/* {session === null
           ? auth
           : session?.user?.role === 'TEACHER'
           ? teacher
           : session?.user?.role === 'STUDENT'
           ? student
-          : admin}
+          : admin} */}
       </body>
     </html>
   );
