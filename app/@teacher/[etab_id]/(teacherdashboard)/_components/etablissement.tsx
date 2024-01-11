@@ -9,40 +9,23 @@ const Etablissement = () => {
   const lyceDetails = [
     {
       lyceName: "Lycée Bourguiba Sousse",
-      subLyceName :"LhBS",
+      subLyceName :"LBS",
 
       isChecked :false
     },
     {
-      lyceName: "Lycée Boutrguiba Sousse",
-      subLyceName :"LrBS",
+      lyceName: "Lycée Privé Élite Nabeul",
+      subLyceName :"LPEN",
 
       isChecked :false
     },
     {
-      lyceName: "Lycée Boturguiba Sousse",
-      subLyceName :"LrtBS",
+      lyceName: "Lycée Al Manar",
+      subLyceName :"LM",
 
       isChecked :false
     },
-    {
-      lyceName: "Lycée Bbbourguiba Sousse",
-      subLyceName :"LBzS",
-
-      isChecked :false
-    },
-    {
-      lyceName: "Lycée Bbbouefrguiba Sousse",
-      subLyceName :"LBzaS",
-
-      isChecked :false
-    },
-    {
-      lyceName: "Lycée Bbbourguaiba Sousse",
-      subLyceName :"LBzfS",
-
-      isChecked :false
-    },
+    
   ]
   return ( 
     <div className="border-t border-[#99C6D3] max-h-50">
