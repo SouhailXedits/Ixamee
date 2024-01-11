@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/select';
 import Image from 'next/image';
 import Link from 'next/link';
-import  {EstablishementsList}  from './_components/SubjectsList';
+import  {SubjectsList}  from './_components/SubjectsList';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { AddEstab } from '@/components/modals/AddEstab';
@@ -32,7 +32,7 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
             </Link> */}
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
-            <span className="cursor-pointer">Établissements</span>
+            <span className="cursor-pointer">Matières</span>
           </div>
         </div>
 
@@ -81,7 +81,7 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
           <AddEstab>
             <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Ajouter une établissements
+                Ajouter une Matières
               </div>
             </div>
           </AddEstab>
@@ -89,7 +89,7 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
       </nav>
 
       <div>
-        <EstablishementsList />
+        <SubjectsList />
       </div>
     </main>
   );

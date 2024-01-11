@@ -133,7 +133,7 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center gap-2 capitalize">
-        {/* <Image src="/defaultUserAvatr.svg" alt="" width={42} height={42} className="rounded-full" /> */}
+        <Image src="/defaultUserAvatr.svg" alt="" width={42} height={42} className="rounded-full" />
         {row.getValue('name')}
       </div>
     ),
@@ -203,7 +203,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function EstablishementsList() {
+export function SubjectsList() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
