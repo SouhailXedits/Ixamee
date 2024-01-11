@@ -4,12 +4,17 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import Editor from './toolbar-editor';
 import { cn } from '@/lib/utils';
+interface SubSubExercise {
+  id: number;
+  name: string;
+  mark: string;
+}
 
 interface SubExercise {
   id: number;
   name: string;
   mark: string;
-  children: SubExercise[];
+  children?: SubSubExercise[];
 }
 
 interface ExerciseProps {
@@ -21,7 +26,8 @@ interface ExerciseProps {
   };
   onAddSubExercise: () => void;
   ondeleteQuestion: (index: number) => void;
-  updateMark: (value: string) => void; // Updated the type of updateMark
+  updateMark: (value: string) => void;
+  parentHasSubExercise: boolean;
 }
 
 const Exercise: React.FC<ExerciseProps> = ({
@@ -29,6 +35,7 @@ const Exercise: React.FC<ExerciseProps> = ({
   onAddSubExercise,
   ondeleteQuestion,
   updateMark,
+  parentHasSubExercise,
 }) => {
   const [subExercises, setSubExercises] = useState<SubExercise[]>(exercise.children || []);
 
@@ -39,7 +46,8 @@ const Exercise: React.FC<ExerciseProps> = ({
       mark: '00.00',
       children: [],
     };
-    setSubExercises((prevSubExercises: any) => [...prevSubExercises, newSubExercise]);
+    console.log(newSubExercise);
+    setSubExercises((prevSubExercises: SubExercise[]) => [...prevSubExercises, newSubExercise]);
   };
 
   const deleteSubExercise = (index: number) => {
@@ -53,7 +61,7 @@ const Exercise: React.FC<ExerciseProps> = ({
 
   const renumberSubExercises = (startIndex: number) => {
     setSubExercises((prevExercises: any) => {
-      return prevExercises.map((exercise: any, index: number) => {
+      return prevExercises.map((exercise, index) => {
         return {
           ...exercise,
           name: index + 1,
@@ -72,6 +80,7 @@ const Exercise: React.FC<ExerciseProps> = ({
       return parseFloat(exercise.mark);
     }
   };
+  console.log(exercise);
 
   return (
     <>
@@ -88,6 +97,7 @@ const Exercise: React.FC<ExerciseProps> = ({
           <div className="w-[80%] flex items-center">
             <span>{exercise.name}</span>
             <span>)</span>
+            {/* Adjusted Editor component */}
             <Editor
               onChange={() => {
                 console.log('handleChange');
@@ -95,15 +105,20 @@ const Exercise: React.FC<ExerciseProps> = ({
             />
           </div>
           <div className="flex gap-3 item-center">
+            {console.log(parentHasSubExercise)}
             <Input
               className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
               defaultValue={exercise.mark}
               maxLength={5}
               disabled={exercise.children && exercise.children.length > 0}
+              // value={
+              //   exercise.children && exercise.children.length > 0
+              //     ? calculateSumOfMarks(exercise).toFixed(2)
+              //     : exercise.mark
+              // }
               onChange={(e) => {
                 if (!(exercise.children && exercise.children.length > 0)) {
-                  // Only update the mark if it doesn't have subquestions
                   updateMark(e.target.value);
                 }
               }}
@@ -123,11 +138,13 @@ const Exercise: React.FC<ExerciseProps> = ({
       <div className="flex flex-col gap-4 ">
         {subExercises.map((subExercise, index) => (
           <div className="flex flex-col gap-3 ml-24 " key={index}>
+            {/* Pass parentHasSubExercise to subExercises */}
             <Exercise
               exercise={subExercise}
               onAddSubExercise={() => addSubExercise(index)}
               ondeleteQuestion={() => deleteSubExercise(index)}
-              updateMark={(value) => updateMark(value)} // Updated the call to updateMark
+              updateMark={(value) => updateMark(value)}
+              parentHasSubExercise={true}
             />
           </div>
         ))}
@@ -138,33 +155,9 @@ const Exercise: React.FC<ExerciseProps> = ({
 
 export const CreateExam = () => {
   const [editeExerciceName, setEditeExerciceName] = useState<null | Number>(null);
-  const [exercises, setExercises] = useState([
-    [
-      {
-        id: 1,
-        name: 'I',
-        title: 'Exercice n1',
-        mark: '02.00',
-        children: [
-          {
-            id: 3,
-            name: '1',
-            mark: '02.00',
-            children: [
-              {
-                id: 5,
-                name: 'a',
-                mark: '02.00',
-                children: [],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  ]);
-  console.log(exercises);
-  const calculateTotalExamMark = (): string => {
+  const [exercises, setExercises] = useState([]);
+
+  const calculateTotalExamMark = () => {
     return (
       exercises.reduce((total, exerciseGroup) => {
         return total + calculateSumOfMarks(exerciseGroup);
@@ -173,19 +166,21 @@ export const CreateExam = () => {
   };
 
   const addquestion = (mainIndex: number) => {
-    const getNextChar = (num: number) => String.fromCharCode(`0x${num}`);
+    const getNextChar = (num: number) => String.fromCharCode(0x2160 + num);
     const newExercise = {
       id: Date.now(),
-      name: getNextChar(exercises[mainIndex].length + 2160),
-      mark: 0,
+      name: getNextChar(exercises[mainIndex].length),
+      mark: '00.00',
       children: [],
     };
-
+    console.log(exercises);
     setExercises((prevExercises: any) => {
       const newExercises = [...prevExercises];
+      console.log(newExercises);
       newExercises[mainIndex] = [...newExercises[mainIndex], newExercise];
       return newExercises;
     });
+    console.log(exercises);
   };
 
   const deleteQuestion = (mainIndex: number) => {
@@ -202,6 +197,7 @@ export const CreateExam = () => {
       {
         id: Date.now(),
         title: `Exercise ${exercises.length + 1} `,
+        name: 'I',
         mark: '00.00',
         children: [],
       },
@@ -211,6 +207,7 @@ export const CreateExam = () => {
       return [...prevExercises, newExercise];
     });
   };
+  console.log(exercises);
 
   const renumberQuestion = (mainIndex: number) => {
     const getNextChar = (num: number) => String.fromCharCode(`0x${num}`);
@@ -232,26 +229,27 @@ export const CreateExam = () => {
   };
 
   const calculateSumOfMarks = (exerciseGroup: any): number => {
+    console.log(exerciseGroup);
     if (Array.isArray(exerciseGroup)) {
       return exerciseGroup.reduce((sum, exercise) => sum + calculateSumOfMarks(exercise), 0);
     } else {
-      // If exerciseGroup is not an array, it's a single exercise object
       return parseFloat(exerciseGroup.mark || '0');
     }
   };
 
   const updateMark = (mainIndex: number, subIndex: number, value: string) => {
-    setExercises((prevExercises: any) => {
+    setExercises((prevExercises) => {
+      console.log(prevExercises);
       const newExercises = [...prevExercises];
       newExercises[mainIndex][subIndex].mark = value;
       return newExercises;
     });
   };
+  console.log(exercises);
 
   return (
     <>
       {exercises.map((mainExercise, mainIndex: number) => {
-        console.log(exercises[mainIndex][0]?.mark);
         return (
           <div
             key={mainIndex}
@@ -262,7 +260,7 @@ export const CreateExam = () => {
                 <div className="flex items-center gap-10">
                   <Input
                     type="text"
-                    className="text-2xl bg-transparent border-none w-[220px] -mr-10 -ml-8 text-[#1B8392]"
+                    className="text-2xl bg-transparent border-none w-[220px] -mr-10 -ml-1 text-[#1B8392]"
                     defaultValue={exercises[mainIndex][0]?.title || 'Exercice'}
                     value={mainExercise[mainIndex]?.title}
                     onChange={(e) => {
@@ -275,6 +273,7 @@ export const CreateExam = () => {
                     }}
                     disabled={editeExerciceName !== mainExercise[mainIndex]?.id}
                   />
+
                   <Image
                     src="/editeicon.svg"
                     width={24}
@@ -313,7 +312,6 @@ export const CreateExam = () => {
                         disabled
                         value={calculateTotalExamMark()}
                         defaultValue={calculateSumOfMarks(exercises[mainIndex])}
-                        // defaultValue={exercises[mainIndex][0]?.mark || '0'}
                       />
                       <span className="text-xl">/ 20.00</span>
                     </div>
@@ -331,15 +329,22 @@ export const CreateExam = () => {
 
             <div className="flex flex-col gap-6 ml-10">
               <div className="flex flex-col gap-4 ">
-                {mainExercise.map((subExercise, subIndex: number) => (
-                  <Exercise
-                    key={subIndex}
-                    exercise={subExercise}
-                    onAddSubExercise={() => addquestion(mainIndex)}
-                    ondeleteQuestion={() => deleteQuestion(mainIndex)}
-                    updateMark={(value: any) => updateMark(mainIndex, subIndex, value)}
-                  />
-                ))}
+                {mainExercise.map(
+                  (subExercise, subIndex: number) => (
+                    console.log(mainExercise),
+                    (
+                      <Exercise
+                        key={subIndex}
+                        exercise={subExercise}
+                        onAddSubExercise={() => addquestion(mainIndex)}
+                        ondeleteQuestion={() => deleteQuestion(mainIndex)}
+                        updateMark={(value: any) => updateMark(mainIndex, subIndex, value)}
+                        // Pass parentHasSubExercise to subExercises
+                        parentHasSubExercise={false}
+                      />
+                    )
+                  )
+                )}
               </div>
               <div className="px-4 pt-4 -mb-10">
                 <div
@@ -372,5 +377,3 @@ export const CreateExam = () => {
     </>
   );
 };
-
-export default CreateExam;

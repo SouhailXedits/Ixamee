@@ -25,14 +25,14 @@ export default auth(async (req) => {
     return null;
   }
 
-  if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL('/login', nextUrl));
-  }
+  // if (!isLoggedIn && !isPublicRoute) {
+  //   return Response.redirect(new URL('/login', nextUrl));
+  // }
 
   return null;
 });
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/:estab_id', '/(api|trpc)(.*)'],
 };
