@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { auth as authentification } from '@/auth';
 const poppins = Poppins({
-  weight: '300',
+  weight: '400',
   subsets: ['latin'],
   variable: '--font-poppins',
   style: ['normal'],

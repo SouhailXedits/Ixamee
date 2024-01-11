@@ -50,7 +50,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Ajouter une éstablishement
+            Ajouter une établissement
           </DialogTitle>
         </DialogHeader>
 
@@ -78,7 +78,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
             />
             <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
               <Image src={'/establishement-green.svg'} alt="user" width={15} height={15} />
-              Éstablishement ajouté avec succès.
+              Établissement ajouté avec succès.
             </div>
           </div>
         )}
