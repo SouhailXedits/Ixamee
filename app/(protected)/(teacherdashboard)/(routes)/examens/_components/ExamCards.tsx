@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
+import { DropdownMenuItemSelect } from '@/components/modals/dropDownExameCard';
 
 const ExamCards = () => {
   const router = useRouter();
@@ -17,9 +18,17 @@ const ExamCards = () => {
       className="w-[333px] h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2"
       onClick={onClick}
     >
-      <div className="flex justify-between">
+      <div className="flex justify-between" onClick={(e) => e.stopPropagation()}>
         <span className="text-[#514E4E]">Devoir de contrôle N°2</span>
-        <Image src="/icons/kebab-menu.svg" alt="icons" width={20} height={20} />
+        <DropdownMenuItemSelect>
+          <Image
+            src="/icons/kebab-menu.svg"
+            alt="icons"
+            width={20}
+            height={20}
+            onClick={(e) => e.preventDefault()}
+          />
+        </DropdownMenuItemSelect>
       </div>
 
       <div className="w-[293px] text-[#D2D1D1] text-sm font-normal leading-snug text-lg">
