@@ -80,8 +80,8 @@ function ParametersSidebar() {
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
-        <AccordionTrigger onClick={onClick}>
-          <SettingsBtn isActive={isActive} onClick={onClick} />
+        <AccordionTrigger onClick={onClick} className={cn(collapsed&& "flex-col")}>
+          <SettingsBtn isActive={isActive} onClick={onClick} /> 
         </AccordionTrigger>
         <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
           {paramroutes.map((route) => (
