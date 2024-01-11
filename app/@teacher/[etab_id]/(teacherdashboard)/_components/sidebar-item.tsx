@@ -15,12 +15,17 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
   const pathname = usePathname();
   const router = useRouter();
   const { collapsed } = useSidebar((state) => state);
+  function generateDynamicId() {
+    return 1;
+  }
   const isActive =
-    (pathname === '/' && href === '/') || pathname === href || pathname.startsWith(`${href}/`);
+    (pathname === `/${generateDynamicId()}` && href === `/`) ||
+    pathname === href ||
+    pathname.startsWith(`${href}/`) ||
+    (pathname.includes(`${href}`) && pathname !== '/' && href !== '/');
 
   const onClick = () => {
-    if (href)
-    router.push(href);
+    if (href) router.push(`/${generateDynamicId()}${href}`);
   };
 
   return (

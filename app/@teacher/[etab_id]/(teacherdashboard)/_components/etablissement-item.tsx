@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,19 +12,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-//import { toast } from "@/components/ui/use-toast"
-import { useSidebar } from "@/store/use-sidebar"
-import { cn } from "@/lib/utils"
+} from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { toast } from '@/components/ui/use-toast';
+import { useSidebar } from '@/store/use-sidebar';
+import { cn } from '@/lib/utils';
 
 const FormSchema = z.object({
-  type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
+  type: z.enum(['all', 'mentions', 'none'], {
+    required_error: 'You need to select a notification type.',
   }),
-})
+});
 interface EtablissementItemProps {
-  data: { lyceName: string ,isChecked :boolean ,subLyceName :string }[];
+  data: { lyceName: string; isChecked: boolean; subLyceName: string }[];
 }
 
 export function EtablissementItem({ data }: EtablissementItemProps) {
@@ -32,12 +32,9 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
     resolver: zodResolver(FormSchema),
   });
 
-  const {collapsed } =useSidebar((state) =>state)
+  const { collapsed } = useSidebar((state) => state);
 
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-  
-  }
+  function onSubmit(data: z.infer<typeof FormSchema>) {}
 
   return (
     <Form {...form}>
@@ -54,9 +51,12 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
                   className="flex flex-col space-y-1"
                 >
                   {data.map((lyce) => (
-                    <FormItem  // Add a unique key for each item
+                    <FormItem // Add a unique key for each item
                       key={lyce.lyceName}
-                      className={cn("flex items-center space-x-3", collapsed && "flex-col items-center w-full")}
+                      className={cn(
+                        'flex items-center space-x-3',
+                        collapsed && 'flex-col items-center w-full'
+                      )}
                     >
                       <FormControl>
                         <RadioGroupItem
@@ -64,7 +64,7 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
                           value={lyce.lyceName}
                           className="text-[#FBB800] border-[#F0F6F8] w-4 h-4"
                           // checked={lyce.isChecked}
-                          defaultChecked ={lyce.isChecked}
+                          defaultChecked={lyce.isChecked}
                         />
                       </FormControl>
                       <FormLabel className="w-full h-10 font-normal">
