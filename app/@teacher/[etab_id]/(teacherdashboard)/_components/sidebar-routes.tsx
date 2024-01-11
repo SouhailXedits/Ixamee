@@ -50,7 +50,7 @@ export const SidebarRoutes = () => {
   const routes = guestRoutes;
 
   return (
-    <div className="flex flex-col w-full gap-52">
+    <div className="flex flex-col w-full justify-between">
       <div className="flex flex-col items-start gap-4 mt-14">
         {routes.map((route) => (
           <SidebarItem
@@ -63,7 +63,7 @@ export const SidebarRoutes = () => {
         ))}
         <ParametersSidebar/>
       </div>
-      <div className="flex flex-col w-full mt-auto ">
+      <div className="flex flex-col absolute bottom-0">
         <Etablissement />
       </div>
     </div>

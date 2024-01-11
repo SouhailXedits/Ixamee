@@ -9,26 +9,51 @@ const Etablissement = () => {
   const lyceDetails = [
     {
       lyceName: "Lycée Bourguiba Sousse",
-      subLyceName :"LBS",
+      subLyceName :"LhBS",
 
       isChecked :false
     },
     {
-      lyceName: "Lycée Privé Élite Nabeul",
-      subLyceName :"LPÉN",
-      isChecked :true
+      lyceName: "Lycée Boutrguiba Sousse",
+      subLyceName :"LrBS",
 
+      isChecked :false
+    },
+    {
+      lyceName: "Lycée Boturguiba Sousse",
+      subLyceName :"LrtBS",
 
-    }
+      isChecked :false
+    },
+    {
+      lyceName: "Lycée Bbbourguiba Sousse",
+      subLyceName :"LBzS",
+
+      isChecked :false
+    },
+    {
+      lyceName: "Lycée Bbbouefrguiba Sousse",
+      subLyceName :"LBzaS",
+
+      isChecked :false
+    },
+    {
+      lyceName: "Lycée Bbbourguaiba Sousse",
+      subLyceName :"LBzfS",
+
+      isChecked :false
+    },
   ]
   return ( 
-    <div className="border-t border-[#99C6D3]">
+    <div className="border-t border-[#99C6D3] max-h-50">
       <div className="flex items-center gap-3 p-4">
       <Image src="/bankicon.svg" alt="bankicon" width={18} height={18}   />
       <span className={cn("text-[#99C6D3]" , collapsed && "hidden")}>Établissement</span>
       </div>
-        
+        <div className=" overflow-auto max-h-52">
+
         <EtablissementItem data={lyceDetails}/>
+        </div>
     </div>
   );
 }
