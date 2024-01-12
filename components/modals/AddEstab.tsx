@@ -71,7 +71,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
           <div className="flex flex-col items-center justify-center gap-5">
             <Image
               src={'/etudiantajouteravecsucces.svg'}
-              alt=""
+              alt="add student done"
               width={150}
               height={150}
               className=""
@@ -89,7 +89,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
             type="submit"
             className="w-full bg-[#1B8392] hover:opacity-80 "
           >
-            {isFirstModalOpen ? 'Ajouter un autre admin' : 'Ajouter'}
+            {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
           </Button>
         </DialogFooter>
       </DialogContent>

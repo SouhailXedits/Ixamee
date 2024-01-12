@@ -24,9 +24,62 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from './etudiant-ajoute-avec-succes';
+import SubjectIcon from '../ui/SubjectIcon';
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
+
+
+interface IconsTypes {
+  id: string;
+  src: string;
+  alt: string;
+}
+
+const icons = [
+  {
+    id: 'zrgzeghzeha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghzfetzeha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghterzeezha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghzeferzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrretgzeghzefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghzeeefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghehezefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghrfthzefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+]
+
+
 export const AddSubject = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -55,21 +108,27 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
         </DialogHeader>
 
         {!isFirstModalOpen ? (
-          <div className="flex flex-col gap-6 placeholder:text-[#727272]">
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-6 placeholder:text-[#727272] items-center">
+            <div className="flex flex-col gap-2 w-full">
               <Input
                 type="text"
                 placeholder="Entrer le nom de la matière"
                 className="placeholder:text-[#727272]"
               />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
               <Input
                 type="number"
                 placeholder="Saisir le coefficient de la matière"
                 className="placeholder:text-[#727272]"
               />
             </div>
+            <div className=" flex gap-5 max-w-[450px] border rounded p-3 flex-wrap">
+              {icons.map((icon)  => <SubjectIcon key={icon.id} icon={icon}/>)}
+                
+            </div>
+            
+
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-5">
@@ -81,8 +140,8 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
               className=""
             />
             <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
-              <Image src={'/establishement-green.svg'} alt="user" width={15} height={15} />
-              Établissement ajouté avec succès.
+              <Image src={'/subjects-green.svg'} alt="user" width={15} height={15} />
+              Matière ajoutée avec succès.
             </div>
           </div>
         )}
@@ -93,7 +152,7 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
             type="submit"
             className="w-full bg-[#1B8392] hover:opacity-80 "
           >
-            {isFirstModalOpen ? 'Ajouter un autre admin' : 'Ajouter'}
+            {isFirstModalOpen ? 'Ajouter une autre matière' : 'Ajouter'}
           </Button>
         </DialogFooter>
       </DialogContent>
