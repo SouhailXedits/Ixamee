@@ -22,9 +22,12 @@ import Link from 'next/link';
 import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
+// import { redirect, useRouter } from 'next/navigation';
 export default function LoginForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+
+  // const router = useRouter();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -45,6 +48,8 @@ export default function LoginForm() {
       login(values).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
+        console.log('i got there');
+        // router.push('/email-verification');
       });
     });
   };

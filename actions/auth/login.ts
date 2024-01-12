@@ -7,6 +7,7 @@ import { AuthError } from 'next-auth';
 import { getUserByEmail } from '@/data/user';
 import { generateVerificationToken } from '@/lib/tokens';
 import { sendVerificationEmail } from '@/lib/mail';
+import { redirect, useRouter } from 'next/navigation';
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -23,9 +24,10 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   if (!existingUser.emailVerified) {
-    const verificationToken = await generateVerificationToken(existingUser.email);
+    console.log('🚀 ~ login ~ existingUser.email:', existingUser.email);
+    // const verificationToken = await generateVerificationToken(existingUser.email);
 
-    await sendVerificationEmail(verificationToken.email, verificationToken.token);
+    await sendVerificationEmail(existingUser.email);
     return { success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.' };
   }
 
@@ -43,7 +45,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       switch (error.type) {
         case 'CredentialsSignin':
           return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
-
         default:
           return { error: "Quelque chose s'est mal passé" };
       }

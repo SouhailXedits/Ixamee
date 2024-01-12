@@ -7,12 +7,14 @@ import { VerifSchema } from '@/actions/auth/schemas';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTransition } from 'react';
 import { GoShieldCheck } from 'react-icons/go';
 
 import { Input } from '@/components/ui/auth-input';
-export default function VerifForm() {
+import { useSearchParams } from 'next/navigation';
+import { emailVerification } from '@/actions/auth/email-verification';
+export default function VerifForm({ code }: { code: string }) {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -23,19 +25,24 @@ export default function VerifForm() {
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-
-  const onSubmit = (values: z.infer<typeof VerifSchema>) => {
-    console.log(values);
-    setError('');
-    setSuccess('');
-    startTransition(() => {
-      //   login(values).then((data) => {
-      //     setError(data.error);
-      //     setSuccess(data.success);
-      //   });
-    });
-  };
+  const onSubmit = useCallback(() => {
+    if (success || error) {
+      return;
+    }
+    const formData = form.getValues();
+    if (code === formData.code) {
+      emailVerification('mohamed.amine.slimani@horizon-tech.tn')
+        .then((data) => {
+          setSuccess(data.success);
+          setError(data.error);
+        })
+        .catch(() => {
+          setError('Quelque chose malle passée !');
+        });
+    } else {
+      setError('Code invalid !');
+    }
+  }, [code]);
 
   return (
     <Form {...form}>
@@ -52,9 +59,8 @@ export default function VerifForm() {
                   <Input
                     {...field}
                     placeholder="Entrer le code ici"
-                    type="email"
+                    type="text"
                     icon={<GoShieldCheck className="text-gray w-5 h-5" />}
-                    disabled={isPending}
                   />
                 </FormControl>
                 <FormMessage />
@@ -64,7 +70,6 @@ export default function VerifForm() {
         </div>
         <Button
           type="submit"
-          disabled={isPending}
           className="bg-[#99c6d3] w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
         >
           Vérifier

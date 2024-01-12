@@ -24,18 +24,16 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>) => {
   const hashesPassword = await bcryptjs.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
-  console.log("🚀 ~ register ~ existingUser:", existingUser)
-  
+
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
   }
-  // const government_id = await db.government.findUnique({
-  //   where: {
-  //     government,
-  //   },
-  // });
-  const government_id = 1;
-
+  const gov = await db.government.findFirst({
+    where: {
+      government,
+    },
+  });
+  const government_id = gov?.id;
   await db.user.create({
     data: {
       name: `${first_name} ${last_name}`,
@@ -45,12 +43,17 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>) => {
       password: hashesPassword,
       phone_number,
       role,
-      // government_id,
+      Government: {
+        connect: {
+          id: government_id,
+        },
+      },
     },
   });
 
-  const verificationToken = await generateVerificationToken(email);
-  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+  // const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(email);
+
   return {
     success: `Bienvenue ${values.prenom}! Veuillez vérifier votre e-mail pour terminer l'inscription.`,
   };

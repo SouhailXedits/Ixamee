@@ -1,8 +1,20 @@
+'use client';
 import React from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
-export default function page() {
+import { sendVerificationEmail } from '@/lib/mail';
+import { generateVerificationToken } from '@/lib/tokens';
+import { useSearchParams } from 'next/navigation';
+export default async function EmailVerification() {
+  const searchParams = useSearchParams();
+  const code = searchParams.get('code') || '';
+
+  const verificationToken = await generateVerificationToken(
+    'mohamed.amine.slimani@horizon-tech.tn'
+  );
+  console.log(verificationToken);
+  
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* left */}
@@ -30,13 +42,19 @@ export default function page() {
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <VerifForm />
+            <VerifForm code={code} />
           </div>
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <div className="flex ">
               <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
               &nbsp;
-              <Link className="text-center text-[#1b8392] hover:underline font-semibold" href={''}>
+              <Link
+                className="text-center text-[#1b8392] hover:underline font-semibold"
+                href={''}
+                onClick={async () => {
+                  // await sendVerificationEmail(verificationToken.email);
+                }}
+              >
                 Renvoyez
               </Link>
             </div>
