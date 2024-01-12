@@ -160,6 +160,14 @@ model UserExam {
   assignedAt DateTime @default(now())
   assignedBy String
 
+model UserExam {
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id String // relation scalar field (used in the `@relation` attribute above)
+  exam              Exam?          @relation(fields: [exam_id], references: [id])
+  exam_id           Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt        DateTime       @default(now())
+  assignedBy        String
+ 
   @@id([user_id, exam_id])
 }
  
@@ -170,7 +178,7 @@ model ExamClasse {
   exam_id    Int // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
-
+ 
   @@id([classe_id, exam_id])
 }
  
@@ -210,23 +218,24 @@ model ExamEstablishment {
 
 // Exercise Table
 model Exercise {
-  id                 Int                  @id @default(autoincrement())
-  name               String
-  exam               Exam?                @relation(fields: [exam_id], references: [id])
-  exam_id            Int?
-  marks              Float
-  parent_id          Int? // Add this field to reference the parent Exercise
-  parent             Exercise?            @relation("ExerciseToSubExercise", fields: [parent_id], references: [id])
-  subExercises       Exercise[]           @relation("ExerciseToSubExercise")
-  question_type      String
+  id          Int       @id @default(autoincrement())
+  name        String
+  exam        Exam?     @relation(fields: [exam_id], references: [id])
+  exam_id     Int?
+  marks       Float
+  parent_id    Int?      // Add this field to reference the parent Exercise
+  parent      Exercise? @relation("ExerciseToSubExercise", fields: [parent_id], references: [id])
+  subExercises Exercise[] @relation("ExerciseToSubExercise")
+  question_type  String
   ExerciseCorrection ExerciseCorrection[]
-}
+  
+} 
 
+// ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
   exam          Exam? @relation(fields: [exam_id], references: [id])
   exam_id       Int
   mark_obtained Float
 }
-
 

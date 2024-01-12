@@ -1,10 +1,10 @@
-'use client';
+//'use client';
 import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
 import { sendVerificationEmail } from '@/lib/mail';
-export default async function EmailVerification() {
+export default function EmailVerification() {
   const [verificationData, setVerificationData] = useState({});
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -42,7 +42,7 @@ export default async function EmailVerification() {
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <VerifForm />
+            <VerifForm code={code} />
           </div>
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <div className="flex ">
