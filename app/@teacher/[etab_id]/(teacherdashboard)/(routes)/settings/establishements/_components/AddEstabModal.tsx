@@ -22,32 +22,35 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { EtudiantAjouteAvecSucces } from './etudiant-ajoute-avec-succes';
-import { createEstablishement } from '@/actions/establishements';
+import {  useState } from 'react';
+import { useCreateEstab } from '../hooks/useCreateEstab';
+
+
+
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
 export const AddEstab = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
+  // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [name, setName] = useState("")
+  const { createEstablishement } = useCreateEstab();
   console.log(name)
   
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     const selectedFile = e.target.files[0];
 
-      if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-        setFile(selectedFile);
-        const fileUrl = URL.createObjectURL(selectedFile);
-        setSelectedFileUrl(fileUrl);
-      }
-    }
-  };
+  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
+  //       setFile(selectedFile);
+  //       const fileUrl = URL.createObjectURL(selectedFile);
+  //       setSelectedFileUrl(fileUrl);
+  //     }
+  //   }
+  // };
   async function handleCreateEstab() {
-    await createEstablishement(name)
+    createEstablishement(name)
     setIsFirstModalOpen(!isFirstModalOpen)
   }
 

@@ -7,10 +7,10 @@ import {
 } from '@/components/ui/select';
 import Image from 'next/image';
 import Link from 'next/link';
-import  {SubjectsList}  from './_components/SubjectsList';
+import { SubjectsList } from './_components/SubjectsList';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
-import { AddEstab } from '@/components/modals/AddEstab';
+import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
 import { AddSubject } from '@/components/modals/AddSubject';
 
 const Establishement = ({ params }: { params: { classesId: string } }) => {

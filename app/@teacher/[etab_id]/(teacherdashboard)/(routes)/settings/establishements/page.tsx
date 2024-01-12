@@ -1,3 +1,4 @@
+'use client'
 import {
   Select,
   SelectContent,
@@ -7,17 +8,27 @@ import {
 } from '@/components/ui/select';
 import Image from 'next/image';
 import Link from 'next/link';
-import  {EstablishementsList}  from './_components/EstablishementsList';
+import { EstablishementsList } from './_components/EstablishementsList';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
-import { AddEstab } from '@/components/modals/AddEstab';
+import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
+import { getAllEstabs } from '@/actions/establishements';
+import { useQuery } from '@tanstack/react-query';
 
-const Establishement = ({ params }: { params: { classesId: string } }) => {
-  const { classesId } = params;
+const Establishement = () => {
   const handleImportedData = (jsonData: any) => {
     // Handle the imported data in the external page
     console.log(jsonData);
   };
+  const {
+    data: estabs,
+    error,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['estabs'],
+    queryFn: async () => await getAllEstabs(),
+  });
+  const data = estabs?.data || [];
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -89,7 +100,7 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
       </nav>
 
       <div>
-        <EstablishementsList />
+        <EstablishementsList data={data} isPending={isPending} />
       </div>
     </main>
   );
