@@ -7,12 +7,13 @@ import { VerifSchema } from '@/actions/auth/schemas';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
+import { useCallback, useEffect, useState } from 'react';
+import { useTransition } from 'react';
 import { GoShieldCheck } from 'react-icons/go';
 import { Input } from '@/components/ui/auth-input';
+import { useSearchParams } from 'next/navigation';
 import { emailVerification } from '@/actions/auth/email-verification';
-import { useRouter } from 'next/navigation';
-
-export default function VerifForm() {
+export default function VerifForm({ code }: { code: string }) {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
@@ -26,42 +27,24 @@ export default function VerifForm() {
     },
   });
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const verificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
-      console.log(verificationData);
-    }
-  }, []); 
-
-  const onSubmit = useCallback(async () => {
+  const onSubmit = useCallback(() => {
     if (success || error) {
       return;
     }
-
     const formData = form.getValues();
-
-    try {
-      const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
-
-      if (storedVerificationData && storedVerificationData.code === Number(formData.code)) {
-        const data = await emailVerification(storedVerificationData.email);
-        setSuccess(data.success);
-        setError(data.error);
-        localStorage.removeItem('email-verification');
-        setRegistrationSuccessful(true);
-      } else {
-        setError('Code invalid!');
-      }
-    } catch (err) {
-      setError('Quelque chose s\'est mal passé !');
+    if (code === formData.code) {
+      emailVerification('mohamed.amine.slimani@horizon-tech.tn')
+        .then((data) => {
+          setSuccess(data.success);
+          setError(data.error);
+        })
+        .catch(() => {
+          setError('Quelque chose malle passée !');
+        });
+    } else {
+      setError('Code invalid !');
     }
-  }, [form, success, error]);
-
-  useEffect(() => {
-    if (isRegistrationSuccessful) {
-      router.push('/teacher-after');
-    }
-  }, [isRegistrationSuccessful, router]);
+  }, [code]);
 
   return (
     <Form {...form}>

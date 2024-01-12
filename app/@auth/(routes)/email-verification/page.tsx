@@ -44,7 +44,7 @@ export default function EmailVerification() {
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <VerifForm />
+            <VerifForm code={code} />
           </div>
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <div className="flex ">

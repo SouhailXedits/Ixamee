@@ -25,7 +25,6 @@ import { RegisterProfSchema } from '@/actions/auth/schemas';
 import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
 import { useRouter } from 'next/navigation';
-import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -67,18 +66,15 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
       register(values, code).then((data) => {
         setError(data.error);
         setSuccess(data.success);
-        localStorage.setItem('email-verification', JSON.stringify({ email: values.email, code }));
-        setRegistrationSuccessful(true);
+        setRegistrationSuccessful(!data.error);
       });
     });
   };
-
   useEffect(() => {
     if (isRegistrationSuccessful) {
-      router.push('/email-verification');
+      router.push('/email-verification')
     }
   }, [isRegistrationSuccessful, router]);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">

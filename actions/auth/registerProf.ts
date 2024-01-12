@@ -33,6 +33,7 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
     },
   });
   const government_id = gov?.id;
+<<<<<<< HEAD
   enum UserRole {
     ADMIN = 'ADMIN',
     STUDENT = 'STUDENT',
@@ -41,6 +42,8 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
   const mappedRole =
     role === 'TEACHER' ? UserRole.TEACHER : role === 'STUDENT' ? UserRole.STUDENT : UserRole.ADMIN;
 
+=======
+>>>>>>> c6943b0 (email-verif)
   await db.user.create({
     data: {
       name: `${first_name} ${last_name}`,
@@ -49,7 +52,11 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
       email,
       password: hashesPassword,
       phone_number,
+<<<<<<< HEAD
       role: mappedRole,
+=======
+      role,
+>>>>>>> c6943b0 (email-verif)
       Government: {
         connect: {
           id: government_id,
@@ -58,7 +65,12 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
     },
   });
 
+<<<<<<< HEAD
   await sendVerificationEmail(values.email, code);
+=======
+  // const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(email);
+>>>>>>> c6943b0 (email-verif)
 
   return {
     success: `Bienvenue ${values.prenom}! Veuillez vérifier votre e-mail pour terminer l'inscription.`,
