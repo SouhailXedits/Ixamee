@@ -24,6 +24,7 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from './etudiant-ajoute-avec-succes';
+import { createEstablishement } from '@/actions/establishements';
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
@@ -31,7 +32,9 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-
+  const [name, setName] = useState("")
+  console.log(name)
+  
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
@@ -43,6 +46,14 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
       }
     }
   };
+  async function handleCreateEstab() {
+    await createEstablishement(name)
+    setIsFirstModalOpen(!isFirstModalOpen)
+  }
+
+  function returnToCreate() {
+    setIsFirstModalOpen(!isFirstModalOpen)
+  }
 
   return (
     <Dialog>
@@ -61,7 +72,8 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
                 Nom : <span className="text-red">*</span>
               </Label>
               <Input
-                type="email"
+                type="text"
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Entrer le nom de l'établissement"
                 className="placeholder:text-[#727272]"
               />
@@ -84,8 +96,9 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
         )}
 
         <DialogFooter>
+          
           <Button
-            onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
+            onClick={() => {isFirstModalOpen? returnToCreate() : handleCreateEstab()}}
             type="submit"
             className="w-full bg-[#1B8392] hover:opacity-80 "
           >
