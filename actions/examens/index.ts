@@ -1,9 +1,13 @@
 // index.ts
+'use server'
 import { db } from '@/lib/db';
+
+
+
 
 export const getAllExam = async () => {
   try {
-    console.log('dskdksdk');
+    console.log('start');
     const exam = await db.exam.findMany();
     console.log(exam);
     return { data: exam, error: undefined };
@@ -14,3 +18,12 @@ export const getAllExam = async () => {
     };
   }
 };
+
+
+
+
+// export async function fetchAllExam() {
+//   const res = await getAllExam()
+//   console.log(res)
+//   return res
+// }
