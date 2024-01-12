@@ -33,7 +33,7 @@ const Etablissement = () => {
       <Image src="/bankicon.svg" alt="bankicon" width={18} height={18}   />
       <span className={cn("text-[#99C6D3]" , collapsed && "hidden")}>Établissement</span>
       </div>
-        <div className=" overflow-auto max-h-52">
+        <div className=" overflow-x-auto overflow-y-hidden max-h-52">
 
         <EtablissementItem data={lyceDetails}/>
         </div>

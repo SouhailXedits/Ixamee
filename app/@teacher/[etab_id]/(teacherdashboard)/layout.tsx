@@ -3,6 +3,8 @@ import { useSidebar } from "@/store/use-sidebar";
 import Sidebar from "./_components/sidebar";
 import { cn } from "@/lib/utils";
 import Navbar from "./_components/navbar";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const DashbordLayout = ({
   children
@@ -20,7 +22,9 @@ const DashbordLayout = ({
       <Navbar />
       </div>
       <main className={cn(!collapsed ? "pl-[225px] transition-all duration-500" : "pl-[63px] transition-all duration-500")}>
+      <Suspense fallback={<Loading/>} >
       {children}
+      </Suspense>
       </main>
     
     </div>

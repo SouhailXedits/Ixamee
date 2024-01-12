@@ -11,6 +11,7 @@ import  {SubjectsList}  from './_components/SubjectsList';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { AddEstab } from '@/components/modals/AddEstab';
+import { AddSubject } from '@/components/modals/AddSubject';
 
 const Establishement = ({ params }: { params: { classesId: string } }) => {
   const { classesId } = params;
@@ -78,13 +79,13 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
           </div>
-          <AddEstab>
+          <AddSubject>
             <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
                 Ajouter une Matières
               </div>
             </div>
-          </AddEstab>
+          </AddSubject>
         </div>
       </nav>
 

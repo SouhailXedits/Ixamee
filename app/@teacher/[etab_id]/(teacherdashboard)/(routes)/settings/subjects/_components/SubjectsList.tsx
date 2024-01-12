@@ -43,15 +43,15 @@ const data: Payment[] = [
   {
     id: 'm5gr84i9',
 
-    name: 'école Privée les étoiles',
+    name: 'Géographie',
   },
   {
     id: '3u1reuv4',
-    name: 'Lycée Privé élite Nabeul',
+    name: 'Anglais',
   },
   {
     id: 'derv1ws0',
-    name: 'Lycée Al Manar',
+    name: 'Mécanique',
   },
 ];
 
@@ -133,7 +133,7 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center gap-2 capitalize">
-        <Image src="/defaultUserAvatr.svg" alt="" width={42} height={42} className="rounded-full" />
+        <Image src="/geographie.svg" alt="" width={42} height={42} className="rounded-full" />
         {row.getValue('name')}
       </div>
     ),
