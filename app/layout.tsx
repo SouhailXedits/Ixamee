@@ -9,6 +9,7 @@ const poppins = Poppins({
 });
 import './globals.css';
 import { ToastProvider } from '@/components/providers/toaster-provider';
+import QueryClientProviderWrapper from './providers/queryClientProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -32,15 +33,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
-        <ToastProvider />
-        {teacher}
-        {/* {session === null
-          ? auth
-          : session?.user?.role === 'TEACHER'
-          ? teacher
-          : session?.user?.role === 'STUDENT'
-          ? student
-          : admin} */}
+        <QueryClientProviderWrapper>
+          <ToastProvider />
+          {/* {teacher} */}
+          {session === null
+            ? auth
+            : session?.user?.role === 'TEACHER'
+            ? teacher
+            : session?.user?.role === 'STUDENT'
+            ? student
+            : admin}
+        </QueryClientProviderWrapper>
       </body>
     </html>
   );

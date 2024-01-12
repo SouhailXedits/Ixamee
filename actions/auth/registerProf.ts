@@ -24,8 +24,8 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>) => {
   const hashesPassword = await bcryptjs.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
-  console.log("🚀 ~ register ~ existingUser:", existingUser)
-  
+  console.log('🚀 ~ register ~ existingUser:', existingUser);
+
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
   }
