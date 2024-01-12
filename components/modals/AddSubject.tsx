@@ -24,17 +24,67 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from './etudiant-ajoute-avec-succes';
-import { createEstablishement } from '@/actions/establishements';
+import SubjectIcon from '../ui/SubjectIcon';
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
-export const AddEstab = ({ children }: AjouterUneClasse) => {
+
+
+interface IconsTypes {
+  id: string;
+  src: string;
+  alt: string;
+}
+
+const icons = [
+  {
+    id: 'zrgzeghzeha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghzfetzeha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghterzeezha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghzeferzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrretgzeghzefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghzeeefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghehezefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+  {
+    id: 'zrgzeghrfthzefzha',
+    src: '/subjects/geographie.svg',
+    alt: "icon of earth"
+  },
+]
+
+
+export const AddSubject = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-  const [name, setName] = useState("")
-  console.log(name)
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
@@ -46,14 +96,6 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
       }
     }
   };
-  async function handleCreateEstab() {
-    await createEstablishement(name)
-    setIsFirstModalOpen(!isFirstModalOpen)
-  }
-
-  function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen)
-  }
 
   return (
     <Dialog>
@@ -61,48 +103,56 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Ajouter une établissement
+            Ajouter une matière
           </DialogTitle>
         </DialogHeader>
 
         {!isFirstModalOpen ? (
-          <div className="flex flex-col gap-6 placeholder:text-[#727272]">
-            <div className="flex flex-col gap-2">
-              <Label className="text-[#959595]">
-                Nom : <span className="text-red">*</span>
-              </Label>
+          <div className="flex flex-col gap-6 placeholder:text-[#727272] items-center">
+            <div className="flex flex-col gap-2 w-full">
               <Input
                 type="text"
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Entrer le nom de l'établissement"
+                placeholder="Entrer le nom de la matière"
                 className="placeholder:text-[#727272]"
               />
             </div>
+            <div className="flex flex-col gap-2 w-full">
+              <Input
+                type="number"
+                placeholder="Saisir le coefficient de la matière"
+                className="placeholder:text-[#727272]"
+              />
+            </div>
+            <div className=" flex gap-5 max-w-[450px] border rounded p-3 flex-wrap">
+              {icons.map((icon)  => <SubjectIcon key={icon.id} icon={icon}/>)}
+                
+            </div>
+            
+
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-5">
             <Image
               src={'/etudiantajouteravecsucces.svg'}
-              alt="add student done"
+              alt=""
               width={150}
               height={150}
               className=""
             />
             <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
-              <Image src={'/establishement-green.svg'} alt="user" width={15} height={15} />
-              Établissement ajouté avec succès.
+              <Image src={'/subjects-green.svg'} alt="user" width={15} height={15} />
+              Matière ajoutée avec succès.
             </div>
           </div>
         )}
 
         <DialogFooter>
-          
           <Button
-            onClick={() => {isFirstModalOpen? returnToCreate() : handleCreateEstab()}}
+            onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
             type="submit"
             className="w-full bg-[#1B8392] hover:opacity-80 "
           >
-            {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
+            {isFirstModalOpen ? 'Ajouter une autre matière' : 'Ajouter'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import Loading from './loading';
 
 export default function page({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>;
+  return <Suspense fallback={<Loading/>}><div>{children}</div></Suspense>;
 }
