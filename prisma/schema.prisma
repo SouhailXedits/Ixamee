@@ -184,7 +184,10 @@ model Exam {
   subject           Subject             @relation(fields: [subject_id], references: [id]) // One-to-one relationship with Subject
   subject_id        Int
   examEstablishment ExamEstablishment[]
-
+  term              String?
+  ExamCorrection    ExamCorrection[]
+  is_archived       Boolean?            @default(false)
+  ExamClassess      ExamClasse[]
   // style       String    // Consider using an enum for style
 }
 
