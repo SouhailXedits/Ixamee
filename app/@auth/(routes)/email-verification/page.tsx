@@ -1,20 +1,18 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
 import { sendVerificationEmail } from '@/lib/mail';
-import { generateVerificationToken } from '@/lib/tokens';
-import { useSearchParams } from 'next/navigation';
 export default async function EmailVerification() {
-  const searchParams = useSearchParams();
-  const code = searchParams.get('code') || '';
+  const [verificationData, setVerificationData] = useState({});
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      setVerificationData(storedData);
+    }
+  }, []);
 
-  const verificationToken = await generateVerificationToken(
-    'mohamed.amine.slimani@horizon-tech.tn'
-  );
-  console.log(verificationToken);
-  
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* left */}
@@ -35,14 +33,16 @@ export default async function EmailVerification() {
         </div>
 
         <div className="text-center text-base text-[#727272] w-full">
-          Veuillez entrer le code envoyé sur l’e-mail
-          <span className="text-lg text-[#102528]"> {}studentmail@gmail.com</span>
+          Veuillez entrer le code envoyé sur l’e-mail&nbsp;
+          <span className="text-lg text-[#102528]">
+            {verificationData?.email ? verificationData?.email : '*******@****.***'}
+          </span>
           <div>afin de vérifier votre compte,</div>
         </div>
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <VerifForm code={code} />
+            <VerifForm />
           </div>
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <div className="flex ">
@@ -51,9 +51,11 @@ export default async function EmailVerification() {
               <Link
                 className="text-center text-[#1b8392] hover:underline font-semibold"
                 href={''}
-                onClick={async () => {
-                  // await sendVerificationEmail(verificationToken.email);
-                }}
+                // onClick={async () => {
+                //   verificationData !== null &&
+                //     (await sendVerificationEmail(verificationData?.email, verificationData?.code));
+                //  
+                // }}
               >
                 Renvoyez
               </Link>

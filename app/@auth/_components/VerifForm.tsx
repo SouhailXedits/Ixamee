@@ -1,4 +1,4 @@
-'use client';
+import React, { useEffect, useCallback, useState } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,16 +7,17 @@ import { VerifSchema } from '@/actions/auth/schemas';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { useCallback, useEffect, useState } from 'react';
-import { useTransition } from 'react';
 import { GoShieldCheck } from 'react-icons/go';
-
 import { Input } from '@/components/ui/auth-input';
-import { useSearchParams } from 'next/navigation';
 import { emailVerification } from '@/actions/auth/email-verification';
-export default function VerifForm({ code }: { code: string }) {
+import { useRouter } from 'next/navigation';
+
+export default function VerifForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const router = useRouter();
+
+  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -25,24 +26,42 @@ export default function VerifForm({ code }: { code: string }) {
     },
   });
 
-  const onSubmit = useCallback(() => {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const verificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      console.log(verificationData);
+    }
+  }, []); 
+
+  const onSubmit = useCallback(async () => {
     if (success || error) {
       return;
     }
+
     const formData = form.getValues();
-    if (code === formData.code) {
-      emailVerification('mohamed.amine.slimani@horizon-tech.tn')
-        .then((data) => {
-          setSuccess(data.success);
-          setError(data.error);
-        })
-        .catch(() => {
-          setError('Quelque chose malle passée !');
-        });
-    } else {
-      setError('Code invalid !');
+
+    try {
+      const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+
+      if (storedVerificationData && storedVerificationData.code === Number(formData.code)) {
+        const data = await emailVerification(storedVerificationData.email);
+        setSuccess(data.success);
+        setError(data.error);
+        localStorage.removeItem('email-verification');
+        setRegistrationSuccessful(true);
+      } else {
+        setError('Code invalid!');
+      }
+    } catch (err) {
+      setError('Quelque chose s\'est mal passé !');
     }
-  }, [code]);
+  }, [form, success, error]);
+
+  useEffect(() => {
+    if (isRegistrationSuccessful) {
+      router.push('/teacher-after');
+    }
+  }, [isRegistrationSuccessful, router]);
 
   return (
     <Form {...form}>

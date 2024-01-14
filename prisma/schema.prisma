@@ -3,13 +3,11 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
- 
- 
+
 generator client {
   provider = "prisma-client-js"
 }
- 
- 
+
 model User {
   id                String              @id @default(cuid())
   name              String
@@ -22,7 +20,7 @@ model User {
   accounts          Account[] // Many-to-many relationship with Subject
   image             String?
   phone_number      String?
-  classes           StudentClass[] 
+  classes           StudentClass[]
   subjects          TeacherSubject[]
   classe            Classe[]
   subject_id        Int?
@@ -33,21 +31,19 @@ model User {
   exams             Exam[]
   term              Term?
 }
- 
+
 enum Term {
   TRIMESTRE
   SEMESTRE
   LIBRE
 }
- 
 
 enum Role {
   STUDENT
   TEACHER
   ADMIN
 }
- 
- 
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -61,32 +57,28 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
- 
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
- 
+
   @@unique([provider, providerAccountId])
 }
- 
- 
+
 model VerificationToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
- 
+
   @@unique([email, token])
 }
- 
+
 // Government Tablez
 model Government {
   id         Int    @id @default(autoincrement())
   user_id    User[]
   government String
 }
- 
- 
+
 // Establishment Table
 model Establishment {
   id                Int                 @id @default(autoincrement())
@@ -95,7 +87,7 @@ model Establishment {
   classes           Classe[]
   ExamEstablishment ExamEstablishment[]
 }
- 
+
 model UserEstablishment {
   establishement    Establishment? @relation(fields: [establishement_id], references: [id])
   establishement_id Int // relation scalar field (used in the `@relation` attribute above)
@@ -103,25 +95,24 @@ model UserEstablishment {
   user_id           String // relation scalar field (used in the `@relation` attribute above)
   assignedAt        DateTime       @default(now())
   assignedBy        String
- 
+
   @@id([establishement_id, user_id])
 }
- 
- 
+
 // Classe Table
 model Classe {
-  id                    String         @id @default(cuid())
-  name                  String
-  range                 String
-  establishment         Establishment  @relation(fields: [establishment_id], references: [id])
-  establishment_id      Int
-  teacher               User?          @relation(fields: [teacher_id], references: [id]) // Many-to-one relationship with User
-  teacher_id            String?
-  users                 StudentClass[] // Many-to-many relationship with
-  is_archived           Boolean
-  ExamClasse            ExamClasse[]
+  id               String         @id @default(cuid())
+  name             String
+  range            String
+  establishment    Establishment  @relation(fields: [establishment_id], references: [id])
+  establishment_id Int
+  teacher          User?          @relation(fields: [teacher_id], references: [id]) // Many-to-one relationship with User
+  teacher_id       String?
+  StudentClass     StudentClass[]
+  is_archived      Boolean
+  ExamClasse       ExamClasse[]
 }
- 
+
 model StudentClass {
   class      Classe?  @relation(fields: [classe_id], references: [id])
   classe_id  String // relation scalar field (used in the `@relation` attribute above)
@@ -129,10 +120,10 @@ model StudentClass {
   user_id    String // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
- 
+
   @@id([classe_id, user_id])
 }
- 
+
 // Subject Table
 model Subject {
   id    Int              @id @default(autoincrement())
@@ -140,7 +131,7 @@ model Subject {
   user  TeacherSubject[] // Many-to-one relationship with Establishment
   exams Exam[] // One-to-many relationship with Exam
 }
- 
+
 model TeacherSubject {
   subject    Subject? @relation(fields: [subject_id], references: [id])
   subject_id Int // relation scalar field (used in the `@relation` attribute above)
@@ -148,19 +139,18 @@ model TeacherSubject {
   user_id    String // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
- 
+
   @@id([subject_id, user_id])
 }
 
-
 model UserExam {
-  user    User? @relation(fields: [user_id], references: [id])
-  user_id String // relation scalar field (used in the `@relation` attribute above)
-  exam              Exam?          @relation(fields: [exam_id], references: [id])
-  exam_id           Int // relation scalar field (used in the `@relation` attribute above)
-  assignedAt        DateTime       @default(now())
-  assignedBy        String
- 
+  user       User?    @relation(fields: [user_id], references: [id])
+  user_id    String // relation scalar field (used in the `@relation` attribute above)
+  exam       Exam?    @relation(fields: [exam_id], references: [id])
+  exam_id    Int // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime @default(now())
+  assignedBy String
+
   @@id([user_id, exam_id])
 }
 
@@ -171,12 +161,10 @@ model ExamClasse {
   exam_id    Int // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
- 
+
   @@id([classe_id, exam_id])
 }
 
-
- 
 // Exam Table
 model Exam {
   id                Int                 @id @default(autoincrement())
@@ -184,17 +172,20 @@ model Exam {
   exercises         Exercise[]
   total_mark        Float
   coefficient       Float
-  teacher           User? @relation(fields: [teacher_id], references: [id])
-  teacher_id        String? 
-  students          UserExam[]  
-  class_id          Int 
+  teacher           User?               @relation(fields: [teacher_id], references: [id])
+  teacher_id        String?
+  students          UserExam[]
+  class_id          Int
   subject           Subject             @relation(fields: [subject_id], references: [id]) // One-to-one relationship with Subject
   subject_id        Int
   examEstablishment ExamEstablishment[]
-
+  term              String?
+  ExamCorrection    ExamCorrection[]
+  is_archived       Boolean?            @default(false)
+  ExamClassess      ExamClasse[]
   // style       String    // Consider using an enum for style
 }
- 
+
 model ExamEstablishment {
   establishement    Establishment? @relation(fields: [establishement_id], references: [id])
   establishement_id Int // relation scalar field (used in the `@relation` attribute above)
@@ -202,60 +193,34 @@ model ExamEstablishment {
   exam_id           Int // relation scalar field (used in the `@relation` attribute above)
   assignedAt        DateTime       @default(now())
   assignedBy        String
- 
+
   @@id([establishement_id, exam_id])
 }
- 
+
 // Exercise Table
-model Exercice {
-  id      Int    @id @default(autoincrement())
-  name    String
-  exam    Exam?  @relation(fields: [exam_id], references: [id])
-  exam_id Int?
-  marks   Float
+model Exercise {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  exam               Exam?                @relation(fields: [exam_id], references: [id])
+  exam_id            Int?
+  marks              Float
+  parent_id          Int? // Add this field to reference the parent Exercise
+  parent             Exercise?            @relation("ExerciseToSubExercise", fields: [parent_id], references: [id])
+  subExercises       Exercise[]           @relation("ExerciseToSubExercise")
+  question_type      String
+  ExerciseCorrection ExerciseCorrection[]
 }
 
-// Question Table
-model Question {
-  id            Int           @id @default(autoincrement())
-  subquestions  Subquestion[]
-  marks         Float
-  content       String
-  question_type String[]
-}
-
-// Subquestion Table
-model Subquestion {
-  id            Int            @id @default(autoincrement())
-  ssubquestions Ssubquestion[]
-  marks         Float
-  content       String
-  question_type String[]
-  questions     Question[]
-}
-
-// Ssubquestion Table
-model Ssubquestion {
-  id            Int           @id @default(autoincrement())
-  marks         Float
-  content       String
-  question_type String[]
-  subquestions  Subquestion[] // Add this line to create the opposite relation
-}
-
-model QuestionType {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-// ExamCorrection Table
 model ExamCorrection {
-  id          Int    @id @default(autoincrement())
-  exam_id     Int // One-to-one relationship with Exam
-  student_id  Int // One-to-one relationship with User
-  mark_option Float
-  question    String
+  id            Int   @id @default(autoincrement())
+  exam          Exam? @relation(fields: [exam_id], references: [id])
+  exam_id       Int
+  mark_obtained Float
 }
 
-
- 
+model ExerciseCorrection {
+  id            Int       @id @default(autoincrement())
+  exercise      Exercise? @relation(fields: [exercise_id], references: [id])
+  exercise_id   Int
+  mark_obtained Float
+}

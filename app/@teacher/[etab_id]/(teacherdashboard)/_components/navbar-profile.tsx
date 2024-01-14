@@ -25,6 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { logout } from '@/actions/auth/logout';
 
 const NavbarProfile = () => {
   return (
@@ -71,7 +72,13 @@ const NavbarProfile = () => {
           {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
           {/* </ModifierUnEtudiant> */}
 
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={async () => {
+              await logout();
+            }}
+          >
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 

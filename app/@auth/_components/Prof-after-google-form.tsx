@@ -18,13 +18,20 @@ import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { MdOutlineClass } from 'react-icons/md';
 import { MdOutlineTimer } from 'react-icons/md';
+import { updateTeacherAfterGoogle } from '@/actions/auth/updateTeacherAfterGoogle';
+import { auth } from '@/auth';
+import FormError from '@/components/ui/form-error';
+import FormSuccess from '@/components/ui/form-success';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
 }
 
-export default function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
+export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
   const [role, setRole] = useState<string>('TEACHER');
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
+  // const session = await auth();
 
   const form = useForm<z.infer<typeof ProfAfterSchema>>({
     resolver: zodResolver(ProfAfterSchema),
@@ -43,17 +50,24 @@ export default function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
 
   const onSubmit = async (values: z.infer<typeof ProfAfterSchema>) => {
     values.role = role;
-    // startTransition(() => {
-    //   updateTeacherAfterGoogle(values).then((data) => {
-    //     setError(data.error);
-    //     setSuccess(data.success);
-    //   });
-    // });
+    values.email = session.email || 'slimani@gmail.com';
+
+    console.log(values, 'values');
+    setError('');
+    setSuccess('');
+    startTransition(() => {
+      updateTeacherAfterGoogle(values).then((data) => {
+        setError(data?.error);
+        // setSuccess(data?.success);
+      });
+    });
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+        <FormError message={error} />
+        <FormSuccess message={success} />
         <div
           id="ButtonsRoot"
           className="bg-[#99c6d3] flex flex-row gap-4 w-full cursor-pointer  items-start pt-2 px-1 rounded-[50px]"
@@ -86,6 +100,7 @@ export default function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
 
         <div className="w-full flex flex-col gap-4">
           <FormField
+            disabled={isPending}
             control={form.control}
             name="etablissement"
             render={({ field }) => (
@@ -106,6 +121,7 @@ export default function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
             )}
           />
           <FormField
+            disabled={isPending}
             control={form.control}
             name="subject"
             render={({ field }) => (
@@ -126,6 +142,7 @@ export default function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
             )}
           />
           <FormField
+            disabled={isPending}
             control={form.control}
             name="systeme"
             render={({ field }) => (
@@ -147,7 +164,10 @@ export default function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
           />
         </div>
 
-        <Button className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
+        <Button
+          disabled={isPending}
+          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+        >
           Suivant
         </Button>
       </form>

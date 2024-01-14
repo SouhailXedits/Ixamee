@@ -18,12 +18,14 @@ import { useTransition } from 'react';
 import { ProfAfterSchema } from '@/actions/auth/schemas';
 import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
-
+import { updateTeacherAfterGoogle } from '@/actions/auth/updateTeacherAfterGoogle';
+import { auth } from '@/auth';
 
 export default function ProfAfterForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-
+  const [role, setRole] = useState<string>('TEACHER');
+  // const session = await auth();
   const form = useForm<z.infer<typeof ProfAfterSchema>>({
     resolver: zodResolver(ProfAfterSchema),
     defaultValues: {
@@ -40,14 +42,16 @@ export default function ProfAfterForm() {
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = async (values: z.infer<typeof ProfAfterSchema>) => {
+    values.role = role;
+    values.email = session.email || 'slimani@gmail.com';
     setError('');
     setSuccess('');
-    // startTransition(() => {
-    //   updateTeacherAfterGoogle(values).then((data) => {
-    //     setError(data.error);
-    //     setSuccess(data.success);
-    //   });
-    // });
+    startTransition(() => {
+      updateTeacherAfterGoogle(values).then((data) => {
+        setError(data?.error);
+        // setSuccess(data.success);
+      });
+    });
   };
 
   return (
@@ -58,6 +62,7 @@ export default function ProfAfterForm() {
 
         <div className="w-full flex flex-col gap-4">
           <FormField
+            disabled={isPending}
             control={form.control}
             name="etablissement"
             render={({ field }) => (
@@ -78,6 +83,7 @@ export default function ProfAfterForm() {
             )}
           />
           <FormField
+            disabled={isPending}
             control={form.control}
             name="subject"
             render={({ field }) => (
@@ -98,6 +104,7 @@ export default function ProfAfterForm() {
             )}
           />
           <FormField
+            disabled={isPending}
             control={form.control}
             name="systeme"
             render={({ field }) => (
@@ -119,7 +126,10 @@ export default function ProfAfterForm() {
           />
         </div>
 
-        <Button className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
+        <Button
+          disabled={isPending}
+          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+        >
           Suivant
         </Button>
       </form>
