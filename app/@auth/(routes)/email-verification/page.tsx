@@ -4,9 +4,7 @@ import Logo from '../../_components/Logo';
 import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
 import { sendVerificationEmail } from '@/lib/mail';
-import { generateVerificationToken } from '@/lib/tokens';
-import { useSearchParams } from 'next/navigation';
-export default function EmailVerification() {
+export default async function EmailVerification() {
   const [verificationData, setVerificationData] = useState({});
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -44,7 +42,7 @@ export default function EmailVerification() {
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <VerifForm code={code} />
+            <VerifForm />
           </div>
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <div className="flex ">

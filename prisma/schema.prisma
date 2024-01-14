@@ -153,6 +153,10 @@ model Exam {
   subject           Subject             @relation(fields: [subject_id], references: [id]) // One-to-one relationship with Subject
   subject_id        Int
   examEstablishment ExamEstablishment[]
+  term              String?
+  ExamCorrection    ExamCorrection[]
+  is_archived       Boolean?            @default(false)
+  ExamClassess      ExamClasse[]
   // style       String    // Consider using an enum for style
 }
 
@@ -168,48 +172,19 @@ model ExamEstablishment {
 }
 
 // Exercise Table
-model Exercice {
-  id      Int    @id @default(autoincrement())
-  name    String
-  exam    Exam?  @relation(fields: [exam_id], references: [id])
-  exam_id Int?
-  marks   Float
+model Exercise {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  exam               Exam?                @relation(fields: [exam_id], references: [id])
+  exam_id            Int?
+  marks              Float
+  parent_id          Int? // Add this field to reference the parent Exercise
+  parent             Exercise?            @relation("ExerciseToSubExercise", fields: [parent_id], references: [id])
+  subExercises       Exercise[]           @relation("ExerciseToSubExercise")
+  question_type      String
+  ExerciseCorrection ExerciseCorrection[]
 }
 
-// Question Table
-model Question {
-  id            Int           @id @default(autoincrement())
-  subquestions  Subquestion[]
-  marks         Float
-  content       String
-  question_type String[]
-}
-
-// Subquestion Table
-model Subquestion {
-  id            Int            @id @default(autoincrement())
-  ssubquestions Ssubquestion[]
-  marks         Float
-  content       String
-  question_type String[]
-  questions     Question[]
-}
-
-// Ssubquestion Table
-model Ssubquestion {
-  id            Int           @id @default(autoincrement())
-  marks         Float
-  content       String
-  question_type String[]
-  subquestions  Subquestion[] // Add this line to create the opposite relation
-}
-
-model QuestionType {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
-// ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
   exam          Exam? @relation(fields: [exam_id], references: [id])
@@ -217,8 +192,4 @@ model ExamCorrection {
   mark_obtained Float
 }
 
-model Term {
-  id   Int    @id @default(autoincrement())
-  name String
-}
- 
+
