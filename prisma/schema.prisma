@@ -38,12 +38,6 @@ enum Term {
   LIBRE
 }
 
-enum Term {
-  TRIMESTRE
-  SEMESTRE
-  LIBRE
-}
-
 enum Role {
   STUDENT
   TEACHER
@@ -160,26 +154,6 @@ model UserExam {
   assignedAt DateTime @default(now())
   assignedBy String
 
-model UserExam {
-  user    User? @relation(fields: [user_id], references: [id])
-  user_id String // relation scalar field (used in the `@relation` attribute above)
-  exam              Exam?          @relation(fields: [exam_id], references: [id])
-  exam_id           Int // relation scalar field (used in the `@relation` attribute above)
-  assignedAt        DateTime       @default(now())
-  assignedBy        String
- 
-  @@id([user_id, exam_id])
-}
- 
-model ExamClasse {
-  class      Classe?  @relation(fields: [classe_id], references: [id])
-  classe_id  String // relation scalar field (used in the `@relation` attribute above)
-  exam       Exam?    @relation(fields: [exam_id], references: [id])
-  exam_id    Int // relation scalar field (used in the `@relation` attribute above)
-  assignedAt DateTime @default(now())
-  assignedBy String
- 
-  @@id([classe_id, exam_id])
 }
  
  
@@ -238,4 +212,3 @@ model ExamCorrection {
   exam_id       Int
   mark_obtained Float
 }
-
