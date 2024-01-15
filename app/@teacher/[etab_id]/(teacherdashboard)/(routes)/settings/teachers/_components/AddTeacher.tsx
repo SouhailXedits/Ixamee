@@ -139,14 +139,17 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
         )}
 
         <DialogFooter>
+          <DialogClose className=' w-full'>
+
           <Button
             onClick={() => handleAddingAdmin()}
             type="submit"
             disabled={userId === null}
             className="w-full bg-[#1B8392] hover:opacity-80 "
-          >
+            >
             Ajouter
           </Button>
+            </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

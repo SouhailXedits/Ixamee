@@ -48,7 +48,7 @@ const Teacher = ({ params }: { params: { classesId: string } }) => {
             </Link> */}
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
-            <span className="cursor-pointer">Enseignants</span>
+            <span className="cursor-pointer">Admins</span>
           </div>
         </div>
 

@@ -136,3 +136,23 @@ export const updateUserToAdmin = async (id: string) => {
     };
   }
 };
+
+
+
+export const updateAdminToUser = async (id: string) => {
+  try {
+      await db.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        role: 'TEACHER',
+      },
+    });
+    console.log('User updated succesfully ! ');
+  } catch (error: any) {
+    return {
+      error: 'Failed to update user.',
+    };
+  }
+};

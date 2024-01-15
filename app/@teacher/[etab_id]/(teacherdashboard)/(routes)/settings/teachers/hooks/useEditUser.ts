@@ -13,11 +13,11 @@ export function useEditUser() {
     mutationFn: (id: string) => updateUserToAdminApi(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teachers-admins'] });
-      toast.success('Établissement édité avec succès.');
+      toast.success('Admin ajouté avec succès.');
     },
     onError: (err) => {
       console.log('ERROR', err);
-      toast.error("Une erreur est survenue lors de l'édition de l'établissement.");
+      toast.error("Une erreur est survenue lors de l'édition de l'admin.");
     },
     retry: false,
   });

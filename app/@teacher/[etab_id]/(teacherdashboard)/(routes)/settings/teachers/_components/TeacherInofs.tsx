@@ -36,7 +36,7 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
           <div className=" flex gap-4 items-center">
             <div>
               <Image
-                src={currentUser.image}
+                src={currentUser.image || '/defaultUserAvatr.svg'}
                 alt=" user infos "
                 width={42}
                 height={42}
