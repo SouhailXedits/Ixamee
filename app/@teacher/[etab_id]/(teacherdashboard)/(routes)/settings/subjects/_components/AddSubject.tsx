@@ -24,7 +24,7 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from '../../../../../../../../components/modals/etudiant-ajoute-avec-succes';
-import SubjectIcon from '../../../../../../../../components/ui/SubjectIcon';
+import SubjectIcon, { SubjectIconProps, subjectIcon } from '../../../../../../../../components/ui/SubjectIcon';
 
 import { useFormik } from 'formik';
 import { useCreateSubject } from '../hooks/useCreateSubject';
@@ -151,6 +151,7 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
   const [file, setFile] = useState<File | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const {createSubject, isPending} = useCreateSubject();
+  const [selectedIcon, setSelectedIcon] = useState <string | null>(null);
 
   // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files && e.target.files.length > 0) {
@@ -164,8 +165,9 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
   //   }
   // };
 
-  const handleIconClick = (selectedIcon: any) => {
+  const handleIconClick = (selectedIcon: subjectIcon) => {
     formik.setFieldValue('icon', selectedIcon.src);
+    setSelectedIcon(selectedIcon.id);
   };
   const formik = useFormik({
     initialValues: {
@@ -218,9 +220,14 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
                   className="placeholder:text-[#727272]"
                 />
               </div>
-              <div className=" flex gap-5 max-w-[450px] border rounded p-3 flex-wrap">
+              <div className=" flex gap-[0.8rem] max-w-[450px] border rounded p-3 flex-wrap">
                 {icons.map((icon) => (
-                  <SubjectIcon key={icon.id} icon={icon} onClick={() => handleIconClick(icon)} />
+                  <SubjectIcon
+                    key={icon.id}
+                    icon={icon}
+                    onClick={() => handleIconClick(icon)}
+                    isSelected={selectedIcon === icon.id}
+                  />
                 ))}
               </div>
             </div>
