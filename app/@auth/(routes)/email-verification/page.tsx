@@ -1,8 +1,18 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
-export default function page() {
+import { sendVerificationEmail } from '@/lib/mail';
+export default async function EmailVerification() {
+  const [verificationData, setVerificationData] = useState({});
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      setVerificationData(storedData);
+    }
+  }, []);
+
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* left */}
@@ -23,8 +33,10 @@ export default function page() {
         </div>
 
         <div className="text-center text-base text-[#727272] w-full">
-          Veuillez entrer le code envoyé sur l’e-mail
-          <span className="text-lg text-[#102528]"> {}studentmail@gmail.com</span>
+          Veuillez entrer le code envoyé sur l’e-mail&nbsp;
+          <span className="text-lg text-[#102528]">
+            {verificationData?.email ? verificationData?.email : '*******@****.***'}
+          </span>
           <div>afin de vérifier votre compte,</div>
         </div>
 
@@ -36,7 +48,15 @@ export default function page() {
             <div className="flex ">
               <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
               &nbsp;
-              <Link className="text-center text-[#1b8392] hover:underline font-semibold" href={''}>
+              <Link
+                className="text-center text-[#1b8392] hover:underline font-semibold"
+                href={''}
+                // onClick={async () => {
+                //   verificationData !== null &&
+                //     (await sendVerificationEmail(verificationData?.email, verificationData?.code));
+                //  
+                // }}
+              >
                 Renvoyez
               </Link>
             </div>

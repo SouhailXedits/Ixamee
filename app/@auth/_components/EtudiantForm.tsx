@@ -192,6 +192,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
+                      disabled={isPending}
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
@@ -216,6 +217,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
+                      disabled={isPending}
                       field={field}
                       placeholder={'Choisissez votre établissement'}
                       options={govOptions}
@@ -238,6 +240,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
+                      disabled={isPending}
                       field={field}
                       placeholder={'Sélectionnez votre classe'}
                       options={govOptions}
@@ -301,7 +304,10 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
           </div>
         </div>
 
-        <Button className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
+        <Button
+          disabled={isPending}
+          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+        >
           S&apos;inscrire
         </Button>
       </form>

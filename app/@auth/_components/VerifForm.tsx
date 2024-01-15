@@ -1,4 +1,4 @@
-'use client';
+import React, { useEffect, useCallback, useState } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,14 +7,17 @@ import { VerifSchema } from '@/actions/auth/schemas';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { useState } from 'react';
-import { useTransition } from 'react';
 import { GoShieldCheck } from 'react-icons/go';
-
 import { Input } from '@/components/ui/auth-input';
+import { emailVerification } from '@/actions/auth/email-verification';
+import { useRouter } from 'next/navigation';
+
 export default function VerifForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const router = useRouter();
+
+  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -23,19 +26,42 @@ export default function VerifForm() {
     },
   });
 
-  const [isPending, startTransition] = useTransition();
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const verificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      console.log(verificationData);
+    }
+  }, []); 
 
-  const onSubmit = (values: z.infer<typeof VerifSchema>) => {
-    console.log(values);
-    setError('');
-    setSuccess('');
-    startTransition(() => {
-      //   login(values).then((data) => {
-      //     setError(data.error);
-      //     setSuccess(data.success);
-      //   });
-    });
-  };
+  const onSubmit = useCallback(async () => {
+    if (success || error) {
+      return;
+    }
+
+    const formData = form.getValues();
+
+    try {
+      const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+
+      if (storedVerificationData && storedVerificationData.code === Number(formData.code)) {
+        const data = await emailVerification(storedVerificationData.email);
+        setSuccess(data.success);
+        setError(data.error);
+        localStorage.removeItem('email-verification');
+        setRegistrationSuccessful(true);
+      } else {
+        setError('Code invalid!');
+      }
+    } catch (err) {
+      setError('Quelque chose s\'est mal passé !');
+    }
+  }, [form, success, error]);
+
+  useEffect(() => {
+    if (isRegistrationSuccessful) {
+      router.push('/teacher-after');
+    }
+  }, [isRegistrationSuccessful, router]);
 
   return (
     <Form {...form}>
@@ -52,9 +78,8 @@ export default function VerifForm() {
                   <Input
                     {...field}
                     placeholder="Entrer le code ici"
-                    type="email"
+                    type="text"
                     icon={<GoShieldCheck className="text-gray w-5 h-5" />}
-                    disabled={isPending}
                   />
                 </FormControl>
                 <FormMessage />
@@ -64,7 +89,6 @@ export default function VerifForm() {
         </div>
         <Button
           type="submit"
-          disabled={isPending}
           className="bg-[#99c6d3] w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
         >
           Vérifier

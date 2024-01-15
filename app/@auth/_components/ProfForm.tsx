@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/auth-input';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
@@ -24,6 +24,8 @@ import TnFlag from './TnFlag';
 import { RegisterProfSchema } from '@/actions/auth/schemas';
 import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
+import { useRouter } from 'next/navigation';
+import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -33,6 +35,8 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
   const [role, setRole] = useState<string>('TEACHER');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const router = useRouter();
+  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof RegisterProfSchema>>({
     resolver: zodResolver(RegisterProfSchema),
@@ -59,12 +63,21 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
     setError('');
     setSuccess('');
     startTransition(() => {
-      register(values).then((data) => {
+      let code = generateSixDigitNumber();
+      register(values, code).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+        localStorage.setItem('email-verification', JSON.stringify({ email: values.email, code }));
+        setRegistrationSuccessful(true);
       });
     });
   };
+
+  useEffect(() => {
+    if (isRegistrationSuccessful) {
+      router.push('/email-verification');
+    }
+  }, [isRegistrationSuccessful, router]);
 
   return (
     <Form {...form}>
@@ -214,6 +227,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
+                      disabled={isPending}
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
@@ -251,7 +265,10 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           </div>
         </div>
 
-        <Button className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
+        <Button
+          disabled={isPending}
+          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+        >
           S&apos;inscrire
         </Button>
       </form>

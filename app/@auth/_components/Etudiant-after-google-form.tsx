@@ -18,6 +18,8 @@ import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { RiGovernmentLine } from 'react-icons/ri';
 import { MdOutlineClass } from 'react-icons/md';
+import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
+import { auth } from '@/auth';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -25,7 +27,9 @@ interface ProfFormProps {
 
 export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
   const [role, setRole] = useState<string>('STUDENT');
-
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
+  // const session = await auth();
   const form = useForm<z.infer<typeof EtudiantAfterSchema>>({
     resolver: zodResolver(EtudiantAfterSchema),
     defaultValues: {
@@ -43,12 +47,15 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
 
   const onSubmit = async (values: z.infer<typeof EtudiantAfterSchema>) => {
     values.role = role;
-    // startTransition(() => {
-    //   updateTeacherAfterGoogle(values).then((data) => {
-    //     setError(data.error);
-    //     setSuccess(data.success);
-    //   });
-    // });
+    values.email = session.email || 'slimani@gmail.com';
+    setError('');
+    setSuccess('');
+    startTransition(() => {
+      updateStudentAfterGoogle(values).then((data) => {
+        setError(data?.error);
+        // setSuccess(data?.success);
+      });
+    });
   };
 
   return (
@@ -86,6 +93,7 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
 
         <div className="w-full flex flex-col gap-4">
           <FormField
+            disabled={isPending}
             control={form.control}
             name="government"
             render={({ field }) => (
@@ -106,6 +114,7 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
             )}
           />
           <FormField
+            disabled={isPending}
             control={form.control}
             name="etablissement"
             render={({ field }) => (
@@ -127,6 +136,8 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
           />
 
           <FormField
+                    disabled={isPending}
+
             control={form.control}
             name="classe"
             render={({ field }) => (
@@ -148,7 +159,10 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
           />
         </div>
 
-        <Button className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
+        <Button
+          disabled={isPending}
+          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+        >
           Suivant
         </Button>
       </form>

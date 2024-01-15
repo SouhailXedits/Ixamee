@@ -5,9 +5,8 @@ import * as z from 'zod';
 import { RegisterProfSchema } from '@/actions/auth/schemas';
 import bcryptjs from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
-import { generateVerificationToken } from '@/lib/tokens';
 import { sendVerificationEmail } from '@/lib/mail';
-export const register = async (values: z.infer<typeof RegisterProfSchema>) => {
+export const register = async (values: z.infer<typeof RegisterProfSchema>, code: number) => {
   const validatedFields = RegisterProfSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
@@ -24,17 +23,23 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>) => {
   const hashesPassword = await bcryptjs.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
-  console.log('🚀 ~ register ~ existingUser:', existingUser);
 
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
   }
-  // const government_id = await db.government.findUnique({
-  //   where: {
-  //     government,
-  //   },
-  // });
-  const government_id = 1;
+  const gov = await db.government.findFirst({
+    where: {
+      government,
+    },
+  });
+  const government_id = gov?.id;
+  enum UserRole {
+    ADMIN = 'ADMIN',
+    STUDENT = 'STUDENT',
+    TEACHER = 'TEACHER',
+  }
+  const mappedRole =
+    role === 'TEACHER' ? UserRole.TEACHER : role === 'STUDENT' ? UserRole.STUDENT : UserRole.ADMIN;
 
   await db.user.create({
     data: {
@@ -44,13 +49,17 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>) => {
       email,
       password: hashesPassword,
       phone_number,
-      role,
-      // government_id,
+      role: mappedRole,
+      Government: {
+        connect: {
+          id: government_id,
+        },
+      },
     },
   });
 
-  const verificationToken = await generateVerificationToken(email);
-  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+  await sendVerificationEmail(values.email, code);
+
   return {
     success: `Bienvenue ${values.prenom}! Veuillez vérifier votre e-mail pour terminer l'inscription.`,
   };

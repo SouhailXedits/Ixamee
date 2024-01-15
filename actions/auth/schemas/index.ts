@@ -92,6 +92,7 @@ export const VerifSchema = z.object({
 
 export const EtudiantAfterSchema = z.object({
   role: z.string().default('TEACHER'),
+  email: z.string(),
   government: z.string().min(3, {
     message: 'La gouvernorat est requis',
   }),
@@ -104,6 +105,7 @@ export const EtudiantAfterSchema = z.object({
 });
 export const ProfAfterSchema = z.object({
   role: z.string().default('TEACHER'),
+  email: z.string(),
   subject: z.string().min(3, {
     message: 'La matière est requis',
   }),

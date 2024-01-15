@@ -14,7 +14,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
-import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -39,49 +38,49 @@ import {
 import Image from 'next/image';
 import { ModifierUnEtudiant } from '@/components/modals/modifier-un-etudiant';
 import { CorrectExam } from '@/components/modals/correct-exam';
-import { useQuery } from '@tanstack/react-query';
-import { getAllEstabs } from '@/actions/establishements';
-import { Skeleton } from '@/components/ui/skeleton';
-import { EditEstab } from './EditEstabModal';
-import { DeleteEstab } from './DeleteEstabModal';
+
+const data: Payment[] = [
+  {
+    id: 'm5gr84i9',
+
+    name: 'Géographie',
+  },
+  {
+    id: '3u1reuv4',
+    name: 'Anglais',
+  },
+  {
+    id: 'derv1ws0',
+    name: 'Mécanique',
+  },
+];
 
 export type Payment = {
   id: string;
   name: string;
 };
 
-const ActionModal = ({ row }: any) => {
-  return (
-    <div className="flex items-center gap-4 " style={{ width: '50px' }}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-8 h-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="w-4 h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {/* <DropdownMenuItem> */}
-          <EditEstab id={parseInt(row.original.id)} currentName={row.original.name}>
-            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-              Modifier
-            </p>
-          </EditEstab>
-          {/* </DropdownMenuItem> */}
-
-          {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-
-          <DeleteEstab id={parseInt(row.original.id)} currentName={row.original.name}>
-            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-              Supprimer
-            </p>
-          </DeleteEstab>
-        </DropdownMenuContent>
-      </DropdownMenu>
+export const CorrectionTag = ({
+  correction,
+  color,
+  width,
+  bgcolor,
+}: {
+  correction: 'En cours' | 'Non corrigé' | 'Corrigé' | 'Absent' | 'Non classé';
+  color: string;
+  width: string;
+  bgcolor: string;
+}) => (
+  <div
+    className={`w-[${width}] h-[22px] px-[5px]  rounded-2xl justify-center items-center gap-[5px] inline-flex`}
+    style={{ backgroundColor: `${bgcolor}` }}
+  >
+    <div className={`w-1.5 h-1.5 rounded-full`} style={{ backgroundColor: `${color}` }} />
+    <div className={` text-xs font-normal leading-[18px]`} style={{ color: `${color}` }}>
+      {correction}
     </div>
-  );
-};
-
+  </div>
+);
 export const columns: ColumnDef<Payment>[] = [
   {
     id: 'select',
@@ -105,7 +104,19 @@ export const columns: ColumnDef<Payment>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-
+  // {
+  //   accessorKey: 'rang',
+  //   header: () => {
+  //     return <span className="text-[#1B8392] ">Rang</span>;
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="w-10 h-[21px] p-2.5 bg-[#D8ECF3] rounded-[10px] border border-[#1B8392] flex-col justify-center items-center gap-2.5 inline-flex">
+  //       <div className="text-center text-[#1B8392] text-sm font-semibold ">
+  //         {row.getValue('rang')}
+  //       </div>
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -122,11 +133,12 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center gap-2 capitalize">
-        {/* <Image src="/defaultUserAvatr.svg" alt="" width={42} height={42} className="rounded-full" /> */}
+        <Image src="/geographie.svg" alt="" width={42} height={42} className="rounded-full" />
         {row.getValue('name')}
       </div>
     ),
   },
+
 
   {
     header: () => {
@@ -135,11 +147,63 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     enableHiding: false,
 
-    cell: ActionModal,
+    cell: () => {
+      return (
+        <div className="flex items-center gap-4 " style={{ width: '50px' }}>
+          {/* <ModifierUnEtudiant>
+            <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
+          </ModifierUnEtudiant> */}
+
+          {/* <CorrectExam>
+            <Image
+              src="/correctionExam.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="cursor-pointer "
+            />
+          </CorrectExam> */}
+          {/* <Image
+            src="/invitestudent.svg"
+            alt=""
+            width={20}
+            height={20}
+            className="cursor-pointer "
+          /> */}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="w-8 h-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {/* <DropdownMenuItem> */}
+              <ModifierUnEtudiant>
+                {/* <Image
+                  src="/eyesicon.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="cursor-pointer "
+                /> */}
+                <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
+                  Modifier
+                </p>
+                {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
+              </ModifierUnEtudiant>
+
+              <DropdownMenuItem>Supprimer</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
   },
 ];
 
-export function EstablishementsList({ data, isPending }) {
+export function SubjectsList() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -163,11 +227,6 @@ export function EstablishementsList({ data, isPending }) {
       rowSelection,
     },
   });
-
-  if (isPending)
-    return Array.from({ length: 5 }, (_, index) => (
-      <Skeleton key={index} className="w-70 h-10 mt-5" />
-    ));
 
   return (
     <div className="w-full">
@@ -206,7 +265,7 @@ export function EstablishementsList({ data, isPending }) {
                   className="h-24 text-lg text-center bg-transparent"
                 >
                   Pas d&apos;establishementsList ajoutés.
-                  <span className="text-[#1B8392]">Ajoutez</span> establishementsList
+                  <span className="text-[#1B8392]">Ajoutez</span> enseignants ou{' '}
                 </TableCell>
               </TableRow>
             )}
