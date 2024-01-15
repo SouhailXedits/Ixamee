@@ -38,51 +38,54 @@ import {
 import Image from 'next/image';
 import { ModifierUnEtudiant } from '@/components/modals/modifier-un-etudiant';
 import { CorrectExam } from '@/components/modals/correct-exam';
+import { teacherAminOutput } from '@/types/users/teacher';
+import { Skeleton } from '@/components/ui/skeleton';
+import { TeachersInfos } from './TeacherInofs';
 
-const data: Payment[] = [
-  {
-    id: 'm5gr84i9',
-    rang: 1,
+// const data: Payment[] = [
+//   {
+//     id: 'm5gr84i9',
+//     rang: 1,
 
-    name: 'Firas Latrach',
-    correction: 'Corrigé',
-    email: 'ken99@yahoo.com',
-  },
-  {
-    id: '3u1reuv4',
-    rang: 2,
+//     name: 'Firas Latrach',
+//     correction: 'Corrigé',
+//     email: 'ken99@yahoo.com',
+//   },
+//   {
+//     id: '3u1reuv4',
+//     rang: 2,
 
-    name: 'Souhail brahmi',
+//     name: 'Souhail brahmi',
 
-    correction: 'Non corrigé',
-    email: 'Abe45@gmail.com',
-  },
-  {
-    id: 'derv1ws0',
-    rang: 3,
+//     correction: 'Non corrigé',
+//     email: 'Abe45@gmail.com',
+//   },
+//   {
+//     id: 'derv1ws0',
+//     rang: 3,
 
-    name: 'Firas Latrach',
+//     name: 'Firas Latrach',
 
-    correction: 'En cours',
-    email: 'Monserrat44@gmail.com',
-  },
-  {
-    id: '5kma53ae',
-    rang: 4,
+//     correction: 'En cours',
+//     email: 'Monserrat44@gmail.com',
+//   },
+//   {
+//     id: '5kma53ae',
+//     rang: 4,
 
-    name: 'Med amine',
+//     name: 'Med amine',
 
-    correction: 'Non classé',
-    email: 'Silas22@gmail.com',
-  },
-  {
-    id: 'bhqecj4p',
-    rang: 5,
-    name: 'Firas Latrach',
-    correction: 'Absent',
-    email: 'carmella@hotmail.com',
-  },
-];
+//     correction: 'Non classé',
+//     email: 'Silas22@gmail.com',
+//   },
+//   {
+//     id: 'bhqecj4p',
+//     rang: 5,
+//     name: 'Firas Latrach',
+//     correction: 'Absent',
+//     email: 'carmella@hotmail.com',
+//   },
+// ];
 
 export type Payment = {
   id: string;
@@ -114,7 +117,7 @@ export const CorrectionTag = ({
     </div>
   </div>
 );
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<teacherAminOutput>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -166,7 +169,13 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center gap-2 capitalize">
-        <Image src="/defaultUserAvatr.svg" alt="" width={42} height={42} className="rounded-full" />
+        <Image
+          src={row.original.image || '/defaultUserAvatr.svg'}
+          alt="user photo"
+          width={42}
+          height={42}
+          className="rounded-full"
+        />
         {row.getValue('name')}
       </div>
     ),
@@ -188,49 +197,6 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => <div className="lowercase text-[#727272]">{row.getValue('email')}</div>,
   },
-  // {
-  //   accessorKey: 'correction',
-  //   header: () => {
-  //     return <span className="text-[#1B8392] ">Correction</span>;
-  //   },
-  //   cell: ({ row }) => {
-  //     const correction = row.getValue('correction');
-  //     switch (correction) {
-  //       case 'Corrigé':
-  //         return (
-  //           <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />
-  //         );
-  //       case 'Non corrigé':
-  //         return (
-  //           <CorrectionTag
-  //             correction="Non corrigé"
-  //             bgcolor="#FFF4F3"
-  //             color="#F04438"
-  //             width="100px"
-  //           />
-  //         );
-  //       case 'Non classé':
-  //         return (
-  //           <CorrectionTag
-  //             correction="Non classé"
-  //             bgcolor="#F4EFFF"
-  //             color="#8862F5"
-  //             width="100px"
-  //           />
-  //         );
-  //       case 'Absent':
-  //         return (
-  //           <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />
-  //         );
-  //       case 'En cours':
-  //         return (
-  //           <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
-  //         );
-  //       default:
-  //         return null;
-  //     }
-  //   },
-  // },
 
   {
     header: () => {
@@ -239,30 +205,9 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     enableHiding: false,
 
-    cell: () => {
+    cell: ({row}) => {
       return (
         <div className="flex items-center gap-4 " style={{ width: '50px' }}>
-          {/* <ModifierUnEtudiant>
-            <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
-          </ModifierUnEtudiant> */}
-
-          {/* <CorrectExam>
-            <Image
-              src="/correctionExam.svg"
-              alt=""
-              width={20}
-              height={20}
-              className="cursor-pointer "
-            />
-          </CorrectExam> */}
-          {/* <Image
-            src="/invitestudent.svg"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          /> */}
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="w-8 h-8 p-0">
@@ -272,7 +217,7 @@ export const columns: ColumnDef<Payment>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* <DropdownMenuItem> */}
-              <ModifierUnEtudiant>
+              <TeachersInfos currentUser={row.original}>
                 {/* <Image
                   src="/eyesicon.svg"
                   alt=""
@@ -281,10 +226,10 @@ export const columns: ColumnDef<Payment>[] = [
                   className="cursor-pointer "
                 /> */}
                 <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-                  Modifier
+                  View infos
                 </p>
                 {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-              </ModifierUnEtudiant>
+              </TeachersInfos>
 
               <DropdownMenuItem>Supprimer</DropdownMenuItem>
             </DropdownMenuContent>
@@ -295,7 +240,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function StudentList() {
+export function TeacherAdminsList({ data, isPending }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -319,6 +264,11 @@ export function StudentList() {
       rowSelection,
     },
   });
+
+  if (isPending)
+    return Array.from({ length: 5 }, (_, index) => (
+      <Skeleton key={index} className="w-70 h-10 mt-5" />
+    ));
 
   return (
     <div className="w-full">
@@ -356,7 +306,7 @@ export function StudentList() {
                   colSpan={columns.length}
                   className="h-24 text-lg text-center bg-transparent"
                 >
-                  Pas d’Enseignants ajoutés.
+                  Pas d&apos;Enseignants ajoutés.
                   <span className="text-[#1B8392]">Ajoutez</span> enseignants ou{' '}
                 </TableCell>
               </TableRow>
