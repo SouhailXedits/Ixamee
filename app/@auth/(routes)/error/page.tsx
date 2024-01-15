@@ -19,9 +19,9 @@ export default function AuthErrorPage() {
         <div className="flex flex-col ml-3 gap-5 items-center">
           <Logo className={' max-xl:w-[50%]'} width={200} height={100} />
           <div className="text-center text-[#F04438] text-3xl max-lg:text-2xl">
-            Quelque chose s'est mal passé !
+            Quelque chose s&apos;est mal passé !
           </div>
-          <Link href="/login" className='w-full text-center '>
+          <Link href="/login" className="w-full text-center ">
             <Button className="bg-[#ed6157] w-2/5 h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
               <IoReturnUpBackOutline /> &nbsp; Retournez
             </Button>

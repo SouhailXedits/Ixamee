@@ -1,36 +1,35 @@
 'use client';
-import {getAllExam } from '@/actions/examens';
 import ExamCardsLayout from './_components/ExamCardsLayout';
 import Heading from './_components/Heading';
-import { db } from '@/lib/db';
-import { getUserByEmail, getUserById } from '@/data/user';
-import { useQuery } from '@tanstack/react-query';
-import { get } from 'http';
-// import { getAllExam } from '@/actions/examens';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getAllExam, getEstablishmentOfUser } from '@/actions/examens';
+import { Skeleton } from '@/components/ui/skeleton';
+export default function Examens() {
+  const queryClient = useQueryClient();
+  const etab_id = queryClient.getQueryData(['etab_id']) as number;
+  const user = queryClient.getQueryData(['user']) as any;
 
-export default  function Examens() {
-  // const data = await db.user.findUnique({
-  //   where: {
-  //     id: 'clr9c0dq4000442qrnl18g9r3',
-  //   },
-  // });
-  // console.log(data);
-  // const data = await db.classe.findMany({});
-  // const session = await auth();
-  //const session = await getAllExam();
-  //console.log(session);
-  
-   const { data: exams } = useQuery({
-     queryKey: ['exams'],
-    queryFn: async() => await getAllExam(),
-     //initialData:  {}
-   });
-  // console.log(error);
-  console.log(exams);
+  const { data, isPending } = useQuery({
+    queryKey: ['examens'],
+    queryFn: async () => await getAllExam({ user_id: user?.id, etab_id }),
+  });
   return (
     <div className="flex flex-col gap-6 p-10">
-      <Heading />
-      <ExamCardsLayout />
+      {!isPending ? (
+        <Heading />
+      ) : (
+        <div className="flex justify-between item-center w-full h-[80px] ">
+          <div className="flex item-center gap-4">
+            <Skeleton className="w-[200px] h-[60px]"></Skeleton>
+            <Skeleton className="w-[200px] h-[60px]" />
+          </div>
+          <div className="flex item-center gap-6">
+            <Skeleton className="w-[200px] h-[60px]" />
+            <Skeleton className="w-[200px] h-[60px]" />
+          </div>
+        </div>
+      )}
+      <ExamCardsLayout isPending={isPending} data={data} />
     </div>
   );
 }

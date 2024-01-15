@@ -1,3 +1,4 @@
+'use client';
 import {
   Select,
   SelectContent,
@@ -11,14 +12,39 @@ import { SubjectsList } from './_components/SubjectsList';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
-import { AddSubject } from '@/components/modals/AddSubject';
+import { AddSubject } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/subjects/_components/AddSubject';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getAllSubjectsByPage } from '@/actions/subjects';
 
 const Establishement = ({ params }: { params: { classesId: string } }) => {
-  const { classesId } = params;
-  const handleImportedData = (jsonData: any) => {
-    // Handle the imported data in the external page
-    console.log(jsonData);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
   };
+  //  const handleImportedData = (jsonData: any) => {
+  //    // Handle the imported data in the external page
+  //    console.log(jsonData);
+  //  };
+  const {
+    data: subjects,
+    error,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['subjects', currentPage],
+    queryFn: async () => await getAllSubjectsByPage(currentPage),
+  });
+  console.log(subjects)
+  const data = subjects?.data?.estabs || [];
+  const totalCount = subjects?.data?.totalCount;
+  console.log(data);
+  // const { classesId } = params;
+  // const handleImportedData = (jsonData: any) => {
+  //   // Handle the imported data in the external page
+  //   console.log(jsonData);
+  // };
+
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -90,7 +116,13 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
       </nav>
 
       <div>
-        <SubjectsList />
+        <SubjectsList
+          data={data}
+          isPending={isPending}
+          onPageChange={handlePageChange}
+          currentpage={currentPage}
+          totalCount={totalCount}
+        />
       </div>
     </main>
   );

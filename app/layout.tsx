@@ -10,6 +10,9 @@ const poppins = Poppins({
 import './globals.css';
 import { ToastProvider } from '@/components/providers/toaster-provider';
 import QueryClientProviderWrapper from './providers/queryClientProvider';
+import { getUserByEmail } from '@/data/user';
+import { useQueryClient } from '@tanstack/react-query';
+import Hydration from './providers/hydration';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -30,10 +33,12 @@ export default async function RootLayout({
   admin: React.ReactNode;
 }) {
   const session = await authentification();
+
   return (
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <QueryClientProviderWrapper>
+          {/* <Hydration> */}
           <ToastProvider />
           {/* {teacher} */}
           {session === null
@@ -43,6 +48,7 @@ export default async function RootLayout({
             : session?.user?.role === 'STUDENT'
             ? student
             : admin}
+          {/* </Hydration> */}
         </QueryClientProviderWrapper>
       </body>
     </html>

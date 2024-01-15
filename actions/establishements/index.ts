@@ -18,18 +18,27 @@ export const createEstablishement = async (name: string) => {
   }
 };
 
-export const getAllEstabs = async () => {
+export const getAllEstabs = async (page = 1, pageSize = 10) => {
   try {
+
+    const skip = (page - 1) * pageSize;
+    console.log(skip)
+
     const estabs = await db.establishment.findMany({
-      skip: 0,
-      take: 15,
+      skip,
+      take: pageSize,
     });
+
+    const totalCount = await db.establishment.count();
+    console.log(totalCount)
+
     console.log(estabs);
-    return { data: estabs, error: undefined };
+
+    return { data: {estabs, totalCount}, error: undefined };
   } catch (error: any) {
     return {
       data: undefined as any,
-      error: 'Failed to get establishement.',
+      error: 'Failed to get establishment.',
     };
   }
 };
