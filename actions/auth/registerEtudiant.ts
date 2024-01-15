@@ -1,4 +1,6 @@
+
 'use server';
+
 import * as z from 'zod';
 import { db } from '@/lib/db';
 import { RegisterEtudSchema } from '@/actions/auth/schemas';
@@ -35,6 +37,7 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
   const government_id = 1;
   const establishement_id = 1;
   const classe_id = 1;
+
 
   await db.user.create({
     data: {

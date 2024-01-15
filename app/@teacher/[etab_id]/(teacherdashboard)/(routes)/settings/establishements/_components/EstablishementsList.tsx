@@ -27,7 +27,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -71,7 +70,7 @@ const ActionModal = ({ row }: any) => {
 
           {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
 
-          <DeleteEstab id={parseInt(row.original.id)} currentName={row.original.name}>
+          <DeleteEstab id={parseInt(row.original.id)}>
             <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
               Supprimer
             </p>
@@ -139,11 +138,12 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function EstablishementsList({ data, isPending }) {
+export function EstablishementsList({ data, isPending, onPageChange , currentpage, totalCount}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
 
   const table = useReactTable({
     data,
@@ -168,6 +168,20 @@ export function EstablishementsList({ data, isPending }) {
     return Array.from({ length: 5 }, (_, index) => (
       <Skeleton key={index} className="w-70 h-10 mt-5" />
     ));
+  const totalPageCount = Math.floor(totalCount / 10) + 1
+
+  function handleNextPage() {
+    console.log(currentpage + 1);
+    onPageChange(currentpage + 1);
+    table.nextPage();
+  }
+  function handlePreviousPage() {
+    // const cur = table.getPageCount();
+    if(currentpage === 0) 
+    console.log(currentpage - 1);
+    onPageChange(currentpage - 1);
+    table.previousPage();
+  }
 
   return (
     <div className="w-full">
@@ -222,16 +236,16 @@ export function EstablishementsList({ data, isPending }) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => handlePreviousPage()}
+            disabled={currentpage === 1}
           >
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => handleNextPage()}
+            disabled={(currentpage + 1) > totalPageCount}
           >
             Next
           </Button>

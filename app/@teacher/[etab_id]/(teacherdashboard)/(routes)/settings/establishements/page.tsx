@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Select,
   SelectContent,
@@ -14,8 +14,15 @@ import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
 import { getAllEstabs } from '@/actions/establishements';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 const Establishement = () => {
+  const [currentPage, setCurrentPage] = useState(1); // State to track the current page
+  console.log(currentPage);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
   const handleImportedData = (jsonData: any) => {
     // Handle the imported data in the external page
     console.log(jsonData);
@@ -25,10 +32,13 @@ const Establishement = () => {
     error,
     isPending,
   } = useQuery<any>({
-    queryKey: ['estabs'],
-    queryFn: async () => await getAllEstabs(),
+    queryKey: ['estabs', currentPage],
+    queryFn: async () => await getAllEstabs(currentPage),
   });
-  const data = estabs?.data || [];
+  const data = estabs?.data.estabs || [];
+  const totalCount = estabs?.data.totalCount;
+  console.log(totalCount);
+  console.log(data);
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -48,38 +58,6 @@ const Establishement = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          {/* <Select>
-            <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
-              <SelectValue
-                placeholder={
-                  <div className="flex items-center">
-                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
-                    <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
-                  </div>
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="corrige" className="">
-                Corrigé
-              </SelectItem>
-              <SelectItem value="en-cours">En cours</SelectItem>
-              <SelectItem value="non-corrigé">Non corrigé</SelectItem>
-              <SelectItem value="non-classé">Non classé</SelectItem>
-              <SelectItem value="absent">Absent</SelectItem>
-            </SelectContent>
-          </Select> */}
-
-          {/* importer */}
-          {/* <ImportUneClasse>
-            <div className=" justify-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
-              <Image src="/importerIcon.svg" alt="icons" width={20} height={20} />
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Importer
-              </div>
-            </div>
-          </ImportUneClasse> */}
-
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
@@ -100,7 +78,13 @@ const Establishement = () => {
       </nav>
 
       <div>
-        <EstablishementsList data={data} isPending={isPending} />
+        <EstablishementsList
+          data={data}
+          isPending={isPending}
+          onPageChange={handlePageChange}
+          currentpage={currentPage}
+          totalCount={totalCount}
+        />
       </div>
     </main>
   );

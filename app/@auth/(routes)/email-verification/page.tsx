@@ -1,9 +1,11 @@
-'use client';
+// 'use client';
 import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
 import { sendVerificationEmail } from '@/lib/mail';
+import { generateVerificationToken } from '@/lib/tokens';
+import { useSearchParams } from 'next/navigation';
 export default async function EmailVerification() {
   const [verificationData, setVerificationData] = useState({});
   useEffect(() => {
