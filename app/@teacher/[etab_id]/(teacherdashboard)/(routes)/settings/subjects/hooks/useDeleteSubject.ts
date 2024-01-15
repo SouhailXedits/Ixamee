@@ -10,12 +10,12 @@ export function useDeleteSubject() {
   const { mutate: deleteSubject, isPending } = useMutation({
     mutationFn: (id: number) => deleteSubjectApi(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['estabs'] });
-      toast.success('Établissement supprimé avec succès.');
+      queryClient.invalidateQueries({ queryKey: ['subjects'] });
+      toast.success('Matière supprimé avec succès.');
     },
     onError: (err) => {
       console.log('ERROR', err);
-      toast.error("Une erreur est survenue lors de la suppression de l'établissement.");
+      toast.error("Une erreur est survenue lors de la suppression de la matière.");
     },
     retry: false,
   });

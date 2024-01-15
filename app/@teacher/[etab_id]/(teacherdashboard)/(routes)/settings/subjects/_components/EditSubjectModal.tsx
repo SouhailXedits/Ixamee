@@ -24,7 +24,10 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from '../../../../../../../../components/modals/etudiant-ajoute-avec-succes';
-import SubjectIcon, { SubjectIconProps, subjectIcon } from '../../../../../../../../components/ui/SubjectIcon';
+import SubjectIcon, {
+  SubjectIconProps,
+  subjectIcon,
+} from '../../../../../../../../components/ui/SubjectIcon';
 
 import { useFormik } from 'formik';
 import { useCreateSubject } from '../hooks/useCreateSubject';
@@ -150,16 +153,15 @@ const icons = [
 ];
 
 export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse) => {
-  console.log(currentSubject)
+  console.log(currentSubject);
 
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-  const {editSubject, isPending} = useEditSubject()
+  const { editSubject, isPending } = useEditSubject();
   const [selectedIcon, setSelectedIcon] = useState<string>(currentSubject.icon);
 
-
-  const currId = currentSubject.id
+  const currId = currentSubject.id;
   // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files && e.target.files.length > 0) {
   //     const selectedFile = e.target.files[0];
@@ -186,7 +188,7 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
     onSubmit: (values) => {
       console.log(values);
       //createSubject(values);
-      editSubject({id: currId,data: values});
+      editSubject({ id: currId, data: values });
       console.log('end');
       //alert(JSON.stringify(values, null, 2));
     },
@@ -198,7 +200,7 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <form onSubmit={formik.handleSubmit}>
           <DialogHeader>
-            <DialogTitle className="text-[#1B8392] text-xl font-medium ">
+            <DialogTitle className="text-[#1B8392] text-xl font-medium mb-2 ">
               Modifier cette matière
             </DialogTitle>
           </DialogHeader>
@@ -252,14 +254,16 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
             </div>
           )}
 
-          <DialogFooter>
-            <Button
-              // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
-              type="submit"
-              className="w-full bg-[#1B8392] hover:opacity-80 "
-            >
-              {isFirstModalOpen ? 'Ajouter une autre matière' : 'Ajouter'}
-            </Button>
+          <DialogFooter className=" mt-3">
+            <DialogClose className=" w-full">
+              <Button
+                // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
+                type="submit"
+                className="w-full bg-[#1B8392] hover:opacity-80 "
+              >
+                Modifier
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -24,7 +24,10 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from '../../../../../../../../components/modals/etudiant-ajoute-avec-succes';
-import SubjectIcon, { SubjectIconProps, subjectIcon } from '../../../../../../../../components/ui/SubjectIcon';
+import SubjectIcon, {
+  SubjectIconProps,
+  subjectIcon,
+} from '../../../../../../../../components/ui/SubjectIcon';
 
 import { useFormik } from 'formik';
 import { useCreateSubject } from '../hooks/useCreateSubject';
@@ -150,8 +153,8 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-  const {createSubject, isPending} = useCreateSubject();
-  const [selectedIcon, setSelectedIcon] = useState <string | null>(null);
+  const { createSubject, isPending } = useCreateSubject();
+  const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
   // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files && e.target.files.length > 0) {
@@ -184,9 +187,6 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
     },
   });
 
-  
-
-
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -197,64 +197,48 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
               Ajouter une matière
             </DialogTitle>
           </DialogHeader>
-
-          {!isFirstModalOpen ? (
-            <div className="flex flex-col gap-6 placeholder:text-[#727272] items-center">
-              <div className="flex flex-col gap-2 w-full">
-                <Input
-                  type="text"
-                  name="name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  placeholder="Entrer le nom de la matière"
-                  className="placeholder:text-[#727272]"
-                />
-              </div>
-              <div className="flex flex-col gap-2 w-full">
-                <Input
-                  type="number"
-                  name="coefficient"
-                  value={formik.values.coefficient}
-                  onChange={formik.handleChange}
-                  placeholder="Saisir le coefficient de la matière"
-                  className="placeholder:text-[#727272]"
-                />
-              </div>
-              <div className=" flex gap-[0.8rem] max-w-[450px] border rounded p-3 flex-wrap">
-                {icons.map((icon) => (
-                  <SubjectIcon
-                    key={icon.id}
-                    icon={icon}
-                    onClick={() => handleIconClick(icon)}
-                    isSelected={selectedIcon === icon.id}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center gap-5">
-              <Image
-                src={'/etudiantajouteravecsucces.svg'}
-                alt=""
-                width={150}
-                height={150}
-                className=""
+          <div className="flex flex-col gap-6 placeholder:text-[#727272] items-center">
+            <div className="flex flex-col gap-2 w-full">
+              <Input
+                type="text"
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                placeholder="Entrer le nom de la matière"
+                className="placeholder:text-[#727272]"
               />
-              <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
-                <Image src={'/subjects-green.svg'} alt="user" width={15} height={15} />
-                Matière ajoutée avec succès.
-              </div>
             </div>
-          )}
-
-          <DialogFooter>
-            <Button
-              // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
-              type="submit"
-              className="w-full bg-[#1B8392] hover:opacity-80 "
-            >
-              {isFirstModalOpen ? 'Ajouter une autre matière' : 'Ajouter'}
-            </Button>
+            <div className="flex flex-col gap-2 w-full">
+              <Input
+                type="number"
+                name="coefficient"
+                value={formik.values.coefficient}
+                onChange={formik.handleChange}
+                placeholder="Saisir le coefficient de la matière"
+                className="placeholder:text-[#727272]"
+              />
+            </div>
+            <div className=" flex gap-[0.8rem] max-w-[450px] border rounded p-3 flex-wrap">
+              {icons.map((icon) => (
+                <SubjectIcon
+                  key={icon.id}
+                  icon={icon}
+                  onClick={() => handleIconClick(icon)}
+                  isSelected={selectedIcon === icon.id}
+                />
+              ))}
+            </div>
+          </div>
+          <DialogFooter className=' mt-3'>
+            <DialogClose className=' w-full'>
+              <Button
+                // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
+                type="submit"
+                className="w-full bg-[#1B8392] hover:opacity-80 "
+              >
+                Ajouter une autre matière
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </form>
       </DialogContent>
