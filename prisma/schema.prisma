@@ -128,7 +128,7 @@ model StudentClass {
 model Subject {
   id    Int              @id @default(autoincrement())
   name  String
-  cofficient Float?
+  coefficient Float?
   icon  String?
   user  TeacherSubject[] // Many-to-one relationship with Establishment
   exams Exam[] // One-to-many relationship with Exam
