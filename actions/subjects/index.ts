@@ -59,37 +59,36 @@ export const getAllSubjects = async () => {
   }
 };
 
-// export const editEstablishement = async (id: number, name: string) => {
-//   try {
-//     console.log(id, name);
-//     await db.establishment.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         name: name,
-//       },
-//     });
-//     console.log('estab edited succecfully ! ');
-//   } catch (error: any) {
-//     return {
-//       error: 'Failed to edit establishement.',
-//     };
-//   }
-// };
+export const editSubject = async (id: number, data: SubjectInputProps) => {
+  try {
+    console.log(id, data);
+    await db.subject.update({
+      where: {
+        id: id,
+      },
+      data: data
+    });
+    console.log('subject edited succecfully ! ');
+  } catch (error: any) {
+    console.log(error)
+    return {
+      error: 'Failed to edit subject.',
+    };
+  }
+};
 
-// export const deleteEstablishement = async (id: number) => {
-//   console.log(id);
-//   try {
-//     const data = await db.establishment.delete({
-//       where: {
-//         id: id,
-//       },
-//     });
-//     console.log('estab deleted succecfully ! ');
-//   } catch (error: any) {
-//     return {
-//       error: 'Failed to delete establishement.',
-//     };
-//   }
-// };
+export const deleteSubject = async (id: number) => {
+  console.log(id);
+  try {
+    const data = await db.subject.delete({
+      where: {
+        id: id,
+      },
+    });
+    console.log('subject deleted succecfully ! ');
+  } catch (error: any) {
+    return {
+      error: 'Failed to delete subject.',
+    };
+  }
+};

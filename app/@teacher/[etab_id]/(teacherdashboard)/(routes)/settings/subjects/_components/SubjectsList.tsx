@@ -40,6 +40,8 @@ import { ModifierUnEtudiant } from '@/components/modals/modifier-un-etudiant';
 import { CorrectExam } from '@/components/modals/correct-exam';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
+import { DeleteSubject } from './DeleteSubjectModal';
+import { EditSubjectModal } from './EditSubjectModal';
 
 
 
@@ -117,7 +119,7 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
     id: 'actions',
     enableHiding: false,
 
-    cell: () => {
+    cell: ({row}) => {
       return (
         <div className="flex items-center gap-4 " style={{ width: '50px' }}>
           <DropdownMenu>
@@ -129,7 +131,7 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* <DropdownMenuItem> */}
-              <ModifierUnEtudiant>
+              <EditSubjectModal currentSubject={row.original}>
                 {/* <Image
                   src="/eyesicon.svg"
                   alt=""
@@ -141,9 +143,13 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
                   Modifier
                 </p>
                 {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-              </ModifierUnEtudiant>
+              </EditSubjectModal>
 
-              <DropdownMenuItem>Supprimer</DropdownMenuItem>
+              <DeleteSubject id={row.original.id}>
+                <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
+                  Supprimer
+                </p>
+              </DeleteSubject>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

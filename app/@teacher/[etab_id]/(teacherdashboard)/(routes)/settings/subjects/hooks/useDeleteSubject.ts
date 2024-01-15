@@ -2,13 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-hot-toast';
-import { deleteEstablishement as deleteEstablishementApi } from '@/actions/establishements';
+import { deleteSubject as deleteSubjectApi  } from '@/actions/subjects';
 
-export function useDeleteEstab() {
+export function useDeleteSubject() {
   const queryClient = useQueryClient();
 
-  const { mutate: deleteEstablishement, isPending } = useMutation({
-    mutationFn: (id: number) => deleteEstablishementApi(id),
+  const { mutate: deleteSubject, isPending } = useMutation({
+    mutationFn: (id: number) => deleteSubjectApi(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['estabs'] });
       toast.success('Établissement supprimé avec succès.');
@@ -20,5 +20,5 @@ export function useDeleteEstab() {
     retry: false,
   });
 
-  return { deleteEstablishement, isPending };
+  return { deleteSubject, isPending };
 }
