@@ -106,7 +106,7 @@ model Classe {
   users                 StudentClass[] // Many-to-many relationship with User
   // subjects         Subject[]       // Many-to-many relationship with Subject
   is_archived           Boolean
-  ExamClasse            ExamClasse[]
+  // ExamClasse            ExamClasse[]
 }
 
 model StudentClass {
