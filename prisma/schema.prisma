@@ -127,6 +127,8 @@ model StudentClass {
 model Subject {
   id    Int              @id @default(autoincrement())
   name  String
+  cofficient Float?
+  icon  String?
   user  TeacherSubject[] // Many-to-one relationship with Establishment
   exams Exam[] // One-to-many relationship with Exam
 }
@@ -180,10 +182,10 @@ model Exam {
   class_id          Int 
   subject           Subject             @relation(fields: [subject_id], references: [id]) // One-to-one relationship with Subject
   subject_id        Int
-  examEstablishment ExamEstablishment[]
+  examEstablishment ExamEstablishment[] 
   term               String?  
   ExamCorrection    ExamCorrection[]
-
+  is_archived        Boolean? @default(false)
   ExamClassess      ExamClasse[]
   // style       String    // Consider using an enum for style
 }
