@@ -20,12 +20,14 @@ import { RiGovernmentLine } from 'react-icons/ri';
 import { MdOutlineClass } from 'react-icons/md';
 import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
 import { auth } from '@/auth';
+import { useQuery } from '@tanstack/react-query';
+import { getAllGovernments } from '@/actions/government';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
 }
 
-export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
+export default async function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
   const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -38,16 +40,26 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
       classe: '',
     },
   });
-  const govOptions = [
-    { id: 1, value: 'tunis', label: 'Tunis' },
-    { id: 1, value: 'sousse', label: 'Sousse' },
-    { id: 1, value: 'beja', label: 'Beja' },
-  ];
-  const [isPending, startTransition] = useTransition();
+  const {
+    data,
+    error: getEstabsError,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['goverments'],
+    queryFn: async () => await getAllGovernments(),
+  });
+
+  const govOptions =
+    (data?.data &&
+      data?.data.map((gov: any) => {
+        return { id: gov.id, value: gov.government, label: gov.government };
+      })) ||
+    [];
+
+  const [isTransPending, startTransition] = useTransition();
 
   const onSubmit = async (values: z.infer<typeof EtudiantAfterSchema>) => {
     values.role = role;
-    values.email = session.email || 'slimani@gmail.com';
     setError('');
     setSuccess('');
     startTransition(() => {
@@ -93,7 +105,6 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
 
         <div className="w-full flex flex-col gap-4">
           <FormField
-            disabled={isPending}
             control={form.control}
             name="government"
             render={({ field }) => (
@@ -103,6 +114,7 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
+                    disabled={isTransPending || isPending}
                     field={field}
                     placeholder={'Choisissez votre gouvernorat'}
                     options={govOptions}
@@ -114,7 +126,6 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
             )}
           />
           <FormField
-            disabled={isPending}
             control={form.control}
             name="etablissement"
             render={({ field }) => (
@@ -124,6 +135,7 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
+                    disabled={isTransPending || isPending}
                     field={field}
                     placeholder={'Choisissez votre établissement'}
                     options={govOptions}
@@ -136,8 +148,6 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
           />
 
           <FormField
-                    disabled={isPending}
-
             control={form.control}
             name="classe"
             render={({ field }) => (
@@ -147,6 +157,7 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
+                  disabled={isTransPending || isPending}
                     field={field}
                     placeholder={'Sélectionnez votre classe'}
                     options={govOptions}
@@ -160,7 +171,7 @@ export default function EtudiantAfterGoogleForm({ handleRole }: ProfFormProps) {
         </div>
 
         <Button
-          disabled={isPending}
+          disabled={isTransPending}
           className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
         >
           Suivant

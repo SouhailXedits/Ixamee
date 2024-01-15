@@ -26,14 +26,9 @@ export default function VerifForm() {
     },
   });
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const verificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
-      console.log(verificationData);
-    }
-  }, []); 
-
   const onSubmit = useCallback(async () => {
+    setError('');
+    setSuccess('');
     if (success || error) {
       return;
     }
@@ -53,7 +48,7 @@ export default function VerifForm() {
         setError('Code invalid!');
       }
     } catch (err) {
-      setError('Quelque chose s\'est mal passé !');
+      setError("Quelque chose s'est mal passé !");
     }
   }, [form, success, error]);
 

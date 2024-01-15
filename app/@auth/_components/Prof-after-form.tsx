@@ -20,6 +20,9 @@ import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { updateTeacherAfterGoogle } from '@/actions/auth/updateTeacherAfterGoogle';
 import { auth } from '@/auth';
+import { MdOutlineClass, MdOutlineTimer } from 'react-icons/md';
+import { getAllGovernments } from '@/actions/government';
+import { useQuery } from '@tanstack/react-query';
 
 export default function ProfAfterForm() {
   const [error, setError] = useState<string | undefined>('');
@@ -34,16 +37,32 @@ export default function ProfAfterForm() {
       systeme: '',
     },
   });
-  const govOptions = [
-    { id: 1, value: 'tunis', label: 'Tunis' },
-    { id: 1, value: 'sousse', label: 'Sousse' },
-    { id: 1, value: 'beja', label: 'Beja' },
+  const {
+    data,
+    error: getEstabsError,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['goverments'],
+    queryFn: async () => await getAllGovernments(),
+  });
+
+  const govOptions =
+    (data?.data &&
+      data?.data.map((gov: any) => {
+        return { id: gov.id, value: gov.government, label: gov.government };
+      })) ||
+    [];
+
+  const systeme = [
+    { id: 1, value: 'TRIMESTRE', label: 'Trimestre' },
+    { id: 2, value: 'SEMESTRE', label: 'Semestre' },
+    { id: 3, value: 'LIBRE', label: 'Libre' },
   ];
-  const [isPending, startTransition] = useTransition();
+  const [isTransPending, startTransition] = useTransition();
 
   const onSubmit = async (values: z.infer<typeof ProfAfterSchema>) => {
     values.role = role;
-    values.email = session.email || 'slimani@gmail.com';
+    // values.email = session.email || 'slimani@gmail.com';
     setError('');
     setSuccess('');
     startTransition(() => {
@@ -62,7 +81,6 @@ export default function ProfAfterForm() {
 
         <div className="w-full flex flex-col gap-4">
           <FormField
-            disabled={isPending}
             control={form.control}
             name="etablissement"
             render={({ field }) => (
@@ -72,6 +90,7 @@ export default function ProfAfterForm() {
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
+                    disabled={isTransPending || isPending}
                     field={field}
                     placeholder={'Choisissez votre établissement'}
                     options={govOptions}
@@ -83,7 +102,6 @@ export default function ProfAfterForm() {
             )}
           />
           <FormField
-            disabled={isPending}
             control={form.control}
             name="subject"
             render={({ field }) => (
@@ -93,10 +111,11 @@ export default function ProfAfterForm() {
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
+                    disabled={isTransPending || isPending}
                     field={field}
                     placeholder={'Choisissez votre matière'}
                     options={govOptions}
-                    icon={<FaGraduationCap className="text-gray w-5 h-5" />}
+                    icon={<MdOutlineClass className="text-gray w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -104,7 +123,6 @@ export default function ProfAfterForm() {
             )}
           />
           <FormField
-            disabled={isPending}
             control={form.control}
             name="systeme"
             render={({ field }) => (
@@ -114,10 +132,11 @@ export default function ProfAfterForm() {
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
+                    disabled={isTransPending || isPending}
                     field={field}
                     placeholder={'Choisissez votre système pédagogique'}
-                    options={govOptions}
-                    icon={<FaGraduationCap className="text-gray w-5 h-5" />}
+                    options={systeme}
+                    icon={<MdOutlineTimer className="text-gray w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -127,7 +146,7 @@ export default function ProfAfterForm() {
         </div>
 
         <Button
-          disabled={isPending}
+          disabled={isTransPending}
           className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
         >
           Suivant

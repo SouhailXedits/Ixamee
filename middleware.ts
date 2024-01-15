@@ -15,7 +15,6 @@ export default auth(async (req) => {
   if (isApiAuthRoute) {
     return null;
   }
-  console.log('🚀 ~ auth ~ isAuthRoute:', isAuthRoute);
   if (isAuthRoute) {
     const session = await authentification();
     const estabId = session?.user?.establishement_id || '1';

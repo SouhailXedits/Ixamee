@@ -21,10 +21,8 @@ import { useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
-import { sendVerificationEmail } from '@/lib/mail';
 import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
@@ -41,9 +39,10 @@ export default function LoginForm() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
+  const [isRegistrationFormSuccessful, setRegistrationFormSuccessful] = useState<boolean>(false);
 
   const [isPending, startTransition] = useTransition();
-  const queryClient = useQueryClient();
+
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError('');
@@ -54,7 +53,13 @@ export default function LoginForm() {
         setError(data?.error);
         setSuccess(data?.success);
         localStorage.setItem('email-verification', JSON.stringify({ email: values.email, code }));
-        setRegistrationSuccessful(true);
+        console.log(data?.success);
+        if (data?.success === 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.') {
+          setRegistrationSuccessful(true);
+        }
+        if (data?.success === 'Vous étes presque arrivé ! complete votre inscription') {
+          setRegistrationFormSuccessful(true);
+        }
       });
     });
   };
@@ -63,7 +68,10 @@ export default function LoginForm() {
     if (isRegistrationSuccessful) {
       router.push('/email-verification');
     }
-  }, [isRegistrationSuccessful, router]);
+    if (isRegistrationFormSuccessful) {
+      router.push('/teacher-after');
+    }
+  }, [isRegistrationSuccessful, isRegistrationFormSuccessful, router]);
 
   return (
     <Form {...form}>

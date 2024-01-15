@@ -27,6 +27,9 @@ export const login = async (values: z.infer<typeof LoginSchema>, code: number) =
 
     return { success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.' };
   }
+  if (!existingUser.subject_id) {
+    return { success: 'Vous étes presque arrivé ! complete votre inscription' };
+  }
 
   try {
     await signIn('credentials', {

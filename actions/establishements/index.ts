@@ -6,11 +6,11 @@ export const createEstablishement = async (name: string) => {
   try {
     console.log('start');
     const exam = await db.establishment.create({
-        data: {
-            name: name
-        }
+      data: {
+        name: name,
+      },
     });
-    console.log('estab created succecfully ! ')
+    console.log('estab created succecfully ! ');
   } catch (error: any) {
     return {
       error: 'Failed to create establishement.',
@@ -18,13 +18,11 @@ export const createEstablishement = async (name: string) => {
   }
 };
 
-
-
 export const getAllEstabs = async () => {
   try {
     const estabs = await db.establishment.findMany({
       skip: 0,
-      take: 15
+      take: 15,
     });
     console.log(estabs);
     return { data: estabs, error: undefined };
@@ -35,8 +33,6 @@ export const getAllEstabs = async () => {
     };
   }
 };
-
-
 
 export const editEstablishement = async (id: number, name: string) => {
   try {
@@ -57,13 +53,9 @@ export const editEstablishement = async (id: number, name: string) => {
   }
 };
 
-
-
-
 export const deleteEstablishement = async (id: number) => {
-  console.log(id)
+  console.log(id);
   try {
-
     const data = await db.establishment.delete({
       where: {
         id: id,
@@ -76,4 +68,3 @@ export const deleteEstablishement = async (id: number) => {
     };
   }
 };
-

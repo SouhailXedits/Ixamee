@@ -26,6 +26,8 @@ import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
 import { useRouter } from 'next/navigation';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
+import { useQuery } from '@tanstack/react-query';
+import { getAllGovernments } from '@/actions/government';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -51,12 +53,24 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
     },
   });
   const [showPassword, setShowPassword] = useState(false);
-  const govOptions = [
-    { id: 1, value: 'tunis', label: 'Tunis' },
-    { id: 1, value: 'sousse', label: 'Sousse' },
-    { id: 1, value: 'beja', label: 'Beja' },
-  ];
-  const [isPending, startTransition] = useTransition();
+
+  const {
+    data,
+    error: getEstabsError,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['goverments'],
+    queryFn: async () => await getAllGovernments(),
+  });
+
+  const govOptions =
+    (data?.data &&
+      data?.data.map((gov: any) => {
+        return { id: gov.id, value: gov.government, label: gov.government };
+      })) ||
+    [];
+
+  const [isTransPending, startTransition] = useTransition();
 
   const onSubmit = async (values: z.infer<typeof RegisterProfSchema>) => {
     values.role = role;
@@ -131,7 +145,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       placeholder="Entrez votre nom"
                       type="text"
                       icon={<LucidePencil className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -155,7 +169,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       type="text"
                       placeholder="Entrez votre prénom"
                       icon={<LucidePencil className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -181,7 +195,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       placeholder="Entrez votre e-mail"
                       type="email"
                       icon={<MdOutlineEmail className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -205,7 +219,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       placeholder="+216 00 000 000"
                       type="tel"
                       icon={<TnFlag width={20} height={20} className="" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -227,7 +241,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
-                      disabled={isPending}
+                      disabled={isTransPending || isPending}
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
@@ -254,7 +268,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       placeholder="Entrez votre mot de passe"
                       type={showPassword ? 'text' : 'password'}
                       icon={<IoKeyOutline className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -266,7 +280,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
         </div>
 
         <Button
-          disabled={isPending}
+          disabled={isTransPending}
           className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
         >
           S&apos;inscrire
