@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllAdminTeachers } from '@/actions/teachers';
 
-const Teacher = ({ params }: { params: { classesId: string } }) => {
+const Teacher = () => {
 
 
 

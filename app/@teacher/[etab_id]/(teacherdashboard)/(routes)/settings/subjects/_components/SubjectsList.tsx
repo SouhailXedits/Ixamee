@@ -158,6 +158,14 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
   },
 ];
 
+interface subjectListProps {
+  data: SubjectOutputProps[];
+  isPending: boolean;
+  onPageChange: (page: number) => void;
+  currentpage: number;
+  totalCount: number;
+}
+
 export function SubjectsList({ data, isPending, onPageChange, currentpage, totalCount }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);

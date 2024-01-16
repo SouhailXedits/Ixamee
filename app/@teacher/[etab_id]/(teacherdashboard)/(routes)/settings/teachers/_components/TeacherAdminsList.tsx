@@ -19,11 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
@@ -160,7 +156,12 @@ export const columns: ColumnDef<teacherAminOutput>[] = [
   },
 ];
 
-export function TeacherAdminsList({ data, isPending }) {
+interface teacherAdminListProps {
+  data: teacherAminOutput[];
+  isPending: boolean;
+}
+
+export function TeacherAdminsList({ data, isPending }: teacherAdminListProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -226,7 +227,7 @@ export function TeacherAdminsList({ data, isPending }) {
                   colSpan={columns.length}
                   className="h-24 text-lg text-center bg-transparent"
                 >
-                  Pas d&apos;admins ajoutés. 
+                  Pas d&apos;admins ajoutés.
                 </TableCell>
               </TableRow>
             )}
