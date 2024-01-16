@@ -9,10 +9,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 interface Option {
-  id:number;
+  id: number;
   value: string;
   label: string;
-
 }
 interface SelectScrollableParams {
   options: Option[];
@@ -22,14 +21,21 @@ interface SelectScrollableParams {
     onChange: (value: string) => void;
     value: string;
   };
+  disabled: boolean;
 }
-export function SelectScrollable({ options, placeholder, icon, field }: SelectScrollableParams) {
+export function SelectScrollable({
+  options,
+  placeholder,
+  icon,
+  field,
+  disabled,
+}: SelectScrollableParams) {
   return (
     <div className="relative">
       {icon && (
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10">{icon}</div>
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2">{icon}</div>
       )}
-      <Select onValueChange={field.onChange} defaultValue={field.value} >
+      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
         <SelectTrigger className="w-full text-gray pl-10">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

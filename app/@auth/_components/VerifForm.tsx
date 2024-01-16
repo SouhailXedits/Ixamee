@@ -11,7 +11,7 @@ import { GoShieldCheck } from 'react-icons/go';
 import { Input } from '@/components/ui/auth-input';
 import { emailVerification } from '@/actions/auth/email-verification';
 import { useRouter } from 'next/navigation';
-
+import bcryptjs from 'bcryptjs';
 export default function VerifForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -26,14 +26,9 @@ export default function VerifForm() {
     },
   });
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const verificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
-      console.log(verificationData);
-    }
-  }, []); 
-
   const onSubmit = useCallback(async () => {
+    setError('');
+    setSuccess('');
     if (success || error) {
       return;
     }
@@ -42,18 +37,18 @@ export default function VerifForm() {
 
     try {
       const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      const codeMatch = await bcryptjs.compare(formData.code, storedVerificationData.code);
 
-      if (storedVerificationData && storedVerificationData.code === Number(formData.code)) {
+      if (storedVerificationData && codeMatch) {
         const data = await emailVerification(storedVerificationData.email);
         setSuccess(data.success);
         setError(data.error);
-        localStorage.removeItem('email-verification');
         setRegistrationSuccessful(true);
       } else {
         setError('Code invalid!');
       }
     } catch (err) {
-      setError('Quelque chose s\'est mal passé !');
+      setError("Quelque chose s'est mal passé !");
     }
   }, [form, success, error]);
 

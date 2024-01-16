@@ -22,27 +22,24 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Image from 'next/image';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { useCreateEstab } from '../hooks/useCreateEstab';
 import { useEditEstab } from '../hooks/useEditEstab';
-
-
 
 interface editEstabProps {
   id: number;
   currentName: string;
   children: React.ReactNode;
-
 }
-export const EditEstab = ({ id, currentName,children }: editEstabProps) => {
+export const EditEstab = ({ id, currentName, children }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  
+
   // const [file, setFile] = useState<File | null>(null);
   // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-  const [name, setName] = useState("")
-  const { editEstablishement , isPending} = useEditEstab();
-  console.log(name)
-  
+  const [name, setName] = useState('');
+  const { editEstablishement, isPending } = useEditEstab();
+  console.log(name);
+
   // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files && e.target.files.length > 0) {
   //     const selectedFile = e.target.files[0];
@@ -54,21 +51,19 @@ export const EditEstab = ({ id, currentName,children }: editEstabProps) => {
   //     }
   //   }
   // };
-  
+
   async function handlEditEstab() {
-    editEstablishement({id, name})
-    if(!isPending) setIsFirstModalOpen(!isFirstModalOpen)
+    editEstablishement({ id, name });
+    if (!isPending) setIsFirstModalOpen(!isFirstModalOpen);
   }
 
-  
-
   function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen)
+    setIsFirstModalOpen(!isFirstModalOpen);
   }
 
   return (
-    <Dialog >
-      <DialogTrigger asChild >{children}</DialogTrigger>
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
@@ -92,16 +87,18 @@ export const EditEstab = ({ id, currentName,children }: editEstabProps) => {
         </div>
 
         <DialogFooter>
-          <Button
-            onClick={() => {
-              isFirstModalOpen ? returnToCreate() : handlEditEstab();
-            }}
-            type="submit"
-            disabled={isPending}
-            className="w-full bg-[#1B8392] hover:opacity-80 "
-          >
-            éditer une établissement.
-          </Button>
+          <DialogClose className=' w-full'>
+            <Button
+              onClick={() => {
+                isFirstModalOpen ? returnToCreate() : handlEditEstab();
+              }}
+              type="submit"
+              disabled={isPending}
+              className="w-full bg-[#1B8392] hover:opacity-80 "
+            >
+              éditer une établissement.
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

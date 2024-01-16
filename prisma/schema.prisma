@@ -156,7 +156,8 @@ model TeacherSubject {
 
   @@id([subject_id, user_id])
 }
-
+ 
+ 
 model UserExam {
   user       User?    @relation(fields: [user_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   user_id    String // relation scalar field (used in the `@relation` attribute above)
@@ -166,6 +167,7 @@ model UserExam {
   assignedBy String
 
   @@id([user_id, exam_id])
+
 }
 
 model ExamClasse {
@@ -239,6 +241,7 @@ model question {
 }
 
 
+// ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
   exam          Exam? @relation(fields: [exam_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)

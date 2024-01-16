@@ -21,11 +21,10 @@ import { useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
-import { useQueryClient } from '@tanstack/react-query';
-
+import bcryptjs from 'bcryptjs';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
-import { sendVerificationEmail } from '@/lib/mail';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function LoginForm() {
   const [error, setError] = useState<string | undefined>('');
@@ -41,20 +40,42 @@ export default function LoginForm() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
+  const [isRegistrationFormSuccessful, setRegistrationFormSuccessful] = useState<boolean>(false);
 
   const [isPending, startTransition] = useTransition();
+
   const queryClient = useQueryClient();
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError('');
     setSuccess('');
-    startTransition(() => {
+    startTransition(async () => {
       let code = generateSixDigitNumber();
+      const hashedCode = await bcryptjs.hash(code + '', 10);
+      // const hashedPassword = await bcryptjs.hash(values.password + '', 10);
+
       login(values, code).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
-        localStorage.setItem('email-verification', JSON.stringify({ email: values.email, code }));
-        setRegistrationSuccessful(true);
+        localStorage.setItem(
+          'email-verification',
+          JSON.stringify({ email: values.email, code: hashedCode })
+        );
+        if (data?.success === 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.') {
+          setRegistrationSuccessful(true);
+        }
+        if (data?.success === 'Vous étes presque arrivé ! complete votre inscription') {
+          localStorage.setItem(
+            'email-verification',
+            JSON.stringify({
+              email: values.email,
+              code: hashedCode,
+              password:values.password,
+              rememberMe: values.rememberMe,
+            })
+          );
+          setRegistrationFormSuccessful(true);
+        }
       });
     });
   };
@@ -63,11 +84,14 @@ export default function LoginForm() {
     if (isRegistrationSuccessful) {
       router.push('/email-verification');
     }
-  }, [isRegistrationSuccessful, router]);
+    if (isRegistrationFormSuccessful) {
+      router.push('/teacher-after');
+    }
+  }, [isRegistrationSuccessful, isRegistrationFormSuccessful, router]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" method="post">
         <FormError message={error} />
         <FormSuccess message={success} />
         <div className="w-full flex flex-col gap-4">

@@ -25,6 +25,9 @@ import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from './SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
+import { useQuery } from '@tanstack/react-query';
+import { getAllGovernments } from '@/actions/government';
+import { getAllEstabs } from '@/actions/establishements';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -50,12 +53,54 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
     },
   });
   const [showPassword, setShowPassword] = useState(false);
-  const govOptions = [
-    { value: 'tunis', label: 'Tunis' },
-    { value: 'sousse', label: 'Sousse' },
-    { value: 'beja', label: 'Beja' },
+
+  const {
+    data: establishments,
+    error: getEstabsError,
+    isPending: estabPending,
+  } = useQuery<any>({
+    queryKey: ['establishments'],
+    queryFn: async () => await getAllEstabs(),
+  });
+  const estabOptions =
+    (establishments?.data &&
+      establishments?.data?.estabs.map((estab: any) => {
+        return { id: estab.id, value: estab.name, label: estab.name };
+      })) ||
+    [];
+
+  const {
+    data,
+    error: getGovError,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['goverments'],
+    queryFn: async () => await getAllGovernments(),
+  });
+
+  const govOptions =
+    (data?.data &&
+      data?.data.map((gov: any) => {
+        return { id: gov.id, value: gov.government, label: gov.government };
+      })) ||
+    [];
+
+  const classOptions = [
+    { id: 1, label: '7eme année', value: '7eme année' },
+    { id: 2, label: '8eme année', value: '8eme année' },
+    { id: 3, label: '9eme année', value: '9eme année' },
+    { id: 4, label: '1ère année', value: '1ère année' },
+    { id: 5, label: '2ème année', value: '2ème année' },
+    { id: 6, label: '3ème année', value: '3ème année' },
+    { id: 10, label: 'Bac informatique', value: 'Bac informatique' },
+    { id: 10, label: 'Bac technique', value: 'Bac technique' },
+    { id: 10, label: 'Bac science', value: 'Bac science' },
+    { id: 10, label: 'Bac lettre', value: 'Bac lettre' },
+    { id: 10, label: 'Bac math', value: 'Bac math' },
+    { id: 10, label: 'Bac sport', value: 'Bac sport' },
   ];
-  const [isPending, startTransition] = useTransition();
+
+  const [isTransPending, startTransition] = useTransition();
 
   const onSubmit = async (values: z.infer<typeof RegisterEtudSchema>) => {
     values.role = role;
@@ -122,7 +167,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       placeholder="Entrez votre nom"
                       type="text"
                       icon={<LucidePencil className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -146,7 +191,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       type="text"
                       placeholder="Entrez votre prénom"
                       icon={<LucidePencil className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -172,7 +217,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       placeholder="Entrez votre e-mail"
                       type="email"
                       icon={<MdOutlineEmail className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -192,7 +237,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
-                      disabled={isPending}
+                      disabled={isTransPending || isPending}
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
@@ -217,10 +262,10 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
-                      disabled={isPending}
+                      disabled={isTransPending || isPending}
                       field={field}
                       placeholder={'Choisissez votre établissement'}
-                      options={govOptions}
+                      options={estabOptions}
                       icon={<FaGraduationCap className="text-gray w-5 h-5" />}
                     />
                   </FormControl>
@@ -240,10 +285,10 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
-                      disabled={isPending}
+                      disabled={isTransPending}
                       field={field}
                       placeholder={'Sélectionnez votre classe'}
-                      options={govOptions}
+                      options={classOptions}
                       icon={<MdOutlineClass className="text-gray w-5 h-5" />}
                     />
                   </FormControl>
@@ -269,7 +314,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       placeholder="Entrez votre mot de passe"
                       type={showPassword ? 'text' : 'password'}
                       icon={<IoKeyOutline className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -293,7 +338,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       placeholder="Vérifiez le mot de passe"
                       type={showPassword ? 'text' : 'password'}
                       icon={<IoKeyOutline className="text-gray w-5 h-5" />}
-                      disabled={isPending}
+                      disabled={isTransPending}
                       className=" max-w-full"
                     />
                   </FormControl>
@@ -305,7 +350,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
         </div>
 
         <Button
-          disabled={isPending}
+          disabled={isTransPending}
           className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
         >
           S&apos;inscrire

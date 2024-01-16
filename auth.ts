@@ -28,10 +28,6 @@ export const {
   },
   callbacks: {
     async signIn({ user, account }) {
-      console.log('🚀 ~ signIn ~ account:', account);
-      console.log('🚀 ~ signIn ~ user:', user);
-      //Allow OAuth without email verification
-
       if (account?.provider !== 'credentials') {
         return true;
       }
@@ -41,11 +37,10 @@ export const {
       if (!existingUser || !existingUser.emailVerified) {
         return false;
       }
+
       return true;
     },
     async session({ token, session }) {
-      console.log(token, session.user);
-
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }

@@ -22,34 +22,27 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Image from 'next/image';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { useCreateEstab } from '../hooks/useCreateEstab';
 import { useEditEstab } from '../hooks/useEditEstab';
 import { useDeleteEstab } from '../hooks/useDeleteEstab copy';
 
-
-
 interface editEstabProps {
   id: number;
   children: React.ReactNode;
-
 }
 export const DeleteEstab = ({ id, children }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
-  const { deleteEstablishement , isPending} = useDeleteEstab();
+  const { deleteEstablishement, isPending } = useDeleteEstab();
 
-
-  
   async function handlDeleteEstab() {
     deleteEstablishement(id);
     if (!isPending) setIsFirstModalOpen(!isFirstModalOpen);
   }
 
-  
-
   function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen)
+    setIsFirstModalOpen(!isFirstModalOpen);
   }
 
   return (
@@ -82,16 +75,29 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
         </div>
 
         <DialogFooter>
-          <Button
-            onClick={() => handlDeleteEstab()}
-            type="submit"
-            disabled={isPending}
-            className="w-full bg-[#F04438] hover:opacity-80 "
-          >
-            Supprimer une établissement.
-          </Button>
+          <DialogClose className=' w-full'>
+            <Button
+              type="button"
+              disabled={isPending}
+              className="w-full bg-transparent border border-[#177C9A] rounded hover:opacity-80 text-[#177C9A]"
+            >
+              Annuler
+            </Button>
+          </DialogClose>
+          <DialogClose>
+            <Button
+              onClick={() => handlDeleteEstab()}
+              type="submit"
+              disabled={isPending}
+              className="w-full bg-[#F04438] hover:opacity-80 "
+            >
+              Supprimer une établissement.
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
+
+

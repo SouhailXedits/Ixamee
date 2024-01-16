@@ -1,7 +1,5 @@
 import React from 'react';
 import Logo from '../../_components/Logo';
-import Link from 'next/link';
-import Social from '../../_components/Social';
 import GoogleAfterForm from '../../_components/google-after-form';
 export default function GoogleAfter() {
   return (

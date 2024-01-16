@@ -1,12 +1,12 @@
 'use server';
-import { signIn } from '@/auth';
+import { auth, signIn } from '@/auth';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { AuthError } from 'next-auth';
 
 export const googleLogin = async () => {
   try {
     await signIn('google', {
-      // redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: `/google-after`,
     });
   } catch (error) {
     if (error instanceof AuthError) {

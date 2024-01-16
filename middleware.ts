@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import authConfig from './auth.config';
 import { auth as authentification } from '@/auth';
 import { DEFAULT_LOGIN_REDIRECT, apiAuthPrefix, authRoutes, publicRoutes } from '@/routes';
+import { getUserEstablishmentByUserId } from './data/user';
 const { auth } = NextAuth(authConfig);
 
 export default auth(async (req) => {
@@ -12,20 +13,22 @@ export default auth(async (req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+
   if (isApiAuthRoute) {
     return null;
   }
-  console.log('🚀 ~ auth ~ isAuthRoute:', isAuthRoute);
+
+console.log(isAuthRoute);
+
+
   if (isAuthRoute) {
-    const session = await authentification();
-    const estabId = session?.user?.establishement_id || '1';
-    if (isLoggedIn) {
-      return Response.redirect(new URL(`${DEFAULT_LOGIN_REDIRECT}${estabId}/`, nextUrl));
-    }
     return null;
   }
-
-  if (!isLoggedIn && !isPublicRoute) {
+  if (isAuthRoute && !isPublicRoute) {
+    return null;
+  }
+    
+  if (!isLoggedIn && !isPublicRoute ) {
     return Response.redirect(new URL('/login', nextUrl));
   }
 
@@ -34,5 +37,5 @@ export default auth(async (req) => {
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/:estab_id', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/(api|trpc)(.*)'],
 };

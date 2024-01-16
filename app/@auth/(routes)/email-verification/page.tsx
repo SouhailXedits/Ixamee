@@ -4,7 +4,7 @@ import Logo from '../../_components/Logo';
 import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
 import { sendVerificationEmail } from '@/lib/mail';
-export default async function EmailVerification() {
+export default function EmailVerification() {
   const [verificationData, setVerificationData] = useState({});
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -12,6 +12,7 @@ export default async function EmailVerification() {
       setVerificationData(storedData);
     }
   }, []);
+
 
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
@@ -54,7 +55,7 @@ export default async function EmailVerification() {
                 // onClick={async () => {
                 //   verificationData !== null &&
                 //     (await sendVerificationEmail(verificationData?.email, verificationData?.code));
-                //  
+                //
                 // }}
               >
                 Renvoyez
