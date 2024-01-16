@@ -92,7 +92,7 @@ export const DeleteAdminModal = ({ id, children }: EditUserFormProps) => {
               disabled={isPending}
               className="w-full bg-[#F04438] hover:opacity-80 "
             >
-              Supprimer une établissement.
+              Supprimer cet admin.
             </Button>
           </DialogClose>
         </DialogFooter>
