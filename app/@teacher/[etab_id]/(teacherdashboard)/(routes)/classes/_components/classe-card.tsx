@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 interface itemProps {
   id: number;
-  className: string;
+  name: string;
   NumberOfStudent: number;
 }
 
@@ -14,7 +14,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
   return (
     <div className="w-[275px] h-[190px] bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] ">
       <div className="flex justify-between w-full px-5">
-        <span className="text-xl font-semibold  text-[#727272]">{data.className}</span>
+        <span className="text-xl font-semibold  text-[#727272]">{data.name}</span>
         <DropdownMenuItemSelect>
           <Image
             src="/icons/kebab-menu.svg"
@@ -26,7 +26,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
         </DropdownMenuItemSelect>
       </div>
       <div className="w-full px-5 font-[600] text-lg text-[#727272] pb-7 ">
-        {data.NumberOfStudent} étudiants
+        {data?.StudentClass?.length} étudiants
       </div>
 
       <Link

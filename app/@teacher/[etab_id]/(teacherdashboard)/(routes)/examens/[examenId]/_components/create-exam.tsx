@@ -153,8 +153,11 @@ const Exercise: React.FC<ExerciseProps> = ({
   );
 };
 
-export const CreateExam = () => {
+export const CreateExam = ({ examId }: { examId: string }) => {
+  console.log(examId);
   const [editeExerciceName, setEditeExerciceName] = useState<null | Number>(null);
+  
+
   const [exercises, setExercises] = useState([]);
 
   const calculateTotalExamMark = () => {

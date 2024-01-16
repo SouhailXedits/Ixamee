@@ -25,7 +25,7 @@ model User {
   classe            Classe[]
   subject_id        Int?
   UserEstablishment UserEstablishment[]
-  Government        Government?         @relation(fields: [governmentId], references: [id])
+  Government        Government?         @relation(fields: [governmentId], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   governmentId      Int?
   UserExam          UserExam[]
   exams             Exam[]
@@ -89,9 +89,9 @@ model Establishment {
 }
 
 model UserEstablishment {
-  establishement    Establishment? @relation(fields: [establishement_id], references: [id])
+  establishement    Establishment? @relation(fields: [establishement_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   establishement_id Int // relation scalar field (used in the `@relation` attribute above)
-  user              User?          @relation(fields: [user_id], references: [id])
+  user              User?          @relation(fields: [user_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   user_id           String // relation scalar field (used in the `@relation` attribute above)
   assignedAt        DateTime       @default(now())
   assignedBy        String
@@ -103,20 +103,21 @@ model UserEstablishment {
 model Classe {
   id               String         @id @default(cuid())
   name             String
-  range            String
-  establishment    Establishment  @relation(fields: [establishment_id], references: [id])
+  subject          ClasseSubject[] 
+  range            String?
+  establishment    Establishment  @relation(fields: [establishment_id], references: [id] , onDelete: Cascade , onUpdate: Cascade) // Many-to-one relationship with Establishment
   establishment_id Int
-  teacher          User?          @relation(fields: [teacher_id], references: [id]) // Many-to-one relationship with User
+  teacher          User?          @relation(fields: [teacher_id], references: [id] ,onDelete: Cascade, onUpdate:  Cascade) // Many-to-one relationship with User
   teacher_id       String?
   StudentClass     StudentClass[]
-  is_archived      Boolean
+  is_archived      Boolean?
   ExamClasse       ExamClasse[]
 }
 
 model StudentClass {
-  class      Classe?  @relation(fields: [classe_id], references: [id])
+  class      Classe?  @relation(fields: [classe_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   classe_id  String // relation scalar field (used in the `@relation` attribute above)
-  user       User?    @relation(fields: [user_id], references: [id])
+  user       User?    @relation(fields: [user_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   user_id    String // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
@@ -128,16 +129,27 @@ model StudentClass {
 model Subject {
   id    Int              @id @default(autoincrement())
   name  String
-  cofficient Float?
+  coefficient Float?
   icon  String?
   user  TeacherSubject[] // Many-to-one relationship with Establishment
   exams Exam[] // One-to-many relationship with Exam
+  ClasseSubject ClasseSubject[]
+}
+model ClasseSubject{
+  subject    Subject? @relation(fields: [subject_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
+  subject_id Int // relation scalar field (used in the `@relation` attribute above)
+  classe     Classe?  @relation(fields: [classe_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
+  classe_id  String // relation scalar field (used in the `@relation` attribute above)
+  assignedAt DateTime @default(now())
+  assignedBy String
+  
+  @@id([subject_id, classe_id])
 }
 
 model TeacherSubject {
-  subject    Subject? @relation(fields: [subject_id], references: [id])
+  subject    Subject? @relation(fields: [subject_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   subject_id Int // relation scalar field (used in the `@relation` attribute above)
-  user       User?    @relation(fields: [user_id], references: [id])
+  user       User?    @relation(fields: [user_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   user_id    String // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
@@ -146,9 +158,9 @@ model TeacherSubject {
 }
 
 model UserExam {
-  user       User?    @relation(fields: [user_id], references: [id])
+  user       User?    @relation(fields: [user_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   user_id    String // relation scalar field (used in the `@relation` attribute above)
-  exam       Exam?    @relation(fields: [exam_id], references: [id])
+  exam       Exam?    @relation(fields: [exam_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   exam_id    Int // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
@@ -157,9 +169,9 @@ model UserExam {
 }
 
 model ExamClasse {
-  class      Classe?  @relation(fields: [classe_id], references: [id])
+  class      Classe?  @relation(fields: [classe_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   classe_id  String // relation scalar field (used in the `@relation` attribute above)
-  exam       Exam?    @relation(fields: [exam_id], references: [id])
+  exam       Exam?    @relation(fields: [exam_id], references: [id] ,onDelete: Cascade, onUpdate:  Cascade)
   exam_id    Int // relation scalar field (used in the `@relation` attribute above)
   assignedAt DateTime @default(now())
   assignedBy String
@@ -174,27 +186,30 @@ model Exam {
   exercises         Exercise[]
   total_mark        Float
   coefficient       Float
-  teacher           User?               @relation(fields: [teacher_id], references: [id])
+  teacher           User?               @relation(fields: [teacher_id], references: [id]  , onDelete: Cascade , onUpdate: Cascade)
   teacher_id        String?
   students          UserExam[]
-  class_id          Int
-  subject           Subject             @relation(fields: [subject_id], references: [id]) // One-to-one relationship with Subject
+  subject           Subject             @relation(fields: [subject_id], references: [id] , onDelete: Cascade , onUpdate: Cascade) // One-to-one relationship with Subject
   subject_id        Int
+  progress          String? @default("0")
   examEstablishment ExamEstablishment[] 
-  term               String?  
+  term              String?  
   ExamCorrection    ExamCorrection[]
-  is_archived        Boolean? @default(false)
+  is_archived       Boolean? @default(false)
   ExamClassess      ExamClasse[]
-  // style       String    // Consider using an enum for style
+  style             Style?    // Consider using an enum for style
 }
-
+enum Style {
+  fr
+  ar
+}
 model ExamEstablishment {
-  establishement    Establishment? @relation(fields: [establishement_id], references: [id])
+  establishement    Establishment @relation(fields: [establishement_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   establishement_id Int // relation scalar field (used in the `@relation` attribute above)
-  exam              Exam?          @relation(fields: [exam_id], references: [id])
+  exam              Exam          @relation(fields: [exam_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   exam_id           Int // relation scalar field (used in the `@relation` attribute above)
-  assignedAt        DateTime       @default(now())
-  assignedBy        String
+  assignedAt        DateTime?       @default(now())
+  assignedBy        String?
 
   @@id([establishement_id, exam_id])
 }
@@ -203,26 +218,44 @@ model ExamEstablishment {
 model Exercise {
   id                 Int                  @id @default(autoincrement())
   name               String
-  exam               Exam?                @relation(fields: [exam_id], references: [id])
+  exam               Exam?                @relation(fields: [exam_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   exam_id            Int?
   marks              Float
-  parent_id          Int? // Add this field to reference the parent Exercise
-  parent             Exercise?            @relation("ExerciseToSubExercise", fields: [parent_id], references: [id])
-  subExercises       Exercise[]           @relation("ExerciseToSubExercise")
   question_type      String
   ExerciseCorrection ExerciseCorrection[]
+  question           question[]
 }
+model question {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  exercise               Exercise?                @relation(fields: [exercise_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
+  exercise_id            Int?
+  marks              Float
+  parent_id          Int? // Add this field to reference the parent Exercise
+  parent             question?            @relation("questionToSubquestion", fields: [parent_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
+  subquestion       question[]           @relation("questionToSubquestion")
+  question_type      String
+  ExerciseCorrection QuestionCorrection[]
+}
+
 
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
-  exam          Exam? @relation(fields: [exam_id], references: [id])
+  exam          Exam? @relation(fields: [exam_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   exam_id       Int
   mark_obtained Float
 }
 
 model ExerciseCorrection {
   id            Int       @id @default(autoincrement())
-  exercise      Exercise? @relation(fields: [exercise_id], references: [id])
+  exercise      Exercise? @relation(fields: [exercise_id], references: [id], onDelete: Cascade , onUpdate: Cascade)
   exercise_id   Int
   mark_obtained Float
 }
+model QuestionCorrection {
+  id            Int       @id @default(autoincrement())
+  question      question? @relation(fields: [exercise_id], references: [id], onDelete: Cascade , onUpdate: Cascade)
+  exercise_id   Int
+  mark_obtained Float
+}
+

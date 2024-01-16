@@ -1,8 +1,21 @@
+'use client';
 import Image from 'next/image';
 import ClasseCardContainer from './_components/classe-card-container';
 import { AjouterUneClasse } from '@/components/modals/ajouter-une-classe';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getAllClasse } from '@/actions/classe';
 
 export default function Classes() {
+  const queryClient = useQueryClient();
+  const etab_id = queryClient.getQueryData(['etab_id']) as number;
+  const user = queryClient.getQueryData(['user']) as any;
+  
+  const { data, isPending } = useQuery({
+    queryKey: ['classe'],
+    queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
+  });
+  // to DO Scelton
+
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -25,7 +38,7 @@ export default function Classes() {
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
           </div>
-          <AjouterUneClasse>
+          <AjouterUneClasse user_id={user?.id} estab={etab_id}>
             <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
                 Ajouter une classe
@@ -36,7 +49,7 @@ export default function Classes() {
       </nav>
 
       <div>
-        <ClasseCardContainer />
+        <ClasseCardContainer data={data} />
       </div>
     </main>
   );

@@ -51,14 +51,8 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
         },
       },
     },
-    select: {
-      id: true,
-      name: true,
-      total_mark: true,
-      coefficient: true,
-      teacher_id: true,
-      class_id: true,
-      subject_id: true,
+    include: {
+      examEstablishment: true,
       ExamClassess: {
         select: {
           classe_id: true,
@@ -130,6 +124,7 @@ export const getTermOfUser = async (user_id: string) => {
   return term;
 };
 export const getEstablishmentOfUser = async (user_id: string) => {
+  console.log(user_id);
   const data = await db.userEstablishment.findMany({
     where: {
       user_id: user_id,
@@ -156,8 +151,6 @@ export const getOneExamById = async ({ id }: { id: number }) => {
 };
 
 export async function createExamm(data: any, user_id: string) {
-  console.log(data);
-  console.log(user_id);
   try {
     const examm = await db.exam.create({
       data: {
@@ -169,7 +162,6 @@ export async function createExamm(data: any, user_id: string) {
             id: user_id,
           },
         },
-        class_id: 1,
         subject: {
           connect: {
             id: +data.subject.value,
@@ -188,17 +180,148 @@ export async function createExamm(data: any, user_id: string) {
         examEstablishment: {
           create: data.establishment.map((establishmentId: any) => ({
             establishement: {
-              connect: { id: 1 },
+              connect: { id: establishmentId.value },
             },
             assignedBy: user_id,
           })),
         },
       },
     });
-    console.log(examm);
     return examm;
   } catch (error) {
     console.error('Error creating exam:', error);
     throw error;
   }
 }
+export async function updateExam(examId: number, data: any, user_id: string) {
+  console.log(data);
+  try {
+    const updatedExam = await db.exam.update({
+      where: {
+        id: examId,
+      },
+      include: {
+        examEstablishment: true,
+      },
+      data: {
+        name: data.name,
+        total_mark: +data.totalMarks,
+        coefficient: +data.coefficient,
+        subject: data.subject
+          ? {
+              connect: {
+                id: +data.subject.value,
+              },
+            }
+          : undefined,
+        term: data.term,
+
+        ExamClassess: {
+          updateMany: data.classes
+            ? data.classes.map((classId: any) => ({
+                where: {
+                  exam_id: examId,
+                },
+                data: {
+                  assignedBy: 'some_updated_value',
+                },
+              }))
+            : undefined,
+        },
+        //TO DO : update the assignedBy field with the current user id
+        examEstablishment: {
+          updateMany: data.establishment
+            ? data.establishment.map((establishmentId: any) => ({
+                where: {
+                  exam_id: examId,
+                  establishement_id: +establishmentId.value,
+                },
+                data: {
+                  assignedBy: 'some_updddsdsdssdsdsdsated_value',
+                },
+              }))
+            : undefined,
+        },
+      },
+    });
+
+    // data.establishment
+    // ? data.establishment.map((establishmentId: any) => ({
+    //     id: +establishmentId.value,
+    //   }))
+    // : undefined,
+    return updatedExam;
+  } catch (error) {
+    console.error('Error updating exam:', error);
+    throw error;
+  }
+}
+
+export const deleteExame = async (id: number) => {
+  try {
+    await db.exam.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    console.log('Exam deleted succecfully ! ');
+  } catch (error: any) {
+    console.log(error);
+    return {
+      error: 'Failed to delete Exam.',
+    };
+  }
+};
+
+// const getRecursiveExamQuestion = async () => {
+//   const exam_id = 19;
+//   const exercises = await db.exercise.findUnique({
+
+//     includeRecursive: { children: { maxDepth: 10 } },
+//   });
+
+//   console.log(exercises);
+//   const questionsId = exercises[0]?.question?.id;
+//   console.log(questionsId);
+// };
+const getRecursiveExamQuestion = async () => {
+  const exam_id = 19;
+  // const result = await db.$queryRaw`
+  //   WITH RECURSIVE RecursiveQuestions AS (
+  //     SELECT *
+  //     FROM question as q1
+  //     where q1.id = 1
+  //     UNION ALL
+
+  //     SELECT q2.*
+  //     FROM question as q2
+  //     JOIN RecursiveQuestions rq ON q2.parent_id = rq.id
+
+  //   )
+  //   SELECT * FROM RecursiveQuestions;
+  // `;
+  const result = await db.exercise.findMany({
+    where: {
+      id: 5,
+    },
+    include: {
+      question: {
+        include: {
+          parent: true,
+        },
+      },
+    },
+  });
+};
+
+getRecursiveExamQuestion();
+
+const getSubQuestionOfExercice = async (exercice_id: number) => {
+  const subQuestions = await db.question.findMany({
+    where: {
+      parent_id: exercice_id,
+    },
+  });
+  return subQuestions;
+};
