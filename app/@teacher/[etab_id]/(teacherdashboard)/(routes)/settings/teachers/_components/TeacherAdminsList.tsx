@@ -36,6 +36,53 @@ import { teacherAminOutput } from '@/types/users/teacher';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TeachersInfos } from './TeacherInofs';
 import { DeleteAdminModal } from './DeleteAdminModal';
+import { useQueryClient } from '@tanstack/react-query';
+
+
+
+
+function ActionsModal({ rowData }) {
+  const queryClient = useQueryClient()
+  const currentLoggedUser = queryClient.getQueryData(['user']) as any
+  console.log(currentLoggedUser)
+  const isCurrentUser = currentLoggedUser.id === rowData.id
+  return (
+    <div className="flex items-center gap-4 " style={{ width: '50px' }}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="w-8 h-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          {/* <DropdownMenuItem> */}
+          <TeachersInfos currentUser={rowData}>
+            {/* <Image
+                  src="/eyesicon.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="cursor-pointer "
+                /> */}
+            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
+              View infos
+            </p>
+            {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
+          </TeachersInfos>
+          {!isCurrentUser && 
+          <DeleteAdminModal id={rowData.id}>
+            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
+              Supprimer l&apos;admin
+            </p>
+          </DeleteAdminModal> }
+
+          {/* <DropdownMenuItem>Supprimer</DropdownMenuItem> */}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
 
 
 
@@ -116,43 +163,7 @@ export const columns: ColumnDef<teacherAminOutput>[] = [
     id: 'actions',
     enableHiding: false,
 
-    cell: ({row}) => {
-      return (
-        <div className="flex items-center gap-4 " style={{ width: '50px' }}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="w-8 h-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {/* <DropdownMenuItem> */}
-              <TeachersInfos currentUser={row.original}>
-                {/* <Image
-                  src="/eyesicon.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="cursor-pointer "
-                /> */}
-                <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-                  View infos
-                </p>
-                {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-              </TeachersInfos>
-              <DeleteAdminModal id={row.original.id}>
-                <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-                  Supprimer l&apos;admin
-                </p>
-              </DeleteAdminModal>
-
-              {/* <DropdownMenuItem>Supprimer</DropdownMenuItem> */}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
+    cell: ({ row }) => <ActionsModal rowData={row.original} />,
   },
 ];
 

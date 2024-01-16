@@ -10,6 +10,9 @@ import SettingsBtn from './SettingsBtn';
 import { useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
+import { auth } from '@/auth';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Skeleton } from '@/components/ui/skeleton';
 // import { useSidebar } from '@/store/use-sidebar';
 // import Image from 'next/image';
 // import { cn } from '@/lib/utils';
@@ -69,6 +72,7 @@ const parametersRoutes = [
 ];
 
 function ParametersSidebar() {
+  const queryclient = useQueryClient()
   const { collapsed } = useSidebar((state) => state);
 
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -76,6 +80,12 @@ function ParametersSidebar() {
     setIsActive((prev) => !prev);
   }
   const paramroutes = parametersRoutes;
+  
+  const user = queryclient.getQueryData(['user']) as any
+
+
+  if(!user || user.role!== 'ADMIN') return null
+  
 
   return (
     <Accordion type="single" collapsible className="w-full">
