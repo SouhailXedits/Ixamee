@@ -27,6 +27,7 @@ import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import { getAllGovernments } from '@/actions/government';
+import { getAllEstabs } from '@/actions/establishements';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -54,8 +55,23 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const {
-    data,
+    data: establishments,
     error: getEstabsError,
+    isPending: estabPending,
+  } = useQuery<any>({
+    queryKey: ['establishments'],
+    queryFn: async () => await getAllEstabs(),
+  });
+  const estabOptions =
+    (establishments?.data &&
+      establishments?.data?.estabs.map((estab: any) => {
+        return { id: estab.id, value: estab.name, label: estab.name };
+      })) ||
+    [];
+
+  const {
+    data,
+    error: getGovError,
     isPending,
   } = useQuery<any>({
     queryKey: ['goverments'],
@@ -68,6 +84,21 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
         return { id: gov.id, value: gov.government, label: gov.government };
       })) ||
     [];
+
+  const classOptions = [
+    { id: 1, label: '7eme année', value: '7eme année' },
+    { id: 2, label: '8eme année', value: '8eme année' },
+    { id: 3, label: '9eme année', value: '9eme année' },
+    { id: 4, label: '1ère année', value: '1ère année' },
+    { id: 5, label: '2ème année', value: '2ème année' },
+    { id: 6, label: '3ème année', value: '3ème année' },
+    { id: 10, label: 'Bac informatique', value: 'Bac informatique' },
+    { id: 10, label: 'Bac technique', value: 'Bac technique' },
+    { id: 10, label: 'Bac science', value: 'Bac science' },
+    { id: 10, label: 'Bac lettre', value: 'Bac lettre' },
+    { id: 10, label: 'Bac math', value: 'Bac math' },
+    { id: 10, label: 'Bac sport', value: 'Bac sport' },
+  ];
 
   const [isTransPending, startTransition] = useTransition();
 
@@ -234,7 +265,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       disabled={isTransPending || isPending}
                       field={field}
                       placeholder={'Choisissez votre établissement'}
-                      options={govOptions}
+                      options={estabOptions}
                       icon={<FaGraduationCap className="text-gray w-5 h-5" />}
                     />
                   </FormControl>
@@ -254,10 +285,10 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
-                      disabled={isTransPending || isPending}
+                      disabled={isTransPending}
                       field={field}
                       placeholder={'Sélectionnez votre classe'}
-                      options={govOptions}
+                      options={classOptions}
                       icon={<MdOutlineClass className="text-gray w-5 h-5" />}
                     />
                   </FormControl>

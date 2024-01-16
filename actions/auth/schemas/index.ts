@@ -103,15 +103,32 @@ export const EtudiantAfterSchema = z.object({
     message: 'La classe est requis',
   }),
 });
+
 export const ProfAfterSchema = z.object({
-  role: z.string().default('TEACHER'),
-  email: z.string(),
-  subject: z.string().min(3, {
-    message: 'La matière est requis',
-  }),
-  etablissement: z.string().min(3, {
-    message: "L'etablissement est requis",
-  }),
+  role: z.string().default('TEACHER').optional(),
+  email: z.string().optional(),
+  subject: z
+    .array(
+      z.object({
+        id: z.number(),
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .refine((data) => data.length >= 1, {
+      message: 'La matière est requise',
+    }),
+  etablissement: z
+    .array(
+      z.object({
+        id: z.number(),
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .refine((data) => data.length >= 1, {
+      message: "L'établissement est requis",
+    }),
   systeme: z.string().min(3, {
     message: 'Le système pédagogique est requis',
   }),

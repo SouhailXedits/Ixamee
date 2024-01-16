@@ -18,7 +18,7 @@ export const authRoutes = [
   '/email-verification',
   '/error',
   '/teacher-after',
-  '/google-after',
+  '/google-after'
 ];
 
 /**

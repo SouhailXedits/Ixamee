@@ -28,6 +28,7 @@ import { useRouter } from 'next/navigation';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import { useQuery } from '@tanstack/react-query';
 import { getAllGovernments } from '@/actions/government';
+import bcryptjs from 'bcryptjs';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -76,13 +77,28 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
     values.role = role;
     setError('');
     setSuccess('');
-    startTransition(() => {
+    startTransition(async () => {
       let code = generateSixDigitNumber();
+      const hashedCode = await bcryptjs.hash(code + '', 10);
+      const hashedPassword = await bcryptjs.hash(values.password + '', 10);
+
+      console.log(code,hashedCode);
       register(values, code).then((data) => {
         setError(data.error);
         setSuccess(data.success);
-        localStorage.setItem('email-verification', JSON.stringify({ email: values.email, code }));
-        setRegistrationSuccessful(true);
+        localStorage.setItem(
+          'email-verification',
+          JSON.stringify({
+            email: values.email,
+            code: hashedCode,
+            password:values.password,
+            rememberMe: true,
+
+          })
+        );
+        if (data.success && !data.error) {
+          setRegistrationSuccessful(true);
+        }
       });
     });
   };

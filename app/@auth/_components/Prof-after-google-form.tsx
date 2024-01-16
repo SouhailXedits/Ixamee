@@ -23,8 +23,10 @@ import { auth } from '@/auth';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
 import { useQuery } from '@tanstack/react-query';
-import { getAllGovernments } from '@/actions/government';
-
+import { getAllSubjects } from '@/actions/subjects';
+import { getAllEstabs } from '@/actions/establishements';
+import { Skeleton } from '@/components/ui/skeleton';
+import Select from 'react-select';
 interface ProfFormProps {
   handleRole: (role: string) => void;
 }
@@ -38,26 +40,42 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
   const form = useForm<z.infer<typeof ProfAfterSchema>>({
     resolver: zodResolver(ProfAfterSchema),
     defaultValues: {
-      subject: '',
-      etablissement: '',
+      subject: [],
+      etablissement: [],
       systeme: '',
     },
   });
   const {
-    data,
+    data: establishments,
     error: getEstabsError,
-    isPending,
+    isPending: estabPending,
   } = useQuery<any>({
-    queryKey: ['goverments'],
-    queryFn: async () => await getAllGovernments(),
+    queryKey: ['establishments'],
+    queryFn: async () => await getAllEstabs(),
   });
-
-  const govOptions =
-    (data?.data &&
-      data?.data.map((gov: any) => {
-        return { id: gov.id, value: gov.government, label: gov.government };
+  const estabOptions =
+    (establishments?.data &&
+      establishments?.data?.estabs.map((estab: any) => {
+        return { id: estab.id, value: estab.name, label: estab.name };
       })) ||
     [];
+
+  const {
+    data: subjects,
+    error: getSubError,
+    isPending: subPending,
+  } = useQuery<any>({
+    queryKey: ['subjects'],
+    queryFn: async () => await getAllSubjects(),
+  });
+
+  const subjectOptions =
+    (subjects?.data &&
+      subjects?.data.map((subject: any) => {
+        return { id: subject.id, value: subject.name, label: subject.name };
+      })) ||
+    [];
+
   const systeme = [
     { id: 1, value: 'TRIMESTRE', label: 'Trimestre' },
     { id: 2, value: 'SEMESTRE', label: 'Semestre' },
@@ -74,6 +92,7 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
     startTransition(() => {
       updateTeacherAfterGoogle(values).then((data) => {
         setError(data?.error);
+        localStorage.removeItem('email-verification');
         // setSuccess(data?.success);
       });
     });
@@ -124,13 +143,40 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
                   Établissement<span className="text-red"> *</span>
                 </FormLabel>
                 <FormControl className="flex-grow ">
-                  <SelectScrollable
-                  disabled={isTransPending || isPending}
-                    field={field}
-                    placeholder={'Choisissez votre établissement'}
-                    options={govOptions}
-                    icon={<FaGraduationCap className="text-gray w-5 h-5" />}
-                  />
+                  {estabPending ? (
+                    <Skeleton className="w-full h-[40px]" />
+                  ) : (
+                    <Select
+                      isMulti
+                      name="estab"
+                      options={estabOptions}
+                      placeholder={
+                        <div className="flex items-center text-gray text-sm ">
+                          <FaGraduationCap className="text-gray w-5 h-5 mr-2" />
+                          Choisissez votre établissement
+                        </div>
+                      }
+                      isSearchable={true}
+                      styles={{
+                        control: (provided, state) => ({
+                          ...provided,
+                          borderColor: '#e0e2e6',
+                        }),
+                        option: (provided, state) => ({
+                          ...provided,
+                          fontSize: '14px',
+                          backgroundColor: state.isFocused ? '#F0F6F8' : 'transparent',
+                          '&:hover': {
+                            backgroundColor: '#F0F6F8',
+                          },
+                        }),
+                        multiValue: (provided, state) => ({
+                          ...provided,
+                          backgroundColor: '#F0F6F8',
+                        }),
+                      }}
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -145,13 +191,41 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
                   Matière<span className="text-red"> *</span>
                 </FormLabel>
                 <FormControl className="flex-grow ">
-                  <SelectScrollable
-                  disabled={isTransPending || isPending}
-                    field={field}
-                    placeholder={'Choisissez votre matière'}
-                    options={govOptions}
-                    icon={<MdOutlineClass className="text-gray w-5 h-5" />}
-                  />
+                  {estabPending ? (
+                    <Skeleton className="w-full h-[40px]" />
+                  ) : (
+                    <Select
+                      isMulti
+                      name="matiere"
+                      options={subjectOptions}
+                      placeholder={
+                        <div className="flex items-center text-gray text-sm ">
+                          <MdOutlineClass className="text-gray w-5 h-5 mr-2" />
+                          Choisissez votre établissement
+                        </div>
+                      }
+                      isSearchable={true}
+                      className="border-input "
+                      styles={{
+                        control: (provided, state) => ({
+                          ...provided,
+                          borderColor: '#e0e2e6',
+                        }),
+                        option: (provided, state) => ({
+                          ...provided,
+                          fontSize: '14px',
+                          backgroundColor: state.isFocused ? '#F0F6F8' : 'transparent',
+                          '&:hover': {
+                            backgroundColor: '#F0F6F8',
+                          },
+                        }),
+                        multiValue: (provided, state) => ({
+                          ...provided,
+                          backgroundColor: '#F0F6F8',
+                        }),
+                      }}
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -166,13 +240,17 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
                   Système pédagogique<span className="text-red"> *</span>
                 </FormLabel>
                 <FormControl className="flex-grow ">
-                  <SelectScrollable
-                  disabled={isTransPending || isPending}
-                    field={field}
-                    placeholder={'Choisissez votre système pédagogique'}
-                    options={systeme}
-                    icon={<MdOutlineTimer className="text-gray w-5 h-5" />}
-                  />
+                  {estabPending ? (
+                    <Skeleton className="w-full h-[40px]" />
+                  ) : (
+                    <SelectScrollable
+                      disabled={isTransPending}
+                      field={field}
+                      placeholder={'Choisissez votre système pédagogique'}
+                      options={systeme}
+                      icon={<MdOutlineTimer className="text-gray w-5 h-5" />}
+                    />
+                  )}
                 </FormControl>
                 <FormMessage />
               </FormItem>

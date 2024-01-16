@@ -41,13 +41,11 @@ export default async function RootLayout({
           {/* <Hydration> */}
           <ToastProvider />
           {/* {teacher} */}
-          {session === null
-            ? auth
-            : session?.user?.role === 'TEACHER'
-            ? teacher
-            : session?.user?.role === 'STUDENT'
+          {session?.user?.role === 'STUDENT'
             ? student
-            : admin}
+            : session?.user?.role === 'TEACHER' || session?.user?.role === 'ADMIN'
+            ? teacher
+            : auth}
           {/* </Hydration> */}
         </QueryClientProviderWrapper>
       </body>
