@@ -26,18 +26,19 @@ import { useState } from 'react';
 import { useCreateEstab } from '../hooks/useCreateEstab';
 import { useEditEstab } from '../hooks/useEditEstab';
 import { useDeleteEstab } from '../hooks/useDeleteEstab copy';
+import { useDeleteAdmin } from '../hooks/useDeleteAdmin';
 
-interface editEstabProps {
-  id: number;
+interface EditUserFormProps {
+  id: string;
   children: React.ReactNode;
 }
-export const DeleteEstab = ({ id, children }: editEstabProps) => {
+export const DeleteAdminModal = ({ id, children }: EditUserFormProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
-  const { deleteEstablishement, isPending } = useDeleteEstab();
+  const { deleteAdmin, isPending } = useDeleteAdmin();
 
   async function handlDeleteEstab() {
-    deleteEstablishement(id);
+    deleteAdmin(id);
     if (!isPending) setIsFirstModalOpen(!isFirstModalOpen);
   }
 
@@ -51,14 +52,14 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Supprimer cet établissement
+            Supprimer cet admin
           </DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-6 placeholder:text-[#727272]">
           <div className="flex flex-col gap-2 p-5">
             <p className="text-[#959595] text-sm">
-              Êtes-vous sûr de vouloir supprimer cet établissement? Cette action ne peut être
+              Êtes-vous sûr de vouloir supprimer cet admin? Cette action ne peut être
               annulée.
             </p>
             {/* <Label className="text-[#959595]">
@@ -75,7 +76,7 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
         </div>
 
         <DialogFooter>
-          <DialogClose className=' w-full'>
+          <DialogClose className=" w-full">
             <Button
               type="button"
               disabled={isPending}

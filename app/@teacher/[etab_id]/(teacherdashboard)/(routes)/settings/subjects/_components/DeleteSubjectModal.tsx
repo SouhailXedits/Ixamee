@@ -10,40 +10,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import Image from 'next/image';
 import { useState } from 'react';
-import { useCreateEstab } from '../hooks/useCreateEstab';
-import { useEditEstab } from '../hooks/useEditEstab';
-import { useDeleteEstab } from '../hooks/useDeleteEstab copy';
+import { useDeleteSubject } from '../hooks/useDeleteSubject';
 
 interface editEstabProps {
   id: number;
   children: React.ReactNode;
 }
-export const DeleteEstab = ({ id, children }: editEstabProps) => {
+export const DeleteSubject = ({ id, children }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
-  const { deleteEstablishement, isPending } = useDeleteEstab();
+  const { deleteSubject, isPending } = useDeleteSubject();
 
-  async function handlDeleteEstab() {
-    deleteEstablishement(id);
+  async function handlDeleteSubject() {
+    deleteSubject(id);
     if (!isPending) setIsFirstModalOpen(!isFirstModalOpen);
   }
 
-  function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen);
-  }
+  // function returnToCreate() {
+  //   setIsFirstModalOpen(!isFirstModalOpen)
+  // }
 
   return (
     <Dialog>
@@ -58,8 +44,8 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
         <div className="flex flex-col gap-6 placeholder:text-[#727272]">
           <div className="flex flex-col gap-2 p-5">
             <p className="text-[#959595] text-sm">
-              Êtes-vous sûr de vouloir supprimer cet établissement? Cette action ne peut être
-              annulée.
+              Êtes-vous sûr de vouloir supprimer cette matière? <br />
+              Cette action ne peut être annulée.
             </p>
             {/* <Label className="text-[#959595]">
               Nom : <span className="text-red">*</span>
@@ -74,8 +60,8 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
           </div>
         </div>
 
-        <DialogFooter>
-          <DialogClose className=' w-full'>
+        <DialogFooter className=" mt-3">
+          <DialogClose className=" w-full">
             <Button
               type="button"
               disabled={isPending}
@@ -84,9 +70,9 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
               Annuler
             </Button>
           </DialogClose>
-          <DialogClose>
+          <DialogClose className=" w-full">
             <Button
-              onClick={() => handlDeleteEstab()}
+              onClick={() => handlDeleteSubject()}
               type="submit"
               disabled={isPending}
               className="w-full bg-[#F04438] hover:opacity-80 "
@@ -99,5 +85,3 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
     </Dialog>
   );
 };
-
-

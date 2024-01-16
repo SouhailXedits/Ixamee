@@ -39,27 +39,11 @@ import Image from 'next/image';
 import { ModifierUnEtudiant } from '@/components/modals/modifier-un-etudiant';
 import { CorrectExam } from '@/components/modals/correct-exam';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
+import { DeleteSubject } from './DeleteSubjectModal';
+import { EditSubjectModal } from './EditSubjectModal';
 
-const data: Payment[] = [
-  {
-    id: 'm5gr84i9',
 
-    name: 'Géographie',
-  },
-  {
-    id: '3u1reuv4',
-    name: 'Anglais',
-  },
-  {
-    id: 'derv1ws0',
-    name: 'Mécanique',
-  },
-];
-
-export type Payment = {
-  id: string;
-  name: string;
-};
 
 export const CorrectionTag = ({
   correction,
@@ -82,7 +66,7 @@ export const CorrectionTag = ({
     </div>
   </div>
 );
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<SubjectOutputProps>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -105,19 +89,7 @@ export const columns: ColumnDef<Payment>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // {
-  //   accessorKey: 'rang',
-  //   header: () => {
-  //     return <span className="text-[#1B8392] ">Rang</span>;
-  //   },
-  //   cell: ({ row }) => (
-  //     <div className="w-10 h-[21px] p-2.5 bg-[#D8ECF3] rounded-[10px] border border-[#1B8392] flex-col justify-center items-center gap-2.5 inline-flex">
-  //       <div className="text-center text-[#1B8392] text-sm font-semibold ">
-  //         {row.getValue('rang')}
-  //       </div>
-  //     </div>
-  //   ),
-  // },
+
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -134,7 +106,7 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center gap-2 capitalize">
-        <Image src="/geographie.svg" alt="" width={42} height={42} className="rounded-full" />
+        <Image src={row.original.icon} alt=" subject icon" width={42} height={42} className="rounded-full" />
         {row.getValue('name')}
       </div>
     ),
@@ -147,30 +119,9 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     enableHiding: false,
 
-    cell: () => {
+    cell: ({row}) => {
       return (
         <div className="flex items-center gap-4 " style={{ width: '50px' }}>
-          {/* <ModifierUnEtudiant>
-            <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
-          </ModifierUnEtudiant> */}
-
-          {/* <CorrectExam>
-            <Image
-              src="/correctionExam.svg"
-              alt=""
-              width={20}
-              height={20}
-              className="cursor-pointer "
-            />
-          </CorrectExam> */}
-          {/* <Image
-            src="/invitestudent.svg"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          /> */}
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="w-8 h-8 p-0">
@@ -180,7 +131,7 @@ export const columns: ColumnDef<Payment>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* <DropdownMenuItem> */}
-              <ModifierUnEtudiant>
+              <EditSubjectModal currentSubject={row.original}>
                 {/* <Image
                   src="/eyesicon.svg"
                   alt=""
@@ -192,9 +143,13 @@ export const columns: ColumnDef<Payment>[] = [
                   Modifier
                 </p>
                 {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-              </ModifierUnEtudiant>
+              </EditSubjectModal>
 
-              <DropdownMenuItem>Supprimer</DropdownMenuItem>
+              <DeleteSubject id={row.original.id}>
+                <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
+                  Supprimer
+                </p>
+              </DeleteSubject>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -285,7 +240,7 @@ export function SubjectsList({ data, isPending, onPageChange, currentpage, total
                   className="h-24 text-lg text-center bg-transparent"
                 >
                   Pas d&apos;establishementsList ajoutés.
-                  <span className="text-[#1B8392]">Ajoutez</span> enseignants ou{' '}
+                  <span className="text-[#1B8392]">Ajoutez</span>une matière 
                 </TableCell>
               </TableRow>
             )}
