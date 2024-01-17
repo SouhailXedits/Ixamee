@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/[examenId]/_components/toolbar-editor.jsx"
-  ],
+, "babel.config.js"  ],
   "exclude": ["node_modules"]
 }
