@@ -25,8 +25,8 @@ const guestRoutes = [
   {
     Clickedicon: '/bulletinsicon.svg',
     Defaulticon: '/defaultbulletinsicon.svg',
-    label: 'Bullentis',
-    href: '/bullentis',
+    label: 'Bulletins',
+    href: '/bulletins',
   },
   {
     Clickedicon: '/calendriericon.svg',
@@ -39,7 +39,7 @@ const guestRoutes = [
     Defaulticon: '/defaultarchiveicon.svg',
     label: 'Archive',
     href: '/archive',
-  }
+  },
 ];
 
 

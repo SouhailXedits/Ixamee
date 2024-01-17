@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { useSidebar } from '@/store/use-sidebar';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 
 interface SidebarItemProps {
   Clickedicon: string;
@@ -12,20 +12,22 @@ interface SidebarItemProps {
   href?: string;
 }
 export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarItemProps) => {
+  const params = useParams();
+  console.log(params.etab_id);
   const pathname = usePathname();
   const router = useRouter();
   const { collapsed } = useSidebar((state) => state);
   function generateDynamicId() {
-    return 1;
+    return params.etab_id;
   }
   const isActive =
-    (pathname === `/${generateDynamicId()}` && href === `/`) ||
+    (pathname === `/${params.etab_id}` && href === `/`) ||
     pathname === href ||
     pathname.startsWith(`${href}/`) ||
     (pathname.includes(`${href}`) && pathname !== '/' && href !== '/');
 
   const onClick = () => {
-    if (href) router.push(`/${generateDynamicId()}${href}`);
+    if (href) router.push(`/${params.etab_id}${href}`);
   };
 
   return (

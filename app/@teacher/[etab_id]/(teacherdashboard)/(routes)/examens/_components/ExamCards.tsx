@@ -35,12 +35,14 @@ interface Exam {
   class_id: number;
   subject_id: number;
   term: string | null;
+  progress: string | null;
   examEstablishment: Record<string, any>; // Change to the appropriate type
   ExamClassess: ExamClass[];
 }
 
 // React component for displaying exam cards
 const ExamCards = ({ exam }: { exam: Exam }) => {
+  console.log(exam);
   const router = useRouter();
   // Click handler to navigate to the exam details page
   const onClick = (exam_id: number) => {
@@ -57,7 +59,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       <div className="flex justify-between" onClick={(e) => e.stopPropagation()}>
         <span className="text-[#514E4E]">{exam?.name}</span>
         {/* Dropdown menu for additional options */}
-        <DropdownMenuItemSelect>
+        <DropdownMenuItemSelect exam={exam}>
           <Image
             src="/icons/kebab-menu.svg"
             alt="icons"
@@ -95,13 +97,13 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
           className="flex h-[47px] inline-flex mt-[18px] bg-[#1B8392] rounded-xl items-end w-full justify-start flex-col items-center text-[#FFFFFF]"
           style={{ width: '54px' }}
         >
-          <span className="text-ms">0% </span>
+          <span className="text-ms">{exam?.progress}% </span>
           <span className="text-xs">Corrigé</span>
         </div>
       </div>
 
       {/* Progress bar */}
-      <Progress value={20} className="w-[100%] h-2 bg-white mt-3" />
+      <Progress value={exam?.progress} className="w-[100%] h-2 bg-white mt-3" />
     </div>
   );
 };

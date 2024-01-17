@@ -35,8 +35,8 @@ export default function page({ params }: { params: { examenId: string } }) {
             </div>
           </div>
         </div>
-      </nav>
-      <CreateExam />
+      </nav> 
+      <CreateExam examId={examenId} />
     </div>
   );
 }

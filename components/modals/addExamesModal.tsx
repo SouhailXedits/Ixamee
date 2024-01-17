@@ -37,6 +37,7 @@ import {
 } from '@/actions/examens';
 import { Skeleton } from '../ui/skeleton';
 import { auth } from '@/auth';
+import { useCreateExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useCreateExam';
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
@@ -142,22 +143,20 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       [field]: value,
     }));
   };
+  const { creatExam, isPending } = useCreateExam();
+
   const handleSubmit = async () => {
     try {
       // Validate the form data
       examSchema.parse(formData);
-      console.log(user_id);
-      handleInputChange('user_id', user_id);
-      const data = await createExamm(formData, user_id);
-
+      creatExam({ data: formData, user_id });
       // Clear form errors
       // setFormErrors(null);
-    } catch (error) {
+    } catch (error: any) {
       // If validation fails, update form errors
       setFormErrors(error);
     }
   };
-  console.log(formData);
   const renderFieldError = (fieldName: string) => {
     if (formErrors) {
       const fieldError = formErrors?.errors?.find((error) => error.path[0] === fieldName);

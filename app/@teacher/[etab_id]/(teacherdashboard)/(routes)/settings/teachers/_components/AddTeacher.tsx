@@ -36,24 +36,6 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [showError, setShowError] = useState(false);
   const {updateUserToAdmin, isPending} = useEditUser()
-  // const [file, setFile] = useState<File | null>(null);
-  // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const selectedFile = e.target.files[0];
-
-  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-  //       setFile(selectedFile);
-  //       const fileUrl = URL.createObjectURL(selectedFile);
-  //       setSelectedFileUrl(fileUrl);
-  //     }
-  //   }
-  // };
-  // const { data, error, isPending } = useQuery<any>({
-  //   queryKey: ['userByEmail'],
-  //   queryFn: () => ,
-  // });
 
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
   function handleEmailChange(e: any) {
@@ -74,10 +56,8 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
       }
       if (user) setUserId(user.id);
 
-      // Perform your action here, for example, console.log or any other logic
     }, 1000);
 
-    // Save the timeout ID to clear it if the user starts typing again
     setTypingTimeout(timeoutId);
   }
 
@@ -87,7 +67,6 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
       updateUserToAdmin(userId)
       console.log(userId);
     }
-    // setIsFirstModalOpen(!isFirstModalOpen)
   }
 
   return (

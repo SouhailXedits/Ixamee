@@ -3,11 +3,11 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-
+ 
 generator client {
   provider = "prisma-client-js"
 }
-
+ 
 model User {
   id                String          @id @default(cuid())
   name              String
@@ -25,23 +25,23 @@ model User {
   subjects          Subject[]       @relation("ClasseSubjectToSubject")
   subject_id        Int?
   government        String?
-  UserEstablishment Establishment[] @relation("UserEstablishmentToUser")
+  user_establishment Establishment[] @relation("UserEstablishmentToUser")
   exams             Exam[]          @relation("ExamToUser")
   term              Term?
 }
-
+ 
 enum Term {
   TRIMESTRE
   SEMESTRE
   LIBRE
 }
-
+ 
 enum Role {
   STUDENT
   TEACHER
   ADMIN
 }
-
+ 
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -55,21 +55,20 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@unique([provider, providerAccountId])
 }
-
+ 
 model VerificationToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
-
+ 
   @@unique([email, token])
 }
-
 model Establishment {
   id                Int      @id @default(autoincrement())
   name              String
@@ -125,7 +124,6 @@ enum Language {
   fr
   ar
 }
-
 // Exercise Table
 model Exercise {
   id                  Int                  @id @default(autoincrement())

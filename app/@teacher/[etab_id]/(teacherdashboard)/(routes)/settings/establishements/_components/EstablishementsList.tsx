@@ -49,6 +49,18 @@ export type Payment = {
   name: string;
 };
 
+interface estabProps {
+  id: number;
+  name: string;
+}
+interface estabListProps {
+  data: estabProps[];
+  isPending: boolean;
+  onPageChange: (n:number) => void;
+  currentpage: number;
+  totalCount: number;
+}
+
 const ActionModal = ({ row }: any) => {
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
@@ -81,7 +93,7 @@ const ActionModal = ({ row }: any) => {
   );
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<estabProps>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -138,7 +150,10 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function EstablishementsList({ data, isPending, onPageChange , currentpage, totalCount}) {
+
+
+export function EstablishementsList({ data, isPending, onPageChange , currentpage, totalCount}: estabListProps) {
+  console.log(data)
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});

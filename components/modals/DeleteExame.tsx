@@ -1,3 +1,4 @@
+import { useDeleteExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useDeleteExam';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,8 +13,15 @@ import {
 
 interface DeleteExame {
   children: React.ReactNode;
+  exam_id: number;
 }
-export const DeleteExame = ({ children }: DeleteExame) => {
+
+export const DeleteExame = ({ children, exam_id }: DeleteExame) => {
+  const { deleteExam, isPending } = useDeleteExam();
+
+  const handelDeletExam = async (exam_id: number) => {
+    deleteExam(exam_id);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -37,7 +45,11 @@ export const DeleteExame = ({ children }: DeleteExame) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full text-white bg-[#F04438] hover:opacity-80">
+          <Button
+            type="submit"
+            className="w-full text-white bg-[#F04438] hover:opacity-80"
+            onClick={() => handelDeletExam(exam_id)}
+          >
             Supprimer
           </Button>
         </DialogFooter>
