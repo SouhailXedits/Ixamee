@@ -41,7 +41,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 
 
-function ActionsModal({ rowData }) {
+function ActionsModal({ rowData }: any) {
   const queryClient = useQueryClient()
   const currentLoggedUser = queryClient.getQueryData(['user']) as any
   console.log(currentLoggedUser)

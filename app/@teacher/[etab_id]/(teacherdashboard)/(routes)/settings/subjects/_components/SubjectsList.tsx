@@ -166,7 +166,14 @@ interface subjectListProps {
   totalCount: number;
 }
 
-export function SubjectsList({ data, isPending, onPageChange, currentpage, totalCount }) {
+export function SubjectsList({
+  data,
+  isPending,
+  onPageChange,
+  currentpage,
+  totalCount,
+}: subjectListProps) {
+  console.log(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -197,7 +204,7 @@ export function SubjectsList({ data, isPending, onPageChange, currentpage, total
     ));
 
   const totalPageCount = Math.floor(totalCount / 10) + 1;
-  console.log(totalCount)
+  console.log(totalCount);
 
   function handleNextPage() {
     console.log(currentpage + 1);
@@ -248,7 +255,7 @@ export function SubjectsList({ data, isPending, onPageChange, currentpage, total
                   className="h-24 text-lg text-center bg-transparent"
                 >
                   Pas d&apos;establishementsList ajoutés.
-                  <span className="text-[#1B8392]">Ajoutez</span>une matière 
+                  <span className="text-[#1B8392]">Ajoutez</span>une matière
                 </TableCell>
               </TableRow>
             )}
