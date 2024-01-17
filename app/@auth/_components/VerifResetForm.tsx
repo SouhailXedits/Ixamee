@@ -20,7 +20,7 @@ interface VerificationData {
   code?: number;
 }
 
-export default function VerifForm({ email, code }: VerificationData) {
+export default function VerifCodeResetForm({ email, code }: VerificationData) {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
@@ -88,12 +88,7 @@ export default function VerifForm({ email, code }: VerificationData) {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="Entrer le code ici"
-                    type="text"
-                    icon={<GoShieldCheck className="text-gray w-5 h-5" />}
-                  />
+
                 </FormControl>
                 <FormMessage />
               </FormItem>

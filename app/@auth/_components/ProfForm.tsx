@@ -29,6 +29,7 @@ import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import { useQuery } from '@tanstack/react-query';
 import { getAllGovernments } from '@/actions/government';
 import bcryptjs from 'bcryptjs';
+import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -55,32 +56,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const govOptions = [
-    { id: 1, value: 'Tunis', label: 'Tunis' },
-    { id: 2, value: 'Ariana', label: 'Ariana' },
-    { id: 3, value: 'Ben Arous', label: 'Ben Arous' },
-    { id: 4, value: 'Manouba', label: 'Manouba' },
-    { id: 5, value: 'Nabeul', label: 'Nabeul' },
-    { id: 6, value: 'Zaghouan', label: 'Zaghouan' },
-    { id: 7, value: 'Bizerte', label: 'Bizerte' },
-    { id: 8, value: 'Beja', label: 'Beja' },
-    { id: 9, value: 'Jendouba', label: 'Jendouba' },
-    { id: 10, value: 'Le Kef', label: 'Le Kef' },
-    { id: 11, value: 'Siliana', label: 'Siliana' },
-    { id: 12, value: 'Kairouan', label: 'Kairouan' },
-    { id: 13, value: 'Kasserine', label: 'Kasserine' },
-    { id: 14, value: 'Sidi Bouzid', label: 'Sidi Bouzid' },
-    { id: 15, value: 'Gabes', label: 'Gabes' },
-    { id: 16, value: 'Medenine', label: 'Medenine' },
-    { id: 17, value: 'Tataouine', label: 'Tataouine' },
-    { id: 18, value: 'Gafsa', label: 'Gafsa' },
-    { id: 19, value: 'Tozeur', label: 'Tozeur' },
-    { id: 20, value: 'Kebili', label: 'Kebili' },
-    { id: 21, value: 'Sousse', label: 'Sousse' },
-    { id: 22, value: 'Monastir', label: 'Monastir' },
-    { id: 23, value: 'Mahdia', label: 'Mahdia' },
-    { id: 24, value: 'Sfax', label: 'Sfax' },
-  ];
+  const govOptions = TunisianGoverments;
 
   const [isTransPending, startTransition] = useTransition();
 
@@ -95,7 +71,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
         setError(data.error);
         setSuccess(data.success);
         localStorage.setItem(
-          'email-verification',
+          'new-verification',
           JSON.stringify({
             email: values.email,
             code: hashedCode,
@@ -112,7 +88,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
 
   useEffect(() => {
     if (isRegistrationSuccessful) {
-      router.push('/email-verification');
+      router.push('/new-verification');
     }
   }, [isRegistrationSuccessful, router]);
 

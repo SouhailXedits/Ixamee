@@ -16,7 +16,7 @@ model User {
   email             String              @unique
   emailVerified     DateTime?
   password          String? //optional because we want to add singup with Google
-  role              Role? // Consider using an enum for role 
+  role              Role? // Consider using an enum for role
   accounts          Account[] // Many-to-many relationship with Subject
   image             String?
   phone_number      String?
@@ -69,19 +69,19 @@ model VerificationToken {
  
   @@unique([email, token])
 }
-
+ 
 model Establishment {
   id                Int                 @id @default(autoincrement())
-  name              String 
+  name              String
   user_establishment User[]     @relation("UserEstablishmentToUser")
   classes           Classe[]    @relation("EstablishmentToClasse")
 }
-
+ 
 // Classe Table
 model Classe {
   id               Int         @id @default(autoincrement())
   name             String?
-  subject          Subject[]      @relation("ClasseSubjectToSubject") 
+  subject          Subject[]      @relation("ClasseSubjectToSubject")
   range            String?
   establishment    Establishment[]  @relation("EstablishmentToClasse")
   teacher          User[]     @relation("ClasseClassTeacherToSubject")
@@ -89,8 +89,8 @@ model Classe {
   is_archived      Boolean?    @default(false)
   exam_classe      Exam[]    @relation("ExamClasseToUser")
 }
-
-
+ 
+ 
 // Subject Table
 model Subject {
   id    Int              @id @default(autoincrement())
@@ -98,12 +98,12 @@ model Subject {
   coefficient Float?
   icon  String?
   teacher  User[]  @relation("ClasseTeacherSubjectToSubject")
-  exams Exam[] 
+  exams Exam[]
   is_archived      Boolean?    @default(false)
-
+ 
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
 }
-
+ 
 model Exam {
   id                Int                 @id @default(autoincrement())
   name              String
@@ -135,8 +135,8 @@ model Exercise {
   question_type      String
   exercise_correction ExerciseCorrection[]
   is_archived      Boolean?    @default(false)
-
-  questions           question[] 
+ 
+  questions           question[]
 }
 model question {
   id                 Int                  @id @default(autoincrement())
@@ -175,5 +175,3 @@ model QuestionCorrection {
   content            String?
   mark_obtained Float
 }
- 
- 

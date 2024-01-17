@@ -2,15 +2,14 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const sendVerificationEmail = async (email: string , code:number) => {
-
-  console.log(email,code);
-  
-  const send = await resend.emails.send({
-    from: 'onboarding@resend.dev',
-    to: email,
-    subject: 'Verifier votre e-mail',
-    html: `
+export const sendVerificationEmail = async (email: string, code: number) => {
+  try {
+    await resend.emails
+      .send({
+        from: 'onboarding@resend.dev',
+        to: email,
+        subject: 'Verifier votre e-mail',
+        html: `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -63,7 +62,11 @@ export const sendVerificationEmail = async (email: string , code:number) => {
       </body>
       </html>
     `,
-  });
-
-  console.log(send);
+      })
+      .then(() => {
+        return { success: 'E-mail renvouyer avec succes' };
+      });
+  } catch (error) {
+    return { error: "Quelque chose s'est mal passé, sil vous plais essayez une autre fois" };
+  }
 };
