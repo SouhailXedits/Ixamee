@@ -6,8 +6,6 @@ import { getUserByEmail } from '@/data/user';
 
 export const updateStudentAfterGoogle = async (values: z.infer<typeof ProfAfterSchema>) => {
   const validatedFields = ProfAfterSchema.safeParse(values);
-  console.log('🚀 ~ updateTeacherAfterGoogle ~ values:', values);
-
   const existingUser = await getUserByEmail(values.email);
 
   if (!validatedFields.success || !existingUser) {

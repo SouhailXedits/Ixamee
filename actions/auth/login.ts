@@ -38,7 +38,7 @@ export const login = async (values: z.infer<typeof LoginSchema>, code: number) =
       email,
       password,
       rememberMe,
-      redirectTo: `/${userEstablishment[0].establishement_id}`,
+      redirectTo: `/${userEstablishment[0].id}`,
     }).then(() => {
       return { success: 'Bienvenue' };
     });

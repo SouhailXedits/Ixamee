@@ -28,7 +28,7 @@ interface ProfFormProps {
   session: object;
 }
 
-export default async function EtudiantAfterGoogleForm({ handleRole, session }: ProfFormProps) {
+export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFormProps) {
   const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -102,8 +102,6 @@ export default async function EtudiantAfterGoogleForm({ handleRole, session }: P
 
   const onSubmit = async (values: z.infer<typeof EtudiantAfterSchema>) => {
     values.role = role;
-    console.log(values);
-
     setError('');
     setSuccess('');
     startTransition(() => {

@@ -13,7 +13,6 @@ export default function EmailVerification() {
     }
   }, []);
 
-
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* left */}
@@ -52,11 +51,10 @@ export default function EmailVerification() {
               <Link
                 className="text-center text-[#1b8392] hover:underline font-semibold"
                 href={''}
-                // onClick={async () => {
-                //   verificationData !== null &&
-                //     (await sendVerificationEmail(verificationData?.email, verificationData?.code));
-                //
-                // }}
+                onClick={async () => {
+                  verificationData !== null &&
+                    (await sendVerificationEmail(verificationData?.email, verificationData?.code));
+                }}
               >
                 Renvoyez
               </Link>
