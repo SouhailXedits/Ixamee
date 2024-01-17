@@ -1,21 +1,28 @@
-'use client'
-import { useQueryClient } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
+'use client';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation';
 
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
-  const queryclient = useQueryClient()
+  const [isClient, setIsClient] = useState(false);
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(['user']) as any;
 
-  const user = queryclient.getQueryData(['user']) as any;
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  if (!user || user.role !== 'ADMIN') redirect('/');
-  
+  if (!isClient) {
+    return null; // Render nothing on the server side
+  }
 
-  return (
-      <main>
-        {children}
-      </main>
+  if (!user) return null
 
-  );
+  if (user.role !== 'ADMIN') {
+    return <div>{redirect('/')}</div>;
+  }
+
+  return <main>{children}</main>;
 };
 
 export default SettingsLayout;

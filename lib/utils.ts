@@ -11,7 +11,4 @@ export function cn(...inputs: ClassValue[]) {
 
 
 
-interface WithAdminRoleProps {
-  children: ReactNode;
-}
 

@@ -4,14 +4,17 @@ import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 // import { User } from '../types/user';
 import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 interface WithAdminRoleProps {
   children: ReactNode;
 }
 
-const withAdminRole = async (WrappedComponent: React.FC) => {
-    const session = await auth();
-    console.log(session?.user)
+const WithAdminRole = async (WrappedComponent: React.FC) => {
+  const navigate = useNavigate()
+  const session = await auth();
+  console.log(session?.user)
   const Wrapper: React.FC<WithAdminRoleProps> = ({ children }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -24,8 +27,9 @@ const withAdminRole = async (WrappedComponent: React.FC) => {
     // If the user is not an admin, redirect to another page (e.g., home)
     // const user = session.user as User;
     const user = session.user;
+    if(!user) return null
     if (user.role !== 'ADMIN') {
-      router.push('/'); // Redirect to the home page or any other page
+      navigate(-1); // Redirect to the home page or any other page
       return null;
     }
 
@@ -36,4 +40,4 @@ const withAdminRole = async (WrappedComponent: React.FC) => {
   return Wrapper;
 };
 
-export default withAdminRole;
+export default WithAdminRole;
