@@ -28,7 +28,7 @@ interface ProfFormProps {
   session: object;
 }
 
-export default async function EtudiantAfterGoogleForm({ handleRole, session }: ProfFormProps) {
+export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFormProps) {
   const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');

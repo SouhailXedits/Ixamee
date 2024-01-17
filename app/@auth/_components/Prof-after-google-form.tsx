@@ -107,14 +107,13 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
   useEffect(() => {
     if (isRegistrationSuccessful) {
       try {
-        console.log(userEstab, 'userEstab');
         router.push(`/${userEstab[0].id}`);
         router.refresh();
       } catch (error) {
         console.log(error);
       }
     }
-  }, [isRegistrationSuccessful, router]);
+  }, [isRegistrationSuccessful, router,userEstab]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
