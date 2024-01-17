@@ -1,5 +1,5 @@
 'use server';
-
+ 
 import * as z from 'zod';
 import { db } from '@/lib/db';
 import { RegisterEtudSchema } from '@/actions/auth/schemas';
@@ -8,11 +8,11 @@ import { getUserByEmail } from '@/data/user';
 import { sendVerificationEmail } from '@/lib/mail';
 export const register = async (values: z.infer<typeof RegisterEtudSchema>, code: number) => {
   const validatedFields = RegisterEtudSchema.safeParse(values);
-
+ 
   if (!validatedFields.success) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
   }
-
+ 
   const {
     nom: first_name,
     prenom: last_name,
@@ -24,7 +24,7 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>, code:
     classe,
   } = validatedFields.data;
   const hashesPassword = await bcryptjs.hash(password, 10);
-
+ 
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
@@ -37,7 +37,7 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>, code:
   const mappedRole =
     role === 'TEACHER' ? UserRole.TEACHER : role === 'STUDENT' ? UserRole.STUDENT : UserRole.ADMIN;
   const image = '/defaultUserAvatr.svg';
-
+ 
   await db.user.create({
     data: {
       name: `${first_name} ${last_name}`,
@@ -61,3 +61,4 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>, code:
     success: `Bienvenue ${values.prenom}! Veuillez vérifier votre e-mail pour terminer l'inscription.`,
   };
 };
+ 

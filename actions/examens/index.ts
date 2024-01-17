@@ -321,18 +321,18 @@ const getRecursiveExamQuestion = async () => {
   //   )
   //   SELECT * FROM RecursiveQuestions;
   // `;
-  //   const result = await db.exercise.findMany({
-  //     where: {
-  //       id: 5,
-  //     },
-  //     include: {
-  //       question: {
-  //         include: {
-  //           parent: true,
-  //         },
-  //       },
-  //     },
-  //   });
+//   const result = await db.exercise.findMany({
+//     where: {
+//       id: 5,
+//     },
+//     include: {
+//       question: {
+//         include: {
+//           parent: true,
+//         },
+//       },
+//     },
+//   });
 };
 
 getRecursiveExamQuestion();
