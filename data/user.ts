@@ -28,7 +28,7 @@ export const getUserEstablishmentByUserId = async (id: string) => {
   try {
     const userEstablishments = await db.establishment.findMany({
       where: {
-        UserEstablishment: {
+        user_establishment: {
           some: {
             id,
           },

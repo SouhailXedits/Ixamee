@@ -6,11 +6,12 @@ import React from 'react';
 export default async function page() {
   const session = await auth();
   console.log("🚀 ~ page ~ session:", session)
-  const userEstablishment = await getUserEstablishmentByUserId(session?.user.id);
-  console.log('🚀 ~ page ~ userEstablishment:', userEstablishment);
+  
+  const userEstablishment = await getUserEstablishmentByUserId(session?.user.id)
+  console.log("🚀 ~ page ~ userEstablishment:", userEstablishment)
 
   if (session?.user.role) {
-    redirect('/2');
+    redirect(`/${userEstablishment[0].id}`);
   }
   return <div>Bienvenue</div>;
 }

@@ -2,6 +2,7 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+ 
 }
  
 generator client {
@@ -9,24 +10,24 @@ generator client {
 }
  
 model User {
-  id                String          @id @default(cuid())
+  id                String              @id @default(cuid())
   name              String
   first_name        String?
   last_name         String?
-  email             String          @unique
+  email             String              @unique
   emailVerified     DateTime?
   password          String? //optional because we want to add singup with Google
   role              Role? // Consider using an enum for role
   accounts          Account[] // Many-to-many relationship with Subject
   image             String?
   phone_number      String?
-  classe            Classe[]        @relation("StudentClassToUser")
-  classe_teacher    Classe[]        @relation("ClasseSubjectToSubject")
-  subjects          Subject[]       @relation("ClasseSubjectToSubject")
+  classe            Classe[]    @relation("StudentClassToUser")
+  classe_teacher    Classe[]    @relation("ClasseClassTeacherToSubject")
+  subjects          Subject[]   @relation("ClasseSubjectToSubject")
   subject_id        Int?
   government        String?
   user_establishment Establishment[] @relation("UserEstablishmentToUser")
-  exams             Exam[]          @relation("ExamToUser")
+  exams             Exam[]    @relation("ExamToUser")
   term              Term?
 }
  
@@ -69,107 +70,108 @@ model VerificationToken {
  
   @@unique([email, token])
 }
+ 
 model Establishment {
-  id                Int      @id @default(autoincrement())
+  id                Int                 @id @default(autoincrement())
   name              String
-  UserEstablishment User[]   @relation("UserEstablishmentToUser")
-  classes           Classe[] // 1 --> N
+  user_establishment User[]     @relation("UserEstablishmentToUser")
+  classes           Classe[]    @relation("EstablishmentToClasse")
 }
-
+ 
 // Classe Table
 model Classe {
-  id               String        @id @default(cuid())
-  name             String
-  subject          Subject[]     @relation("ClasseSubjectToSubject")
+  id               Int         @id @default(autoincrement())
+  name             String?
+  subject          Subject[]      @relation("ClasseSubjectToSubject")
   range            String?
-  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade) // Many-to-one relationship with Establishment
-  establishment_id Int
-  teacher          User[]        @relation("ClasseSubjectToSubject")
-  teacher_id       String?
+  establishment    Establishment[]  @relation("EstablishmentToClasse")
+  teacher          User[]     @relation("ClasseClassTeacherToSubject")
   student_class    User[]        @relation("StudentClassToUser")
   is_archived      Boolean?
-  exam_classe      Exam[]
+  exam_classe      Exam[]    @relation("ExamToUser")
 }
-
+ 
+ 
+ 
 // Subject Table
 model Subject {
-  id             Int      @id @default(autoincrement())
-  name           String
-  coefficient    Float?
-  icon           String?
-  teacher        User[]   @relation("ClasseSubjectToSubject")
-  exams          Exam[]
+  id    Int              @id @default(autoincrement())
+  name  String
+  coefficient Float?
+  icon  String?
+  teacher  User[]  @relation("ClasseSubjectToSubject")
+  exams Exam[]
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
 }
-
+ 
 model Exam {
-  id              Int              @id @default(autoincrement())
-  name            String
-  exercises       Exercise[]
-  total_mark      Float
-  coefficient     Float
-  teacher         User[]           @relation("ExamToUser")
-  teacher_id      String?
-  subject         Subject          @relation(fields: [subject_id], references: [id], onDelete: Cascade, onUpdate: Cascade) // One-to-one relationship with Subject
-  subject_id      Int
-  progress        String?          @default("0")
-  term            String?
-  exam_correction ExamCorrection[]
-  is_archived     Boolean?         @default(false)
-  exam_classess   Classe[]
-  language        Language? // Consider using an enum for style
+  id                Int                 @id @default(autoincrement())
+  name              String
+  exercises         Exercise[]
+  total_mark        Float
+  coefficient       Float
+  teacher           User[] @relation("ExamToUser")
+  teacher_id        String?
+  subject           Subject             @relation(fields: [subject_id], references: [id] , onDelete: Cascade , onUpdate: Cascade) // One-to-one relationship with Subject
+  subject_id         Int
+  progress           String? @default("0")
+  term               String?  
+  exam_correction    ExamCorrection[]
+  is_archived        Boolean? @default(false)
+  exam_classess      Classe[] @relation("ExamToUser")
+  language           Language?    // Consider using an enum for style
 }
-
 enum Language {
   fr
   ar
 }
 // Exercise Table
 model Exercise {
-  id                  Int                  @id @default(autoincrement())
-  name                String
-  exam                Exam?                @relation(fields: [exam_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  exam_id             Int?
-  marks               Float
-  question_type       String
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  exam               Exam?                @relation(fields: [exam_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
+  exam_id            Int?
+  marks              Float
+  question_type      String
   exercise_correction ExerciseCorrection[]
   questions           question[]
 }
-
 model question {
-  id                  Int                  @id @default(autoincrement())
-  name                String
-  exercise            Exercise?            @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  exercise_id         Int?
-  marks               Float
-  parent_id           Int? // Add this field to reference the parent Exercise
-  parent              question?            @relation("questionToSubquestion", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  subquestions        question[]           @relation("questionToSubquestion")
-  question_type       String
-  content             String?
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  exercise               Exercise?                @relation(fields: [exercise_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
+  exercise_id            Int?
+  marks              Float
+  parent_id          Int? // Add this field to reference the parent Exercise
+  parent             question?            @relation("questionToSubquestion", fields: [parent_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
+  subquestions       question[]           @relation("questionToSubquestion")
+  question_type      String
+  content            String?
   exercise_correction QuestionCorrection[]
 }
-
+ 
+ 
 // ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
-  exam          Exam? @relation(fields: [exam_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  exam          Exam? @relation(fields: [exam_id], references: [id] , onDelete: Cascade , onUpdate: Cascade)
   exam_id       Int
   mark_obtained Float
 }
-
+ 
 model ExerciseCorrection {
   id            Int       @id @default(autoincrement())
-  exercise      Exercise? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  exercise      Exercise? @relation(fields: [exercise_id], references: [id], onDelete: Cascade , onUpdate: Cascade)
   exercise_id   Int
-  content       String?
+  content            String?
   mark_obtained Float
 }
-
 model QuestionCorrection {
   id            Int       @id @default(autoincrement())
-  question      question? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  question      question? @relation(fields: [exercise_id], references: [id], onDelete: Cascade , onUpdate: Cascade)
   exercise_id   Int
-  content       String?
+  content            String?
   mark_obtained Float
 }
+ 
+ 

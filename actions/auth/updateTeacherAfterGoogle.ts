@@ -45,7 +45,7 @@ export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterS
       data: {
         term: mappedTerm,
         role: mappedRole,
-        UserEstablishment: {
+        user_establishment: {
           connect: establishmentIds.map((id) => ({ id })),
         },
         subjects: {
