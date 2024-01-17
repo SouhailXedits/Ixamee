@@ -1,3 +1,4 @@
+import { useDeleteClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useDeleteClasse';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,8 +13,14 @@ import {
 
 interface SupprimerUneClasse {
   children: React.ReactNode;
+  classe_id: string;
 }
-export const SupprimerUneClasse = ({ children }: SupprimerUneClasse) => {
+export const SupprimerUneClasse = ({ children, classe_id }: SupprimerUneClasse) => {
+  console.log(classe_id);
+  const { deleteClasse } = useDeleteClasse();
+  const handelDeleteExa = () => {
+    deleteClasse(classe_id);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -37,7 +44,11 @@ export const SupprimerUneClasse = ({ children }: SupprimerUneClasse) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full text-white bg-[#F04438] hover:opacity-80">
+          <Button
+            type="submit"
+            className="w-full text-white bg-[#F04438] hover:opacity-80"
+            onClick={handelDeleteExa}
+          >
             Supprimer
           </Button>
         </DialogFooter>

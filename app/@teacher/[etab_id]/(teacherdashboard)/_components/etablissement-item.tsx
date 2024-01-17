@@ -43,7 +43,6 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
   Path.shift();
   Path.shift();
   const currPath = Path.join('/');
-  console.log(currPath);
   const params = useParams();
   const etabId = +params?.etab_id;
 

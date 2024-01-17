@@ -49,7 +49,7 @@ export default function Classes() {
       </nav>
 
       <div>
-        <ClasseCardContainer data={data} />
+        <ClasseCardContainer data={data} isPending={isPending} />
       </div>
     </main>
   );
