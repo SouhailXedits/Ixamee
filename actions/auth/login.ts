@@ -9,27 +9,27 @@ import { sendVerificationEmail } from '@/lib/mail';
 
 export const login = async (values: z.infer<typeof LoginSchema>, code: number) => {
   const validatedFields = LoginSchema.safeParse(values);
-  
+
   if (!validatedFields.success)
     return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
 
   const { email, password, rememberMe } = validatedFields?.data;
 
   const existingUser = await getUserByEmail(email);
-  const userEstablishment = await getUserEstablishmentByUserId(existingUser?.id);
+  const userEstablishment = existingUser?.id
+    ? await getUserEstablishmentByUserId(existingUser?.id)
+    : [];
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
   }
 
   if (!existingUser.emailVerified) {
-    // const verificationToken = await generateVerificationToken(existingUser.email);
     await sendVerificationEmail(existingUser.email, code);
 
     return { success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.' };
   }
   if (!userEstablishment.length && existingUser.role === 'TEACHER') {
-    // localStorage.setItem('email-verification', JSON.stringify({ email: values.email,code: hashedCode }));
     return { success: 'Vous étes presque arrivé ! complete votre inscription' };
   }
 

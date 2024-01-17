@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useTransition } from 'react';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +12,15 @@ import { Input } from '@/components/ui/auth-input';
 import { emailVerification } from '@/actions/auth/email-verification';
 import { useRouter } from 'next/navigation';
 import bcryptjs from 'bcryptjs';
-export default function VerifForm() {
+import Link from 'next/link';
+import { sendVerificationEmail } from '@/lib/mail';
+
+interface VerificationData {
+  email?: string;
+  code?: number;
+}
+
+export default function VerifForm({ email, code }: VerificationData) {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
@@ -57,6 +65,16 @@ export default function VerifForm() {
       router.push('/teacher-after');
     }
   }, [isRegistrationSuccessful, router]);
+  const [isPending, startTransition] = useTransition();
+  const handleResendVerificationEmail = async () => {
+    setSuccess('');
+    setError('');
+    startTransition(async () => {
+      if (email && code) {
+        // await sendVerificationEmail(email, code);
+      }
+    });
+  };
 
   return (
     <Form {...form}>
@@ -90,6 +108,19 @@ export default function VerifForm() {
         >
           Vérifier
         </Button>
+        <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
+          <div className="flex ">
+            <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
+            &nbsp;
+            <Link
+              className="text-center text-[#1b8392] hover:underline font-semibold"
+              href={''}
+              onClick={handleResendVerificationEmail}
+            >
+              Renvoyez
+            </Link>
+          </div>
+        </div>
       </form>
     </Form>
   );

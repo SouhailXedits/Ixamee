@@ -1,11 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
-import Link from 'next/link';
 import VerifForm from '../../_components/VerifForm';
-import { sendVerificationEmail } from '@/lib/mail';
+
+interface VerificationData {
+  email?: string;
+  code?: number;
+}
+
 export default function EmailVerification() {
-  const [verificationData, setVerificationData] = useState({});
+  const [verificationData, setVerificationData] = useState<VerificationData>({});
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
       const storedData = JSON.parse(localStorage.getItem('email-verification') || '{}');
@@ -42,23 +47,7 @@ export default function EmailVerification() {
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <VerifForm />
-          </div>
-          <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
-            <div className="flex ">
-              <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
-              &nbsp;
-              <Link
-                className="text-center text-[#1b8392] hover:underline font-semibold"
-                href={''}
-                onClick={async () => {
-                  verificationData !== null &&
-                    (await sendVerificationEmail(verificationData?.email, verificationData?.code));
-                }}
-              >
-                Renvoyez
-              </Link>
-            </div>
+            <VerifForm email={verificationData?.email} code={verificationData?.code} />
           </div>
         </div>
       </div>

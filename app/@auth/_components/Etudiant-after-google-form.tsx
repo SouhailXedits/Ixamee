@@ -22,6 +22,8 @@ import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogl
 import { useQuery } from '@tanstack/react-query';
 import { getAllGovernments } from '@/actions/government';
 import { getAllEstabs } from '@/actions/establishements';
+import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
+import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -56,47 +58,9 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
       })) ||
     [];
 
-  const govOptions = [
-    { id: 1, value: 'Tunis', label: 'Tunis' },
-    { id: 2, value: 'Ariana', label: 'Ariana' },
-    { id: 3, value: 'Ben Arous', label: 'Ben Arous' },
-    { id: 4, value: 'Manouba', label: 'Manouba' },
-    { id: 5, value: 'Nabeul', label: 'Nabeul' },
-    { id: 6, value: 'Zaghouan', label: 'Zaghouan' },
-    { id: 7, value: 'Bizerte', label: 'Bizerte' },
-    { id: 8, value: 'Beja', label: 'Beja' },
-    { id: 9, value: 'Jendouba', label: 'Jendouba' },
-    { id: 10, value: 'Le Kef', label: 'Le Kef' },
-    { id: 11, value: 'Siliana', label: 'Siliana' },
-    { id: 12, value: 'Kairouan', label: 'Kairouan' },
-    { id: 13, value: 'Kasserine', label: 'Kasserine' },
-    { id: 14, value: 'Sidi Bouzid', label: 'Sidi Bouzid' },
-    { id: 15, value: 'Gabes', label: 'Gabes' },
-    { id: 16, value: 'Medenine', label: 'Medenine' },
-    { id: 17, value: 'Tataouine', label: 'Tataouine' },
-    { id: 18, value: 'Gafsa', label: 'Gafsa' },
-    { id: 19, value: 'Tozeur', label: 'Tozeur' },
-    { id: 20, value: 'Kebili', label: 'Kebili' },
-    { id: 21, value: 'Sousse', label: 'Sousse' },
-    { id: 22, value: 'Monastir', label: 'Monastir' },
-    { id: 23, value: 'Mahdia', label: 'Mahdia' },
-    { id: 24, value: 'Sfax', label: 'Sfax' },
-  ];
+  const govOptions = TunisianGoverments
 
-  const classOptions = [
-    { id: 1, label: '7eme année', value: '7eme année' },
-    { id: 2, label: '8eme année', value: '8eme année' },
-    { id: 3, label: '9eme année', value: '9eme année' },
-    { id: 4, label: '1ère année', value: '1ère année' },
-    { id: 5, label: '2ème année', value: '2ème année' },
-    { id: 6, label: '3ème année', value: '3ème année' },
-    { id: 10, label: 'Bac informatique', value: 'Bac informatique' },
-    { id: 11, label: 'Bac technique', value: 'Bac technique' },
-    { id: 12, label: 'Bac science', value: 'Bac science' },
-    { id: 13, label: 'Bac lettre', value: 'Bac lettre' },
-    { id: 14, label: 'Bac math', value: 'Bac math' },
-    { id: 15, label: 'Bac sport', value: 'Bac sport' },
-  ];
+  const classOptions = TunisianClasses
 
   const [isTransPending, startTransition] = useTransition();
 

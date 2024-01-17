@@ -1,38 +1,40 @@
 'use server';
 import * as z from 'zod';
-import { ProfAfterSchema } from '@/actions/auth/schemas';
+import { EtudiantAfterSchema } from '@/actions/auth/schemas';
 import { db } from '@/lib/db';
 import { getUserByEmail } from '@/data/user';
 
-export const updateStudentAfterGoogle = async (values: z.infer<typeof ProfAfterSchema>) => {
-  const validatedFields = ProfAfterSchema.safeParse(values);
-  const existingUser = await getUserByEmail(values.email);
+export const updateStudentAfterGoogle = async (values: z.infer<typeof EtudiantAfterSchema>) => {
+  const validatedFields = EtudiantAfterSchema.safeParse(values);
+  const existingUser = values?.email ? await getUserByEmail(values?.email) : undefined;
 
   if (!validatedFields.success || !existingUser) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
   }
 
   try {
-    const establishmentIds = values.etablissement.map((estab) => estab.id);
-    const subjectIds = values.subject.map((subj) => subj.id);
+    enum UserRole {
+      ADMIN = 'ADMIN',
+      STUDENT = 'STUDENT',
+      TEACHER = 'TEACHER',
+    }
+    const mappedRole =
+      existingUser?.role || values?.role === 'TEACHER'
+        ? UserRole.TEACHER
+        : existingUser?.role || values?.role === 'STUDENT'
+        ? UserRole.STUDENT
+        : UserRole.ADMIN;
 
-    const upp = await db.user.update({
+    await db.user.update({
       where: { id: existingUser?.id },
       data: {
-        UserEstablishment: {
-          connectOrCreate: establishmentIds.map((id) => ({
-            create: { establishement_id: id, assignedBy: existingUser?.id },
-            where: {
-              establishement_id_user_id: { establishement_id: id, user_id: existingUser?.id },
-            },
-          })),
-        },
-        Government: {
+        role: mappedRole,
+        user_establishment: {
           connect: {
-            id: values?.goverment?.id,
+            id: values?.etablissement,
           },
         },
-        role: existingUser?.role || values?.role,
+        classe: values?.classe,
       },
     });
     return { success: 'Bienvenue' };

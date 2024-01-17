@@ -27,10 +27,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Select from 'react-select';
 import { login } from '@/actions/auth/login';
 
+interface VerificationData {
+  email?: string;
+  password: string;
+  rememberMe: boolean;
+}
+
 export default function ProfAfterForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [verificationData, setVerificationData] = useState({});
+
+  const [verificationData, setVerificationData] = useState<VerificationData>({
+    email: '',
+    password: '',
+    rememberMe: false,
+  });
   const [disable, setDisable] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -98,7 +109,7 @@ export default function ProfAfterForm() {
           setDisable(true);
           login(
             {
-              email: verificationData?.email,
+              email: verificationData?.email || '',
               password: verificationData?.password,
               rememberMe: verificationData?.rememberMe,
             },
