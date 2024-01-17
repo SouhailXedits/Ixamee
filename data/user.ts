@@ -26,15 +26,14 @@ export const getUserById = async (id: string) => {
 
 export const getUserEstablishmentByUserId = async (id: string) => {
   try {
-    const userEstablishments = await db.userEstablishment.findMany({
+    const userEstablishments = await db.establishment.findMany({
       where: {
-        user_id: id,
+        UserEstablishment: {
+          some: {
+            id,
+          },
+        },
       },
-      include: {
-        establishement: true,
-        user: true,
-      },
-      take: 1,
     });
 
     return userEstablishments;
@@ -43,3 +42,5 @@ export const getUserEstablishmentByUserId = async (id: string) => {
     throw error;
   }
 };
+
+

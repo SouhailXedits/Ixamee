@@ -6,6 +6,7 @@ import Navbar from './_components/navbar';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { auth } from '@/auth';
 import { getMe } from '@/actions/examens';
+import { redirect, usePathname } from 'next/navigation';
 type DashboardLayoutProps = {
   params?: {
     etab_id: string;
@@ -14,14 +15,19 @@ type DashboardLayoutProps = {
 };
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) => {
   const queryClient = useQueryClient();
+  const pathName = usePathname();
+  console.log("🚀 ~ pathName:", pathName)
   if (params?.etab_id) {
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
-  
-    const { data, isPending } = useQuery({
-      queryKey: ['user'],
-      queryFn: async () => await getMe(),
-    });
+  // if (!pathName) {
+  //   redirect('/2');
+  // }
+
+  const { data, isPending } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => await getMe(),
+  });
 
   const { collapsed } = useSidebar((state) => state);
   return (

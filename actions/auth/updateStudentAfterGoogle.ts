@@ -1,35 +1,45 @@
 'use server';
 import * as z from 'zod';
-import { EtudiantAfterSchema } from '@/actions/auth/schemas';
-import { AuthError } from 'next-auth';
+import { ProfAfterSchema } from '@/actions/auth/schemas';
 import { db } from '@/lib/db';
+import { getUserByEmail } from '@/data/user';
 
-export const updateStudentAfterGoogle = async (values: z.infer<typeof EtudiantAfterSchema>) => {
-  const validatedFields = EtudiantAfterSchema.safeParse(values);
+export const updateStudentAfterGoogle = async (values: z.infer<typeof ProfAfterSchema>) => {
+  const validatedFields = ProfAfterSchema.safeParse(values);
+  console.log('🚀 ~ updateTeacherAfterGoogle ~ values:', values);
 
-  if (!validatedFields.success) {
+  const existingUser = await getUserByEmail(values.email);
+
+  if (!validatedFields.success || !existingUser) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
   }
 
   try {
-    await db.user
-      .update({
-        where: { email: values.email },
-        data: {
-          UserEstablishment: {
-            connect: {
-              establishement: values.etablissement,
+    const establishmentIds = values.etablissement.map((estab) => estab.id);
+    const subjectIds = values.subject.map((subj) => subj.id);
+
+    const upp = await db.user.update({
+      where: { id: existingUser?.id },
+      data: {
+        UserEstablishment: {
+          connectOrCreate: establishmentIds.map((id) => ({
+            create: { establishement_id: id, assignedBy: existingUser?.id },
+            where: {
+              establishement_id_user_id: { establishement_id: id, user_id: existingUser?.id },
             },
+          })),
+        },
+        Government: {
+          connect: {
+            id: values?.goverment?.id,
           },
         },
-      })
-      .then(() => {
-        return { success: 'Bienvenue' };
-      });
+        role: existingUser?.role || values?.role,
+      },
+    });
+    return { success: 'Bienvenue' };
   } catch (error) {
-    if (error instanceof AuthError) {
-      return { error: "Quelque chose s'est mal passé" };
-    }
-    throw error;
+    console.error('Update Error:', error);
+    return { error: "Quelque chose s'est mal passé" };
   }
 };

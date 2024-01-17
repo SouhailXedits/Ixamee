@@ -19,7 +19,6 @@ import { ProfAfterSchema } from '@/actions/auth/schemas';
 import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { updateTeacherAfterGoogle } from '@/actions/auth/updateTeacherAfterGoogle';
-import { auth } from '@/auth';
 import { MdOutlineClass, MdOutlineTimer } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import { getAllSubjects } from '@/actions/subjects';
@@ -27,7 +26,6 @@ import { getAllEstabs } from '@/actions/establishements';
 import { Skeleton } from '@/components/ui/skeleton';
 import Select from 'react-select';
 import { login } from '@/actions/auth/login';
-import { signIn } from 'next-auth/react';
 
 export default function ProfAfterForm() {
   const [error, setError] = useState<string | undefined>('');
@@ -256,8 +254,10 @@ export default function ProfAfterForm() {
         </div>
 
         <Button
-          disabled={isTransPending || (isTransPending || disable)}
-          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+          disabled={isTransPending || isTransPending || disable}
+          className={`${
+            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+          } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Suivant
         </Button>

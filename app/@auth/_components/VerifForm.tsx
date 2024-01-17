@@ -84,7 +84,9 @@ export default function VerifForm() {
         </div>
         <Button
           type="submit"
-          className="bg-[#99c6d3] w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+          className={`${
+            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+          } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Vérifier
         </Button>

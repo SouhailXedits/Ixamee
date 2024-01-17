@@ -24,15 +24,14 @@ export default async function RootLayout({
   student,
   teacher,
   auth,
-  admin,
 }: {
   children: React.ReactNode;
   student: React.ReactNode;
   teacher: React.ReactNode;
   auth: React.ReactNode;
-  admin: React.ReactNode;
 }) {
   const session = await authentification();
+  console.log("🚀 ~ session:", session)
 
   return (
     <html lang="en">
