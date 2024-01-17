@@ -98,7 +98,6 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
                       >
                         <FormControl>
                           <RadioGroupItem
-                          
                             id={''+lyce?.id} // Add an id for each item
                             value={''+lyce?.id}
                             className="text-[#FBB800] border-[#F0F6F8] w-4 h-4"
