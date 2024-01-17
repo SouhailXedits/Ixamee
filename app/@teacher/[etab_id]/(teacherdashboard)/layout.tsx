@@ -15,14 +15,11 @@ type DashboardLayoutProps = {
 };
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) => {
   const queryClient = useQueryClient();
-  const pathName = usePathname();
-  console.log("🚀 ~ pathName:", pathName)
+
   if (params?.etab_id) {
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
-  // if (!pathName) {
-  //   redirect('/2');
-  // }
+
 
   const { data, isPending } = useQuery({
     queryKey: ['user'],

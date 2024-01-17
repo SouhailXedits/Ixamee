@@ -102,8 +102,6 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
 
   const onSubmit = async (values: z.infer<typeof EtudiantAfterSchema>) => {
     values.role = role;
-    console.log(values);
-
     setError('');
     setSuccess('');
     startTransition(() => {
