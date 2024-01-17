@@ -54,6 +54,7 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
   };
   const handelSubmitInput = () => {
     try {
+      console.log(user_id);
       schema.parse(formatData);
       createClass({
         name: formatData.classe,

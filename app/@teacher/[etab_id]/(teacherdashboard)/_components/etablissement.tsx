@@ -11,7 +11,12 @@ const Etablissement = () => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
 
+  if (!user) {
+    return null;
+  }
+
   const { collapsed } = useSidebar((state) => state);
+
   const { data: teacherEstab, isPending: isPendingTeacherEstab } = useQuery({
     queryKey: ['AllEstabOfUser'],
     queryFn: async () => await getEstablishmentOfUser(user?.id),

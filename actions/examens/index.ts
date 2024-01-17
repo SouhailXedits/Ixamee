@@ -42,39 +42,8 @@ interface ExamData {
   ExamClassess: ExamClass[];
 }
 export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
-  const exams = await db.exam.findMany({
-    where: {
-      teacher_id: user_id,
-      examEstablishment: {
-        some: {
-          establishement_id: +etab_id,
-        },
-      },
-    },
-    include: {
-      examEstablishment: true,
-      ExamClassess: {
-        select: {
-          classe_id: true,
-          exam_id: true,
-          assignedAt: true,
-          assignedBy: true,
-          class: {
-            select: {
-              id: true,
-              name: true,
-              range: true,
-              establishment_id: true,
-              teacher_id: true,
-              is_archived: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  return exams;
+  const exams = await db.exam.findMany();
+  console.log(exams);
 };
 
 export const getMe = async () => {
@@ -138,16 +107,9 @@ export const getEstablishmentOfUser = async (user_id: string) => {
 };
 
 export const getOneExamById = async ({ id }: { id: number }) => {
-  try {
-    const exam = await db.exam.findUnique({ where: { id: id } });
-    console.log(exam);
-    return { data: exam, error: undefined };
-  } catch (error: any) {
-    return {
-      data: undefined as any,
-      error: 'Failed to get exam.',
-    };
-  }
+  const exam = await db.exam.findUnique({ where: { id: id } });
+  console.log(exam);
+  return { data: exam, error: undefined };
 };
 
 export async function createExamm(data: any, user_id: string) {
