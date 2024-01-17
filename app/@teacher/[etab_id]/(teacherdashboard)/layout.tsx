@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { auth } from '@/auth';
 import { getMe } from '@/actions/examens';
 import { redirect, usePathname } from 'next/navigation';
+import { Skeleton } from '@/components/ui/skeleton';
 type DashboardLayoutProps = {
   params?: {
     etab_id: string;
@@ -15,7 +16,8 @@ type DashboardLayoutProps = {
 };
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) => {
   const queryClient = useQueryClient();
-
+  const pathName = usePathname();
+  console.log('🚀 ~ pathName:', pathName);
   if (params?.etab_id) {
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
@@ -27,28 +29,35 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   });
 
   const { collapsed } = useSidebar((state) => state);
+
   return (
     <div className="h-full">
-      <div
-        className={cn(
-          'fixed inset-y-0 z-50 flex-col hidden h-full w-[220px] md:flex transition-width duration-300',
-          collapsed && 'w-[60px]'
-        )}
-      >
-        <Sidebar isOpen={collapsed} />
-      </div>
-      <div>
-        <Navbar />
-      </div>
-      <main
-        className={cn(
-          !collapsed
-            ? 'pl-[225px] transition-all duration-500'
-            : 'pl-[63px] transition-all duration-500'
-        )}
-      >
-        {children}
-      </main>
+      {isPending ? (
+        <Skeleton className="w-full h-[100vh] bg-[#99C6D3]" />
+      ) : (
+        <>
+          <div
+            className={cn(
+              'fixed inset-y-0 z-50 flex-col hidden h-full w-[220px] md:flex transition-width duration-300',
+              collapsed && 'w-[60px]'
+            )}
+          >
+            <Sidebar isOpen={collapsed} />
+          </div>
+          <div>
+            <Navbar />
+          </div>
+          <main
+            className={cn(
+              !collapsed
+                ? 'pl-[225px] transition-all duration-500'
+                : 'pl-[63px] transition-all duration-500'
+            )}
+          >
+            {children}
+          </main>
+        </>
+      )}
     </div>
   );
 };

@@ -4,7 +4,6 @@
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
-import { Prisma } from '@prisma/client';
 interface ExamEstablishment {
   establishement_id: number;
   exam_id: number;
@@ -42,7 +41,25 @@ interface ExamData {
   ExamClassess: ExamClass[];
 }
 export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
-  const exams = await db.exam.findMany();
+  const exams = await db.classe.findMany({
+    where: {
+      establishment: {
+        some: {
+          id: 1,
+        },
+      },
+      teacher: {
+        some: {
+          id: 'clrht2rmt0000k2yrr03w4281',
+        },
+      },
+    },
+    include: {
+      teacher: true,
+      exam_classe: true,
+      establishment: true,
+    },
+  });
   console.log(exams);
 };
 
@@ -72,9 +89,9 @@ export const getClasseOfUser = async (user_id: string) => {
 export const getSubjectOfUser = async (user_id: string) => {
   const subject = await db.subject.findMany({
     where: {
-      user: {
+      teacher: {
         some: {
-          user_id: user_id,
+          id: user_id,
         },
       },
     },
@@ -94,12 +111,13 @@ export const getTermOfUser = async (user_id: string) => {
 };
 export const getEstablishmentOfUser = async (user_id: string) => {
   console.log(user_id);
-  const data = await db.userEstablishment.findMany({
+  const data = await db.establishment.findMany({
     where: {
-      user_id: user_id,
-    },
-    select: {
-      establishement: true,
+      user_establishment: {
+        some: {
+          id: user_id,
+        },
+      },
     },
   });
 

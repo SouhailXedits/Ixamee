@@ -35,7 +35,6 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
     queryKey: ['subjects', currentPage],
     queryFn: async () => await getAllSubjectsByPage(currentPage),
   });
-  console.log(subjects)
   const data = subjects?.data?.estabs || [];
   const totalCount = subjects?.data?.totalCount;
   console.log(data);

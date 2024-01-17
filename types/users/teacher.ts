@@ -5,6 +5,6 @@ export interface teacherAminOutput {
   name: string;
   image: string;
   emailVerified: string;
-  UserEstablishment: any;
+  user_establishment: any;
   subjects: any;
 }

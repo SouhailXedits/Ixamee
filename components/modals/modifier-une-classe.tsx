@@ -63,6 +63,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
       //   establishmentId: estab,
       //   teacherId: user_id,
       // });
+      
     } catch (error: any) {
       console.error(error); // Log the actual error for debugging purposes
     }
@@ -74,7 +75,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Ajouter une classe
+            Modifier une classe
           </DialogTitle>
         </DialogHeader>
         <Label className="text-[#959595]">
@@ -132,7 +133,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
             className="w-full bg-[#1B8392] hover:opacity-80"
             onClick={handelSubmitInput}
           >
-            Ajouter
+            Enregistrer
           </Button>
         </DialogFooter>
       </DialogContent>

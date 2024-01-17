@@ -1,9 +1,7 @@
 // index.ts
 'use server';
 import { db } from '@/lib/db';
-import { SubjectInputProps } from '@/types/subjects/subjectTypes'
-
-
+import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 
 // export const getAllTeachersByPage = async (page = 1, pageSize = 10) => {
 //   try {
@@ -27,9 +25,6 @@ import { SubjectInputProps } from '@/types/subjects/subjectTypes'
 //   }
 // };
 
-
-
-
 export const getUserIdByEmail = async (email: string) => {
   try {
     const user = await db.user.findUnique({
@@ -38,8 +33,8 @@ export const getUserIdByEmail = async (email: string) => {
       },
       select: {
         id: true,
-        role: true
-      }
+        role: true,
+      },
     });
     return user;
   } catch {
@@ -47,13 +42,9 @@ export const getUserIdByEmail = async (email: string) => {
   }
 };
 
-
-
-
-
-export const getAllAdminTeachers= async () => {
+export const getAllAdminTeachers = async () => {
+  console.log('here');
   try {
-
     const teachers = await db.user.findMany({
       where: {
         role: 'ADMIN',
@@ -64,30 +55,10 @@ export const getAllAdminTeachers= async () => {
         role: true,
         name: true,
         image: true,
-        emailVerified:true,
-        UserEstablishment: {
-          select: {
-            establishement: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-        subjects: {
-          select: {
-            subject: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-        
+        emailVerified: true,
+        user_establishment: {},
+        subjects: {},
       },
-      
     });
 
     console.log(teachers);
@@ -121,7 +92,7 @@ export const getAllAdminTeachers= async () => {
 
 export const updateUserToAdmin = async (id: string) => {
   try {
-      await db.user.update({
+    await db.user.update({
       where: {
         id: id,
       },
@@ -137,11 +108,9 @@ export const updateUserToAdmin = async (id: string) => {
   }
 };
 
-
-
 export const updateAdminToUser = async (id: string) => {
   try {
-      await db.user.update({
+    await db.user.update({
       where: {
         id: id,
       },
