@@ -55,7 +55,7 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
             <p className=" gap-2 text-[#959595] text-sm flex">
               <span className=" text-mainGreen"> établissement(s):</span>
               <div>
-                {currentUser.UserEstablishment.map((estab) => (
+                {currentUser.UserEstablishment.map((estab: any) => (
                   <p key={estab.establishement.id}>{estab.establishement.name}</p>
                 ))}
               </div>
@@ -63,7 +63,7 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
             <p className=" gap-2 text-[#959595] text-sm flex items-center">
               <span className=" text-mainGreen"> Matière:(s):</span>
               <div>
-                {currentUser.subjects.map((subject) => (
+                {currentUser.subjects.map((subject: any) => (
                   <p className=" px-2 rounded-full border" key={subject.subject.id}>
                     {subject.subject.name}
                   </p>

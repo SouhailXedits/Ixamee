@@ -38,6 +38,7 @@ export default function LoginForm() {
       rememberMe: false,
     },
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
   const [isRegistrationFormSuccessful, setRegistrationFormSuccessful] = useState<boolean>(false);
@@ -52,8 +53,6 @@ export default function LoginForm() {
     startTransition(async () => {
       let code = generateSixDigitNumber();
       const hashedCode = await bcryptjs.hash(code + '', 10);
-      // const hashedPassword = await bcryptjs.hash(values.password + '', 10);
-
       login(values, code).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
@@ -70,7 +69,7 @@ export default function LoginForm() {
             JSON.stringify({
               email: values.email,
               code: hashedCode,
-              password:values.password,
+              password: values.password,
               rememberMe: values.rememberMe,
             })
           );
@@ -167,7 +166,9 @@ export default function LoginForm() {
         <Button
           type="submit"
           disabled={isPending}
-          className="bg-[#99c6d3] w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+          className={`${
+            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+          }  w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Se connecter
         </Button>

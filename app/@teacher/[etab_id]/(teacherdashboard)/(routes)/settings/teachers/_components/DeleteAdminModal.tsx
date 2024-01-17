@@ -23,9 +23,6 @@ import {
 } from '@/components/ui/select';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useCreateEstab } from '../hooks/useCreateEstab';
-import { useEditEstab } from '../hooks/useEditEstab';
-import { useDeleteEstab } from '../hooks/useDeleteEstab copy';
 import { useDeleteAdmin } from '../hooks/useDeleteAdmin';
 
 interface EditUserFormProps {
@@ -92,7 +89,7 @@ export const DeleteAdminModal = ({ id, children }: EditUserFormProps) => {
               disabled={isPending}
               className="w-full bg-[#F04438] hover:opacity-80 "
             >
-              Supprimer une établissement.
+              Supprimer cet admin.
             </Button>
           </DialogClose>
         </DialogFooter>

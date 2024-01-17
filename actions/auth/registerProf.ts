@@ -6,7 +6,6 @@ import { RegisterProfSchema } from '@/actions/auth/schemas';
 import bcryptjs from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
 import { sendVerificationEmail } from '@/lib/mail';
-
 export const register = async (values: z.infer<typeof RegisterProfSchema>, code: number) => {
   const validatedFields = RegisterProfSchema.safeParse(values);
   if (!validatedFields.success) {
@@ -27,13 +26,8 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
 
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
-  }
-  const gov = await db.government.findFirst({
-    where: {
-      government,
-    },
-  });
-  const government_id = gov?.id;
+  }  
+
   enum UserRole {
     ADMIN = 'ADMIN',
     STUDENT = 'STUDENT',
@@ -51,11 +45,7 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
       password: hashesPassword,
       phone_number,
       role: mappedRole,
-      Government: {
-        connect: {
-          id: government_id,
-        },
-      },
+      government
     },
   });
 

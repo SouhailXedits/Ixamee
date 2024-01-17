@@ -51,7 +51,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
   // };
   async function handleCreateEstab() {
     createEstablishement(name)
-    setIsFirstModalOpen(!isFirstModalOpen)
+    //setIsFirstModalOpen(!isFirstModalOpen)
   }
 
   function returnToCreate() {
@@ -99,14 +99,17 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
         )}
 
         <DialogFooter>
+          <DialogClose>
+
           
           <Button
             onClick={() => {isFirstModalOpen? returnToCreate() : handleCreateEstab()}}
             type="submit"
             className="w-full bg-[#1B8392] hover:opacity-80 "
-          >
+            >
             {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
           </Button>
+            </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

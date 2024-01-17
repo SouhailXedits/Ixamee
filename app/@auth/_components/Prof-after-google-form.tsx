@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTransition } from 'react';
 import { ProfAfterSchema } from '@/actions/auth/schemas';
 import { SelectScrollable } from './SelectScrollable';
@@ -27,16 +27,20 @@ import { getAllSubjects } from '@/actions/subjects';
 import { getAllEstabs } from '@/actions/establishements';
 import { Skeleton } from '@/components/ui/skeleton';
 import Select from 'react-select';
+import { useRouter } from 'next/navigation';
 interface ProfFormProps {
   handleRole: (role: string) => void;
+  session: object;
 }
 
-export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps) {
+export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormProps) {
   const [role, setRole] = useState<string>('TEACHER');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  // const session = await auth();
+  const [userEstab, setUserEstab] = useState<object | undefined>([]);
+  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
+  const router = useRouter();
   const form = useForm<z.infer<typeof ProfAfterSchema>>({
     resolver: zodResolver(ProfAfterSchema),
     defaultValues: {
@@ -85,19 +89,32 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
 
   const onSubmit = async (values: z.infer<typeof ProfAfterSchema>) => {
     values.role = role;
-    // values.email = session.email || 'slimani@gmail.com';
-    console.log(values, 'values');
+    values.email = session?.email;
     setError('');
     setSuccess('');
+    setUserEstab(values.etablissement);
     startTransition(() => {
       updateTeacherAfterGoogle(values).then((data) => {
         setError(data?.error);
-        localStorage.removeItem('email-verification');
-        // setSuccess(data?.success);
+        setSuccess(data?.success);
+        if (data?.success) {
+          setRegistrationSuccessful(true);
+        }
       });
     });
   };
 
+  useEffect(() => {
+    if (isRegistrationSuccessful) {
+      try {
+        console.log(userEstab, 'userEstab');
+        router.push(`/${userEstab[0].id}`);
+        router.refresh();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [isRegistrationSuccessful, router]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
@@ -175,6 +192,10 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
                           backgroundColor: '#F0F6F8',
                         }),
                       }}
+                      value={estabOptions.filter((option: any) =>
+                        field.value.some((selectedOption) => selectedOption.id === option.id)
+                      )}
+                      onChange={(selectedOptions) => field.onChange(selectedOptions)}
                     />
                   )}
                 </FormControl>
@@ -224,6 +245,10 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
                           backgroundColor: '#F0F6F8',
                         }),
                       }}
+                      value={subjectOptions.filter((option: any) =>
+                        field.value.some((selectedOption) => selectedOption.id === option.id)
+                      )}
+                      onChange={(selectedOptions) => field.onChange(selectedOptions)}
                     />
                   )}
                 </FormControl>
@@ -260,7 +285,9 @@ export default async function ProfAfterGoogleForm({ handleRole }: ProfFormProps)
 
         <Button
           disabled={isTransPending}
-          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+          className={`${
+            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+          } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Suivant
         </Button>

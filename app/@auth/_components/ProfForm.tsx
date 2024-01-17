@@ -55,21 +55,32 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const {
-    data,
-    error: getEstabsError,
-    isPending,
-  } = useQuery<any>({
-    queryKey: ['goverments'],
-    queryFn: async () => await getAllGovernments(),
-  });
-
-  const govOptions =
-    (data?.data &&
-      data?.data.map((gov: any) => {
-        return { id: gov.id, value: gov.government, label: gov.government };
-      })) ||
-    [];
+  const govOptions = [
+    { id: 1, value: 'Tunis', label: 'Tunis' },
+    { id: 2, value: 'Ariana', label: 'Ariana' },
+    { id: 3, value: 'Ben Arous', label: 'Ben Arous' },
+    { id: 4, value: 'Manouba', label: 'Manouba' },
+    { id: 5, value: 'Nabeul', label: 'Nabeul' },
+    { id: 6, value: 'Zaghouan', label: 'Zaghouan' },
+    { id: 7, value: 'Bizerte', label: 'Bizerte' },
+    { id: 8, value: 'Beja', label: 'Beja' },
+    { id: 9, value: 'Jendouba', label: 'Jendouba' },
+    { id: 10, value: 'Le Kef', label: 'Le Kef' },
+    { id: 11, value: 'Siliana', label: 'Siliana' },
+    { id: 12, value: 'Kairouan', label: 'Kairouan' },
+    { id: 13, value: 'Kasserine', label: 'Kasserine' },
+    { id: 14, value: 'Sidi Bouzid', label: 'Sidi Bouzid' },
+    { id: 15, value: 'Gabes', label: 'Gabes' },
+    { id: 16, value: 'Medenine', label: 'Medenine' },
+    { id: 17, value: 'Tataouine', label: 'Tataouine' },
+    { id: 18, value: 'Gafsa', label: 'Gafsa' },
+    { id: 19, value: 'Tozeur', label: 'Tozeur' },
+    { id: 20, value: 'Kebili', label: 'Kebili' },
+    { id: 21, value: 'Sousse', label: 'Sousse' },
+    { id: 22, value: 'Monastir', label: 'Monastir' },
+    { id: 23, value: 'Mahdia', label: 'Mahdia' },
+    { id: 24, value: 'Sfax', label: 'Sfax' },
+  ];
 
   const [isTransPending, startTransition] = useTransition();
 
@@ -80,9 +91,6 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
     startTransition(async () => {
       let code = generateSixDigitNumber();
       const hashedCode = await bcryptjs.hash(code + '', 10);
-      const hashedPassword = await bcryptjs.hash(values.password + '', 10);
-
-      console.log(code,hashedCode);
       register(values, code).then((data) => {
         setError(data.error);
         setSuccess(data.success);
@@ -91,9 +99,8 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           JSON.stringify({
             email: values.email,
             code: hashedCode,
-            password:values.password,
+            password: values.password,
             rememberMe: true,
-
           })
         );
         if (data.success && !data.error) {
@@ -257,7 +264,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
-                      disabled={isTransPending || isPending}
+                      disabled={isTransPending}
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
@@ -297,7 +304,9 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
 
         <Button
           disabled={isTransPending}
-          className="bg-[#99c6d3] font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+          className={`${
+            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+          } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           S&apos;inscrire
         </Button>

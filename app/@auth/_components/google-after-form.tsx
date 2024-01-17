@@ -2,15 +2,18 @@
 import { useState } from 'react';
 import ProfAfterGoogleForm from './Prof-after-google-form';
 import EtudiantAfterGoogleForm from './Etudiant-after-google-form';
-export default function GoogleAfterForm() {
+interface FormProps {
+  session: object ;
+}
+export default function GoogleAfterForm({ session }: FormProps) {
   const [role, setRole] = useState<string>('TEACHER');
   const handleRole = (role: string) => {
     setRole(role);
   };
-  
+
   if (role === 'TEACHER') {
-    return <ProfAfterGoogleForm handleRole={handleRole} />;
+    return <ProfAfterGoogleForm handleRole={handleRole} session={session} />;
   } else {
-    return <EtudiantAfterGoogleForm handleRole={handleRole} />;
+    return <EtudiantAfterGoogleForm handleRole={handleRole} session={session} />;
   }
 }

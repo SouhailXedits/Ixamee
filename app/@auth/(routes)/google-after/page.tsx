@@ -1,7 +1,13 @@
 import React from 'react';
 import Logo from '../../_components/Logo';
 import GoogleAfterForm from '../../_components/google-after-form';
-export default function GoogleAfter() {
+import { auth } from '@/auth';
+import { getUserById } from '@/data/user';
+import { redirect } from 'next/navigation';
+export default async function GoogleAfter() {
+  const session = await auth();
+  const existingUser = await getUserById(session?.user.id);
+  
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* left */}
@@ -20,7 +26,7 @@ export default function GoogleAfter() {
         </div>
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
-            <GoogleAfterForm />
+            <GoogleAfterForm session={existingUser} />
           </div>
         </div>
       </div>

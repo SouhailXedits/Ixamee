@@ -2,13 +2,12 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-
 }
-
+ 
 generator client {
   provider = "prisma-client-js"
 }
-
+ 
 model User {
   id                String              @id @default(cuid())
   name              String
@@ -30,19 +29,19 @@ model User {
   exams             Exam[]    @relation("ExamToUser")
   term              Term?
 }
-
+ 
 enum Term {
   TRIMESTRE
   SEMESTRE
   LIBRE
 }
-
+ 
 enum Role {
   STUDENT
   TEACHER
   ADMIN
 }
-
+ 
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -56,18 +55,18 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@unique([provider, providerAccountId])
 }
-
+ 
 model VerificationToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
-
+ 
   @@unique([email, token])
 }
 
@@ -149,8 +148,8 @@ model question {
   content            String?
   exercise_correction QuestionCorrection[]
 }
-
-
+ 
+ 
 // ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
@@ -158,7 +157,7 @@ model ExamCorrection {
   exam_id       Int
   mark_obtained Float
 }
-
+ 
 model ExerciseCorrection {
   id            Int       @id @default(autoincrement())
   exercise      Exercise? @relation(fields: [exercise_id], references: [id], onDelete: Cascade , onUpdate: Cascade)
@@ -173,4 +172,5 @@ model QuestionCorrection {
   content            String?
   mark_obtained Float
 }
-
+ 
+ 

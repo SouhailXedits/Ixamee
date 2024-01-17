@@ -4,10 +4,14 @@ import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { AuthError } from 'next-auth';
 
 export const googleLogin = async () => {
+  const session = await auth();
+  console.log("🚀 ~ googleLogin ~ session:", session)
+  
+  const link =`/google-after`  ;
   try {
     await signIn('google', {
-      redirectTo: `/google-after`,
-    });
+      redirectTo: link,
+    })
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
