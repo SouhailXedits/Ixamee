@@ -57,7 +57,7 @@ export default function LoginForm() {
         setError(data?.error);
         setSuccess(data?.success);
         localStorage.setItem(
-          'email-verification',
+          'new-verification',
           JSON.stringify({ email: values.email, code: hashedCode })
         );
         if (data?.success === 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.') {
@@ -65,7 +65,7 @@ export default function LoginForm() {
         }
         if (data?.success === 'Vous étes presque arrivé ! complete votre inscription') {
           localStorage.setItem(
-            'email-verification',
+            'new-verification',
             JSON.stringify({
               email: values.email,
               code: hashedCode,
@@ -81,7 +81,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (isRegistrationSuccessful) {
-      router.push('/email-verification');
+      router.push('/new-verification');
     }
     if (isRegistrationFormSuccessful) {
       router.push('/teacher-after');
@@ -154,7 +154,7 @@ export default function LoginForm() {
                 </div>
 
                 <Link
-                  href={'resetPassword'}
+                  href={'/reset-password'}
                   className=" text-center text-mainGreen hover:underline text-sm font-semibold max-md:text-xs  "
                 >
                   Mot de passe oublié?

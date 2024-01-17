@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
-import VerifCodeResetForm from '../../_components/VerifResetForm';
+import SendEmailResetForm from '../../_components/SendEmailResetForm';
 
 interface VerificationData {
   email?: string;
@@ -23,18 +23,16 @@ export default function ResetPassword() {
       {/* left */}
       <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-br-[100px] md:rounded-tr-[100px]  gap-10 max-sm:mt-28">
         <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">
-          Vérifiez votre E-mail
+          Mot de passe oublié?
         </div>
+
         <div className="text-center text-base text-[#727272] w-full">
-          Veuillez entrer le code de vérification envoyé à&nbsp;
-          <span className="text-lg text-[#102528]">
-            {verificationData?.email ? verificationData?.email : '*******@****.***'}
-          </span>
-          <div>Le code expire dans 00.32.</div>
+          Veuillez entrer votre e-mail pour réinitialiser votre mot de passe.&nbsp;
         </div>
+
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <VerifCodeResetForm email={verificationData?.email} code={verificationData?.code} />
+            <SendEmailResetForm email={verificationData?.email} code={verificationData?.code} />
           </div>
         </div>
       </div>

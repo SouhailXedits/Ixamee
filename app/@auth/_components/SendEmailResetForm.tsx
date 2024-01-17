@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import bcryptjs from 'bcryptjs';
 import Link from 'next/link';
 import { sendVerificationEmail } from '@/lib/mail';
+import { FaRegEnvelope } from 'react-icons/fa';
 import { emailVerification } from '@/actions/auth/email-verification';
 
 interface VerificationData {
@@ -20,7 +21,7 @@ interface VerificationData {
   code?: number;
 }
 
-export default function VerifForm({ email, code }: VerificationData) {
+export default function SendEmailResetForm({ email, code }: VerificationData) {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
@@ -92,7 +93,7 @@ export default function VerifForm({ email, code }: VerificationData) {
                     {...field}
                     placeholder="Entrer le code ici"
                     type="text"
-                    icon={<GoShieldCheck className="text-gray w-5 h-5" />}
+                    icon={<FaRegEnvelope className="text-gray w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -104,23 +105,10 @@ export default function VerifForm({ email, code }: VerificationData) {
           type="submit"
           className={`${
             form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
-          } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
+          } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75 mt-24`}
         >
-          Vérifier
+          Continuer
         </Button>
-        <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
-          <div className="flex ">
-            <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
-            &nbsp;
-            <Link
-              className="text-center text-[#1b8392] hover:underline font-semibold"
-              href={''}
-              onClick={handleResendVerificationEmail}
-            >
-              Renvoyez
-            </Link>
-          </div>
-        </div>
       </form>
     </Form>
   );

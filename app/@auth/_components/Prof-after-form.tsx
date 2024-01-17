@@ -45,7 +45,7 @@ export default function ProfAfterForm() {
   const [disable, setDisable] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const storedData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      const storedData = JSON.parse(localStorage.getItem('new-verification') || '{}');
       setVerificationData(storedData);
     }
   }, []);
@@ -115,7 +115,7 @@ export default function ProfAfterForm() {
             },
             123456
           ).then(() => {
-            localStorage.removeItem('email-verification');
+            localStorage.removeItem('new-verification');
           });
         }
       });

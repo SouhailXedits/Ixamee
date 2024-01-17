@@ -71,7 +71,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
         setError(data.error);
         setSuccess(data.success);
         localStorage.setItem(
-          'email-verification',
+          'new-verification',
           JSON.stringify({
             email: values.email,
             code: hashedCode,
@@ -88,7 +88,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
 
   useEffect(() => {
     if (isRegistrationSuccessful) {
-      router.push('/email-verification');
+      router.push('/new-verification');
     }
   }, [isRegistrationSuccessful, router]);
 
