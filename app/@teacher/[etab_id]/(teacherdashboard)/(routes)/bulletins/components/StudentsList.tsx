@@ -39,6 +39,8 @@ import Image from 'next/image';
 import { ModifierUnEtudiant } from '@/components/modals/modifier-un-etudiant';
 import { CorrectExam } from '@/components/modals/correct-exam';
 import { cn } from '@/lib/utils';
+import { link } from 'fs';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 const coefficient = 1
@@ -185,7 +187,7 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: 'ds1',
     header: () => {
-      return <span className="text-[#1B8392]">DS1</span>;
+      return <span className="text-[#1B8392] bg-mainGreen/30 h-full w-full flex items-center justify-center ">DS1</span>;
     },
     cell: ({ row }) => <div className="text-[#727272]">{row.getValue('ds1')}</div>,
   },
@@ -219,7 +221,7 @@ export const columns: ColumnDef<Payment>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="text-[#1B8392]  hover:text-[#1B8392]"
+          className=" text-white  hover:text-white hover:bg-mainGreen/85 w-full h-full bg-mainGreen rounded-none"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
@@ -275,6 +277,8 @@ export default function MarkSheetStudentList() {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const router = useRouter()
+  const path = usePathname()
 
   const table = useReactTable({
     data,
@@ -295,16 +299,24 @@ export default function MarkSheetStudentList() {
     },
   });
 
+  function handleStudentClick(id: string) {
+    console.log(id)
+    console.log(path)
+    const currPath = path
+    router.push(`${currPath}/${id}`)
+
+  }
+
   return (
     <div className="w-full">
-      <div className="border rounded-md ">
+      <div className=" rounded-md ">
         <Table>
-          <TableHeader className="bg-[#F0F6F8] text-[#1B8392]">
+          <TableHeader className="bg-[#F0F6F8] text-[#1B8392] rounded ">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="rounded">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className=" text-center p-0 border">
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}
@@ -314,10 +326,14 @@ export default function MarkSheetStudentList() {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className=" text-center">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleStudentClick(row.original.id)}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -331,9 +347,7 @@ export default function MarkSheetStudentList() {
                   colSpan={columns.length}
                   className="h-24 text-lg text-center bg-transparent"
                 >
-                  Pas d'étudiants ajoutés à cette classe.
-                  <span className="text-[#1B8392]">Ajoutez</span> vos étudiants ou{' '}
-                  <span className="text-[#1B8392]">importez</span> une liste.
+                  Pas d&apos;étudiants maintemnant
                 </TableCell>
               </TableRow>
             )}
