@@ -1,5 +1,7 @@
+import { Skeleton } from '@/components/ui/skeleton';
+
 function Loading() {
-  return <div className="bg-red text-3xl fixed inset-0">loading ...</div>;
+  return <Skeleton className="w-full h-[100vh] bg-[#99C6D3]" />;
 }
 
 export default Loading;

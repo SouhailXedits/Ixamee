@@ -26,14 +26,14 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
   function returnToCreate() {
     setIsFirstModalOpen(!isFirstModalOpen);
   }
-  console.log(currentUser.emailVerified)
+  console.log(currentUser.emailVerified);
 
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
-          <div className=" flex gap-4 items-center">
+          <div className="flex items-center gap-4 ">
             <div>
               <Image
                 src={currentUser.image || '/defaultUserAvatr.svg'}
@@ -43,8 +43,8 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
                 className="rounded-full"
               />
             </div>
-            <div className=" text-black/60 ">
-              <p className=" text-lg">{currentUser.name}</p>
+            <div className=" text-black/60">
+              <p className="text-lg ">{currentUser.name}</p>
               <p>{currentUser.email}</p>
             </div>
           </div>
@@ -55,8 +55,8 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
             <p className=" gap-2 text-[#959595] text-sm flex">
               <span className=" text-mainGreen"> établissement(s):</span>
               <div>
-                {currentUser.UserEstablishment.map((estab: any) => (
-                  <p key={estab.establishement.id}>{estab.establishement.name}</p>
+                {currentUser?.user_establishment?.map((estab: any) => (
+                  <p key={estab.id}>{estab.name}</p>
                 ))}
               </div>
             </p>
@@ -64,8 +64,8 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
               <span className=" text-mainGreen"> Matière:(s):</span>
               <div>
                 {currentUser.subjects.map((subject: any) => (
-                  <p className=" px-2 rounded-full border" key={subject.subject.id}>
-                    {subject.subject.name}
+                  <p className="px-2 border rounded-full " key={subject.id}>
+                    {subject?.name}
                   </p>
                 ))}
               </div>

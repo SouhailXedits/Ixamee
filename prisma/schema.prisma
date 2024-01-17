@@ -22,7 +22,7 @@ model User {
   phone_number      String?
   classe            Classe[]    @relation("StudentClassToUser")
   classe_teacher    Classe[]    @relation("ClasseClassTeacherToSubject")
-  subjects          Subject[]   @relation("ClasseSubjectToSubject")
+  subjects          Subject[]   @relation("ClasseTeacherSubjectToSubject")
   subject_id        Int?
   government        String?
   user_establishment Establishment[] @relation("UserEstablishmentToUser")
@@ -86,10 +86,9 @@ model Classe {
   establishment    Establishment[]  @relation("EstablishmentToClasse")
   teacher          User[]     @relation("ClasseClassTeacherToSubject")
   student_class    User[]        @relation("StudentClassToUser")
-  is_archived      Boolean?
-  exam_classe      Exam[]    @relation("ExamToUser")
+  is_archived      Boolean?    @default(false)
+  exam_classe      Exam[]    @relation("ExamClasseToUser")
 }
-
 
 
 // Subject Table
@@ -98,8 +97,10 @@ model Subject {
   name  String
   coefficient Float?
   icon  String?
-  teacher  User[]  @relation("ClasseSubjectToSubject")
+  teacher  User[]  @relation("ClasseTeacherSubjectToSubject")
   exams Exam[] 
+  is_archived      Boolean?    @default(false)
+
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
 }
 
@@ -117,7 +118,7 @@ model Exam {
   term               String?  
   exam_correction    ExamCorrection[]
   is_archived        Boolean? @default(false)
-  exam_classess      Classe[] @relation("ExamToUser")
+  exam_classess      Classe[] @relation("ExamClasseToUser")
   language           Language?    // Consider using an enum for style
 }
 enum Language {
@@ -133,6 +134,8 @@ model Exercise {
   marks              Float
   question_type      String
   exercise_correction ExerciseCorrection[]
+  is_archived      Boolean?    @default(false)
+
   questions           question[] 
 }
 model question {

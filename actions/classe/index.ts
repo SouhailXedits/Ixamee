@@ -22,7 +22,6 @@ export const createClasse = async (
         teacher: {
           connect: { id: teacherId },
         },
-        is_archived: false,
       },
     });
   } catch (error: any) {
@@ -30,7 +29,7 @@ export const createClasse = async (
   }
 };
 
-export const deleteClasse = async (id: string) => {
+export const deleteClasse = async (id: number) => {
   console.log(id);
   const data = await db.classe.delete({
     where: {
@@ -45,12 +44,32 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
   try {
     const classes = await db.classe.findMany({
       where: {
-        teacher_id: user_id,
-        establishment_id: +etab_id,
+        teacher: {
+          some: {
+            id: user_id,
+          },
+        },
+        establishment: {
+          some: {
+            id: +etab_id,
+          },
+        },
+        is_archived: false,
+        subject: {
+          some: {
+            is_archived: false,
+          },
+        },
       },
+
       include: {
-        StudentClass: true,
         subject: true,
+        establishment: true,
+        student_class: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     return { data: classes, error: undefined };

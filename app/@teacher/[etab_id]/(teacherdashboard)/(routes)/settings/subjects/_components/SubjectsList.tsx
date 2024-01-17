@@ -43,8 +43,6 @@ import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
 import { DeleteSubject } from './DeleteSubjectModal';
 import { EditSubjectModal } from './EditSubjectModal';
 
-
-
 export const CorrectionTag = ({
   correction,
   color,
@@ -106,7 +104,15 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center gap-2 capitalize">
-        <Image src={row.original.icon} alt=" subject icon" width={42} height={42} className="rounded-full" />
+        {row.original.icon && (
+          <Image
+            src={row.original.icon}
+            alt=" subject icon"
+            width={42}
+            height={42}
+            className="rounded-full"
+          />
+        )}
         {row.getValue('name')}
       </div>
     ),
@@ -119,7 +125,7 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
     id: 'actions',
     enableHiding: false,
 
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return (
         <div className="flex items-center gap-4 " style={{ width: '50px' }}>
           <DropdownMenu>
@@ -200,7 +206,7 @@ export function SubjectsList({
 
   if (isPending)
     return Array.from({ length: 5 }, (_, index) => (
-      <Skeleton key={index} className="w-70 h-10 mt-5" />
+      <Skeleton key={index} className="h-10 mt-5 w-70" />
     ));
 
   const totalPageCount = Math.floor(totalCount / 10) + 1;

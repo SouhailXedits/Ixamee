@@ -26,11 +26,13 @@ const FormSchema = z.object({
 });
 interface EtablissementItemProps {
   data: {
-    establishement: { id: string; name: string };
+    id: string;
+    name: string;
   }[];
 }
 
 export function EtablissementItem({ data }: EtablissementItemProps) {
+  console.log(data);
   if (!data) return null;
   const router = useRouter();
   const pathname = usePathname();
@@ -46,11 +48,11 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
   const params = useParams();
   const etabId = +params?.etab_id;
 
-  const currentestab = data.find((res) => +res?.establishement?.id === +etabId);
-  const currentestabName = currentestab?.establishement?.id;
+  const currentestab = data.find((res) => +res?.id === +etabId);
+  const currentestabName = currentestab?.id;
 
-  if (data.every((res) => +res?.establishement?.id !== +etabId)) {
-    router.push(`/${data[0]?.establishement?.id}/${currPath}`);
+  if (data.every((res) => +res?.id !== +etabId)) {
+    // router.push(`/${data[0]?.establishement?.id}/${currPath}`);
   }
 
   const { collapsed } = useSidebar((state) => state);
@@ -84,7 +86,7 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
                   >
                     {data.map((lyce) => (
                       <FormItem // Add a unique key for each item
-                        key={lyce.establishement.id}
+                        key={lyce.id}
                         className={cn(
                           'flex items-center space-x-3',
                           collapsed && 'flex-col items-center w-full'
@@ -92,17 +94,15 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
                       >
                         <FormControl>
                           <RadioGroupItem
-                            id={lyce.establishement?.id} // Add an id for each item
-                            value={lyce.establishement?.id}
+                            id={lyce?.id} // Add an id for each item
+                            value={lyce?.id}
                             className="text-[#FBB800] border-[#F0F6F8] w-4 h-4"
                             // checked={+lyce.establishement?.id === etabId}
-                            defaultChecked={+lyce.establishement?.id === etabId}
+                            defaultChecked={+lyce?.id === etabId}
                           />
                         </FormControl>
                         <FormLabel className="w-full h-10 font-normal">
-                          {collapsed
-                            ? shorting(lyce.establishement?.name)
-                            : lyce.establishement?.name}
+                          {collapsed ? shorting(lyce?.name) : lyce?.name}
                         </FormLabel>
                       </FormItem>
                     ))}
