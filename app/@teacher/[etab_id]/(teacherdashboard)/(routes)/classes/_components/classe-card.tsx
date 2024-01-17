@@ -26,7 +26,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
         </DropdownMenuItemSelect>
       </div>
       <div className="w-full px-5 font-[600] text-lg text-[#727272] pb-7 ">
-        {data?.StudentClass?.length} étudiants
+        {data?.student_class?.length} étudiants
       </div>
 
       <Link

@@ -29,6 +29,27 @@ export const createClasse = async (
   }
 };
 
+export const updateClasse = async (name: string, classe_id: number, matiere: any) => {
+  try {
+    console.log(name, classe_id, matiere);
+
+    const classe = await db.classe.update({
+      where: {
+        id: +classe_id,
+      },
+      data: {
+        name: name,
+        subject: {
+          set: matiere.map((matiere: any) => ({ id: matiere.value })),
+        },
+      },
+    });
+    console.log(classe);
+  } catch (error: any) {
+    console.error(error); // Log the actual error for debugging purposes
+  }
+};
+
 export const deleteClasse = async (id: number) => {
   console.log(id);
   const data = await db.classe.delete({
@@ -64,7 +85,6 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
 
       include: {
         subject: true,
-        establishment: true,
         student_class: {
           select: {
             id: true,

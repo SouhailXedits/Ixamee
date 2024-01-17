@@ -22,7 +22,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
 
-
   const { data, isPending } = useQuery({
     queryKey: ['user'],
     queryFn: async () => await getMe(),
@@ -33,7 +32,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   return (
     <div className="h-full">
       {isPending ? (
-        <Skeleton className="w-full h-[100vh] bg-[#99C6D3]" />
+        <Skeleton className="w-full h-[100vh] bg-[#000000]" />
       ) : (
         <>
           <div

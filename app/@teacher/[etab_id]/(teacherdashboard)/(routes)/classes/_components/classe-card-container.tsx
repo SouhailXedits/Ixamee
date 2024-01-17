@@ -1,9 +1,13 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import ClasseCard from './classe-card';
 
-const ClasseCardContainer = ({ data, isPending }: { data: any; isPending: boolean }) => {
+const ClasseCardContainer = ({ data, isPending }: { data: any; isPending: 
+  boolean
+}) => {
+  
   const CLassData = data?.data;
-
+  console.log(CLassData)
+  
   return (
     <div className="flex flex-wrap gap-3">
       {/* Pas de classes ajoutées pour le moment. */}

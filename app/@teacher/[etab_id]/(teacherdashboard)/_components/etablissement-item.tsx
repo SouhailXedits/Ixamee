@@ -18,6 +18,7 @@ import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
 import { redirect, useParams, usePathname, useRouter } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { useQueryClient } from '@tanstack/react-query';
 
 const FormSchema = z.object({
   type: z.enum(['all', 'mentions', 'none'], {
@@ -32,10 +33,10 @@ interface EtablissementItemProps {
 }
 
 export function EtablissementItem({ data }: EtablissementItemProps) {
-  console.log(data);
   if (!data) return null;
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -52,7 +53,7 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
   const currentestabName = currentestab?.id;
 
   if (data.every((res) => +res?.id !== +etabId)) {
-    // router.push(`/${data[0]?.establishement?.id}/${currPath}`);
+    router.push(`/${data[0]?.id}/${currPath}`);
   }
 
   const { collapsed } = useSidebar((state) => state);
@@ -75,7 +76,9 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
           name="type"
           render={({ field }: { field: any }) => (
             <>
-              {field?.value !== undefined && router.push(`/${field.value}/${currPath}`)}
+              {field?.value !== undefined &&
+                (router.push(`/${field.value}/${currPath}`),
+                queryClient.removeQueries({ queryKey : ['classe']}))}
               <FormItem className="space-y-3">
                 <FormControl>
                   <RadioGroup

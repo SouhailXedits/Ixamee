@@ -31,9 +31,6 @@ const schema = z.object({
 import Select from 'react-select';
 
 export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse) => {
-  console.log(user_id);
-  console.log(estab);
-
   const { createClass, isPending } = useCreateClasse();
   const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
     queryKey: ['teachersubject'],
@@ -57,7 +54,7 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
   };
   const handelSubmitInput = () => {
     try {
-      console.log(user_id);
+      console.log(estab);
       schema.parse(formatData);
       createClass({
         name: formatData.classe,

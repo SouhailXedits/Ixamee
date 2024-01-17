@@ -28,11 +28,12 @@ const schema = z.object({
   // matiere: z.array().min(1, { message: 'Matières est requis' }),
 });
 import Select from 'react-select';
+import { useEditeClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeClasse';
 
 export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
   const classesubject = data?.subject;
-  console.log(classesubject);
-  const { createClass, isPending } = useCreateClasse();
+  const { editeClass, isPending } = useEditeClasse();
+  console.log(data);
   const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
     queryKey: ['teachersubject'],
     queryFn: async () => await getSubjectOfUser(data?.teacher_id),
@@ -48,6 +49,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
     classe: data?.name,
     matiere: '',
   });
+  console.log(formatData);
   const handleInputChange = (field: string, value: any) => {
     setFormatData((prevFormData) => ({
       ...prevFormData,
@@ -63,7 +65,12 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
       //   establishmentId: estab,
       //   teacherId: user_id,
       // });
-      
+      console.log(data?.id);
+      editeClass({
+        name: formatData.classe,
+        classe_id: +data?.id,
+        matiere: formatData.matiere,
+      });
     } catch (error: any) {
       console.error(error); // Log the actual error for debugging purposes
     }
