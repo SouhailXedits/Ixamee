@@ -81,7 +81,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
   const term = Teacherterm;
   const classe = TeacherClasse;
 
-  const userEstablishmentoptions = userEstablishment?.map((item) => {
+  const userEstablishmentoptions = userEstablishment?.map((item:any) => {
     return {
       value: item?.establishement?.id,
       label: item?.establishement?.name,
@@ -132,7 +132,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
     term: exam?.term || '',
     classes: exam?.ExamClassess
       ? classoption?.filter((option) =>
-          exam.ExamClassess.some((item) => item.classe_id === option.value)
+          exam.ExamClassess.some((item:any) => item.classe_id === option.value)
         )
       : [],
     subject: exam?.subject_id
@@ -202,7 +202,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
                 name="estab"
                 defaultValue={
                   exam?.examEstablishment
-                    ? userEstablishmentoptions.filter(
+                    ? userEstablishmentoptions?.filter(
                         (option) => option.value === exam.examEstablishment[0]?.establishement_id
                       )
                     : undefined

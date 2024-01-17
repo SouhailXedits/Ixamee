@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 export default async function page() {
-  const session = await auth();  
+  const session = await auth() as any;  
   const userEstablishment = await getUserEstablishmentByUserId(session?.user.id)
   
   if (session?.user.role) {

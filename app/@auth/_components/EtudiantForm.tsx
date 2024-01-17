@@ -21,12 +21,11 @@ import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
-import { register } from '@/actions/auth/registerEtudiant';
+// import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from './SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
-import { getAllGovernments } from '@/actions/government';
 import { getAllEstabs } from '@/actions/establishements';
 import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
 import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
@@ -82,10 +81,10 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
     setError('');
     setSuccess('');
     startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      // register(values).then((data: any) => {
+      //   setError(data.error);
+      //   setSuccess(data.success);
+      // });
     });
   };
 

@@ -18,9 +18,8 @@ import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { RiGovernmentLine } from 'react-icons/ri';
 import { MdOutlineClass } from 'react-icons/md';
-import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
+// import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
 import { useQuery } from '@tanstack/react-query';
-import { getAllGovernments } from '@/actions/government';
 import { getAllEstabs } from '@/actions/establishements';
 import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
 import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
@@ -69,10 +68,10 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
     setError('');
     setSuccess('');
     startTransition(() => {
-      updateStudentAfterGoogle(values).then((data) => {
-        setError(data?.error);
-        // setSuccess(data?.success);
-      });
+      // updateStudentAfterGoogle(values).then((data) => {
+      //   setError(data?.error);
+      //   // setSuccess(data?.success);
+      // });
     });
   };
 

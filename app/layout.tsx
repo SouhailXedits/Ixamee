@@ -20,12 +20,10 @@ export const metadata: Metadata = {
 };
  
 export default async function RootLayout({
-  children,
   student,
   teacher,
   auth,
 }: {
-  children: React.ReactNode;
   student: React.ReactNode;
   teacher: React.ReactNode;
   auth: React.ReactNode;

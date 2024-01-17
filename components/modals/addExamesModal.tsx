@@ -77,7 +77,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
   const term = Teacherterm;
   const classe = TeacherClasse;
 
-  const userEstablishmentoptions = userEstablishment?.map((item) => {
+  const userEstablishmentoptions = userEstablishment?.map((item: any) => {
     return {
       value: item?.establishement?.id,
       label: item?.establishement?.name,

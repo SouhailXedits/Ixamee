@@ -26,7 +26,7 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
 
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
-  }  
+  }
 
   enum UserRole {
     ADMIN = 'ADMIN',
@@ -45,7 +45,7 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
       password: hashesPassword,
       phone_number,
       role: mappedRole,
-      government
+      government,
     },
   });
 

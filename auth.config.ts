@@ -19,7 +19,7 @@ export default {
           email: credentials.email,
           password: credentials.password,
           rememberMe: credentials.rememberMe === boolString,
-        });
+        }) as any;
 
         if (validatedFields) {
           const { email, password } = validatedFields?.data;

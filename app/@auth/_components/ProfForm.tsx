@@ -26,8 +26,6 @@ import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
 import { useRouter } from 'next/navigation';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
-import { useQuery } from '@tanstack/react-query';
-import { getAllGovernments } from '@/actions/government';
 import bcryptjs from 'bcryptjs';
 import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
 

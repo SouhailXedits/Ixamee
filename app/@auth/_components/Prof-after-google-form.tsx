@@ -30,14 +30,14 @@ import Select from 'react-select';
 import { useRouter } from 'next/navigation';
 interface ProfFormProps {
   handleRole: (role: string) => void;
-  session: object;
+  session: any;
 }
 
 export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormProps) {
   const [role, setRole] = useState<string>('TEACHER');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [userEstab, setUserEstab] = useState<object | undefined>([]);
+  const [userEstab, setUserEstab] = useState<any>([]);
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const router = useRouter();

@@ -5,7 +5,7 @@ import { Exo } from 'next/font/google';
 export const createClasse = async (
   name: string,
   matiere: any,
-  establishmentId: string,
+  establishmentId: number,
   teacherId: string
 ) => {
   try {

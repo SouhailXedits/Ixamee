@@ -103,8 +103,8 @@ const Student = () => {
         </div>
       </div>
 
-      <div className="flex overflow-auto gap-9">
-        <div className=" flex flex-col gap-6">
+      <div className="flex overflow-auto gap-9 p-7">
+        <div className=" flex flex-col gap-6 shadow-lg rounded p-4">
           <div className=" bg-mainGreen/35 p-2 rounded">Trimester 1</div>
           <div className=" flex flex-col gap-10">
             {userExams.map((exam) => (

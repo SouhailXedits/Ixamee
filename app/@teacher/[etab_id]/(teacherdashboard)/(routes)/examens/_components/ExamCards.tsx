@@ -35,7 +35,7 @@ interface Exam {
   class_id: number;
   subject_id: number;
   term: string | null;
-  progress: string | null;
+  progress: string ;
   examEstablishment: Record<string, any>; // Change to the appropriate type
   ExamClassess: ExamClass[];
 }
@@ -103,7 +103,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       </div>
 
       {/* Progress bar */}
-      <Progress value={exam?.progress} className="w-[100%] h-2 bg-white mt-3" />
+      <Progress value={+exam?.progress} className="w-[100%] h-2 bg-white mt-3" />
     </div>
   );
 };
