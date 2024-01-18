@@ -13,7 +13,7 @@ interface EditorProps {
 const Editor: React.FC<EditorProps> = ({ onChange, initialContent, editable }: EditorProps) => {
   // Get the current theme using Next.js theme hook
   const { resolvedTheme } = useTheme();
-  const [equation, setEquation] = useState('y=x');
+
   // Initialize BlockNoteEditor using useBlockNote hook
   const editor: BlockNoteEditor = useBlockNote({
     editable,
@@ -21,7 +21,7 @@ const Editor: React.FC<EditorProps> = ({ onChange, initialContent, editable }: E
   });
 
   return (
-    <div className=" w-full tex-black">
+    <div className="w-full  tex-black">
       <BlockNoteView editor={editor} theme="light"></BlockNoteView>
     </div>
   );

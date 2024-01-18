@@ -8,6 +8,7 @@ import { auth } from '@/auth';
 import { getMe } from '@/actions/examens';
 import { redirect, usePathname } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 type DashboardLayoutProps = {
   params?: {
     etab_id: string;
@@ -32,7 +33,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   return (
     <div className="h-full">
       {isPending ? (
-        <Skeleton className="w-full h-[100vh] bg-[#000000]" />
+        // <Skeleton className="w-full h-[100vh] bg-[#000000]" />
+        <div className="w-full h-[100vh] flex items-center justify-center">
+          <Image src="/loading.svg" alt="bankicon" width={400} height={400} />
+        </div>
       ) : (
         <>
           <div

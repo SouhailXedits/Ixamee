@@ -1,5 +1,6 @@
 'use server';
 import { db } from '@/lib/db';
+import { Exo } from 'next/font/google';
 
 export const createClasse = async (
   name: string,
@@ -100,3 +101,9 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
     };
   }
 };
+console.log('dskdskd');
+export const getStudentOfClasse = async (classe_id: number) => {
+  const res = await db.classe.findMany({});
+  console.log(res);
+};
+getStudentOfClasse(5);
