@@ -63,11 +63,11 @@ const Teacher = () => {
             />
           </div>
           <AddTeacher>
-            <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
+              <button
+                className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 "
+              >
                 Ajouter un admin
-              </div>
-            </div>
+              </button>
           </AddTeacher>
         </div>
       </nav>
