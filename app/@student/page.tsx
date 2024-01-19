@@ -1,9 +1,9 @@
-function page() {
-    return (
-        <div>
-            student
-        </div>
-    )
-}
+"use client"
+import React from 'react';
+import { usePathname } from 'next/navigation';
+export default function mainPage() {
+  const pathName = usePathname();
+  console.log(pathName);
 
-export default page
+  return <div>hello</div>;
+}

@@ -32,6 +32,7 @@ import { getClassesByEstablishmentId } from '@/actions/classe';
 import bcryptjs from 'bcryptjs';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
+import { register } from '@/actions/auth/registerEtudiant';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -112,7 +113,6 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
 
   const onSubmit = async (values: z.infer<typeof RegisterEtudSchema>) => {
     values.role = role;
-    console.log('🚀 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
     startTransition(() => {

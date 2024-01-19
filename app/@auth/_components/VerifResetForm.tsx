@@ -10,6 +10,9 @@ import { CodeInput } from './CodeInput';
 import bcryptjs from 'bcryptjs';
 import { useRouter } from 'next/navigation';
 import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
+import Link from 'next/link';
+import { renvoyer } from '@/actions/auth/renvoyer-email';
+import FormSuccess from '@/components/ui/form-success';
 interface VerificationData {
   email?: string | undefined;
   code?: number | undefined;
@@ -20,6 +23,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string | undefined>('');
+  const [seccess, setSuccess] = useState<string | undefined>('');
   const [isCodeSuccessful, setCodeSuccessful] = useState<boolean>(false);
   const router = useRouter();
 
@@ -45,6 +49,8 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
     try {
       const verificationCode = getVerificationCode();
       const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      console.log(storedVerificationData);
+
       if (codeValues) {
         const codeMatch = await bcryptjs.compare(verificationCode, storedVerificationData.code);
 
@@ -61,6 +67,26 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
     } catch (error) {
       setError("Quelque chose s'est mal passé");
     }
+  };
+  const handleResendVerificationEmail = async () => {
+    setSuccess('');
+    setError('');
+    startTransition(async () => {
+      if (email && code) {
+        renvoyer(email,"reset-password").then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          const hashedCode = data.hashedCode;
+          localStorage.setItem(
+            'email-verification',
+            JSON.stringify({
+              email: email,
+              code: hashedCode,
+            })
+          );
+        });
+      }
+    });
   };
 
   return (
@@ -88,6 +114,19 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
         >
           Vérifier
         </Button>
+        <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
+          <div className="flex ">
+            <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
+            &nbsp;
+            <Link
+              className="text-center text-[#1b8392] hover:underline font-semibold"
+              href={''}
+              onClick={handleResendVerificationEmail}
+            >
+              Renvoyez
+            </Link>
+          </div>
+        </div>
       </form>
     </Form>
   );
