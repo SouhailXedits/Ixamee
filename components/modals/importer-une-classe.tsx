@@ -14,14 +14,18 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Label } from '../ui/label';
 import csvtojson from 'csvtojson';
+import { createManyUserInClass } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteManyUser';
 
 interface ImportUneClasseProps {
   children: React.ReactNode;
+  data: any;
+  class_id: string;
+  etab_id: number;
 }
 
-export const ImportUneClasse = ({ children }: ImportUneClasseProps) => {
+export const ImportUneClasse = ({ children, data, class_id, etab_id }: ImportUneClasseProps) => {
   const [file, setFile] = useState<File | null>(null);
-  console.log(file?.name);
+  const { createManyUser, isPending, error } = createManyUserInClass();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
@@ -31,9 +35,17 @@ export const ImportUneClasse = ({ children }: ImportUneClasseProps) => {
   const handleImport = async () => {
     if (file) {
       const jsonData = await convertCsvToJson(file);
-      console.log(jsonData);
       // Handle the JSON data as needed
-      // TO DO: handle the imported data in the external page
+      jsonData.map((item: { name: string; email: string }) => {
+        createManyUser({
+          image: '',
+          name: item.name,
+          range: 1,
+          email: item.email,
+          class_id: class_id,
+          establishmentId: +etab_id,
+        });
+      });
     }
   };
 
@@ -45,6 +57,8 @@ export const ImportUneClasse = ({ children }: ImportUneClasseProps) => {
         try {
           const csvData = event.target?.result as string;
           const jsonData = await csvtojson().fromString(csvData);
+          console.log(jsonData);
+
           resolve(jsonData);
         } catch (error) {
           reject(error);

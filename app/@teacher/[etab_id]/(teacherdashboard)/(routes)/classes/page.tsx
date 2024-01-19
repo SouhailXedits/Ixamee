@@ -14,6 +14,7 @@ export default function Classes() {
     queryKey: ['classe'],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
+  
   // to DO Scelton
 
   return (

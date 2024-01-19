@@ -1,4 +1,5 @@
 'use server';
+import Establishement from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/page';
 import { db } from '@/lib/db';
 import { Exo } from 'next/font/google';
 
@@ -29,7 +30,17 @@ export const createClasse = async (
     console.error(error); // Log the actual error for debugging purposes
   }
 };
-
+export const getClasseById = async (id: number) => {
+  const classe = await db.classe.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      exam_classe: true,
+    },
+  });
+  return classe;
+};
 export const updateClasse = async (name: string, classe_id: number, matiere: any) => {
   try {
     console.log(name, classe_id, matiere);
@@ -50,7 +61,65 @@ export const updateClasse = async (name: string, classe_id: number, matiere: any
     console.error(error); // Log the actual error for debugging purposes
   }
 };
+// image, name, range, email, class_id, establishmentId;
 
+export const createUserWithImportInClasse = async (
+  image: string,
+  name: string,
+  range: number,
+  email: string,
+  classe_id: number,
+  establishmentId: number
+) => {
+  console.log(name, classe_id, email, image);
+  const user = await db.user.findUnique({
+    where: {
+      email: email,
+      NOT: {
+        classe: {
+          some: {
+            id: +classe_id,
+          },
+        },
+      },
+    },
+  });
+  console.log(user);
+  if (!user) {
+    const data = await db.user.create({
+      data: {
+        name: name,
+        email: email,
+        image: image,
+        classe: {
+          connect: {
+            id: +classe_id,
+          },
+        },
+        user_establishment: {
+          connect: {
+            id: establishmentId,
+          },
+        },
+      },
+    });
+    console.log(data);
+  } else {
+    const data = await db.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        classe: {
+          connect: {
+            id: +classe_id,
+          },
+        },
+      },
+    });
+    console.log(data);
+  }
+};
 export const deleteClasse = async (id: number) => {
   console.log(id);
   const data = await db.classe.delete({
@@ -87,6 +156,9 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
       include: {
         subject: true,
         student_class: {
+          where: {
+            role: 'STUDENT',
+          },
           select: {
             id: true,
           },
@@ -101,9 +173,112 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
     };
   }
 };
-console.log('dskdskd');
 export const getStudentOfClasse = async (classe_id: number) => {
-  const res = await db.classe.findMany({});
+  const res = await db.user.findMany({
+    where: {
+      role: 'STUDENT',
+      classe: {
+        some: {
+          id: classe_id,
+        },
+      },
+    },
+    orderBy: {
+      name: 'asc',
+    },
+  });
   console.log(res);
+  return res;
 };
-getStudentOfClasse(5);
+
+export const createUserInClasse = async (
+  image: string,
+  name: string,
+  range: number,
+  email: string,
+  class_id: string,
+  establishmentId: number
+) => {
+  const user = await db.user.create({
+    data: {
+      name: name,
+      image: image,
+      range: range,
+      email: email,
+      role: 'STUDENT',
+      classe: {
+        connect: { id: +class_id },
+      },
+      user_establishment: {
+        connect: { id: +establishmentId },
+      },
+    },
+  });
+  console.log(user);
+  return user;
+};
+// export const createManyUserInClasseApi = async (
+//   name: string,
+//   range: number,
+//   email: string,
+//   class_id: string,
+//   establishmentId: number
+// ) => {
+//   const user = await db.user.createMany({
+//     data: {
+//       name: name,
+//       range: range,
+//       email: email,
+//       role: 'STUDENT',
+//       user_establishment: {}
+
+//     },
+
+//   });
+//   console.log(user);
+//   return user;
+// };
+
+export const updateUserInClasse = async (
+  id: string,
+  name: string,
+  email: string,
+  image: string
+) => {
+  console.log(id);
+  console.log(image);
+  // const existingUser = await db.user.findUnique({
+  //   where: {
+  //     email: email,
+  //   },
+  // });
+  // console.log(existingUser);
+  // if (existingUser && existingUser.id !== id) {
+  //   console.error('Email already exists for another user');
+  //   return;
+  // }
+
+  const data = await db.user.update({
+    where: {
+      id: id,
+    },
+    data: {
+      name: name,
+      email: email,
+      image: image,
+    },
+  });
+
+  console.log('User updated successfully');
+};
+
+export const deleteUserInClasse = async (id: string) => {
+  console.log(id);
+  const data = await db.user.delete({
+    where: {
+      id: id,
+    },
+  });
+  console.log('user deleted succecfully ! ');
+  return { data: data, error: undefined };
+};

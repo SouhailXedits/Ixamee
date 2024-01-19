@@ -110,7 +110,6 @@ export const getTermOfUser = async (user_id: string) => {
   return term;
 };
 export const getEstablishmentOfUser = async (user_id: string) => {
-  console.log(user_id);
   const data = await db.establishment.findMany({
     where: {
       user_establishment: {

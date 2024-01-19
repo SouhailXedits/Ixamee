@@ -2,6 +2,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
+import Loading from '@/app/loading';
 
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const [isClient, setIsClient] = useState(false);
@@ -13,10 +14,12 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (!isClient) {
-    return null; // Render nothing on the server side
+    return;
+    <Loading />; // Render nothing on the server side
   }
 
-  if (!user) return null
+  if (!user) return;
+  <Loading />;
 
   if (user.role !== 'ADMIN') {
     return <div>{redirect('/')}</div>;
