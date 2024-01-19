@@ -21,7 +21,7 @@ import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
-import { register } from '@/actions/auth/registerEtudiant';
+// import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from './SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
@@ -111,26 +111,12 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
     console.log('🚀 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
-    // startTransition(() => {
-    //   register(values).then(async (data: any) => {
-    //     setError(data.error);
-    //     setSuccess(data.success);
-    //     let code = generateSixDigitNumber();
-    //     const hashedCode = await bcryptjs.hash(code + '', 10);
-    //     localStorage.setItem(
-    //       'new-verification',
-    //       JSON.stringify({
-    //         email: values.email,
-    //         code: hashedCode,
-    //         password: values.password,
-    //         rememberMe: true,
-    //       })
-    //     );
-    //     if (data.success && !data.error) {
-    //       sendEmailVerificationToken(values.email);
-    //     }
-    //   });
-    // });
+    startTransition(() => {
+      // register(values).then((data: any) => {
+      //   setError(data.error);
+      //   setSuccess(data.success);
+      // });
+    });
   };
 
   return (

@@ -8,16 +8,25 @@ import { SearchModal } from '@/components/modals/SearchModal';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@radix-ui/react-select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@radix-ui/react-select';
+import { Button } from '@/components/ui/button';
+import { DatePickerWithRange } from '@/components/ui/RangeDatePicker';
+import FiltersModal from './components/FiltersModal';
 
-const ArchiveLayout = ({children}: {children: React.ReactNode}) => {
-  const params = useParams()
-  const router = useRouter()
-  const pathname =  usePathname()
-  const currPath = pathname.split('/')[3]
-  
+const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
+  const params = useParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const currPath = pathname.split('/')[3];
+
   const [currentTab, setCurrentTab] = useState<string>(currPath);
-  const currEtabId = params.etab_id
+  const currEtabId = params.etab_id;
   // const [currentPage, setCurrentPage] = useState(1); // State to track the current page
   // console.log(currentPage);
   // const handleImportedData = (jsonData: any) => {
@@ -36,8 +45,8 @@ const ArchiveLayout = ({children}: {children: React.ReactNode}) => {
   // const totalCount = estabs?.data.totalCount;
 
   function handleChangeTab(value: string) {
-    setCurrentTab(value)
-    router.push(`/${currEtabId}/archive/${value}`)
+    setCurrentTab(value);
+    router.push(`/${currEtabId}/archive/${value}`);
   }
 
   return (
@@ -46,11 +55,6 @@ const ArchiveLayout = ({children}: {children: React.ReactNode}) => {
         <div className="flex flex-col gap-4">
           <div className="text-[#1B8392] text-2xl font-semibold ">Archive</div>
           <div className="flex items-center text-[#727272]">
-            {/* <Image src="/arrowleft.svg" alt="icons" width={20} height={20} /> */}
-
-            {/* <Link href={'/settings'} className="cursor-pointer">
-              Classes
-            </Link> */}
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
             <span className="cursor-pointer">Archive</span>
@@ -67,6 +71,8 @@ const ArchiveLayout = ({children}: {children: React.ReactNode}) => {
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
           </div>
+          <FiltersModal/>
+          
           {/* <div>
             <Select>
               <SelectTrigger className="w-[140px] rounded-xl">
