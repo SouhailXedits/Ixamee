@@ -17,9 +17,9 @@ export const getUserById = async (id: string) => {
     where: {
       id: id,
     },
-    select: {
-      id: true,
-    },
+    // select: {
+    //   id: true,
+    // },
   });
   console.log(user);
   return user;
@@ -29,7 +29,7 @@ export const getUserEstablishmentByUserId = async (id: string) => {
   try {
     const userEstablishments = await db.establishment.findMany({
       where: {
-        user_establishment : {
+        user_establishment: {
           some: {
             id,
           },
