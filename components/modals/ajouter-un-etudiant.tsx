@@ -24,33 +24,118 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from './etudiant-ajoute-avec-succes';
+import { z } from 'zod';
+import { error } from 'console';
+import { useCreateUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteUser';
+
 interface AjouterUneClasse {
   children: React.ReactNode;
+  data: any;
+  class_id: string;
+  etab_id: number;
 }
-export const AjouterUnEtudiant = ({ children }: AjouterUneClasse) => {
-  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: AjouterUneClasse) => {
+  const minrange = data?.length;
+  const formatDataSchema = z.object({
+    name: z.string().min(3, 'Veuillez renseigner le nom'),
+    rang: z.string().refine((value) => parseInt(value, 10) > minrange, {
+      message: `Veuillez renseigner un rang supérieur à ${minrange}`,
+    }),
+    email: z.string().email("L'email n'est pas valide"),
+  });
+  const [formatData, setFormatData] = useState({
+    name: '',
+    rang: '',
+    email: '',
+  });
+  const handelUpdateSetFormatData = (key: string, value: string | number) => {
+    setFormatData({ ...formatData, [key]: value });
+  };
 
+  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
+  const [files, setFile] = useState<any>(null);
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
+  const [selectedFileUrl1, setSelectedFileUrl1] = useState<string>('');
+
+  const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
+
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     const selectedFile = e.target.files[0];
+
+  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
+  //       setFile(selectedFile);
+  //       const fileUrl = URL.createObjectURL(selectedFile);
+  //       setSelectedFileUrl(fileUrl);
+  //     }
+  //   }
+  // };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
+      setFile(selectedFile);
 
       if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-        setFile(selectedFile);
+        const form = new FormData();
+        form.append('file', files as any);
+        form.append('upload_preset', 'firaslatrach');
         const fileUrl = URL.createObjectURL(selectedFile);
-        setSelectedFileUrl(fileUrl);
+        setSelectedFileUrl1(fileUrl);
+
+        fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
+          method: 'post',
+          body: form,
+        })
+          .then((resp) => resp.json())
+          .then((data) => {
+            setSelectedFileUrl(data.url);
+          })
+          .catch((err) => console.log(err));
       }
     }
   };
 
+  const renderFieldError = (fieldName: string) => {
+    if (formErrors) {
+      const fieldError = formErrors?.errors?.find((error) => error.path[0] === fieldName);
+
+      if (fieldError) {
+        return <div className="mt-1 text-sm text-red">{fieldError.message}</div>;
+      }
+    }
+
+    return null;
+  };
+
+  const { createUserInClass, isPending, error } = useCreateUserInClasse();
+  const handelSubmit = () => {
+    const validationResult = formatDataSchema.safeParse(formatData);
+
+    if (validationResult.success) {
+      createUserInClass({
+        name: formatData.name,
+        range: +formatData.rang,
+        email: formatData.email.toLowerCase(),
+        image: selectedFileUrl,
+        class_id: class_id,
+        establishmentId: etab_id,
+      });
+      if (!error) setIsFirstModalOpen(!isFirstModalOpen);
+      else {
+        console.log(error);
+      }
+
+      // setIsFirstModalOpen(!isFirstModalOpen);
+      setFormErrors(null); // Reset error state if submission is successful
+    } else setFormErrors(validationResult.error);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Ajouter un étudiant
+            Modifier votre étudiant
           </DialogTitle>
         </DialogHeader>
 
@@ -65,9 +150,9 @@ export const AjouterUnEtudiant = ({ children }: AjouterUneClasse) => {
                 onChange={(e) => handleFileChange(e)}
               />
               <div className="flex items-center gap-3">
-                {selectedFileUrl ? (
+                {selectedFileUrl1 ? (
                   <Image
-                    src={selectedFileUrl}
+                    src={selectedFileUrl1}
                     alt="upload"
                     width={55}
                     height={55}
@@ -89,13 +174,24 @@ export const AjouterUnEtudiant = ({ children }: AjouterUneClasse) => {
               <Input
                 placeholder="Entrer le nom complet de l’étudiant"
                 className="placeholder:text-[#727272]"
+                value={formatData.name}
+                onChange={(e) => handelUpdateSetFormatData('name', e.target.value)}
               />
+              {renderFieldError('name')}
             </div>
             <div className="flex flex-col gap-2">
               <Label className="text-[#959595]">
                 Rang dans la classe<span className="text-red">*</span>
               </Label>
-              <Input placeholder="1" />
+              <Input
+                placeholder="1"
+                value={formatData.rang}
+                type="number"
+                min={minrange}
+                onChange={(e) => handelUpdateSetFormatData('rang', e.target.value)}
+                className="placeholder:text-[#727272]"
+              />
+              {renderFieldError('rang')}
             </div>
             <div className="flex flex-col gap-2">
               <Label className="text-[#959595]">
@@ -104,8 +200,11 @@ export const AjouterUnEtudiant = ({ children }: AjouterUneClasse) => {
               <Input
                 type="email"
                 placeholder="Entrer l’e-amail de l’étudiant"
+                value={formatData.email}
+                onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
                 className="placeholder:text-[#727272]"
               />
+              {renderFieldError('email')}
             </div>
           </div>
         ) : (
@@ -126,7 +225,7 @@ export const AjouterUnEtudiant = ({ children }: AjouterUneClasse) => {
 
         <DialogFooter>
           <Button
-            onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
+            onClick={handelSubmit}
             type="submit"
             className="w-full bg-[#1B8392] hover:opacity-80 "
           >

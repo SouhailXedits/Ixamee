@@ -7,6 +7,12 @@ import { getUserByEmail } from '@/data/user';
 export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterSchema>) => {
   const validatedFields = ProfAfterSchema.safeParse(values);
   const existingUser = values?.email ? await getUserByEmail(values?.email) : undefined;
+  console.log(validatedFields)
+  console.log(existingUser)
+
+  if (!validatedFields.success) {
+    return { error: 'Veuillez renseigner tous les champs.' };
+  }
 
   if (!validatedFields.success || !existingUser) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };

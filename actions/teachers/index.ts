@@ -43,7 +43,8 @@ export const getUserIdByEmail = async (email: string) => {
 };
 
 export const getAllAdminTeachers = async () => {
-  console.log('here');
+
+  
   try {
     const teachers = await db.user.findMany({
       where: {

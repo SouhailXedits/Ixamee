@@ -13,18 +13,14 @@ interface SidebarItemProps {
 }
 export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarItemProps) => {
   const params = useParams();
-  console.log(params.etab_id);
   const pathname = usePathname();
   const router = useRouter();
   const { collapsed } = useSidebar((state) => state);
-  function generateDynamicId() {
-    return params.etab_id;
-  }
+  console.log(`/${params.etab_id}${href}`);
   const isActive =
     (pathname === `/${params.etab_id}` && href === `/`) ||
     pathname === href ||
-    pathname.startsWith(`${href}/`) ||
-    (pathname.includes(`${href}`) && pathname !== '/' && href !== '/');
+    (pathname.startsWith(`/${params.etab_id}${href}` ) && href !== '/');
 
   const onClick = () => {
     if (href) router.push(`/${params.etab_id}${href}`);

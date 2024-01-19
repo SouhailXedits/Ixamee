@@ -39,7 +39,7 @@ export const InviterUnEtudiant = ({ children }: ArchiveUneClasse) => {
             </Button>
           </DialogClose>
           <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
-            Archiver
+            Inviter
           </Button>
         </DialogFooter>
       </DialogContent>

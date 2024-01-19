@@ -15,6 +15,7 @@ import { AddTeacher } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllAdminTeachers } from '@/actions/teachers';
+import { SearchModal } from '@/components/modals/SearchModal';
 
 const Teacher = () => {
 
@@ -53,21 +54,19 @@ const Teacher = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
-            <Image src="/scoop.svg" alt="icons" width={20} height={20} />
+          <SearchModal field="enseignant" table="user">
+            <button className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
+              <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
-            <input
-              type="text"
-              placeholder="Recherche"
-              className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
-            />
-          </div>
+              <p className=" text-mainGreen/50 w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]">
+                Recherche
+              </p>
+            </button>
+          </SearchModal>
           <AddTeacher>
-            <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Ajouter un admin
-              </div>
-            </div>
+            <button className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
+              Ajouter un admin
+            </button>
           </AddTeacher>
         </div>
       </nav>

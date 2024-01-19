@@ -6,7 +6,6 @@ const ClasseCardContainer = ({ data, isPending }: { data: any; isPending:
 }) => {
   
   const CLassData = data?.data;
-  console.log(CLassData)
   
   return (
     <div className="flex flex-wrap gap-3">
