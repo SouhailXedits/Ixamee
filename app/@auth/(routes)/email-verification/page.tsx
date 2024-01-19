@@ -5,8 +5,8 @@ import Logo from '../../_components/Logo';
 import VerifCodeResetForm from '../../_components/VerificationCodeForm';
 
 interface VerificationData {
-  email?: string;
-  code?: number;
+  email?: string | undefined;
+  code?: number | undefined;
 }
 
 export default function ResetPassword() {

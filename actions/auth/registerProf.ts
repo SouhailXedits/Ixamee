@@ -49,6 +49,7 @@ export const register = async (
       phone_number,
       role: mappedRole,
       government,
+      image,
     },
   });
 
