@@ -148,22 +148,22 @@ export async function createExamm(data: any, user_id: string) {
         },
         term: data.term,
 
-        ExamClassess: {
-          create: data.classes.map((classId: any) => ({
-            class: {
-              connect: { id: classId.value },
-            },
-            assignedBy: 'some_value', // Add the assignedBy field with a value
-          })),
-        },
-        examEstablishment: {
-          create: data.establishment.map((establishmentId: any) => ({
-            establishement: {
-              connect: { id: establishmentId.value },
-            },
-            assignedBy: user_id,
-          })),
-        },
+        // ExamClassess: {
+        //   create: data.classes.map((classId: any) => ({
+        //     class: {
+        //       connect: { id: classId.value },
+        //     },
+        //     assignedBy: 'some_value', // Add the assignedBy field with a value
+        //   })),
+        // },
+        // examEstablishment: {
+        //   create: data.establishment.map((establishmentId: any) => ({
+        //     establishement: {
+        //       connect: { id: establishmentId.value },
+        //     },
+        //     assignedBy: user_id,
+        //   })),
+        // },
       },
     });
     return examm;
@@ -179,9 +179,9 @@ export async function updateExam(examId: number, data: any, user_id: string) {
       where: {
         id: examId,
       },
-      include: {
-        examEstablishment: true,
-      },
+      // include: {
+      //   examEstablishment: true,
+      // },
       data: {
         name: data.name,
         total_mark: +data.totalMarks,
@@ -195,32 +195,32 @@ export async function updateExam(examId: number, data: any, user_id: string) {
           : undefined,
         term: data.term,
 
-        ExamClassess: {
-          updateMany: data.classes
-            ? data.classes.map((classId: any) => ({
-                where: {
-                  exam_id: examId,
-                },
-                data: {
-                  assignedBy: 'some_updated_value',
-                },
-              }))
-            : undefined,
-        },
+        // ExamClassess: {
+        //   updateMany: data.classes
+        //     ? data.classes.map((classId: any) => ({
+        //         where: {
+        //           exam_id: examId,
+        //         },
+        //         data: {
+        //           assignedBy: 'some_updated_value',
+        //         },
+        //       }))
+        //     : undefined,
+        // },
         //TO DO : update the assignedBy field with the current user id
-        examEstablishment: {
-          updateMany: data.establishment
-            ? data.establishment.map((establishmentId: any) => ({
-                where: {
-                  exam_id: examId,
-                  establishement_id: +establishmentId.value,
-                },
-                data: {
-                  assignedBy: 'some_updddsdsdssdsdsdsated_value',
-                },
-              }))
-            : undefined,
-        },
+        // examEstablishment: {
+        //   updateMany: data.establishment
+        //     ? data.establishment.map((establishmentId: any) => ({
+        //         where: {
+        //           exam_id: examId,
+        //           establishement_id: +establishmentId.value,
+        //         },
+        //         data: {
+        //           assignedBy: 'some_updddsdsdssdsdsdsated_value',
+        //         },
+        //       }))
+        //     : undefined,
+        // },
       },
     });
 
@@ -280,27 +280,27 @@ const getRecursiveExamQuestion = async () => {
   //   )
   //   SELECT * FROM RecursiveQuestions;
   // `;
-  const result = await db.exercise.findMany({
-    where: {
-      id: 5,
-    },
-    include: {
-      question: {
-        include: {
-          parent: true,
-        },
-      },
-    },
-  });
+//   const result = await db.exercise.findMany({
+//     where: {
+//       id: 5,
+//     },
+//     include: {
+//       question: {
+//         include: {
+//           parent: true,
+//         },
+//       },
+//     },
+//   });
 };
 
 getRecursiveExamQuestion();
 
-const getSubQuestionOfExercice = async (exercice_id: number) => {
-  const subQuestions = await db.question.findMany({
-    where: {
-      parent_id: exercice_id,
-    },
-  });
-  return subQuestions;
-};
+// const getSubQuestionOfExercice = async (exercice_id: number) => {
+//   const subQuestions = await db.question.findMany({
+//     where: {
+//       parent_id: exercice_id,
+//     },
+//   });
+//   return subQuestions;
+// }

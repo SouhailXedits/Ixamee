@@ -1,31 +1,27 @@
-import React, { useEffect, useCallback, useState, useTransition } from 'react';
-import * as z from 'zod';
+import React, { startTransition, useEffect, useState, useTransition } from 'react';
+import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { VerifSchema } from '@/actions/auth/schemas';
+import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
-import FormSuccess from '@/components/ui/form-success';
-import { GoShieldCheck } from 'react-icons/go';
-import { Input } from '@/components/ui/auth-input';
-import { useRouter } from 'next/navigation';
+import { VerifSchema } from '@/actions/auth/schemas';
+import { CodeInput } from './CodeInput';
 import bcryptjs from 'bcryptjs';
-import Link from 'next/link';
-import { sendVerificationEmail } from '@/lib/mail';
-import { emailVerification } from '@/actions/auth/email-verification';
-
+import { useRouter } from 'next/navigation';
+import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
 interface VerificationData {
-  email?: string;
-  code?: number;
+  email?: string | undefined;
+  code?: number | undefined;
 }
+const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
+  const [codeValues, setCodeValues] = useState(['', '', '', '', '', '']);
 
-export default function VerifCodeResetForm({ email, code }: VerificationData) {
+  const [isCodeValid, setIsCodeValid] = useState(false);
+  const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string | undefined>('');
-  const [success, setSuccess] = useState<string | undefined>('');
+  const [isCodeSuccessful, setCodeSuccessful] = useState<boolean>(false);
   const router = useRouter();
-
-  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -34,89 +30,67 @@ export default function VerifCodeResetForm({ email, code }: VerificationData) {
     },
   });
 
-  const onSubmit = useCallback(async () => {
+  const handleCodeChange = (index: number, value: string) => {
+    const newCodeValues = [...codeValues];
+    newCodeValues[index] = value;
+    setCodeValues(newCodeValues);
+    setIsCodeValid(newCodeValues.every((code) => code.length === 1));
+  };
+  const [isTransPending, startTransition] = useTransition();
+  const getVerificationCode = () => {
+    return codeValues.join('');
+  };
+  const onSubmit = async () => {
     setError('');
-    setSuccess('');
-    if (success || error) {
-      return;
-    }
-
-    const formData = form.getValues();
-
     try {
-      const storedVerificationData = JSON.parse(localStorage.getItem('new-verification') || '{}');
-      const codeMatch = await bcryptjs.compare(formData.code, storedVerificationData.code);
+      const verificationCode = getVerificationCode();
+      const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      if (codeValues) {
+        const codeMatch = await bcryptjs.compare(verificationCode, storedVerificationData.code);
 
-      if (storedVerificationData && codeMatch) {
-        const data = await emailVerification(storedVerificationData.email);
-        setSuccess(data.success);
-        setError(data.error);
-        setRegistrationSuccessful(true);
-      } else {
-        setError('Code invalid!');
+        if (email && codeMatch) {
+          setIsCodeCorrect(true);
+          startTransition(() => {
+            sendPasswordResetToken(storedVerificationData.email);
+          });
+        } else {
+          setIsCodeCorrect(false);
+          setError('Code incorrect, réessayez.');
+        }
       }
-    } catch (err) {
-      setError("Quelque chose s'est mal passé !");
+    } catch (error) {
+      setError("Quelque chose s'est mal passé");
     }
-  }, [form, success, error]);
-
-  useEffect(() => {
-    if (isRegistrationSuccessful) {
-      router.push('/teacher-after');
-    }
-  }, [isRegistrationSuccessful, router]);
-  const [isPending, startTransition] = useTransition();
-  const handleResendVerificationEmail = async () => {
-    setSuccess('');
-    setError('');
-    startTransition(async () => {
-      if (email && code) {
-        // await sendVerificationEmail(email, code);
-      }
-    });
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form className="space-y-6 w-full" onSubmit={form.handleSubmit(onSubmit)}>
         <FormError message={error} />
-        <FormSuccess message={success} />
-        <div className="w-full flex flex-col gap-4">
-          <FormField
-            control={form.control}
-            name="code"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="flex mb-2 gap-2 rtl:space-x-reverse justify-between">
+          {[1, 2, 3, 4, 5, 6].map((index) => (
+            <CodeInput
+              key={index}
+              id={`code-${index}`}
+              prevId={`code-${index - 1}`}
+              nextId={`code-${index + 1}`}
+              value={codeValues[index - 1]}
+              onChange={(value) => handleCodeChange(index - 1, value)}
+              isValid={isCodeCorrect}
+            />
+          ))}
         </div>
         <Button
           type="submit"
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            isCodeValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Vérifier
         </Button>
-        <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
-          <div className="flex ">
-            <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
-            &nbsp;
-            <Link
-              className="text-center text-[#1b8392] hover:underline font-semibold"
-              href={''}
-              onClick={handleResendVerificationEmail}
-            >
-              Renvoyez
-            </Link>
-          </div>
-        </div>
       </form>
     </Form>
   );
-}
+};
+
+export default VerificationCodeForm;

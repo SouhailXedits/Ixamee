@@ -6,7 +6,7 @@ import { Exo } from 'next/font/google';
 export const createClasse = async (
   name: string,
   matiere: any,
-  establishmentId: string,
+  establishmentId: number,
   teacherId: string
 ) => {
   try {
@@ -281,4 +281,24 @@ export const deleteUserInClasse = async (id: string) => {
   });
   console.log('user deleted succecfully ! ');
   return { data: data, error: undefined };
+};
+
+export const getClassesByEstablishmentId = async (etab_id: number) => {
+  try {
+    const classes = await db.classe.findFirst({
+      where: {
+        establishment: {
+          some: {
+            id: etab_id,
+          },
+        },
+      },
+    });
+    return { data: classes, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get classes.',
+    };
+  }
 };

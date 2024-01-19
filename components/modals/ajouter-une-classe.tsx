@@ -19,7 +19,7 @@ import { useState } from 'react';
 interface AjouterUneClasse {
   children: React.ReactNode;
   user_id: string;
-  estab: string;
+  estab: number;
 }
 
 import * as z from 'zod';

@@ -20,12 +20,10 @@ export const metadata: Metadata = {
 };
  
 export default async function RootLayout({
-  children,
   student,
   teacher,
   auth,
 }: {
-  children: React.ReactNode;
   student: React.ReactNode;
   teacher: React.ReactNode;
   auth: React.ReactNode;
@@ -36,7 +34,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <QueryClientProviderWrapper>
-          {/* <Hydration> */}
+          <Hydration>
           <ToastProvider />
           {/* {teacher} */}
           {session?.user?.role === 'STUDENT'
@@ -44,7 +42,7 @@ export default async function RootLayout({
             : session?.user?.role === 'TEACHER' || session?.user?.role === 'ADMIN'
             ? teacher
             : auth}
-          {/* </Hydration> */}
+          </Hydration>
         </QueryClientProviderWrapper>
       </body>
     </html>

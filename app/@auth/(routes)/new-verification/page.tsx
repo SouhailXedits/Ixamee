@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import VerifForm from '../../_components/VerifForm';
+import { useSearchParams } from 'next/navigation';
 
 interface VerificationData {
   email?: string;

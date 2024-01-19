@@ -36,10 +36,10 @@ const Input = React.forwardRef<HTMLInputElement | HTMLSelectElement, InputProps>
             className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer focus:outline-none"
             onClick={togglePasswordVisibility}
           >
-            {showPassword ? (
-              <EyeClosedIcon className="h-5 w-5 text-gray" />
+            {!showPassword ? (
+              <EyeClosedIcon className="h-5 w-5 text-gray" name='EyeClosedIcon'/>
             ) : (
-              <EyeOpenIcon className="h-5 w-5 text-gray" />
+              <EyeOpenIcon className="h-5 w-5 text-gray" name='EyeOpenIcon'/>
             )}
           </button>
         )}

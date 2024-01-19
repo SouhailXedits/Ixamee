@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ProfAfterGoogleForm from './Prof-after-google-form';
 import EtudiantAfterGoogleForm from './Etudiant-after-google-form';
 interface FormProps {
-  session: object ;
+  session: any ;
 }
 export default function GoogleAfterForm({ session }: FormProps) {
   const [role, setRole] = useState<string>('TEACHER');
@@ -13,7 +13,8 @@ export default function GoogleAfterForm({ session }: FormProps) {
 
   if (role === 'TEACHER') {
     return <ProfAfterGoogleForm handleRole={handleRole} session={session} />;
-  } else {
+  } 
+  else {
     return <EtudiantAfterGoogleForm handleRole={handleRole} session={session} />;
   }
 }

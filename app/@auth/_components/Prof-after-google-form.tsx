@@ -30,14 +30,14 @@ import Select from 'react-select';
 import { useRouter } from 'next/navigation';
 interface ProfFormProps {
   handleRole: (role: string) => void;
-  session: object;
+  session: any;
 }
 
 export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormProps) {
   const [role, setRole] = useState<string>('TEACHER');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [userEstab, setUserEstab] = useState<object | undefined>([]);
+  const [userEstab, setUserEstab] = useState<any>([]);
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const router = useRouter();
@@ -113,7 +113,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
         console.log(error);
       }
     }
-  }, [isRegistrationSuccessful, router,userEstab]);
+  }, [isRegistrationSuccessful, router, userEstab]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
@@ -272,7 +272,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
                       field={field}
                       placeholder={'Choisissez votre système pédagogique'}
                       options={systeme}
-                      icon={<MdOutlineTimer className="text-gray w-5 h-5" />}
+                      icon={<MdOutlineTimer className="text-muted-foreground w-5 h-5" />}
                     />
                   )}
                 </FormControl>

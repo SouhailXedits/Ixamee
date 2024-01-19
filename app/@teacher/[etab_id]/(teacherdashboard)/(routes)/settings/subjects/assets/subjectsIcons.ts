@@ -40,7 +40,7 @@ export const icons = [
     alt: 'icon of earth',
   },
   {
-    id: 'zrgzegefzha',
+    id: 'zrsssgzegefzha',
     src: '/subjects/atom.svg',
     alt: 'icon of earth',
   },

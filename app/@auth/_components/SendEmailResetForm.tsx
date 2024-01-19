@@ -3,7 +3,7 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { VerifSchema } from '@/actions/auth/schemas';
+import { ResetSchema } from '@/actions/auth/schemas';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
@@ -14,68 +14,49 @@ import bcryptjs from 'bcryptjs';
 import Link from 'next/link';
 import { sendVerificationEmail } from '@/lib/mail';
 import { FaRegEnvelope } from 'react-icons/fa';
-import { emailVerification } from '@/actions/auth/email-verification';
+import { reset } from '@/actions/auth/reset';
+import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 
-interface VerificationData {
-  email?: string;
-  code?: number;
-}
-
-export default function SendEmailResetForm({ email, code }: VerificationData) {
+export default function SendEmailResetForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
 
-  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
+  const [isVerificationSuccessful, setVerificationSuccessful] = useState<boolean>(false);
 
-  const form = useForm<z.infer<typeof VerifSchema>>({
-    resolver: zodResolver(VerifSchema),
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
-      code: '',
+      email: '',
     },
   });
-
-  const onSubmit = useCallback(async () => {
-    setError('');
-    setSuccess('');
-    if (success || error) {
-      return;
-    }
-
-    const formData = form.getValues();
-
-    try {
-      const storedVerificationData = JSON.parse(localStorage.getItem('new-verification') || '{}');
-      const codeMatch = await bcryptjs.compare(formData.code, storedVerificationData.code);
-
-      if (storedVerificationData && codeMatch) {
-        const data = await emailVerification(storedVerificationData.email);
-        setSuccess(data.success);
-        setError(data.error);
-        setRegistrationSuccessful(true);
-      } else {
-        setError('Code invalid!');
-      }
-    } catch (err) {
-      setError("Quelque chose s'est mal passé !");
-    }
-  }, [form, success, error]);
-
-  useEffect(() => {
-    if (isRegistrationSuccessful) {
-      router.push('/teacher-after');
-    }
-  }, [isRegistrationSuccessful, router]);
   const [isPending, startTransition] = useTransition();
-  const handleResendVerificationEmail = async () => {
-    setSuccess('');
+
+  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     setError('');
+    setSuccess('');
     startTransition(async () => {
-      if (email && code) {
-        // await sendVerificationEmail(email, code);
-      }
+      let code = generateSixDigitNumber();
+      const hashedCode = await bcryptjs.hash(code + '', 10);
+      reset(values, code).then((data: any) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+        localStorage.setItem(
+          'email-verification',
+          JSON.stringify({ email: values.email, code: hashedCode })
+        );
+        if (data?.success) {
+          setVerificationSuccessful(true);
+        }
+      });
     });
   };
+
+  useEffect(() => {
+    if (isVerificationSuccessful) {
+      router.push('/email-verification');
+    }
+  }, [isVerificationSuccessful, router]);
 
   return (
     <Form {...form}>
@@ -85,15 +66,16 @@ export default function SendEmailResetForm({ email, code }: VerificationData) {
         <div className="w-full flex flex-col gap-4">
           <FormField
             control={form.control}
-            name="code"
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
+                    disabled={isPending}
                     {...field}
-                    placeholder="Entrer le code ici"
+                    placeholder="Entrez votre e-mail"
                     type="text"
-                    icon={<FaRegEnvelope className="text-gray w-5 h-5" />}
+                    icon={<FaRegEnvelope className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -102,6 +84,8 @@ export default function SendEmailResetForm({ email, code }: VerificationData) {
           />
         </div>
         <Button
+          disabled={isPending}
+          name="submitButton"
           type="submit"
           className={`${
             form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'

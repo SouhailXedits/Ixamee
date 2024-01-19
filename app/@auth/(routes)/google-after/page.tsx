@@ -5,7 +5,7 @@ import { auth } from '@/auth';
 import { getUserById } from '@/data/user';
 import { redirect } from 'next/navigation';
 export default async function GoogleAfter() {
-  const session = await auth();
+  const session = await auth() as any;
   const existingUser = await getUserById(session?.user.id);
   
   return (

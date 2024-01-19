@@ -6,7 +6,7 @@ import { createClasse as createClasseApi } from '@/actions/classe';
 interface CreateClasseParams {
   name: string;
   matiere: string; // Update with the actual type for class data
-  establishmentId: string;
+  establishmentId: number;
   teacherId: string;
 }
 

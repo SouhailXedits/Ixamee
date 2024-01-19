@@ -7,6 +7,7 @@ interface itemProps {
   id: number;
   name: string;
   NumberOfStudent: number;
+  student_class: any
 }
 
 const ClasseCard = ({ data }: { data: itemProps }) => {

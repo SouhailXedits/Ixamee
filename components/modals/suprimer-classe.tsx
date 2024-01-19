@@ -19,7 +19,7 @@ export const SupprimerUneClasse = ({ children, classe_id }: SupprimerUneClasse) 
   console.log(classe_id);
   const { deleteClasse } = useDeleteClasse();
   const handelDeleteExa = () => {
-    deleteClasse(classe_id);
+    deleteClasse(+classe_id);
   };
   return (
     <Dialog>

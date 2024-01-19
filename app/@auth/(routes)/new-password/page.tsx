@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import SendEmailResetForm from '../../_components/SendEmailResetForm';
+import ResetForm from '../../_components/ResetForm';
 
 interface VerificationData {
   email?: string;
@@ -23,12 +24,12 @@ export default function NewPassword() {
       {/* left */}
       <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-br-[100px] md:rounded-tr-[100px]  gap-10 max-sm:mt-28">
         <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">
-        Créer un nouveau <br/> mot de passe
+          Créer un nouveau <br /> mot de passe
         </div>
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            {/* <SendEmailResetForm email={verificationData?.email} code={verificationData?.code} /> */}
+            <ResetForm email={verificationData.email}/>
           </div>
         </div>
       </div>

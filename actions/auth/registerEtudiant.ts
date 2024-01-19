@@ -1,4 +1,3 @@
-
 'use server';
 
 import * as z from 'zod';
@@ -7,6 +6,8 @@ import { RegisterEtudSchema } from '@/actions/auth/schemas';
 import bcryptjs from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
 export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
+  console.log(values);
+
   const validatedFields = RegisterEtudSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -29,27 +30,29 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>) => {
   if (existingUser) {
     return { error: 'E-mail déja utilisé' };
   }
-  // const government_id = await db.government.findUnique({
-  //   where: {
-  //     government,
-  //   },
-  // });
-  const government_id = 1;
-  const establishement_id = 1;
-  const classe_id = 1;
-
+  enum UserRole {
+    ADMIN = 'ADMIN',
+    STUDENT = 'STUDENT',
+    TEACHER = 'TEACHER',
+  }
+  const mappedRole =
+    role === 'TEACHER' ? UserRole.TEACHER : role === 'STUDENT' ? UserRole.STUDENT : UserRole.ADMIN;
+  const image = '/defaultUserAvatr.svg';
 
   await db.user.create({
     data: {
+      name: `${first_name} ${last_name}`,
       first_name,
       last_name,
       email,
       password: hashesPassword,
-      classe,
-      role,
-      government_id,
-      establishement_id,
-      classe_id,
+      role: mappedRole,
+      government,
+      image,
+      // user_establishment : {
+      //     connect:
+      // }
+      // classe
     },
   });
 

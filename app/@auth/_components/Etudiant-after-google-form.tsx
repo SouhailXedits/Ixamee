@@ -18,9 +18,8 @@ import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { RiGovernmentLine } from 'react-icons/ri';
 import { MdOutlineClass } from 'react-icons/md';
-import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
+// import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
 import { useQuery } from '@tanstack/react-query';
-import { getAllGovernments } from '@/actions/government';
 import { getAllEstabs } from '@/actions/establishements';
 import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
 import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
@@ -58,9 +57,9 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
       })) ||
     [];
 
-  const govOptions = TunisianGoverments
+  const govOptions = TunisianGoverments;
 
-  const classOptions = TunisianClasses
+  const classOptions = TunisianClasses;
 
   const [isTransPending, startTransition] = useTransition();
 
@@ -69,10 +68,10 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
     setError('');
     setSuccess('');
     startTransition(() => {
-      updateStudentAfterGoogle(values).then((data) => {
-        setError(data?.error);
-        // setSuccess(data?.success);
-      });
+      // updateStudentAfterGoogle(values).then((data) => {
+      //   setError(data?.error);
+      //   // setSuccess(data?.success);
+      // });
     });
   };
 
@@ -124,7 +123,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                     field={field}
                     placeholder={'Choisissez votre gouvernorat'}
                     options={govOptions}
-                    icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
+                    icon={<RiGovernmentLine className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -145,7 +144,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                     field={field}
                     placeholder={'Choisissez votre établissement'}
                     options={estabOptions}
-                    icon={<FaGraduationCap className="text-gray w-5 h-5" />}
+                    icon={<FaGraduationCap className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -167,7 +166,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                     field={field}
                     placeholder={'Sélectionnez votre classe'}
                     options={classOptions}
-                    icon={<MdOutlineClass className="text-gray w-5 h-5" />}
+                    icon={<MdOutlineClass className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
