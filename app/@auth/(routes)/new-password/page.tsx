@@ -14,7 +14,7 @@ export default function NewPassword() {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const storedData = JSON.parse(localStorage.getItem('new-verification') || '{}');
+      const storedData = JSON.parse(localStorage.getItem('email-verification') || '{}');
       setVerificationData(storedData);
     }
   }, []);

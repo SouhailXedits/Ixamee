@@ -15,6 +15,8 @@ import Link from 'next/link';
 import { sendVerificationEmail } from '@/lib/mail';
 import { emailVerification } from '@/actions/auth/email-verification';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
+import { login } from '@/actions/auth/login';
+import { renvoyer } from '@/actions/auth/renvoyer-email';
 
 interface VerificationData {
   email?: string;
@@ -28,6 +30,7 @@ export default function VerifForm({ email, code }: VerificationData) {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
+  const [isDisabled, setDisabled] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -53,9 +56,23 @@ export default function VerifForm({ email, code }: VerificationData) {
         const data = await emailVerification(storedVerificationData.email, token);
         setSuccess(data.success);
         setError(data.error);
-        if (data.success) {
+        console.log(storedVerificationData);
+
+        if (data.success && !storedVerificationData?.role) {
           // sendEmailVerificationToken(storedVerificationData.email);
           setRegistrationSuccessful(true);
+        } else if (storedVerificationData?.role === 'STUDENT') {
+          setDisabled(true);
+          login(
+            {
+              email: storedVerificationData?.email || '',
+              password: storedVerificationData?.password,
+              rememberMe: storedVerificationData?.rememberMe,
+            },
+            123456
+          ).then(() => {
+            localStorage.removeItem('new-verification');
+          });
         }
       } else {
         setError('Code invalid!');
@@ -77,7 +94,24 @@ export default function VerifForm({ email, code }: VerificationData) {
     setError('');
     startTransition(async () => {
       if (email && code) {
-        // await sendVerificationEmail(email, code);
+        renvoyer(email, 'email').then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          const hashedCode = data.hashedCode;
+          const storedVerificationData = JSON.parse(
+            localStorage.getItem('new-verification') || '{}'
+          );
+          localStorage.setItem(
+            'new-verification',
+            JSON.stringify({
+              email: email,
+              code: hashedCode,
+              role: storedVerificationData?.role,
+              password: storedVerificationData?.password,
+              rememberMe: storedVerificationData?.rememberMe,
+            })
+          );
+        });
       }
     });
   };
@@ -108,7 +142,7 @@ export default function VerifForm({ email, code }: VerificationData) {
         </div>
         <Button
           name="submitButton"
-          disabled={isPending}
+          disabled={isPending || isDisabled}
           type="submit"
           className={`${
             form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'

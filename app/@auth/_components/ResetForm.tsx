@@ -49,6 +49,7 @@ export default function ResetForm({ email }: VerificationData) {
     setError('');
     setSuccess('');
     values.email = email || '';
+    
     startTransition(async () => {
       newPassword(values, token).then((data) => {
         setError(data?.error);

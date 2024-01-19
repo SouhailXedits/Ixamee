@@ -167,9 +167,9 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
                       name="estab"
                       options={estabOptions}
                       placeholder={
-                        <div className="flex items-center text-gray text-sm ">
-                          <FaGraduationCap className="text-gray w-5 h-5 mr-2" />
-                          Choisissez votre établissement
+                        <div className="flex items-center text-muted-foreground text-sm ">
+                          <FaGraduationCap className="text-muted-foreground w-5 h-5 mr-2" />
+                          Choisissez vos/votre établissement(s)
                         </div>
                       }
                       isSearchable={true}
@@ -219,9 +219,9 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
                       name="matiere"
                       options={subjectOptions}
                       placeholder={
-                        <div className="flex items-center text-gray text-sm ">
-                          <MdOutlineClass className="text-gray w-5 h-5 mr-2" />
-                          Choisissez votre établissement
+                        <div className="flex items-center text-muted-foreground text-sm ">
+                          <MdOutlineClass className="text-muted-foreground w-5 h-5 mr-2" />
+                          Choisissez vos/votre matière
                         </div>
                       }
                       isSearchable={true}
@@ -283,6 +283,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
         </div>
 
         <Button
+          type="submit"
           disabled={isTransPending}
           className={`${
             form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'

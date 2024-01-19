@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTransition } from 'react';
 import { EtudiantAfterSchema } from '@/actions/auth/schemas';
 import { SelectScrollable } from './SelectScrollable';
@@ -23,23 +23,32 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
 import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
 import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
+import { getClassesByEstablishmentId } from '@/actions/classe';
+import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
+import { useRouter } from 'next/navigation';
+import FormError from '@/components/ui/form-error';
+import FormSuccess from '@/components/ui/form-success';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
-  session: object;
+  session: any;
 }
 
 export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFormProps) {
   const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  // const session = await auth();
+  const [userEstab, setUserEstab] = useState<any>([]);
+  const [isChooseEstab, setChooseEstab] = useState<boolean>(true);
+  const [estabClassesOptions, setEstabClassesOptions] = useState([]);
+  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof EtudiantAfterSchema>>({
     resolver: zodResolver(EtudiantAfterSchema),
     defaultValues: {
       government: '',
-      etablissement: '',
-      classe: '',
+      etablissement: [],
+      classe: [],
     },
   });
   const {
@@ -63,21 +72,71 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
 
   const [isTransPending, startTransition] = useTransition();
 
+  const handleEtablissementChange = async (selectedEtablissement: any) => {
+    setChooseEstab(true);
+
+    form.setValue('etablissement', [selectedEtablissement], {
+      shouldValidate: true,
+    });
+
+    if (selectedEtablissement.id) {
+      try {
+        const { data: estabClasses } = await getClassesByEstablishmentId(selectedEtablissement.id);
+        setChooseEstab(false);
+
+        const newOptions = [
+          {
+            id: estabClasses.id,
+            value: estabClasses.name,
+            label: estabClasses.name,
+          },
+        ];
+        setEstabClassesOptions(newOptions);
+      } catch (error) {
+        console.error('Error fetching classes:', error);
+      }
+    }
+  };
+  const handleClasseChange = async (selectedClasse: any) => {
+    form.setValue('classe', [selectedClasse], {
+      shouldValidate: true,
+    });
+  };
+
   const onSubmit = async (values: z.infer<typeof EtudiantAfterSchema>) => {
     values.role = role;
+    values.email = session?.email;
+    console.log(values);
+    setUserEstab(values.etablissement)
     setError('');
     setSuccess('');
     startTransition(() => {
-      // updateStudentAfterGoogle(values).then((data) => {
-      //   setError(data?.error);
-      //   // setSuccess(data?.success);
-      // });
+      updateStudentAfterGoogle(values).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+        if (data?.success) {
+          setRegistrationSuccessful(true);
+        }
+      });
     });
   };
+
+  useEffect(() => {
+    if (isRegistrationSuccessful) {
+      try {
+        router.push(`/${userEstab[0].id}`);
+        router.refresh();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [isRegistrationSuccessful, router, userEstab]);
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+      <FormError message={error} />
+        <FormSuccess message={success} />
         <div
           id="ButtonsRoot"
           className="bg-[#99c6d3] flex flex-row gap-4 w-full cursor-pointer  items-start pt-2 px-1 rounded-[50px]"
@@ -121,7 +180,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                   <SelectScrollable
                     disabled={isTransPending}
                     field={field}
-                    placeholder={'Choisissez votre gouvernorat'}
+                    placeholder={'Choisissez vos/votre gouvernorat(s)'}
                     options={govOptions}
                     icon={<RiGovernmentLine className="text-muted-foreground w-5 h-5" />}
                   />
@@ -140,11 +199,12 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
-                    disabled={isTransPending || estabPending}
+                    disabled={isTransPending}
                     field={field}
-                    placeholder={'Choisissez votre établissement'}
+                    placeholder="Choisissez votre établissement"
                     options={estabOptions}
                     icon={<FaGraduationCap className="text-muted-foreground w-5 h-5" />}
+                    onChange={(selectedOption: any) => handleEtablissementChange(selectedOption)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -162,11 +222,12 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
-                    disabled={isTransPending}
+                    disabled={isTransPending || isChooseEstab}
                     field={field}
-                    placeholder={'Sélectionnez votre classe'}
-                    options={classOptions}
+                    placeholder="Sélectionnez votre classe"
+                    options={estabClassesOptions}
                     icon={<MdOutlineClass className="text-muted-foreground w-5 h-5" />}
+                    onChange={(selectedOption: any) => handleClasseChange(selectedOption)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -176,10 +237,11 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
         </div>
 
         <Button
+          type="submit"
           disabled={isTransPending}
           className={`${
             form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
-          }font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
+          } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Suivant
         </Button>

@@ -9,11 +9,7 @@ import { sendVerificationEmail } from '@/lib/mail';
 export const register = async (
   values: z.infer<typeof RegisterProfSchema>,
   code: number
-  // token: string | null
 ) => {
-  // if (!token) {
-  //   return { error: "Jeton d'authentification manquant" };
-  // }
   const validatedFields = RegisterProfSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
