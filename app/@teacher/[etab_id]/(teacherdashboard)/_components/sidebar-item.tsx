@@ -13,7 +13,6 @@ interface SidebarItemProps {
 }
 export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarItemProps) => {
   const params = useParams();
-  console.log(params.etab_id);
   const pathname = usePathname();
   const router = useRouter();
   const { collapsed } = useSidebar((state) => state);
