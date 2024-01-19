@@ -4,8 +4,8 @@ import Logo from '../../_components/Logo';
 import VerifCodeResetForm from '../../_components/VerifResetForm';
 
 interface VerificationData {
-  email?: string;
-  code?: number;
+  email?: string | undefined;
+  code?: number | undefined;
 }
 
 export default function ResetPassword() {
@@ -13,7 +13,7 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const storedData = JSON.parse(localStorage.getItem('new-verification') || '{}');
+      const storedData = JSON.parse(localStorage.getItem('email-verification') || '{}');
       setVerificationData(storedData);
     }
   }, []);
@@ -25,12 +25,11 @@ export default function ResetPassword() {
         <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">
           Vérifiez votre E-mail
         </div>
-        <div className="text-center text-base text-[#727272] w-full">
+        <div className="text-center text-base text-[#727272] w-full ">
           Veuillez entrer le code de vérification envoyé à&nbsp;
           <span className="text-lg text-[#102528]">
             {verificationData?.email ? verificationData?.email : '*******@****.***'}
           </span>
-          <div>Le code expire dans 00.32.</div>
         </div>
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">

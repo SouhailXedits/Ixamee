@@ -113,7 +113,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
         console.log(error);
       }
     }
-  }, [isRegistrationSuccessful, router,userEstab]);
+  }, [isRegistrationSuccessful, router, userEstab]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
@@ -272,7 +272,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
                       field={field}
                       placeholder={'Choisissez votre système pédagogique'}
                       options={systeme}
-                      icon={<MdOutlineTimer className="text-gray w-5 h-5" />}
+                      icon={<MdOutlineTimer className="text-muted-foreground w-5 h-5" />}
                     />
                   )}
                 </FormControl>

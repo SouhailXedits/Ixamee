@@ -57,9 +57,9 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
       })) ||
     [];
 
-  const govOptions = TunisianGoverments
+  const govOptions = TunisianGoverments;
 
-  const classOptions = TunisianClasses
+  const classOptions = TunisianClasses;
 
   const [isTransPending, startTransition] = useTransition();
 
@@ -123,7 +123,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                     field={field}
                     placeholder={'Choisissez votre gouvernorat'}
                     options={govOptions}
-                    icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
+                    icon={<RiGovernmentLine className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -144,7 +144,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                     field={field}
                     placeholder={'Choisissez votre établissement'}
                     options={estabOptions}
-                    icon={<FaGraduationCap className="text-gray w-5 h-5" />}
+                    icon={<FaGraduationCap className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -166,7 +166,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                     field={field}
                     placeholder={'Sélectionnez votre classe'}
                     options={classOptions}
-                    icon={<MdOutlineClass className="text-gray w-5 h-5" />}
+                    icon={<MdOutlineClass className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />

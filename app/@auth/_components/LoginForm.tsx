@@ -24,7 +24,7 @@ import { IoKeyOutline } from 'react-icons/io5';
 import bcryptjs from 'bcryptjs';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
+import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 
 export default function LoginForm() {
   const [error, setError] = useState<string | undefined>('');
@@ -40,12 +40,9 @@ export default function LoginForm() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
   const [isRegistrationFormSuccessful, setRegistrationFormSuccessful] = useState<boolean>(false);
 
   const [isPending, startTransition] = useTransition();
-
-  const queryClient = useQueryClient();
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError('');
@@ -61,7 +58,7 @@ export default function LoginForm() {
           JSON.stringify({ email: values.email, code: hashedCode })
         );
         if (data?.success === 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.') {
-          setRegistrationSuccessful(true);
+          sendEmailVerificationToken(values.email);
         }
         if (data?.success === 'Vous étes presque arrivé ! complete votre inscription') {
           localStorage.setItem(
@@ -80,13 +77,10 @@ export default function LoginForm() {
   };
 
   useEffect(() => {
-    if (isRegistrationSuccessful) {
-      router.push('/new-verification');
-    }
     if (isRegistrationFormSuccessful) {
       router.push('/teacher-after');
     }
-  }, [isRegistrationSuccessful, isRegistrationFormSuccessful, router]);
+  }, [isRegistrationFormSuccessful, router]);
 
   return (
     <Form {...form}>
@@ -105,7 +99,7 @@ export default function LoginForm() {
                     {...field}
                     placeholder="Entrez votre e-mail"
                     type="email"
-                    icon={<MdOutlineEmail className="text-gray w-5 h-5" />}
+                    icon={<MdOutlineEmail className="text-muted-foreground w-5 h-5" />}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -124,7 +118,7 @@ export default function LoginForm() {
                     {...field}
                     placeholder="Entrez votre mot de passe"
                     type={showPassword ? 'text' : 'password'}
-                    icon={<IoKeyOutline className="text-gray w-5 h-5" />}
+                    icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -144,6 +138,8 @@ export default function LoginForm() {
                     className="mr-1 checked:bg-transparent border-gray"
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    name="rester connecté"
+                    disabled={isPending}
                   />
                   <label
                     htmlFor="terms"
@@ -152,18 +148,20 @@ export default function LoginForm() {
                     Rester connecté
                   </label>
                 </div>
-
-                <Link
-                  href={'/reset-password'}
-                  className=" text-center text-mainGreen hover:underline text-sm font-semibold max-md:text-xs  "
+                <Button
+                  size="sm"
+                  variant="link"
+                  asChild
+                  className="text-center text-mainGreen hover:underline text-sm font-semibold max-md:text-xs"
                 >
-                  Mot de passe oublié?
-                </Link>
+                  <Link href={'/reset-password'}>Mot de passe oublié?</Link>
+                </Button>
               </FormLabel>
             )}
           />
         </div>
         <Button
+          name="submitButton"
           type="submit"
           disabled={isPending}
           className={`${

@@ -80,14 +80,7 @@ export const RegisterProfSchema = z.object({
 });
 
 export const VerifSchema = z.object({
-  code: z
-    .string()
-    .min(6, {
-      message: 'code de 6 chiffres',
-    })
-    .max(6, {
-      message: 'code de 6 chiffres',
-    }),
+  code: z.string(),
 });
 
 export const EtudiantAfterSchema = z.object({
@@ -133,3 +126,31 @@ export const ProfAfterSchema = z.object({
     message: 'Le système pédagogique est requis',
   }),
 });
+
+export const ResetSchema = z.object({
+  email: z.string().email({
+    message: "L'email est requis",
+  }),
+});
+
+export const NewPasswordSchema = z
+  .object({
+    email:z.string(),
+    password: z
+      .string()
+      .min(8, {
+        message: 'Minimum 8 caractères',
+      })
+      .refine(
+        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value),
+        {
+          message:
+            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+        }
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Le mot de passe et la confirmation doivent être identiques',
+    path: ['confirmPassword'],
+  });

@@ -79,13 +79,13 @@ const NavbarProfile = () => {
             </p> */}
           {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
           {/* </ModifierUnEtudiant> */}
-
+          <DropdownMenuItem>Mon profil</DropdownMenuItem>
           <DropdownMenuItem
             onClick={async () => {
               await logout();
             }}
           >
-            Logout
+            Se déconnecter
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

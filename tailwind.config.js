@@ -88,7 +88,7 @@ module.exports = {
       orangeColor: '#FBB800',
       pink: '#EA366E',
       red: '#F04438',
-      grren: '#12B76A',
+      green: '#12B76A',
       purple: '#3f3cbb',
       midnight: '#121063',
       metal: '#565584',

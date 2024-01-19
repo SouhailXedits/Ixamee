@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/auth-input';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
@@ -24,10 +24,10 @@ import TnFlag from './TnFlag';
 import { RegisterProfSchema } from '@/actions/auth/schemas';
 import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
-import { useRouter } from 'next/navigation';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import bcryptjs from 'bcryptjs';
 import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
+import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -37,8 +37,6 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
   const [role, setRole] = useState<string>('TEACHER');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const router = useRouter();
-  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof RegisterProfSchema>>({
     resolver: zodResolver(RegisterProfSchema),
@@ -78,17 +76,11 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           })
         );
         if (data.success && !data.error) {
-          setRegistrationSuccessful(true);
+          sendEmailVerificationToken(values.email);
         }
       });
     });
   };
-
-  useEffect(() => {
-    if (isRegistrationSuccessful) {
-      router.push('/new-verification');
-    }
-  }, [isRegistrationSuccessful, router]);
 
   return (
     <Form {...form}>
@@ -141,7 +133,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre nom"
                       type="text"
-                      icon={<LucidePencil className="text-gray w-5 h-5" />}
+                      icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />
@@ -165,7 +157,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       {...field}
                       type="text"
                       placeholder="Entrez votre prénom"
-                      icon={<LucidePencil className="text-gray w-5 h-5" />}
+                      icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />
@@ -191,7 +183,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre e-mail"
                       type="email"
-                      icon={<MdOutlineEmail className="text-gray w-5 h-5" />}
+                      icon={<MdOutlineEmail className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />
@@ -242,7 +234,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
-                      icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
+                      icon={<RiGovernmentLine className="text-muted-foreground w-5 h-5" />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -264,7 +256,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre mot de passe"
                       type={showPassword ? 'text' : 'password'}
-                      icon={<IoKeyOutline className="text-gray w-5 h-5" />}
+                      icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />

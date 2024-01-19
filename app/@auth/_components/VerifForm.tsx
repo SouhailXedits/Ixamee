@@ -9,11 +9,12 @@ import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
 import { GoShieldCheck } from 'react-icons/go';
 import { Input } from '@/components/ui/auth-input';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import bcryptjs from 'bcryptjs';
 import Link from 'next/link';
 import { sendVerificationEmail } from '@/lib/mail';
 import { emailVerification } from '@/actions/auth/email-verification';
+import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 
 interface VerificationData {
   email?: string;
@@ -24,7 +25,8 @@ export default function VerifForm({ email, code }: VerificationData) {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof VerifSchema>>({
@@ -48,10 +50,13 @@ export default function VerifForm({ email, code }: VerificationData) {
       const codeMatch = await bcryptjs.compare(formData.code, storedVerificationData.code);
 
       if (storedVerificationData && codeMatch) {
-        const data = await emailVerification(storedVerificationData.email);
+        const data = await emailVerification(storedVerificationData.email, token);
         setSuccess(data.success);
         setError(data.error);
-        setRegistrationSuccessful(true);
+        if (data.success) {
+          // sendEmailVerificationToken(storedVerificationData.email);
+          setRegistrationSuccessful(true);
+        }
       } else {
         setError('Code invalid!');
       }
@@ -65,6 +70,7 @@ export default function VerifForm({ email, code }: VerificationData) {
       router.push('/teacher-after');
     }
   }, [isRegistrationSuccessful, router]);
+
   const [isPending, startTransition] = useTransition();
   const handleResendVerificationEmail = async () => {
     setSuccess('');
@@ -92,7 +98,7 @@ export default function VerifForm({ email, code }: VerificationData) {
                     {...field}
                     placeholder="Entrer le code ici"
                     type="text"
-                    icon={<GoShieldCheck className="text-gray w-5 h-5" />}
+                    icon={<GoShieldCheck className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />
@@ -101,6 +107,8 @@ export default function VerifForm({ email, code }: VerificationData) {
           />
         </div>
         <Button
+          name="submitButton"
+          disabled={isPending}
           type="submit"
           className={`${
             form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'

@@ -6,7 +6,14 @@ import { RegisterProfSchema } from '@/actions/auth/schemas';
 import bcryptjs from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
 import { sendVerificationEmail } from '@/lib/mail';
-export const register = async (values: z.infer<typeof RegisterProfSchema>, code: number) => {
+export const register = async (
+  values: z.infer<typeof RegisterProfSchema>,
+  code: number
+  // token: string | null
+) => {
+  // if (!token) {
+  //   return { error: "Jeton d'authentification manquant" };
+  // }
   const validatedFields = RegisterProfSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
@@ -35,7 +42,7 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
   }
   const mappedRole =
     role === 'TEACHER' ? UserRole.TEACHER : role === 'STUDENT' ? UserRole.STUDENT : UserRole.ADMIN;
-
+  const image = '/defaultUserAvatr.svg';
   await db.user.create({
     data: {
       name: `${first_name} ${last_name}`,
@@ -46,6 +53,7 @@ export const register = async (values: z.infer<typeof RegisterProfSchema>, code:
       phone_number,
       role: mappedRole,
       government,
+      image,
     },
   });
 

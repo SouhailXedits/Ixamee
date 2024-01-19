@@ -8,11 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+
 interface Option {
   id: number;
   value: string;
   label: string;
 }
+
 interface SelectScrollableParams {
   options: Option[];
   placeholder: string;
@@ -22,21 +24,33 @@ interface SelectScrollableParams {
     value: string;
   };
   disabled: boolean;
+  onChange?: (selectedOption: Option) => void; // Add this line
 }
+
 export function SelectScrollable({
   options,
   placeholder,
   icon,
   field,
   disabled,
+  onChange, // Add this line
 }: SelectScrollableParams) {
+  const handleValueChange = (selectedValue: string) => {
+    field.onChange(selectedValue);
+
+    if (onChange) {
+      const selectedOption = options.find((option) => option.value === selectedValue);
+      if (selectedOption) {
+        onChange(selectedOption);
+      }
+    }
+  };
+
   return (
     <div className="relative">
-      {icon && (
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2">{icon}</div>
-      )}
-      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
-        <SelectTrigger className="w-full text-gray pl-10">
+      {icon && <div className="absolute left-3 top-1/2 transform -translate-y-1/2">{icon}</div>}
+      <Select onValueChange={handleValueChange} defaultValue={field.value} disabled={disabled}>
+        <SelectTrigger className="w-full text-muted-foreground pl-10">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

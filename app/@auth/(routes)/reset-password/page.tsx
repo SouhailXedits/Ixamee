@@ -3,21 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import SendEmailResetForm from '../../_components/SendEmailResetForm';
 
-interface VerificationData {
-  email?: string;
-  code?: number;
-}
 
 export default function ResetPassword() {
-  const [verificationData, setVerificationData] = useState<VerificationData>({});
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const storedData = JSON.parse(localStorage.getItem('new-verification') || '{}');
-      setVerificationData(storedData);
-    }
-  }, []);
-
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* left */}
@@ -32,7 +19,7 @@ export default function ResetPassword() {
 
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="w-full">
-            <SendEmailResetForm email={verificationData?.email} code={verificationData?.code} />
+            <SendEmailResetForm />
           </div>
         </div>
       </div>

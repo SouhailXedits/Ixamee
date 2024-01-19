@@ -21,14 +21,17 @@ import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
-// import { register } from '@/actions/auth/registerEtudiant';
+import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from './SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
 import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
-import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
+import { getClassesByEstablishmentId } from '@/actions/classe';
+import bcryptjs from 'bcryptjs';
+import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
+import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -38,6 +41,8 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
   const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const [isChooseEstab, setChooseEstab] = useState<boolean>(true);
+  const [estabClassesOptions, setEstabClassesOptions] = useState([]);
 
   const form = useForm<z.infer<typeof RegisterEtudSchema>>({
     resolver: zodResolver(RegisterEtudSchema),
@@ -70,22 +75,62 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
       })) ||
     [];
 
-  const govOptions = TunisianGoverments
-
-  const classOptions = TunisianClasses
+  const govOptions = TunisianGoverments;
 
   const [isTransPending, startTransition] = useTransition();
 
+  const handleEtablissementChange = async (selectedEtablissement: any) => {
+    setChooseEstab(true);
+
+    form.setValue('etablissement', selectedEtablissement.value, {
+      shouldValidate: true,
+    });
+
+    if (selectedEtablissement.id) {
+      try {
+        const { data: estabClasses } = await getClassesByEstablishmentId(selectedEtablissement.id);
+        setChooseEstab(false);
+
+        const newOptions = [
+          {
+            id: estabClasses.id,
+            value: estabClasses.name,
+            label: estabClasses.name,
+          },
+        ];
+        setEstabClassesOptions(newOptions);
+      } catch (error) {
+        console.error('Error fetching classes:', error);
+      }
+    }
+  };
+
+
   const onSubmit = async (values: z.infer<typeof RegisterEtudSchema>) => {
     values.role = role;
+    console.log('🚀 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
-    startTransition(() => {
-      // register(values).then((data: any) => {
-      //   setError(data.error);
-      //   setSuccess(data.success);
-      // });
-    });
+    // startTransition(() => {
+    //   register(values).then(async (data: any) => {
+    //     setError(data.error);
+    //     setSuccess(data.success);
+    //     let code = generateSixDigitNumber();
+    //     const hashedCode = await bcryptjs.hash(code + '', 10);
+    //     localStorage.setItem(
+    //       'new-verification',
+    //       JSON.stringify({
+    //         email: values.email,
+    //         code: hashedCode,
+    //         password: values.password,
+    //         rememberMe: true,
+    //       })
+    //     );
+    //     if (data.success && !data.error) {
+    //       sendEmailVerificationToken(values.email);
+    //     }
+    //   });
+    // });
   };
 
   return (
@@ -139,7 +184,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre nom"
                       type="text"
-                      icon={<LucidePencil className="text-gray w-5 h-5" />}
+                      icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />
@@ -163,7 +208,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       type="text"
                       placeholder="Entrez votre prénom"
-                      icon={<LucidePencil className="text-gray w-5 h-5" />}
+                      icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />
@@ -189,7 +234,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre e-mail"
                       type="email"
-                      icon={<MdOutlineEmail className="text-gray w-5 h-5" />}
+                      icon={<MdOutlineEmail className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />
@@ -214,7 +259,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
-                      icon={<RiGovernmentLine className="text-gray w-5 h-5" />}
+                      icon={<RiGovernmentLine className="text-muted-foreground w-5 h-5" />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -239,7 +284,8 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       field={field}
                       placeholder={'Choisissez votre établissement'}
                       options={estabOptions}
-                      icon={<FaGraduationCap className="text-gray w-5 h-5" />}
+                      icon={<FaGraduationCap className="text-muted-foreground w-5 h-5" />}
+                      onChange={(selectedOption: any) => handleEtablissementChange(selectedOption)}
                     />
                   </FormControl>
                   <FormMessage />
@@ -258,11 +304,11 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
-                      disabled={isTransPending}
+                      disabled={isTransPending || isChooseEstab}
                       field={field}
                       placeholder={'Sélectionnez votre classe'}
-                      options={classOptions}
-                      icon={<MdOutlineClass className="text-gray w-5 h-5" />}
+                      options={estabClassesOptions}
+                      icon={<MdOutlineClass className="text-muted-foreground w-5 h-5" />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -286,7 +332,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre mot de passe"
                       type={showPassword ? 'text' : 'password'}
-                      icon={<IoKeyOutline className="text-gray w-5 h-5" />}
+                      icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />
@@ -303,14 +349,14 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className=" whitespace-nowrap">
-                    Vérification du mot de passe*<span className="text-red"> *</span>
+                    Vérification du mot de passe<span className="text-red"> *</span>
                   </FormLabel>
                   <FormControl className="relative">
                     <Input
                       {...field}
                       placeholder="Vérifiez le mot de passe"
                       type={showPassword ? 'text' : 'password'}
-                      icon={<IoKeyOutline className="text-gray w-5 h-5" />}
+                      icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
                     />

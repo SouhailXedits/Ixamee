@@ -254,7 +254,7 @@ export default function ProfAfterForm() {
                       field={field}
                       placeholder={'Choisissez votre système pédagogique'}
                       options={systeme}
-                      icon={<MdOutlineTimer className="text-gray w-5 h-5" />}
+                      icon={<MdOutlineTimer className="text-muted-foreground w-5 h-5" />}
                     />
                   )}
                 </FormControl>
