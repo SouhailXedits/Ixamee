@@ -111,26 +111,26 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
     console.log('🚀 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
-    // startTransition(() => {
-    //   register(values).then(async (data: any) => {
-    //     setError(data.error);
-    //     setSuccess(data.success);
-    //     let code = generateSixDigitNumber();
-    //     const hashedCode = await bcryptjs.hash(code + '', 10);
-    //     localStorage.setItem(
-    //       'new-verification',
-    //       JSON.stringify({
-    //         email: values.email,
-    //         code: hashedCode,
-    //         password: values.password,
-    //         rememberMe: true,
-    //       })
-    //     );
-    //     if (data.success && !data.error) {
-    //       sendEmailVerificationToken(values.email);
-    //     }
-    //   });
-    // });
+    startTransition(() => {
+      register(values).then(async (data: any) => {
+        setError(data.error);
+        setSuccess(data.success);
+        let code = generateSixDigitNumber();
+        const hashedCode = await bcryptjs.hash(code + '', 10);
+        localStorage.setItem(
+          'new-verification',
+          JSON.stringify({
+            email: values.email,
+            code: hashedCode,
+            password: values.password,
+            rememberMe: true,
+          })
+        );
+        if (data.success && !data.error) {
+          sendEmailVerificationToken(values.email);
+        }
+      });
+    });
   };
 
   return (
