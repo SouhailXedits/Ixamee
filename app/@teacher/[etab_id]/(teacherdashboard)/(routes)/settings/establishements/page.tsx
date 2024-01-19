@@ -15,6 +15,7 @@ import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/s
 import { getAllEstabs } from '@/actions/establishements';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { SearchModal } from '@/components/modals/SearchModal';
 
 const Establishement = () => {
   const [currentPage, setCurrentPage] = useState(1); // State to track the current page
@@ -58,21 +59,19 @@ const Establishement = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
+          <SearchModal field='etablissements' table='establishment'>
+          <button className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
-            <input
-              type="text"
-              placeholder="Recherche"
-              className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
-            />
-          </div>
+            <p className=" text-mainGreen/50 w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]">
+              Recherche
+            </p>
+          </button>
+          </SearchModal>
           <AddEstab>
-            <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Ajouter une établissements
-              </div>
-            </div>
+            <button className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
+              Ajouter une établissements
+            </button>
           </AddEstab>
         </div>
       </nav>

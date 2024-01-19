@@ -38,7 +38,7 @@ const guestRoutes = [
     Clickedicon: '/archiveicon.svg',
     Defaulticon: '/defaultarchiveicon.svg',
     label: 'Archive',
-    href: '/archive',
+    href: '/archive/classes',
   },
 ];
 
