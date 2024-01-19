@@ -3,11 +3,11 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-
+ 
 generator client {
   provider = "prisma-client-js"
 }
-
+ 
 model User {
   id                 String          @id @default(cuid())
   name               String
@@ -32,19 +32,19 @@ model User {
   invited_at         DateTime?
   createdAt          DateTime?       @default(now())
 }
-
+ 
 enum Term {
   TRIMESTRE
   SEMESTRE
   LIBRE
 }
-
+ 
 enum Role {
   STUDENT
   TEACHER
   ADMIN
 }
-
+ 
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -58,18 +58,27 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@unique([provider, providerAccountId])
 }
-
+ 
 model VerificationToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
-
+ 
+  @@unique([email, token])
+}
+ 
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+ 
   @@unique([email, token])
 }
  
@@ -79,7 +88,7 @@ model Establishment {
   user_establishment User[]   @relation("UserEstablishmentToUser")
   classes            Classe[] @relation("EstablishmentToClasse")
 }
-
+ 
 // Classe Table
 model Classe {
   id            Int             @id @default(autoincrement())
@@ -90,23 +99,23 @@ model Classe {
   teacher       User[]          @relation("ClasseClassTeacherToSubject")
   student_class User[]          @relation("StudentClassToUser")
   is_archived   Boolean?        @default(false)
+  archived_at   DateTime? 
   exam_classe   Exam[]          @relation("ExamClasseToUser")
 }
- 
  
 // Subject Table
 model Subject {
   id          Int      @id @default(autoincrement())
   name        String
   coefficient Float?
-  icon  String?
-  teacher  User[]  @relation("ClasseTeacherSubjectToSubject")
-  exams Exam[]
-  is_archived      Boolean?    @default(false)
+  icon        String?
+  teacher     User[]   @relation("ClasseTeacherSubjectToSubject")
+  exams       Exam[]
+  is_archived Boolean? @default(false)
  
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
 }
-
+ 
 model Exam {
   id              Int              @id @default(autoincrement())
   name            String
@@ -121,13 +130,16 @@ model Exam {
   term            String?
   exam_correction ExamCorrection[]
   is_archived     Boolean?         @default(false)
+  archived_at     DateTime?         
   exam_classess   Classe[]         @relation("ExamClasseToUser")
   language        Language? // Consider using an enum for style
 }
+ 
 enum Language {
   fr
   ar
 }
+ 
 // Exercise Table
 model Exercise {
   id                  Int                  @id @default(autoincrement())
@@ -137,10 +149,11 @@ model Exercise {
   marks               Float
   question_type       String
   exercise_correction ExerciseCorrection[]
-  is_archived      Boolean?    @default(false)
+  is_archived         Boolean?             @default(false)
  
-  questions           question[]
+  questions question[]
 }
+ 
 model question {
   id                  Int                  @id @default(autoincrement())
   name                String
@@ -155,7 +168,6 @@ model question {
   exercise_correction QuestionCorrection[]
 }
  
- 
 // ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
@@ -163,7 +175,7 @@ model ExamCorrection {
   exam_id       Int
   mark_obtained Float
 }
-
+ 
 model ExerciseCorrection {
   id            Int       @id @default(autoincrement())
   exercise      Exercise? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -171,6 +183,7 @@ model ExerciseCorrection {
   content       String?
   mark_obtained Float
 }
+ 
 model QuestionCorrection {
   id            Int       @id @default(autoincrement())
   question      question? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -178,3 +191,4 @@ model QuestionCorrection {
   content       String?
   mark_obtained Float
 }
+ 

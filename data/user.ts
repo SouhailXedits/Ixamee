@@ -12,16 +12,14 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 export const getUserById = async (id: string) => {
-  console.log(id);
   const user = await db.user.findUnique({
     where: {
       id: id,
     },
-    select: {
-      id: true,
-    },
+    // select: {
+    //   id: true,
+    // },
   });
-  console.log(user);
   return user;
 };
 
@@ -29,7 +27,7 @@ export const getUserEstablishmentByUserId = async (id: string) => {
   try {
     const userEstablishments = await db.establishment.findMany({
       where: {
-        user_establishment : {
+        user_establishment: {
           some: {
             id,
           },

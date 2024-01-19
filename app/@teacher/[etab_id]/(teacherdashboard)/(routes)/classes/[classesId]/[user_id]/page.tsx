@@ -34,7 +34,6 @@ export default function page() {
     queryKey: ['student'],
     queryFn: async () => await getUserById(params?.user_id),
   });
-  console.log(student);
 
   return (
     <main className="flex flex-col gap-6 p-10">
