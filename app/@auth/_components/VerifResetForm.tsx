@@ -8,7 +8,6 @@ import FormError from '@/components/ui/form-error';
 import { VerifSchema } from '@/actions/auth/schemas';
 import { CodeInput } from './CodeInput';
 import bcryptjs from 'bcryptjs';
-import { useRouter } from 'next/navigation';
 import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
 import Link from 'next/link';
 import { renvoyer } from '@/actions/auth/renvoyer-email';
@@ -19,13 +18,11 @@ interface VerificationData {
 }
 const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
   const [codeValues, setCodeValues] = useState(['', '', '', '', '', '']);
-
+  const currentTimestamp = new Date().getTime();
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string | undefined>('');
   const [seccess, setSuccess] = useState<string | undefined>('');
-  const [isCodeSuccessful, setCodeSuccessful] = useState<boolean>(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -46,22 +43,28 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
   };
   const onSubmit = async () => {
     setError('');
+    setSuccess('');
     try {
       const verificationCode = getVerificationCode();
       const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
-      console.log(storedVerificationData);
-
       if (codeValues) {
         const codeMatch = await bcryptjs.compare(verificationCode, storedVerificationData.code);
 
         if (email && codeMatch) {
-          setIsCodeCorrect(true);
-          startTransition(() => {
-            sendPasswordResetToken(storedVerificationData.email);
-          });
+          const expirationTimestamp = storedVerificationData.expiredAt;
+
+          if (expirationTimestamp && currentTimestamp < expirationTimestamp) {
+            setIsCodeCorrect(true);
+            startTransition(() => {
+              sendPasswordResetToken(storedVerificationData.email);
+            });
+          } else {
+            setIsCodeCorrect(false);
+            setError('Code expiré. Réessayez.');
+          }
         } else {
           setIsCodeCorrect(false);
-          setError('Code incorrect, réessayez.');
+          setError('Code incorrect. Réessayez.');
         }
       }
     } catch (error) {
@@ -73,15 +76,18 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
     setError('');
     startTransition(async () => {
       if (email && code) {
-        renvoyer(email,"reset-password").then((data) => {
+        renvoyer(email, 'reset-password').then((data) => {
           setError(data.error);
           setSuccess(data.success);
           const hashedCode = data.hashedCode;
+
+          const expirationTimestamp = currentTimestamp + 1 * 60 * 1000;
           localStorage.setItem(
             'email-verification',
             JSON.stringify({
               email: email,
               code: hashedCode,
+              expiredAt: expirationTimestamp,
             })
           );
         });
@@ -108,6 +114,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
         </div>
         <Button
           type="submit"
+          disabled={isTransPending}
           className={`${
             isCodeValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
