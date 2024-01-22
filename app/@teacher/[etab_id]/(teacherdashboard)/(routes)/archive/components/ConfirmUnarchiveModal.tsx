@@ -11,41 +11,41 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
-import { useDeleteEstab } from '../hooks/useDeleteEstab copy';
+import { useUnarchive } from '../hooks/useUnarchive';
 
 interface editEstabProps {
   id: number;
   children: React.ReactNode;
+  isExam: boolean;
 }
-export const DeleteEstab = ({ id, children }: editEstabProps) => {
-  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-
-  const { deleteEstablishement, isPending } = useDeleteEstab();
-
-  async function handlDeleteEstab() {
-    deleteEstablishement(id);
-    if (!isPending) setIsFirstModalOpen(!isFirstModalOpen);
-  }
-
-  function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen);
+export const ConfirmUnarchiveModel = ({ id, children, isExam }: editEstabProps) => {
+  const { unarchiveField: unArchiveExam, isPending } = useUnarchive('exams');
+  const { unarchiveField: unArchiveClasse, isPending: isUnarchiveingClass } =
+    useUnarchive('classes');
+  function handleClick() {
+    // console.log('restaurer');
+    if (isExam) {
+      console.log('this is exam');
+      const table = 'exam';
+      unArchiveExam({ id, table });
+    } else {
+      const table = 'classe';
+      unArchiveClasse({ id, table });
+    }
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
+      <DialogContent className={'sm:max-w-[400px]'}>
         <DialogHeader>
-          <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Supprimer cet établissement
-          </DialogTitle>
+          <DialogTitle className="text-[#1B8392] text-xl font-medium ">Restaurer</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-6 placeholder:text-[#727272]">
           <div className="flex flex-col gap-2 p-5">
             <p className="text-[#959595] text-sm">
-              Êtes-vous sûr de vouloir supprimer cet établissement? Cette action ne peut être
-              annulée.
+              Êtes-vous sûr de vouloir restaurer ces donnée? Cette action ne peut être annulée.
             </p>
             {/* <Label className="text-[#959595]">
               Nom : <span className="text-red">*</span>
@@ -61,7 +61,7 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
         </div>
 
         <DialogFooter>
-          <DialogClose className=' w-full'>
+          <DialogClose className=" w-full">
             <Button
               type="button"
               disabled={isPending}
@@ -72,12 +72,12 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
           </DialogClose>
           <DialogClose>
             <Button
-              onClick={() => handlDeleteEstab()}
+              onClick={() => handleClick()}
               type="submit"
               disabled={isPending}
               className="w-full bg-[#F04438] hover:opacity-80 "
             >
-              Supprimer une établissement.
+              Restaurer.
             </Button>
           </DialogClose>
         </DialogFooter>
@@ -85,5 +85,3 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
     </Dialog>
   );
 };
-
-

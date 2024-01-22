@@ -34,16 +34,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   //   // Handle the imported data in the external page
   //   console.log(jsonData);
   // };
-  const {
-    data: classes,
-    error,
-    isPending,
-  } = useQuery<any>({
-    queryKey: ['estabs', 1],
-    queryFn: async () => await getAllArchivedClasses(),
-  });
-  const data = classes?.data || [];
-  console.log(data)
+  
 
   function handleChangeTab(value: string) {
     setCurrentTab(value);

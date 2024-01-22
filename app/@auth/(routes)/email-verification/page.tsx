@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Logo from '../../_components/Logo';
-import VerifCodeResetForm from '../../_components/VerifResetForm';
+import VerifCodeResetForm from '../../_components/VerificationCodeForm';
 
 interface VerificationData {
   email?: string;
@@ -47,7 +47,7 @@ export default function ResetPassword() {
             {verificationData?.email ? verificationData?.email : '*******@****.***'}
           </span>
           <br />
-          Le code expire dans 00:{duration}.
+          Le code expire dans 00:{duration < 10 ? `0${duration}` : duration} .
         </div>
         <div className="flex flex-col items-start w-3/5 gap-5">
           <div className="w-full">

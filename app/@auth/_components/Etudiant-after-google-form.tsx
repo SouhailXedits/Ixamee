@@ -90,7 +90,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
             value: estabClasses.name,
             label: estabClasses.name,
           },
-        ];
+        ] as any;
         setEstabClassesOptions(newOptions);
       } catch (error) {
         console.error('Error fetching classes:', error);
@@ -107,7 +107,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
     values.role = role;
     values.email = session?.email;
     console.log(values);
-    setUserEstab(values.etablissement)
+    setUserEstab(values.etablissement);
     setError('');
     setSuccess('');
     startTransition(() => {
@@ -135,7 +135,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
-      <FormError message={error} />
+        <FormError message={error} />
         <FormSuccess message={success} />
         <div
           id="ButtonsRoot"

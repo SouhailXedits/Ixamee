@@ -68,29 +68,27 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          {classe?.exam_classe?.length  > 0 && (
-            <Select>
-              <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
-                <SelectValue
-                  placeholder={
-                    <div className="flex items-center">
-                      <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
-                      <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
-                    </div>
-                  }
-                />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="corrige" className="">
-                  Corrigé
-                </SelectItem>
-                <SelectItem value="en-cours">En cours</SelectItem>
-                <SelectItem value="non-corrigé">Non corrigé</SelectItem>
-                <SelectItem value="non-classé">Non classé</SelectItem>
-                <SelectItem value="absent">Absent</SelectItem>
-              </SelectContent>
-            </Select>
-          )}
+          <Select>
+            <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
+              <SelectValue
+                placeholder={
+                  <div className="flex items-center">
+                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
+                    <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
+                  </div>
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="corrige" className="">
+                Corrigé
+              </SelectItem>
+              <SelectItem value="en-cours">En cours</SelectItem>
+              <SelectItem value="non-corrigé">Non corrigé</SelectItem>
+              <SelectItem value="non-classé">Non classé</SelectItem>
+              <SelectItem value="absent">Absent</SelectItem>
+            </SelectContent>
+          </Select>
 
           {/* {data?.length === 0 && ( */}
           <ImportUneClasse data={data} class_id={classesId} etab_id={etab_id}>

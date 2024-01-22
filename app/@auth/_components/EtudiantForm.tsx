@@ -21,7 +21,7 @@ import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
-// import { register } from '@/actions/auth/registerEtudiant';
+import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from './SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
@@ -98,7 +98,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
             value: estabClasses.name,
             label: estabClasses.name,
           },
-        ];
+        ] as any
         setEstabClassesOptions(newOptions);
       } catch (error) {
         console.error('Error fetching classes:', error);

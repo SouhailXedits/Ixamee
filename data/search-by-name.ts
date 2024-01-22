@@ -16,7 +16,7 @@ import { db } from '@/lib/db';
 export const getDataByName = async (table: string, input: string) => {
   console.log(input);
   try {
-    const data = await db[table].findMany({
+    const data = await (db as any)[table].findMany({
       where: {
         name: {
           contains: input,

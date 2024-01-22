@@ -12,6 +12,10 @@ export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterS
     return { error: 'Veuillez renseigner tous les champs.' };
   }
 
+  if (!validatedFields.success) {
+    return { error: 'Veuillez renseigner tous les champs.' };
+  }
+
   if (!validatedFields.success || !existingUser) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
   }
