@@ -31,8 +31,8 @@ export const {
       if (account?.provider !== 'credentials') {
         return true;
       }
-
-      const existingUser = await getUserById(user.id);
+      
+      const existingUser = user ? await getUserById(user.id) : undefined;
 
       if (!existingUser || !existingUser.emailVerified) {
         return false;
@@ -58,7 +58,8 @@ export const {
       if (!token.sub) {
         return token;
       }
-      const existingUser = await getUserById(token.sub);
+      // const existingUser = await getUserById(token.sub);
+      const existingUser = token ? await getUserById(token.sub) : undefined;
 
       if (!existingUser) {
         return token;
