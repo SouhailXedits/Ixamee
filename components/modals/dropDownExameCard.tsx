@@ -6,7 +6,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { EditeExame } from './EditeExame';
+// import { EditeExame } from './EditeExame';
+import  EditeExame  from './EditeExame';
 import { DeleteExame } from './DeleteExame';
 import { ArchiveExame } from './ArchiveExame';
 interface DropdownMenuItemSelectProps {
@@ -20,11 +21,13 @@ export const DropdownMenuItemSelect = ({ children  , exam}: DropdownMenuItemSele
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent className="w-45  text-[#727272]">
         <DropdownMenuGroup>
-          <EditeExame exam={exam}>
+          {/* <EditeExame exam={exam}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
               <span className="text-lg">Modifier</span>
             </DropdownMenuLabel>
-          </EditeExame>
+          </EditeExame> */}
+          <EditeExame />
+            
 
           <DeleteExame exam_id={exam?.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
