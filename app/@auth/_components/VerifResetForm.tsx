@@ -11,10 +11,10 @@ import bcryptjs from 'bcryptjs';
 import { useRouter } from 'next/navigation';
 import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
 interface VerificationData {
-  email?: string | undefined;
-  code?: number | undefined;
+  email: any;
+  code: number;
 }
-const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
+const VerificationCodeForm: React.FC = ({ email, code }: any) => {
   const [codeValues, setCodeValues] = useState(['', '', '', '', '', '']);
 
   const [isCodeValid, setIsCodeValid] = useState(false);
@@ -65,9 +65,9 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
 
   return (
     <Form {...form}>
-      <form className="space-y-6 w-full" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="w-full space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FormError message={error} />
-        <div className="flex mb-2 gap-2 rtl:space-x-reverse justify-between">
+        <div className="flex justify-between gap-2 mb-2 rtl:space-x-reverse">
           {[1, 2, 3, 4, 5, 6].map((index) => (
             <CodeInput
               key={index}

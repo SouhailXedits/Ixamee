@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../_components/Logo';
 import VerifCodeResetForm from '../../_components/VerifResetForm';
+import { any } from 'zod';
 
 interface VerificationData {
   email?: string | undefined;
@@ -31,9 +32,9 @@ export default function ResetPassword() {
             {verificationData?.email ? verificationData?.email : '*******@****.***'}
           </span>
         </div>
-        <div className="flex flex-col gap-5 w-3/5 items-start">
+        <div className="flex flex-col items-start w-3/5 gap-5">
           <div className="w-full">
-            <VerifCodeResetForm email={verificationData?.email} code={verificationData?.code} />
+            <VerifCodeResetForm email={verificationData?.email as any} code={verificationData?.code} />
           </div>
         </div>
       </div>

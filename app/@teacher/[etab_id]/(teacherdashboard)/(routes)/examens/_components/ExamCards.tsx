@@ -9,20 +9,18 @@ import { Progress } from '@/components/ui/progress';
 import { DropdownMenuItemSelect } from '@/components/modals/dropDownExameCard';
 
 // Interface for the nested class data in ExamClassess
-interface ExamClass {
+interface exam_classe {
   classe_id: string;
   exam_id: number;
   assignedAt: Date;
   assignedBy: string;
   // Nested class details
-  class: {
     id: string;
     name: string;
     range: string;
     establishment_id: number;
     teacher_id: string;
     is_archived: boolean;
-  };
 }
 
 // Interface for the main Exam data
@@ -35,19 +33,19 @@ interface Exam {
   class_id: number;
   subject_id: number;
   term: string | null;
-  progress: string ;
+  progress: string;
   examEstablishment: Record<string, any>; // Change to the appropriate type
-  ExamClassess: ExamClass[];
+  exam_classe: exam_classe[];
 }
 
 // React component for displaying exam cards
 const ExamCards = ({ exam }: { exam: Exam }) => {
   console.log(exam);
   const router = useRouter();
-  // Click handler to navigate to the exam details page
   const onClick = (exam_id: number) => {
     router.push(`/1/examens/${exam_id}`);
   };
+  console.log(exam);
 
   return (
     /* Container div for the exam card */
@@ -79,14 +77,14 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       <div className="flex items-start justify-between w-full">
         <div className="mt-[20px] space-x-2">
           {/* Mapping over examClassess to display class names */}
-          {exam?.ExamClassess.map((examClass, index) => (
+          {exam?.exam_classe?.map((examClass, index) => (
             <div
               key={index}
               className="max-w-[65px] w-auto h-7 px-1.5 rounded-[100px] border border-[#1B8392] inline-flex truncate"
             >
               {/* Displaying individual class name */}
               <div className="flex gap-[2px] items-center justify-start grow shrink basis-0 text-xs font-medium leading-snug whitespace-nowrap text-[#1B8392]">
-                <span>{examClass?.class?.name}</span>
+                <span>{examClass?.name}</span>
               </div>
             </div>
           ))}

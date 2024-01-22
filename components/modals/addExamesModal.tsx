@@ -59,44 +59,16 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     queryKey: ['teacherEstab'],
     queryFn: async () => await getEstablishmentOfUser(user_id),
   });
-  const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
-    queryKey: ['teachersubject'],
-    queryFn: async () => await getSubjectOfUser(user_id),
-  });
-  const { data: Teacherterm, isPending: isPendingTeacherterm } = useQuery({
-    queryKey: ['teacherTerm'],
-    queryFn: async () => await getTermOfUser(user_id),
-  });
-  const { data: TeacherClasse, isPending: isPendingTeacherClasse } = useQuery({
-    queryKey: ['teacherClasse'],
-    queryFn: async () => await getClasseOfUser(user_id),
-  });
 
   const userEstablishment = teacherEstab;
-  const subject = Teachersubject;
-  const term = Teacherterm;
-  const classe = TeacherClasse;
 
   const userEstablishmentoptions = userEstablishment?.map((item: any) => {
     return {
-      value: item?.establishement?.id,
-      label: item?.establishement?.name,
+      value: item?.id,
+      label: item?.name,
     };
   });
-  const subjectoptions = subject?.map((item) => {
-    return {
-      value: item.id,
-      label: item.name,
-    };
-  });
-  let classoption = classe
-    ?.map((item) => {
-      return item.classe.map((classItem) => ({
-        value: classItem.id,
-        label: classItem.name,
-      }));
-    })
-    .flat();
+  console.log(userEstablishmentoptions);
 
   const examSchema = z.object({
     establishment: z
@@ -136,6 +108,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
+  console.log(formData.classes);
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({
@@ -143,6 +116,34 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       [field]: value,
     }));
   };
+  console.log(formData.establishment);
+  const { data: TeacherClasse, isPending: isPendingTeacherClasse } = useQuery({
+    queryKey: ['teacherClasse', formData?.establishment],
+    queryFn: async () => await getClasseOfUser(user_id, formData?.establishment),
+  });
+
+  const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
+    queryKey: ['teachersubject', formData?.classes],
+    queryFn: async () => await getSubjectOfUser(user_id, formData?.classes),
+  });
+  const { data: Teacherterm, isPending: isPendingTeacherterm } = useQuery({
+    queryKey: ['teacherTerm'],
+    queryFn: async () => await getTermOfUser(user_id),
+  });
+  const subject = Teachersubject;
+  const term = Teacherterm;
+  const classe = TeacherClasse;
+
+  const subjectoptions = subject?.map((item) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+  const classoption = classe?.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
   const { creatExam, isPending } = useCreateExam();
 
   const handleSubmit = async () => {
@@ -162,12 +163,22 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       const fieldError = formErrors?.errors?.find((error) => error.path[0] === fieldName);
 
       if (fieldError) {
-        return <div className="text-red mt-1 text-sm">{fieldError.message}</div>;
+        return <div className="mt-1 text-sm text-red">{fieldError.message}</div>;
       }
     }
 
     return null;
   };
+  // const handleEstablishmentChange = (selectedOptions: any) => {
+  //   handleInputChange('establishment', selectedOptions);
+  //   // const { data: TeacherClasse, isPending: isPendingTeacherClasse } = useQuery({
+  //   //   queryKey: ['teacherClasse'],
+  //   //   queryFn: async () => await getClasseOfUser(user_id, formData.establishment),
+  //   // });
+  //   console.log(formData.establishment);
+  //   // queryClient.invalidateQueries({ queryKey: ['teacherClasse'] });
+  // };
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -190,9 +201,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 isMulti
                 name="estab"
                 options={userEstablishmentoptions}
-                onChange={(selectedOptions: any) =>
-                  handleInputChange('establishment', selectedOptions)
-                }
+                onChange={(selectedOptions) => handleInputChange('establishment', selectedOptions)}
                 placeholder="Sélectionner votre classe"
                 styles={{
                   option: (baseStyles, state) => ({
@@ -299,6 +308,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 <Select
                   isMulti
                   options={classoption}
+                  isDisabled={formData.establishment.length == 0}
                   onChange={(selectedOptions) => handleInputChange('classes', selectedOptions)}
                   placeholder="Sélectionner votre classe"
                   styles={{
@@ -338,6 +348,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 <Select
                   isMulti={false}
                   options={subjectoptions}
+                  isDisabled={formData.classes.length == 0}
                   placeholder="Sélectionner la matière"
                   onChange={(selectedOption) => handleInputChange('subject', selectedOption)}
                   styles={{
