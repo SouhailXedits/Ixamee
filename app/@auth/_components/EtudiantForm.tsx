@@ -32,7 +32,6 @@ import { getClassesByEstablishmentId } from '@/actions/classe';
 import bcryptjs from 'bcryptjs';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
-import { register } from '@/actions/auth/registerEtudiant';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;

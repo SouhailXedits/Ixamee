@@ -1,5 +1,5 @@
 'use client';
-import { getSubjectOfUser } from '@/actions/examens';
+import { getSubjectOfUser, getUserSubject } from '@/actions/examens';
 import { useCreateClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreateClasse';
 import { Button } from '@/components/ui/button';
 import {
@@ -36,7 +36,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
   console.log(data);
   const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
     queryKey: ['teachersubject'],
-    queryFn: async () => await getSubjectOfUser(data?.teacher_id),
+    queryFn: async () => await getUserSubject(data?.teacher_id),
   });
   const subjectoptions = Teachersubject?.map((item) => {
     return {

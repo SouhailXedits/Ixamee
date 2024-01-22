@@ -20,7 +20,7 @@ export function createManyUserInClass() {
     error,
   } = useMutation({
     mutationFn: ({ image, name, range, email, class_id, establishmentId }: CreateClasseParams) =>
-      createUserWithImportInClasseAPi(image, name, range, email, class_id, establishmentId),
+      createUserWithImportInClasseAPi(image, name, range, email, +class_id, establishmentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
       toast.success('Students added successfully.');
