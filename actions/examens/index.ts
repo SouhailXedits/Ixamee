@@ -41,52 +41,33 @@ interface ExamData {
   ExamClassess: ExamClass[];
 }
 export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
-  const exams = await db.classe.findMany({
+  const exams = await db.exam.findMany({
     where: {
-      establishment: {
-        some: {
-          id: 1,
-        },
-      },
       teacher: {
         some: {
-          id: 'clrht2rmt0000k2yrr03w4281',
+          id: user_id,
         },
       },
+      exam_classess: {
+        some: {
+          establishment: {
+            some: {
+              id: +etab_id,
+            },
+          },
+        },
+      },
+      is_archived: false,
     },
     include: {
-      teacher: true,
-      exam_classe: true,
-      establishment: true,
+      // teacher: true,
+      exam_classess: true,
     },
   });
   console.log(exams);
+  return exams;
 };
-
-export const getMe = async () => {
-  const session = await auth();
-  const user = await db.user.findUnique({
-    where: { id: session?.user.id },
-  });
-  return user;
-};
-export const getClasseOfUser = async (user_id: string) => {
-  const classe = await db.user.findMany({
-    where: {
-      id: user_id,
-    },
-    select: {
-      classe: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-    },
-  });
-  return classe;
-};
-export const getSubjectOfUser = async (user_id: string) => {
+export const getUserSubject = async (user_id: string) => {
   const subject = await db.subject.findMany({
     where: {
       teacher: {
@@ -96,6 +77,66 @@ export const getSubjectOfUser = async (user_id: string) => {
       },
     },
   });
+  console.log(subject);
+  return subject;
+};
+
+export const getMe = async () => {
+  const session = await auth();
+  const user = await db.user.findUnique({
+    where: { id: session?.user.id },
+  });
+  return user;
+};
+export const getClasseOfUser = async (user_id: string, userEstablishments: any) => {
+  console.log(userEstablishments);
+  console.log(user_id);
+
+  const classe = await db.classe.findMany({
+    where: {
+      teacher: {
+        some: {
+          id: user_id,
+        },
+      },
+      establishment: {
+        some: {
+          id: {
+            in: userEstablishments.map((establishment: any) => establishment.value),
+          },
+        },
+      },
+      is_archived: false,
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+  console.log(classe);
+  return classe;
+};
+export const getSubjectOfUser = async (user_id: string, data: any) => {
+  console.log(user_id);
+  console.log(data);
+  const subject = await db.subject.findMany({
+    where: {
+      teacher: {
+        some: {
+          id: user_id,
+        },
+      },
+      classe_subject: {
+        some: {
+          id: {
+            in: data.map((classe: any) => classe.value),
+          },
+        },
+      },
+      is_archived: false,
+    },
+  });
+  console.log(subject);
   return subject;
 };
 export const getTermOfUser = async (user_id: string) => {
@@ -280,18 +321,18 @@ const getRecursiveExamQuestion = async () => {
   //   )
   //   SELECT * FROM RecursiveQuestions;
   // `;
-//   const result = await db.exercise.findMany({
-//     where: {
-//       id: 5,
-//     },
-//     include: {
-//       question: {
-//         include: {
-//           parent: true,
-//         },
-//       },
-//     },
-//   });
+  //   const result = await db.exercise.findMany({
+  //     where: {
+  //       id: 5,
+  //     },
+  //     include: {
+  //       question: {
+  //         include: {
+  //           parent: true,
+  //         },
+  //       },
+  //     },
+  //   });
 };
 
 getRecursiveExamQuestion();

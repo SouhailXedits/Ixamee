@@ -302,3 +302,19 @@ export const getClassesByEstablishmentId = async (etab_id: number) => {
     };
   }
 };
+
+export const getUserById = async (id: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      classe: true,
+      image: true,
+    },
+  });
+  return user;
+};

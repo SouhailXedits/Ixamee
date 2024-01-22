@@ -13,17 +13,18 @@ export default function Examens() {
     queryKey: ['examens'],
     queryFn: async () => await getAllExam({ user_id: user?.id, etab_id }),
   });
+  console.log(data);
   return (
     <div className="flex flex-col gap-6 p-10">
       {!isPending ? (
         <Heading />
       ) : (
         <div className="flex justify-between item-center w-full h-[80px] ">
-          <div className="flex item-center gap-4">
+          <div className="flex gap-4 item-center">
             <Skeleton className="w-[200px] h-[60px]"></Skeleton>
             <Skeleton className="w-[200px] h-[60px]" />
           </div>
-          <div className="flex item-center gap-6">
+          <div className="flex gap-6 item-center">
             <Skeleton className="w-[200px] h-[60px]" />
             <Skeleton className="w-[200px] h-[60px]" />
           </div>

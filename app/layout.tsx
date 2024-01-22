@@ -11,8 +11,9 @@ import './globals.css';
 import { ToastProvider } from '@/components/providers/toaster-provider';
 import QueryClientProviderWrapper from './providers/queryClientProvider';
 import { getUserByEmail } from '@/data/user';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Hydration from './providers/hydration';
+import { getEstablishmentOfUser } from '@/actions/examens';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
@@ -30,12 +31,19 @@ export default async function RootLayout({
   auth: React.ReactNode;
 }) {
   const session = await authentification();
-  console.log('🚀 ~ session:', session);
-  
-  // if (session?.user?.role === 'STUDENT' && session?.user.image.includes('googleusercontent')) {
-  //   console.log('true');
-  //   redirect('/home');
+  console.log(session)
+
+  // console.log(session?.user)
+  // if(session?.user) {
+  //   const estabs = await getEstablishmentOfUser(session?.user.id)
+  //   console.log(estabs)
+  //   redirect(`/${estabs[0].id}/classes`)
   // }
+  // const {data} = useQuery( {
+  //   queryKey: ['userEstab'],
+  //   queryFn: getEstablishmentOfUser(session?.user.id)
+  // })
+
   return (
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>

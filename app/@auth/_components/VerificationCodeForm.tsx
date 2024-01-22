@@ -97,10 +97,9 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
 
   return (
     <Form {...form}>
-      <form className="space-y-6 w-full" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="w-full space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FormError message={error} />
-        <FormSuccess message={seccess} />
-        <div className="flex mb-2 gap-2 rtl:space-x-reverse justify-between">
+        <div className="flex justify-between gap-2 mb-2 rtl:space-x-reverse">
           {[1, 2, 3, 4, 5, 6].map((index) => (
             <CodeInput
               key={index}
@@ -122,7 +121,7 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
         >
           Vérifier
         </Button>
-        <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
+        <div className="flex flex-col items-center w-full gap-3 gap-x-2">
           <div className="flex ">
             <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
             &nbsp;

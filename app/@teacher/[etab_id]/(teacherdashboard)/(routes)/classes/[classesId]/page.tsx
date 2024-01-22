@@ -68,7 +68,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          {classe?.exam_classe?.length > 0 && (
+          {classe?.exam_classe?.length  > 0 && (
             <Select>
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
                 <SelectValue
