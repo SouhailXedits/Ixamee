@@ -1,63 +1,49 @@
 'use server';
-import * as z from 'zod';
-import { ProfAfterSchema } from '@/actions/auth/schemas';
-import { db } from '@/lib/db';
-import { getUserByEmail } from '@/data/user';
 
-export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterSchema>) => {
-  const validatedFields = ProfAfterSchema.safeParse(values);
-  const existingUser = values?.email ? await getUserByEmail(values?.email) : undefined;
+import * as z from 'zod';
+import bcryptjs from 'bcryptjs';
+import { getUserByEmail } from '@/data/user';
+import { db } from '@/lib/db';
+import { UpdatePasswordSchema } from './schemas';
+
+export const updatePassword = async (values: z.infer<typeof UpdatePasswordSchema>) => {
+  const validatedFields = UpdatePasswordSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: 'Veuillez renseigner tous les champs.' };
-  }
-
-  if (!validatedFields.success || !existingUser) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
   }
 
-  try {
-    const establishmentIds = values.etablissement.map((estab) => estab.id);
-    const subjectIds = values.subject.map((subj) => subj.id);
-    enum UserTerm {
-      TRIMESTRE = 'TRIMESTRE',
-      SEMESTRE = 'SEMESTRE',
-      LIBRE = 'LIBRE',
-    }
-    const mappedTerm =
-      values.systeme === 'TRIMESTRE'
-        ? UserTerm.TRIMESTRE
-        : values.systeme === 'SEMESTRE'
-        ? UserTerm.SEMESTRE
-        : UserTerm.LIBRE;
-    enum UserRole {
-      ADMIN = 'ADMIN',
-      STUDENT = 'STUDENT',
-      TEACHER = 'TEACHER',
-    }
-    const mappedRole =
-      existingUser?.role || values?.role === 'TEACHER'
-        ? UserRole.TEACHER
-        : existingUser?.role || values?.role === 'STUDENT'
-        ? UserRole.STUDENT
-        : UserRole.ADMIN;
+  const { actualPassord, newPassword } = validatedFields.data;
 
-    await db.user.update({
-      where: { id: existingUser?.id },
-      data: {
-        password: mappedTerm,
-        role: mappedRole,
-        user_establishment: {
-          connect: establishmentIds.map((id) => ({ id })),
+  const existingUser = await getUserByEmail(values?.email as string);
+
+  if (!existingUser) {
+    return { error: "L'adresse e-mail n'existe pas ! Veuillez vérifier votre adresse e-mail." };
+  }
+
+  const compare = await bcryptjs.compare(actualPassord, existingUser?.password as string);
+
+  if (compare) {
+    try {
+      const hashedPassword = await bcryptjs.hash(newPassword, 10);
+
+      await db.user.update({
+        where: {
+          id: existingUser.id,
         },
-        subjects: {
-          connect: subjectIds.map((id) => ({ id })),
+        data: {
+          password: hashedPassword,
         },
-      },
-    });
-    return { success: 'Bienvenue' };
-  } catch (error) {
-    console.error('Update Error:', error);
-    return { error: "Quelque chose s'est mal passé" };
+      });
+
+      return { success: 'Mot de passe mis à jour avec succès.' };
+    } catch (error) {
+      return {
+        error:
+          "Une erreur s'est produite lors de la mise à jour du mot de passe. Veuillez réessayer ultérieurement.",
+      };
+    }
+  } else {
+    return { error: 'Mot de passe actuel est incorrect' };
   }
 };

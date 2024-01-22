@@ -13,7 +13,6 @@ import {
 import { Input } from '@/components/ui/auth-input';
 import Image from 'next/image';
 import { useState, useTransition } from 'react';
-import { useFormik } from 'formik';
 import {
   Form,
   FormControl,
@@ -24,18 +23,17 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UpdatePasswordSchema } from '@/actions/auth/schemas';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
 import { IoKeyOutline } from 'react-icons/io5';
+import { updatePassword } from '@/actions/profile/updateUserpassword';
+import { UpdatePasswordSchema } from '@/actions/profile/schemas';
 interface AjouterUneClasse {
   children: React.ReactNode;
   currentUser: any;
 }
 
 export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
-  console.log(currentUser);
-
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | undefined>('');
@@ -45,6 +43,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
     resolver: zodResolver(UpdatePasswordSchema),
     defaultValues: {
+      email: '',
       actualPassord: '',
       newPassword: '',
       confirmNewPassword: '',
@@ -52,12 +51,17 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
   });
   const [isTransPending, startTransition] = useTransition();
   const onSubmit = async (values: z.infer<typeof UpdatePasswordSchema>) => {
-    console.log('🚀 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
+    values.email = currentUser?.email;
     startTransition(() => {
-      
-      setIsFirstModalOpen(!isFirstModalOpen);
+      updatePassword(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+        if (data.success) {
+          setIsFirstModalOpen(!isFirstModalOpen);
+        }
+      });
     });
   };
 
@@ -92,7 +96,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             name="actualPassord"
                             placeholder="Entrez votre mot de passe actuel"
                             className=" max-w-full"
-                            disabled={false}
+                            disabled={isTransPending}
                             icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                           />
                         </FormControl>
@@ -117,7 +121,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             name="newPassword"
                             placeholder="Entrez votre nouveau mot de passe"
                             className=" max-w-full"
-                            disabled={false}
+                            disabled={isTransPending}
                             icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                           />
                         </FormControl>
@@ -143,7 +147,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             name="name"
                             placeholder="Confirmez votre nouveau mot de passe"
                             className=" max-w-full"
-                            disabled={false}
+                            disabled={isTransPending}
                           />
                         </FormControl>
                         <FormMessage />
@@ -167,23 +171,35 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                 </div>
               </div>
             )}
-            <DialogFooter className=" mt-3">
-              <DialogClose className="flex gap-4 w-full">
+            {!isFirstModalOpen ? (
+              <DialogFooter className=" mt-3">
+                <DialogClose className="flex gap-4 w-full">
+                  <Button
+                    disabled={isTransPending}
+                    type="reset"
+                    className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "
+                  >
+                    Annuler
+                  </Button>
+                </DialogClose>
                 <Button
-                  type="reset"
-                  className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "
-                >
-                  Annuler
-                </Button>
-                <Button
-                  // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
+                  disabled={isTransPending}
                   type="submit"
                   className="w-full bg-[#1B8392] hover:opacity-80 "
                 >
                   Modifier
                 </Button>
+              </DialogFooter>
+            ) : (
+              <DialogClose className="flex gap-4 w-full">
+                <Button
+                  type="reset"
+                  className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "
+                >
+                  Retournez
+                </Button>
               </DialogClose>
-            </DialogFooter>
+            )}
           </form>
         </Form>
       </DialogContent>

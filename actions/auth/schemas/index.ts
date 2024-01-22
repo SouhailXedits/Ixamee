@@ -178,27 +178,3 @@ export const NewPasswordSchema = z
     message: 'Le mot de passe et la confirmation doivent être identiques',
     path: ['confirmPassword'],
   });
-
-export const UpdatePasswordSchema = z
-  .object({
-    actualPassord: z.string().min(8, {
-      message: 'Mot de passe actuel est requis',
-    }),
-    newPassword: z
-      .string()
-      .min(8, {
-        message: 'Minimum 8 caractères',
-      })
-      .refine(
-        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value),
-        {
-          message:
-            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
-        }
-      ),
-    confirmNewPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: 'Le nouveau mot de passe et la confirmation doivent être identiques',
-    path: ['confirmNewPassword'],
-  });

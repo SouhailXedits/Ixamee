@@ -20,18 +20,19 @@ import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
-import { RiGovernmentLine } from 'react-icons/ri';
+
 import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from './SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
-import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
+import { Tunisiangovernments } from '@/public/auth/data/Tunisiangovernments';
 import { getClassesByEstablishmentId } from '@/actions/classe';
 import bcryptjs from 'bcryptjs';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
+import { RiGovernmentLine } from 'react-icons/ri';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -75,7 +76,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
       })) ||
     [];
 
-  const govOptions = TunisianGoverments;
+  const govOptions = Tunisiangovernments;
 
   const [isTransPending, startTransition] = useTransition();
 
@@ -97,7 +98,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
             value: estabClasses.name,
             label: estabClasses.name,
           },
-        ] as any
+        ] as any;
         setEstabClassesOptions(newOptions);
       } catch (error) {
         console.error('Error fetching classes:', error);
@@ -310,7 +311,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                     <SelectScrollable
                       disabled={isTransPending || isChooseEstab}
                       field={field}
-                      placeholder='Sélectionnez votre classe'
+                      placeholder="Sélectionnez votre classe"
                       options={estabClassesOptions}
                       icon={<MdOutlineClass className="text-muted-foreground w-5 h-5" />}
                       onChange={(selectedOption: any) => handleClasseChange(selectedOption)}

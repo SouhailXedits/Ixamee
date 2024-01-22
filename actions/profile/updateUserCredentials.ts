@@ -1,15 +1,16 @@
 'use server';
 import * as z from 'zod';
-import { ProfAfterSchema } from '@/actions/auth/schemas';
+
 import { db } from '@/lib/db';
 import { getUserByEmail } from '@/data/user';
+import { UpdateTeacherSchema } from './schemas';
 
-export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterSchema>) => {
-  const validatedFields = ProfAfterSchema.safeParse(values);
+export const updateTeacherCredentials = async (values: z.infer<typeof UpdateTeacherSchema>) => {
+  const validatedFields = UpdateTeacherSchema.safeParse(values);
   const existingUser = values?.email ? await getUserByEmail(values?.email) : undefined;
 
   if (!validatedFields.success) {
-    return { error: 'Veuillez renseigner tous les champs.' };
+    return { error: 'Veuillez renseigner les champs.' };
   }
 
   if (!validatedFields.success || !existingUser) {
@@ -19,34 +20,13 @@ export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterS
   try {
     const establishmentIds = values.etablissement.map((estab) => estab.id);
     const subjectIds = values.subject.map((subj) => subj.id);
-    enum UserTerm {
-      TRIMESTRE = 'TRIMESTRE',
-      SEMESTRE = 'SEMESTRE',
-      LIBRE = 'LIBRE',
-    }
-    const mappedTerm =
-      values.systeme === 'TRIMESTRE'
-        ? UserTerm.TRIMESTRE
-        : values.systeme === 'SEMESTRE'
-        ? UserTerm.SEMESTRE
-        : UserTerm.LIBRE;
-    enum UserRole {
-      ADMIN = 'ADMIN',
-      STUDENT = 'STUDENT',
-      TEACHER = 'TEACHER',
-    }
-    const mappedRole =
-      existingUser?.role || values?.role === 'TEACHER'
-        ? UserRole.TEACHER
-        : existingUser?.role || values?.role === 'STUDENT'
-        ? UserRole.STUDENT
-        : UserRole.ADMIN;
 
     await db.user.update({
       where: { id: existingUser?.id },
       data: {
-        term: mappedTerm,
-        role: mappedRole,
+        name: values.name,
+        email: values.email,
+        phone_number: values.phone,
         user_establishment: {
           connect: establishmentIds.map((id) => ({ id })),
         },
@@ -55,7 +35,7 @@ export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterS
         },
       },
     });
-    return { success: 'Bienvenue' };
+    return { success: 'vos Informations personnelles mis a jour avec success' };
   } catch (error) {
     console.error('Update Error:', error);
     return { error: "Quelque chose s'est mal passé" };
