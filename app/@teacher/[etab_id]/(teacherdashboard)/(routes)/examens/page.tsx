@@ -13,7 +13,6 @@ export default function Examens() {
     queryKey: ['examens'],
     queryFn: async () => await getAllExam({ user_id: user?.id, etab_id }),
   });
-  console.log(data);
   return (
     <div className="flex flex-col gap-6 p-10">
       {!isPending ? (

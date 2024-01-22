@@ -46,6 +46,7 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
 };
 
 export const getAllArchivedClasses = async (id: string, estabId: number) => {
+  console.log(id, estabId)
   try {
     const classe = await db.classe.findMany({
       where: {

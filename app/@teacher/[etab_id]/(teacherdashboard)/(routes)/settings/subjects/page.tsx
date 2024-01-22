@@ -19,6 +19,7 @@ import { getAllSubjectsByPage } from '@/actions/subjects';
 import { SearchModal } from '@/components/modals/SearchModal';
 
 const Establishement = ({ params }: { params: { classesId: string } }) => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (newPage: number) => {
@@ -33,8 +34,8 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
     error,
     isPending,
   } = useQuery<any>({
-    queryKey: ['subjects', currentPage],
-    queryFn: async () => await getAllSubjectsByPage(currentPage),
+    queryKey: ['subjects', currentPage, searchQuery],
+    queryFn: async () => await getAllSubjectsByPage(currentPage, 10, searchQuery),
   });
   const data = subjects?.data?.estabs || [];
   const totalCount = subjects?.data?.totalCount;
@@ -64,17 +65,16 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-           
+          <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
+            <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
-            <SearchModal field="Matières" table="subject">
-              <button className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
-                <Image src="/scoop.svg" alt="icons" width={20} height={20} />
-
-                <p className=" text-mainGreen/50 w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]">
-                  Recherche
-                </p>
-              </button>
-            </SearchModal>
+            <input
+              type="text"
+              placeholder="Recherche"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
+            />
+          </div>
           <AddSubject>
             <button className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               Ajouter une Matières

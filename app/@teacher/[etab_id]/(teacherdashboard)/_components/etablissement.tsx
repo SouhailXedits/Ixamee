@@ -31,7 +31,7 @@ const Etablissement = () => {
           <Skeleton className="w-full h-[20px]" />
         </div>
       ) : (
-        <div className="overflow-x-auto overflow-y-hidden max-h-52">
+        <div className="overflow-x-auto max-h-52">
           <EtablissementItem data={teacherEstab} />
         </div>
       )}

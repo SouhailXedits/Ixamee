@@ -15,12 +15,12 @@ interface exam_classe {
   assignedAt: Date;
   assignedBy: string;
   // Nested class details
-    id: string;
-    name: string;
-    range: string;
-    establishment_id: number;
-    teacher_id: string;
-    is_archived: boolean;
+  id: string;
+  name: string;
+  range: string;
+  establishment_id: number;
+  teacher_id: string;
+  is_archived: boolean;
 }
 
 // Interface for the main Exam data
@@ -36,11 +36,11 @@ interface Exam {
   progress: string;
   examEstablishment: Record<string, any>; // Change to the appropriate type
   exam_classe: exam_classe[];
+  create_at: any;
 }
 
 // React component for displaying exam cards
 const ExamCards = ({ exam }: { exam: Exam }) => {
-  console.log(exam);
   const router = useRouter();
   const onClick = (exam_id: number) => {
     router.push(`/1/examens/${exam_id}`);
@@ -70,7 +70,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
 
       {/* Date information */}
       <div className="w-[293px] text-[#D2D1D1] text-sm font-normal leading-snug text-lg">
-        Créé le: 12/12/22
+        Créé le: {exam?.name}
       </div>
 
       {/* Displaying classes associated with the exam */}

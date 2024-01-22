@@ -38,6 +38,7 @@ import {
 import { Skeleton } from '../ui/skeleton';
 import { auth } from '@/auth';
 import { useCreateExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useCreateExam';
+import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
@@ -77,11 +78,16 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
         message: 'Establishment is required',
       }),
     name: z.string().min(1, { message: 'Name is required' }),
-    term: z.string(),
+    term: z.string().min(1, { message: 'Term is required' }),
     classes: z
-      .array(z.object({ value: z.string(), label: z.string() }))
-      .refine((value) => value.length > 0, {
-        message: 'Classes is required',
+      .array(
+        z.object({
+          value: z.number(),
+          label: z.string(),
+        })
+      )
+      .refine((data) => data.length >= 1, {
+        message: "L'classes est requis",
       }),
     subject: z
       .object({
@@ -108,7 +114,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
-  console.log(formData.classes);
+  console.log(formData);
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({
@@ -116,7 +122,6 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       [field]: value,
     }));
   };
-  console.log(formData.establishment);
   const { data: TeacherClasse, isPending: isPendingTeacherClasse } = useQuery({
     queryKey: ['teacherClasse', formData?.establishment],
     queryFn: async () => await getClasseOfUser(user_id, formData?.establishment),
@@ -134,7 +139,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
   const term = Teacherterm;
   const classe = TeacherClasse;
 
-  const subjectoptions = subject?.map((item) => {
+  const subjectoptions = subject?.map((item: SubjectOutputProps) => {
     return {
       value: item.id,
       label: item.name,
@@ -145,14 +150,13 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     label: item.name,
   }));
   const { creatExam, isPending } = useCreateExam();
-
   const handleSubmit = async () => {
     try {
       // Validate the form data
       examSchema.parse(formData);
       creatExam({ data: formData, user_id });
       // Clear form errors
-      // setFormErrors(null);
+      setFormErrors(null);
     } catch (error: any) {
       // If validation fails, update form errors
       setFormErrors(error);

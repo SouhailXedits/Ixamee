@@ -20,11 +20,17 @@ export const createSubject = async (data: SubjectInputProps) => {
   }
 };
 
-export const getAllSubjectsByPage = async (page = 1, pageSize = 10) => {
+export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') => {
   try {
     const skip = (page - 1) * pageSize;
     console.log(skip);
     const estabs = await db.subject.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        }
+      },
       skip,
       take: pageSize,
     });
