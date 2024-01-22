@@ -8,20 +8,21 @@ import FormError from '@/components/ui/form-error';
 import { VerifSchema } from '@/actions/auth/schemas';
 import { CodeInput } from './CodeInput';
 import bcryptjs from 'bcryptjs';
-import { useRouter } from 'next/navigation';
 import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
+import Link from 'next/link';
+import { renvoyer } from '@/actions/auth/renvoyer-email';
+import FormSuccess from '@/components/ui/form-success';
 interface VerificationData {
-  email: any;
-  code: number;
+  email?: string;
+  code?: number;
 }
 const VerificationCodeForm: React.FC = ({ email, code }: any) => {
   const [codeValues, setCodeValues] = useState(['', '', '', '', '', '']);
-
+  const currentTimestamp = new Date().getTime();
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string | undefined>('');
-  const [isCodeSuccessful, setCodeSuccessful] = useState<boolean>(false);
-  const router = useRouter();
+  const [seccess, setSuccess] = useState<string | undefined>('');
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -42,6 +43,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: any) => {
   };
   const onSubmit = async () => {
     setError('');
+    setSuccess('');
     try {
       const verificationCode = getVerificationCode();
       const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
@@ -49,25 +51,60 @@ const VerificationCodeForm: React.FC = ({ email, code }: any) => {
         const codeMatch = await bcryptjs.compare(verificationCode, storedVerificationData.code);
 
         if (email && codeMatch) {
-          setIsCodeCorrect(true);
-          startTransition(() => {
-            sendPasswordResetToken(storedVerificationData.email);
-          });
+          const expirationTimestamp = storedVerificationData.expiredAt;
+
+          if (expirationTimestamp && currentTimestamp < expirationTimestamp) {
+            setIsCodeCorrect(true);
+            startTransition(() => {
+              sendPasswordResetToken(storedVerificationData.email);
+            });
+          } else {
+            setIsCodeCorrect(false);
+            setError('Code expiré. Réessayez.');
+          }
         } else {
           setIsCodeCorrect(false);
-          setError('Code incorrect, réessayez.');
+          setError('Code incorrect. Réessayez.');
         }
       }
     } catch (error) {
       setError("Quelque chose s'est mal passé");
     }
   };
+  const handleResendVerificationEmail = async () => {
+    setSuccess('');
+    setError('');
+    startTransition(async () => {
+      if (email && code) {
+        renvoyer(email, 'reset-password').then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          const hashedCode = data.hashedCode;
+
+          const expirationTimestamp = currentTimestamp + 1 * 60 * 1000;
+          localStorage.setItem(
+            'email-verification',
+            JSON.stringify({
+              email: email,
+              code: hashedCode,
+              expiredAt: expirationTimestamp,
+            })
+          );
+        });
+      }
+    });
+  };
 
   return (
     <Form {...form}>
       <form className="w-full space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FormError message={error} />
+<<<<<<< HEAD
         <div className="flex justify-between gap-2 mb-2 rtl:space-x-reverse">
+=======
+        <FormSuccess message={seccess} />
+        <div className="flex justify-between gap-2 mb-2 rtl:space-x-reverse">
+>>>>>>> 138cb398f67b1c514a1098a8648f0eadb5e980a9
           {[1, 2, 3, 4, 5, 6].map((index) => (
             <CodeInput
               key={index}
@@ -82,12 +119,26 @@ const VerificationCodeForm: React.FC = ({ email, code }: any) => {
         </div>
         <Button
           type="submit"
+          disabled={isTransPending}
           className={`${
             isCodeValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Vérifier
         </Button>
+        <div className="flex flex-col items-center w-full gap-3 gap-x-2">
+          <div className="flex ">
+            <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
+            &nbsp;
+            <Link
+              className="text-center text-[#1b8392] hover:underline font-semibold"
+              href={''}
+              onClick={handleResendVerificationEmail}
+            >
+              Renvoyez
+            </Link>
+          </div>
+        </div>
       </form>
     </Form>
   );

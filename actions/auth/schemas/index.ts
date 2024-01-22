@@ -22,9 +22,6 @@ export const RegisterEtudSchema = z
     email: z.string().email({
       message: "L'email est requis",
     }),
-    government: z.string().min(3, {
-      message: 'La gouvernorat est requis',
-    }),
     password: z
       .string()
       .min(8, {
@@ -38,12 +35,27 @@ export const RegisterEtudSchema = z
         }
       ),
     confirmPassword: z.string(),
-    etablissement: z.string().min(3, {
-      message: "L'etablissement est requis",
+    government: z.string().min(3, {
+      message: 'La gouvernorat est requis',
     }),
-    classe: z.string().min(3, {
-      message: 'La classe est requis',
-    }),
+    etablissement: z
+      .array(
+        z.object({
+          id: z.number(),
+          value: z.string(),
+          label: z.string(),
+        })
+      )
+      .refine((data) => data.length >= 1, {
+        message: "L'établissement est requis",
+      }),
+    classe: z.array(
+      z.object({
+        id: z.number(),
+        value: z.string(),
+        label: z.string(),
+      })
+    ),
   })
 
   .refine((data) => data.password === data.confirmPassword, {
@@ -84,17 +96,29 @@ export const VerifSchema = z.object({
 });
 
 export const EtudiantAfterSchema = z.object({
-  role: z.string().default('TEACHER'),
-  email: z.string(),
+  role: z.string().default('ETUDIANT').optional(),
+  email: z.string().optional(),
   government: z.string().min(3, {
     message: 'La gouvernorat est requis',
   }),
-  etablissement: z.string().min(3, {
-    message: "L'etablissement est requis",
-  }),
-  classe: z.string().min(3, {
-    message: 'La classe est requis',
-  }),
+  etablissement: z
+    .array(
+      z.object({
+        id: z.number(),
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .refine((data) => data.length >= 1, {
+      message: "L'établissement est requis",
+    }),
+  classe: z.array(
+    z.object({
+      id: z.number(),
+      value: z.string(),
+      label: z.string(),
+    })
+  ),
 });
 
 export const ProfAfterSchema = z.object({
@@ -135,7 +159,7 @@ export const ResetSchema = z.object({
 
 export const NewPasswordSchema = z
   .object({
-    email:z.string(),
+    email: z.string(),
     password: z
       .string()
       .min(8, {

@@ -38,12 +38,14 @@ export default function SendEmailResetForm() {
     startTransition(async () => {
       let code = generateSixDigitNumber();
       const hashedCode = await bcryptjs.hash(code + '', 10);
+      const currentTimestamp = new Date().getTime();
+      const expirationTimestamp = currentTimestamp + 1 * 60 * 1000;
       reset(values, code).then((data: any) => {
         setError(data?.error);
         setSuccess(data?.success);
         localStorage.setItem(
           'email-verification',
-          JSON.stringify({ email: values.email, code: hashedCode })
+          JSON.stringify({ email: values.email, code: hashedCode, expiredAt: expirationTimestamp })
         );
         if (data?.success) {
           setVerificationSuccessful(true);

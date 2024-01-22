@@ -99,6 +99,7 @@ model Classe {
   teacher       User[]          @relation("ClasseClassTeacherToSubject")
   student_class User[]          @relation("StudentClassToUser")
   is_archived   Boolean?        @default(false)
+  archived_at   DateTime? 
   exam_classe   Exam[]          @relation("ExamClasseToUser")
 }
  
@@ -129,6 +130,7 @@ model Exam {
   term            String?
   exam_correction ExamCorrection[]
   is_archived     Boolean?         @default(false)
+  archived_at     DateTime?         
   exam_classess   Classe[]         @relation("ExamClasseToUser")
   language        Language? // Consider using an enum for style
 }

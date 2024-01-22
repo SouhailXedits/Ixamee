@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Logo from '../../_components/Logo';
 import Link from 'next/link';
@@ -7,7 +6,6 @@ import RegisterForm from '../../_components/RegisterForm';
 export default function page() {
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
-
       {/* left */}
       <div className=" hidden flex-col justify-center  items-center gap-8 lg:flex md:w-[70%]">
         <Logo className={' max-xl:w-[50%]'} width={300} height={200} />{' '}
@@ -25,10 +23,12 @@ export default function page() {
             <RegisterForm />
             <Social />
             <div className="flex ">
-              <p className="text-center text-[#727272] ">Vous avez déjà un compte? </p>
+              <p className="text-center text-[#727272] max-md:text-sm max-sm:text-xs ">
+                Vous avez déjà un compte?{' '}
+              </p>
               &nbsp;
               <Link
-                className="text-center text-[#1b8392] hover:underline font-semibold"
+                className="text-center text-mainGreen hover:underline text-base font-semibold max-md:text-sm max-sm:text-xs "
                 href={'/login'}
               >
                 Se connecter

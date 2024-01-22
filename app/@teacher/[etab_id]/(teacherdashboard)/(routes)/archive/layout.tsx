@@ -18,6 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { DatePickerWithRange } from '@/components/ui/RangeDatePicker';
 import FiltersModal from './components/FiltersModal';
+import { getAllArchivedClasses } from '@/actions/archive';
 
 const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   const params = useParams();
@@ -33,16 +34,16 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   //   // Handle the imported data in the external page
   //   console.log(jsonData);
   // };
-  // const {
-  //   data: estabs,
-  //   error,
-  //   isPending,
-  // } = useQuery<any>({
-  //   queryKey: ['estabs', currentPage],
-  //   queryFn: async () => await getAllEstabs(currentPage),
-  // });
-  // const data = estabs?.data.estabs || [];
-  // const totalCount = estabs?.data.totalCount;
+  const {
+    data: classes,
+    error,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['estabs', 1],
+    queryFn: async () => await getAllArchivedClasses(),
+  });
+  const data = classes?.data || [];
+  console.log(data)
 
   function handleChangeTab(value: string) {
     setCurrentTab(value);

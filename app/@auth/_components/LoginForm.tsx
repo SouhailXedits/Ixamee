@@ -53,11 +53,17 @@ export default function LoginForm() {
       login(values, code).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
-        localStorage.setItem(
-          'new-verification',
-          JSON.stringify({ email: values.email, code: hashedCode })
-        );
         if (data?.success === 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.') {
+          localStorage.setItem(
+            'new-verification',
+            JSON.stringify({
+              email: values.email,
+              code: hashedCode,
+              role: data.role,
+              password: values.password,
+              rememberMe: values.rememberMe,
+            })
+          );
           sendEmailVerificationToken(values.email);
         }
         if (data?.success === 'Vous étes presque arrivé ! complete votre inscription') {

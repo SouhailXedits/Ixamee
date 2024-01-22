@@ -32,6 +32,7 @@ import { getClassesByEstablishmentId } from '@/actions/classe';
 import bcryptjs from 'bcryptjs';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
+import { register } from '@/actions/auth/registerEtudiant';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;
@@ -54,8 +55,8 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
       government: '',
       password: '',
       confirmPassword: '',
-      etablissement: '',
-      classe: '',
+      etablissement: [],
+      classe: [],
     },
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -82,7 +83,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
   const handleEtablissementChange = async (selectedEtablissement: any) => {
     setChooseEstab(true);
 
-    form.setValue('etablissement', selectedEtablissement.value, {
+    form.setValue('etablissement', [selectedEtablissement], {
       shouldValidate: true,
     });
 
@@ -104,18 +105,36 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
       }
     }
   };
-
+  const handleClasseChange = async (selectedClasse: any) => {
+    form.setValue('classe', [selectedClasse], {
+      shouldValidate: true,
+    });
+  };
 
   const onSubmit = async (values: z.infer<typeof RegisterEtudSchema>) => {
     values.role = role;
-    console.log('🚀 ~ onSubmit ~ values:', values);
     setError('');
     setSuccess('');
     startTransition(() => {
-      // register(values).then((data: any) => {
-      //   setError(data.error);
-      //   setSuccess(data.success);
-      // });
+      let code = generateSixDigitNumber();
+      register(values, code).then(async (data: any) => {
+        setError(data.error);
+        setSuccess(data.success);
+        const hashedCode = await bcryptjs.hash(code + '', 10);
+        localStorage.setItem(
+          'new-verification',
+          JSON.stringify({
+            email: values.email,
+            code: hashedCode,
+            password: values.password,
+            rememberMe: true,
+            role,
+          })
+        );
+        if (data.success && !data.error) {
+          sendEmailVerificationToken(values.email);
+        }
+      });
     });
   };
 
@@ -266,9 +285,9 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                   </FormLabel>
                   <FormControl className="flex-grow ">
                     <SelectScrollable
+                      placeholder={'Choisissez votre établissement'}
                       disabled={isTransPending}
                       field={field}
-                      placeholder={'Choisissez votre établissement'}
                       options={estabOptions}
                       icon={<FaGraduationCap className="text-muted-foreground w-5 h-5" />}
                       onChange={(selectedOption: any) => handleEtablissementChange(selectedOption)}
@@ -292,9 +311,10 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                     <SelectScrollable
                       disabled={isTransPending || isChooseEstab}
                       field={field}
-                      placeholder={'Sélectionnez votre classe'}
+                      placeholder='Sélectionnez votre classe'
                       options={estabClassesOptions}
                       icon={<MdOutlineClass className="text-muted-foreground w-5 h-5" />}
+                      onChange={(selectedOption: any) => handleClasseChange(selectedOption)}
                     />
                   </FormControl>
                   <FormMessage />

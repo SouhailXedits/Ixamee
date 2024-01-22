@@ -27,7 +27,12 @@ export const login = async (values: z.infer<typeof LoginSchema>, code: number) =
   if (!existingUser.emailVerified) {
     await sendVerificationEmail(existingUser.email, code);
 
-    return { success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.' };
+    return {
+      success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.',
+      role: existingUser.role,
+      password,
+      rememberMe,
+    };
   }
   if (!userEstablishment.length && existingUser.role === 'TEACHER') {
     return { success: 'Vous étes presque arrivé ! complete votre inscription' };
