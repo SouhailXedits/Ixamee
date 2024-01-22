@@ -1,16 +1,7 @@
 'use client';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import Image from 'next/image';
 import Link from 'next/link';
 import { EstablishementsList } from './_components/EstablishementsList';
-import { ImportUneClasse } from '@/components/modals/importer-une-classe';
-import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
 import { getAllEstabs } from '@/actions/establishements';
 import { useQuery } from '@tanstack/react-query';
@@ -18,23 +9,20 @@ import { useState } from 'react';
 import { SearchModal } from '@/components/modals/SearchModal';
 
 const Establishement = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1); // State to track the current page
   console.log(currentPage);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-  const handleImportedData = (jsonData: any) => {
-    // Handle the imported data in the external page
-    console.log(jsonData);
-  };
   const {
     data: estabs,
     error,
     isPending,
   } = useQuery<any>({
-    queryKey: ['estabs', currentPage],
-    queryFn: async () => await getAllEstabs(currentPage),
+    queryKey: ['estabs', currentPage, searchQuery],
+    queryFn: async () => await getAllEstabs(currentPage, 10, searchQuery),
   });
   const data = estabs?.data.estabs || [];
   const totalCount = estabs?.data.totalCount;
@@ -59,15 +47,16 @@ const Establishement = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          <SearchModal field='etablissements' table='establishment'>
-          <button className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
+          <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
-            <p className=" text-mainGreen/50 w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]">
-              Recherche
-            </p>
-          </button>
-          </SearchModal>
+            <input
+              type="text"
+              placeholder="Recherche"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
+            />
+          </div>
           <AddEstab>
             <button className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               Ajouter une établissements

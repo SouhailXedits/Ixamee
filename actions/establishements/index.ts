@@ -18,13 +18,19 @@ export const createEstablishement = async (name: string) => {
   }
 };
 
-export const getAllEstabs = async (page = 1, pageSize = 10) => {
+export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
   try {
 
     const skip = (page - 1) * pageSize;
     console.log(skip)
 
     const estabs = await db.establishment.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        }
+      },
       skip,
       take: pageSize,
     });

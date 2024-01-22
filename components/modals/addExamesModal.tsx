@@ -38,6 +38,7 @@ import {
 import { Skeleton } from '../ui/skeleton';
 import { auth } from '@/auth';
 import { useCreateExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useCreateExam';
+import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
@@ -138,7 +139,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
   const term = Teacherterm;
   const classe = TeacherClasse;
 
-  const subjectoptions = subject?.map((item) => {
+  const subjectoptions = subject?.map((item: SubjectOutputProps) => {
     return {
       value: item.id,
       label: item.name,
