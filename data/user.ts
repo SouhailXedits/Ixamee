@@ -34,7 +34,8 @@ export const getUserEstablishmentByUserId = async (id: string) => {
         },
       },
     });
-
+    
+    console.log("🚀 ~ getUserEstablishmentByUserId ~ userEstablishments:", userEstablishments)
     return userEstablishments;
   } catch (error) {
     console.error('Error getting UserEstablishment:', error);

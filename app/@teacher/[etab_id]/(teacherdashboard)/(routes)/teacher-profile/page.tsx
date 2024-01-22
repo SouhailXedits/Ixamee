@@ -1,7 +1,18 @@
 'use client';
 import Image from 'next/image';
+import ProfileCards from './_components/ProfileCards';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getUserEstablishmentByUserId } from '@/data/user';
+import { getSubjectOfUserById } from '@/actions/examens';
 
-const Profile = () => {
+const Profile = async () => {
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(['user']) as any;
+  const userEstablishment = queryClient.getQueryData(['AllEstabOfUser']) as any
+  const { data: teachersubject, isPending: isPendingSubject } = useQuery<any>({
+    queryKey: ['teachersubjects'],
+    queryFn: async () => await getSubjectOfUserById(user?.id),
+  });
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -16,7 +27,7 @@ const Profile = () => {
       </nav>
 
       <div>
-        forms
+        <ProfileCards user={user} userEstablishment={userEstablishment} teachersubject={teachersubject} />
       </div>
     </main>
   );

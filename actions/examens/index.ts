@@ -139,6 +139,23 @@ export const getSubjectOfUser = async (user_id: string, data: any) => {
   console.log(subject);
   return subject;
 };
+
+export const getSubjectOfUserById = async (user_id: string) => {
+  console.log(user_id);
+
+  const subject = await db.subject.findMany({
+    where: {
+      teacher: {
+        some: {
+          id: user_id,
+        },
+      },
+    },
+  });
+  console.log(subject);
+  return subject;
+};
+
 export const getTermOfUser = async (user_id: string) => {
   const term = await db.user.findUnique({
     where: {
