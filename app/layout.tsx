@@ -31,7 +31,6 @@ export default async function RootLayout({
   auth: React.ReactNode;
 }) {
   const session = await authentification();
-  console.log(session)
 
   // console.log(session?.user)
   // if(session?.user) {

@@ -1,6 +1,6 @@
 // Importing specific components and hooks separately
 // 🚀 Next.js Navigation
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 // 🖼️ Next.js Image component
 import Image from 'next/image';
 // 🔄 Reusable Progress component
@@ -15,12 +15,12 @@ interface exam_classe {
   assignedAt: Date;
   assignedBy: string;
   // Nested class details
-    id: string;
-    name: string;
-    range: string;
-    establishment_id: number;
-    teacher_id: string;
-    is_archived: boolean;
+  id: string;
+  name: string;
+  range: string;
+  establishment_id: number;
+  teacher_id: string;
+  is_archived: boolean;
 }
 
 // Interface for the main Exam data
@@ -35,22 +35,21 @@ interface Exam {
   term: string | null;
   progress: string;
   examEstablishment: Record<string, any>; // Change to the appropriate type
-  exam_classe: exam_classe[];
+  exam_classess: exam_classe[];
+  create_at: any;
 }
 
 // React component for displaying exam cards
 const ExamCards = ({ exam }: { exam: Exam }) => {
-  console.log(exam);
   const router = useRouter();
+  const pathname = usePathname();
   const onClick = (exam_id: number) => {
-    router.push(`/1/examens/${exam_id}`);
+    router.push(`${pathname}/${exam_id}`);
   };
-  console.log(exam);
-
   return (
     /* Container div for the exam card */
     <div
-      className="w-[333px] h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2"
+      className="w-[333px] h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2 cursor-pointer"
       onClick={() => onClick(exam?.id)}
     >
       {/* Header section with exam name and dropdown menu */}
@@ -70,14 +69,14 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
 
       {/* Date information */}
       <div className="w-[293px] text-[#D2D1D1] text-sm font-normal leading-snug text-lg">
-        Créé le: 12/12/22
+        Créé le: {exam.create_at.toISOString().slice(0, 10)}
       </div>
 
       {/* Displaying classes associated with the exam */}
       <div className="flex items-start justify-between w-full">
         <div className="mt-[20px] space-x-2">
           {/* Mapping over examClassess to display class names */}
-          {exam?.exam_classe?.map((examClass, index) => (
+          {exam?.exam_classess?.map((examClass, index) => (
             <div
               key={index}
               className="max-w-[65px] w-auto h-7 px-1.5 rounded-[100px] border border-[#1B8392] inline-flex truncate"

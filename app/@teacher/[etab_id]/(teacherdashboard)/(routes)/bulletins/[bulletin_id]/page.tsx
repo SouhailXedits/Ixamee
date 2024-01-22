@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Select,
   SelectContent,
@@ -15,39 +15,38 @@ import { useParams, useRouter } from 'next/navigation';
 import { useNavigate } from 'react-router-dom';
 import UserExam from './components/UserExam';
 
-
 const userExams = [
-    {
-        id: 1,
-        name: 'Examen 1',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-    },
-    {
-        id: 2,
-        name: 'Examen 1',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-    },
-    {
-        id: 3,
-        name: 'Examen 1',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-    }
-]
+  {
+    id: 1,
+    name: 'Examen 1',
+    date: '22/03/2023',
+    marksObtained: 15.5,
+    totalScore: 20,
+    rang: 8,
+  },
+  {
+    id: 2,
+    name: 'Examen 1',
+    date: '22/03/2023',
+    marksObtained: 15.5,
+    totalScore: 20,
+    rang: 8,
+  },
+  {
+    id: 3,
+    name: 'Examen 1',
+    date: '22/03/2023',
+    marksObtained: 15.5,
+    totalScore: 20,
+    rang: 8,
+  },
+];
 const Student = () => {
   const params = useParams();
   const router = useRouter();
-  const currentId = params.bulletin_id
+  const currentId = params.bulletin_id;
   function handleGoBack() {
-    router.back()
+    router.back();
   }
   return (
     <main className="flex flex-col gap-12 p-10">
@@ -68,14 +67,14 @@ const Student = () => {
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
           {/* importer */}
-          <ImportUneClasse>
+          {/* <ImportUneClasse>
             <div className=" justify-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
               <Image src="/download-icon.svg" alt="download icon" width={20} height={20} />
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
                 Télécharger en pdf
               </div>
             </div>
-          </ImportUneClasse>
+          </ImportUneClasse> */}
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 

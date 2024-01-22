@@ -38,14 +38,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
           {/* importer */}
-          <ImportUneClasse>
+          {/* <ImportUneClasse >
             <div className=" justify-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
               <Image src="/download-icon.svg" alt="download icon" width={20} height={20} />
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
                 Télécharger en pdf
               </div>
             </div>
-          </ImportUneClasse>
+          </ImportUneClasse> */}
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 

@@ -81,7 +81,7 @@ model PasswordResetToken {
  
   @@unique([email, token])
 }
- 
+
 model Establishment {
   id                 Int      @id @default(autoincrement())
   name               String
@@ -102,7 +102,6 @@ model Classe {
   archived_at   DateTime?
   exam_classe   Exam[]          @relation("ExamClasseToUser")
 }
- 
 // Subject Table
 model Subject {
   id          Int      @id @default(autoincrement())
@@ -112,7 +111,6 @@ model Subject {
   teacher     User[]   @relation("ClasseTeacherSubjectToSubject")
   exams       Exam[]
   is_archived Boolean? @default(false)
- 
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
 }
  
@@ -151,10 +149,10 @@ model Exercise {
   question_type       String
   exercise_correction ExerciseCorrection[]
   is_archived         Boolean?             @default(false)
- 
+
   questions question[]
 }
- 
+
 model question {
   id                  Int                  @id @default(autoincrement())
   name                String
@@ -168,7 +166,6 @@ model question {
   content             String?
   exercise_correction QuestionCorrection[]
 }
- 
 // ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
@@ -192,4 +189,3 @@ model QuestionCorrection {
   content       String?
   mark_obtained Float
 }
- 
