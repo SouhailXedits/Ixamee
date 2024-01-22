@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { logout } from '@/actions/auth/logout';
 import { useQueryClient } from '@tanstack/react-query';
+import { useParams, useRouter } from 'next/navigation';
 
 const NavbarProfile = () => {
   const queryClient = useQueryClient();
@@ -36,6 +37,9 @@ const NavbarProfile = () => {
   if (!user) {
     return null;
   }
+
+  const router = useRouter();
+  const params = useParams();
   return (
     <div className="flex items-center gap-3">
       <div>
@@ -79,7 +83,13 @@ const NavbarProfile = () => {
             </p> */}
           {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
           {/* </ModifierUnEtudiant> */}
-          <DropdownMenuItem>Mon profil</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              router.push(`/${params.etab_id}/teacher-profile`);
+            }}
+          >
+            Mon profil
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={async () => {
               await logout();

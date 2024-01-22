@@ -16,7 +16,7 @@ interface VerificationData {
   email?: string;
   code?: number;
 }
-const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
+export default function VerificationCodeForm({ email, code }: VerificationData) {
   const [codeValues, setCodeValues] = useState(['', '', '', '', '', '']);
   const currentTimestamp = new Date().getTime();
   const [isCodeValid, setIsCodeValid] = useState(false);
@@ -138,6 +138,4 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
       </form>
     </Form>
   );
-};
-
-export default VerificationCodeForm;
+}

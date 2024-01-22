@@ -13,6 +13,7 @@ import QueryClientProviderWrapper from './providers/queryClientProvider';
 import { getUserByEmail } from '@/data/user';
 import { useQueryClient } from '@tanstack/react-query';
 import Hydration from './providers/hydration';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -29,8 +30,12 @@ export default async function RootLayout({
   auth: React.ReactNode;
 }) {
   const session = await authentification();
-  console.log("🚀 ~ session:", session)
-
+  console.log('🚀 ~ session:', session);
+  
+  // if (session?.user?.role === 'STUDENT' && session?.user.image.includes('googleusercontent')) {
+  //   console.log('true');
+  //   redirect('/home');
+  // }
   return (
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>

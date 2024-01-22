@@ -98,7 +98,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
             value: estabClasses.name,
             label: estabClasses.name,
           },
-        ];
+        ] as any
         setEstabClassesOptions(newOptions);
       } catch (error) {
         console.error('Error fetching classes:', error);

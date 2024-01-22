@@ -5,7 +5,7 @@ import { AuthError } from 'next-auth';
 
 export const googleLogin = async () => {
   const session = await auth();  
-  const link =`/`  ;
+  const link =`/google-after`  ;
   
   try {
     await signIn('google', {
