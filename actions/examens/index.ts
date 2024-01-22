@@ -187,11 +187,17 @@ export const getEstablishmentOfUser = async (user_id: string) => {
 
   return data;
 };
-
-export const getOneExamById = async ({ id }: { id: number }) => {
-  const exam = await db.exam.findUnique({ where: { id: id } });
-  console.log(exam);
-  return { data: exam, error: undefined };
+// getExamenById;
+export const getOneExamById = async ({ id }: { id: string }) => {
+  console.log(id);
+  const exam = await db.exam.findUnique({
+    where: { id: +id },
+    include: {
+      exercises: true,
+      exam_classess: true,
+    },
+  });
+  return exam;
 };
 
 export async function createExamm(data: any, user_id: string) {
