@@ -1,11 +1,37 @@
-import { db } from "@/lib/db";
+'use server';
+import { db } from '@/lib/db';
 
-export const getAllArchivedExams = async () => {
+export const getAllArchivedExams = async (id: string, estabId: number) => {
   try {
     const exams = await db.exam.findMany({
-        where:{
-            is_archived: true
+      where: {
+        is_archived: true,
+        // exam_classess: {
+        //   some: {
+        //     establishment: {
+        //       some: {
+        //         id: estabId,
+        //       },
+        //     },
+        //   },
+        // },
+        teacher: {
+            some: {
+                id: id
+            }
         }
+      },
+      select: {
+        id: true,
+        name: true,
+        archived_at: true,
+        exam_classess: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
 
     console.log(exams);
@@ -19,32 +45,39 @@ export const getAllArchivedExams = async () => {
   }
 };
 
-
-export const getAllArchivedClasses = async () => {
+export const getAllArchivedClasses = async (id: string, estabId: number) => {
   try {
     const classe = await db.classe.findMany({
       where: {
         is_archived: true,
+        teacher: {
+          some: {
+            id: id,
+          },
+        },
+        establishment: {
+          some: {
+            id: estabId,
+          },
+        },
       },
       select: {
         id: true,
         name: true,
         archived_at: true,
         student_class: {
-            select: {
-                id: true
-            }
-        }
-        
+          select: {
+            id: true,
+          },
+        },
       },
-      
-
     });
 
     console.log(classe);
 
     return { data: classe, error: undefined };
   } catch (error: any) {
+    console.log(error);
     return {
       data: undefined as any,
       error: 'Failed to get classes.',
@@ -52,26 +85,24 @@ export const getAllArchivedClasses = async () => {
   }
 };
 
-export const unArchiveExam = async (id: number) => {
+export const unArchive = async (id: number, table: string) => {
   try {
-    console.log(id);
-    await db.exam.update({
+    await (db as any)[table].update({
       where: {
         id: id,
       },
       data: {
-        is_archived: false
+        is_archived: false,
       },
     });
-    console.log('exam edited succecfully ! ');
+    console.log('edited successfully ! ');
   } catch (error: any) {
     console.log(error);
     return {
-      error: 'Failed to edit exam.',
+      error: 'Failed to edit.',
     };
   }
 };
-
 
 export const unArchiveClasse = async (id: number) => {
   try {
@@ -81,7 +112,7 @@ export const unArchiveClasse = async (id: number) => {
         id: id,
       },
       data: {
-        is_archived: false
+        is_archived: false,
       },
     });
     console.log('classe edited succecfully ! ');
@@ -92,5 +123,3 @@ export const unArchiveClasse = async (id: number) => {
     };
   }
 };
-
-

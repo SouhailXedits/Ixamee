@@ -28,6 +28,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
     queryFn: async () => await getMe(),
   });
 
+
   const { collapsed } = useSidebar((state) => state);
 
   return (
