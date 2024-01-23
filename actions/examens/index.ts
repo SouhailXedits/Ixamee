@@ -164,8 +164,6 @@ export const getSubjectOfUser = async (user_id: string, data: any) => {
 };
 
 export const getSubjectOfUserById = async (user_id: string) => {
-  console.log(user_id);
-
   const subject = await db.subject.findMany({
     where: {
       teacher: {
@@ -200,6 +198,7 @@ export const getEstablishmentOfUser = async (user_id: string) => {
       },
     },
   });
+  console.log("🚀 ~ getEstablishmentOfUser ~ data:", data)
 
   return data;
 };

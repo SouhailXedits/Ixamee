@@ -32,6 +32,22 @@ export default function VerifForm({ email, code }: VerificationData) {
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
   const [isDisabled, setDisabled] = useState<boolean>(false);
 
+  const [renvoyerDisabled, setRenvoyerDisabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (renvoyerDisabled) {
+      timer = setTimeout(() => {
+        setRenvoyerDisabled(false);
+      }, 60000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [renvoyerDisabled]);
+
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
     defaultValues: {
@@ -56,8 +72,6 @@ export default function VerifForm({ email, code }: VerificationData) {
         const data = await emailVerification(storedVerificationData.email, token);
         setSuccess(data.success);
         setError(data.error);
-        console.log(storedVerificationData);
-
         if (data.success && !storedVerificationData?.role) {
           // sendEmailVerificationToken(storedVerificationData.email);
           setRegistrationSuccessful(true);
@@ -92,6 +106,7 @@ export default function VerifForm({ email, code }: VerificationData) {
   const handleResendVerificationEmail = async () => {
     setSuccess('');
     setError('');
+    setRenvoyerDisabled(true);
     startTransition(async () => {
       if (email && code) {
         renvoyer(email, 'email').then((data) => {
@@ -155,9 +170,13 @@ export default function VerifForm({ email, code }: VerificationData) {
             <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
             &nbsp;
             <Link
-              className="text-center text-[#1b8392] hover:underline font-semibold"
+              className={`text-center ${
+                renvoyerDisabled
+                  ? 'text-gray-500 cursor-not-allowed'
+                  : 'text-[#1b8392] hover:underline'
+              } font-semibold`}
               href={''}
-              onClick={handleResendVerificationEmail}
+              onClick={renvoyerDisabled ? undefined : handleResendVerificationEmail}
             >
               Renvoyez
             </Link>

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form';
 import { useRef } from 'react';
 import Image from 'next/image';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
 import Select from 'react-select';
 import { getAllSubjects } from '@/actions/subjects';
@@ -21,10 +21,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateTeacherSchema } from '@/actions/profile/schemas';
 import { Button } from '@/components/ui/button';
 import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
-import { updateTeacherCredentials } from '@/actions/profile/updateUserCredentials';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { getMe } from '@/actions/examens';
+import { useUpdateCredentials } from '../hooks/useUpdateCredentials';
 
 export default function InfoCard({ user, userEstablishment, teachersubject }: any) {
   const { name, email, phone_number: phoneNumber, government } = user;
@@ -43,11 +42,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>(user.image);
   const [selectedFileUrl1, setSelectedFileUrl1] = useState<string>(user.image);
 
-  const {
-    data: establishments,
-    error: getEstabsError,
-    isPending: estabPending,
-  } = useQuery<any>({
+  const { data: establishments, isPending: estabPending } = useQuery<any>({
     queryKey: ['establishments'],
     queryFn: async () => await getAllEstabs(),
   });
@@ -58,11 +53,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
       })) ||
     [];
 
-  const {
-    data: subjects,
-    error: getSubError,
-    isPending: subPending,
-  } = useQuery<any>({
+  const { data: subjects, isPending: subPending } = useQuery<any>({
     queryKey: ['subjects'],
     queryFn: async () => await getAllSubjects(),
   });
@@ -111,39 +102,45 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
       etablissement: defaultTeacherestablishments || [],
     });
   }, []);
-  
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError('');
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
 
       if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-        const form = new FormData();
-        form.append('file', files as any);
-        form.append('upload_preset', 'firaslatrach');
-        const fileUrl = URL.createObjectURL(selectedFile);
-        setSelectedFileUrl1(fileUrl);
+        try {
+          const form = new FormData();
+          form.append('file', selectedFile);
+          form.append('upload_preset', 'firaslatrach');
 
-        fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
-          method: 'post',
-          body: form,
-        })
-          .then((resp) => resp.json())
-          .then((data) => {
-            console.log('🚀 ~ .then ~ data:', data);
+          const response = await fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
+            method: 'post',
+            body: form,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
             setSelectedFileUrl(data.url);
-          })
-          .catch((err) => console.log(err));
+            setSelectedFileUrl1(URL.createObjectURL(selectedFile));
+          } else {
+            setError('Error uploading the file. Please try again.');
+          }
+        } catch (error) {
+          setError('An error occurred during file upload. Please try again.');
+          console.error(error);
+        }
+      } else {
+        setError('Invalid file format or size. Please choose a valid image file (max 2MB).');
       }
     }
   };
-  
+  const { updateUser, isPending: updatePending } = useUpdateCredentials();
   const onSubmit = (values: z.infer<typeof UpdateTeacherSchema>) => {
     setError('');
     setSuccess('');
-    values.image = selectedFileUrl;
-    console.log('🚀 ~ onSubmit ~ values.image:', values.image);
-
+    values.image = selectedFileUrl || user?.image;
     startTransition(async () => {
       const isFormChanged =
         values.image !== initialValues?.image ||
@@ -153,12 +150,8 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
         values.government !== initialValues?.government ||
         JSON.stringify(values.subject) !== JSON.stringify(initialValues?.subject) ||
         JSON.stringify(values.etablissement) !== JSON.stringify(initialValues?.etablissement);
-
       if (isFormChanged) {
-        updateTeacherCredentials(values).then(async (data) => {
-          setError(data.error);
-          setSuccess(data.success);
-        });
+        updateUser(values);
       } else {
         setError('Aucune modification détectée.');
       }
@@ -171,15 +164,17 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
         <form onSubmit={form.handleSubmit(onSubmit)} method="post" className="flex flex-col gap-4">
           <FormError message={error} />
           <FormSuccess message={success} />
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-5">
-              <Image
-                src={selectedFileUrl1 || '/uplodImage.svg'}
-                alt="uplodImage"
-                width={100}
-                height={100}
-                className="rounded-full cursor-pointer hover:opacity-75"
-              />
+          <div className="flex items-center justify-between ">
+            <div className="flex items-center gap-5 rounded-full">
+              <div className="flex w-[100px] h-[100px] rounded-full ">
+                <Image
+                  src={selectedFileUrl1 || '/uplodImage.svg'}
+                  alt="uplodImage"
+                  width={100}
+                  height={100}
+                  className="rounded-full cursor-pointer hover:opacity-75 object-cover"
+                />
+              </div>
 
               <div className="flex flex-col gap-3">
                 <span className="text-[#727272]">Ajouter une photo de profil</span>
