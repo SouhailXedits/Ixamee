@@ -1,4 +1,4 @@
-export const TunisianGoverments = [
+export const Tunisiangovernments = [
   { id: 1, value: 'Tunis', label: 'Tunis' },
   { id: 2, value: 'Ariana', label: 'Ariana' },
   { id: 3, value: 'Ben Arous', label: 'Ben Arous' },
@@ -24,4 +24,3 @@ export const TunisianGoverments = [
   { id: 23, value: 'Mahdia', label: 'Mahdia' },
   { id: 24, value: 'Sfax', label: 'Sfax' },
 ];
-

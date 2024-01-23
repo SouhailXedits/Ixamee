@@ -5,8 +5,7 @@ import { cn } from '@/lib/utils';
 import Navbar from './_components/navbar';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { auth } from '@/auth';
-import { getMe } from '@/actions/examens';
-import { redirect, usePathname } from 'next/navigation';
+import { getMe, getSubjectOfUserById } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 type DashboardLayoutProps = {
@@ -17,8 +16,7 @@ type DashboardLayoutProps = {
 };
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) => {
   const queryClient = useQueryClient();
-  const pathName = usePathname();
-  console.log('🚀 ~ pathName:', pathName);
+
   if (params?.etab_id) {
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
@@ -26,8 +24,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   const { data, isPending } = useQuery({
     queryKey: ['user'],
     queryFn: async () => await getMe(),
+    staleTime: 0,
   });
 
+  const { data: teachersubject, isPending: isPendingSubject } = useQuery<any>({
+    queryKey: ['teachersubjects'],
+    queryFn: async () => await getSubjectOfUserById(data?.id as string),
+    staleTime: 0,
+  });
 
   const { collapsed } = useSidebar((state) => state);
 

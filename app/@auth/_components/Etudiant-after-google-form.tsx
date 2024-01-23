@@ -16,12 +16,12 @@ import { useTransition } from 'react';
 import { EtudiantAfterSchema } from '@/actions/auth/schemas';
 import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
-import { RiGovernmentLine } from 'react-icons/ri';
+import { RigovernmentLine } from 'react-icons/ri';
 import { MdOutlineClass } from 'react-icons/md';
 // import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
-import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
+import { Tunisiangovernments } from '@/public/auth/data/Tunisiangovernments';
 import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
 import { getClassesByEstablishmentId } from '@/actions/classe';
 import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
@@ -66,7 +66,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
       })) ||
     [];
 
-  const govOptions = TunisianGoverments;
+  const govOptions = Tunisiangovernments;
 
   const classOptions = TunisianClasses;
 
@@ -182,7 +182,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                     field={field}
                     placeholder={'Choisissez vos/votre gouvernorat(s)'}
                     options={govOptions}
-                    icon={<RiGovernmentLine className="text-muted-foreground w-5 h-5" />}
+                    icon={<RigovernmentLine className="text-muted-foreground w-5 h-5" />}
                   />
                 </FormControl>
                 <FormMessage />

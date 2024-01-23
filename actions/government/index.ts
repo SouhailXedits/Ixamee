@@ -1,7 +1,7 @@
 // 'use server';
 // import { db } from '@/lib/db';
 
-// export const getAllGovernments = async () => {
+// export const getAllgovernments = async () => {
 //   try {
 //     const governments = await db.government.findMany();
 //     return { data: governments, error: undefined };

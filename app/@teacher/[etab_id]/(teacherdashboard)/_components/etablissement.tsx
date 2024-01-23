@@ -16,6 +16,7 @@ const Etablissement = () => {
   const { data: teacherEstab, isPending: isPendingTeacherEstab } = useQuery({
     queryKey: ['AllEstabOfUser'],
     queryFn: async () => await getEstablishmentOfUser(user?.id),
+    staleTime: 0,
   });
 
   return (

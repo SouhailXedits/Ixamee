@@ -26,7 +26,7 @@ import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import bcryptjs from 'bcryptjs';
-import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
+import { Tunisiangovernments } from '@/public/auth/data/Tunisiangovernments';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 
 interface ProfFormProps {
@@ -52,7 +52,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const govOptions = TunisianGoverments;
+  const govOptions = Tunisiangovernments;
 
   const [isTransPending, startTransition] = useTransition();
 
