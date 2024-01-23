@@ -14,7 +14,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
   const onChange = (content: string) => {
     console.log(content);
   };
-  function numberToLetters(num) {
+  function numberToLetters(num: number) {
     let letters = '';
     while (num > 0) {
       let mod = (num - 1) % 26;
@@ -359,12 +359,12 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
     };
 
     // Update the state to include the new subquestion
-    setFakeData((prevData) => {
-      return prevData.map((item) => {
+    setFakeData((prevData:any) => {
+      return prevData.map((item:any) => {
         if (item.id === allData.id) {
           return {
             ...item,
-            children: item.children.map((subItem) => {
+            children: item.children.map((subItem:any) => {
               if (subItem.id === data.id) {
                 return {
                   ...subItem,
@@ -399,7 +399,7 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
       console.log(prevData);
       return prevData.map((item: any) => {
         const getNextChar = (num: number) => String.fromCharCode(0x2160 + num);
-        item.children.map((state, index: number) => {
+        item.children.map((state: any, index: number) => {
           state.name = getNextChar(index);
         });
 
@@ -440,7 +440,6 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
             />
           </div>
           <div className="flex gap-3 item-center">
-            {console.log(calculerQuestionMark(data))}
             <Input
               className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
@@ -460,7 +459,7 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
               height={20}
               alt="redcloseicon"
               className="cursor-pointer"
-              onClick={() => handelDeleteQuestion(data)}
+              onClick={() => handelDeleteQuestion()}
             />
           </div>
         </div>
@@ -612,7 +611,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
 };
 
 function CreateExam({ data }: any) {
-  const [fakeData, setFakeData] = useState([
+  const [fakeData, setFakeData] = useState<any>([
     // {
     //   name: 'Exerice n1',
     //   mark: 10,
@@ -746,7 +745,7 @@ function CreateExam({ data }: any) {
   return (
     <div dir={data?.language === 'fr' ? 'ltr' : 'rtl'}>
       <div className="flex flex-col gap-4">
-        {fakeData?.map((item, index) => (
+        {fakeData?.map((item: any, index:number) => (
           <CreateExercice allData={fakeData} data={item} setFakeData={setFakeData} key={index} />
         ))}
       </div>

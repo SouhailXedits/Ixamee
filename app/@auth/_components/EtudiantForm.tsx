@@ -27,7 +27,7 @@ import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
-import { Tunisiangovernments } from '@/public/auth/data/Tunisiangovernments';
+import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
 import { getClassesByEstablishmentId } from '@/actions/classe';
 import bcryptjs from 'bcryptjs';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
