@@ -35,7 +35,7 @@ const ArchiverCard = ({ data }: { data: itemProps }) => {
           />
         </DropdownMenuItemSelect> */}
         <button onClick={() => {
-            router.push(`/${estabId}/classes/${data.id}`)
+            router.push(`/${estabId}/examens/${data.id}`)
         }}>
         <Image src="/expand-icon.svg" alt="expand icon" height={20} width={20} />
         </button>
