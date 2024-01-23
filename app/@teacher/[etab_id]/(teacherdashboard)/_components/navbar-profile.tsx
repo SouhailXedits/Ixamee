@@ -33,7 +33,7 @@ import { useParams, useRouter } from 'next/navigation';
 const NavbarProfile = () => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
-  console.log(user);
+  console.log("🚀 ~ NavbarProfile ~ user:", user)
   if (!user) {
     return null;
   }

@@ -3,8 +3,6 @@ import AuthSvg from './AuthSvg';
 import { UpdatePassword } from './UpdatePassword';
 
 export default function SecurityCard({ user }: any) {
-  console.log('🚀 ~ SecurityCard ~ user:', user);
-
   return (
     <div className="w-[50%] h-full  p-5 flex flex-col gap-6  rounded-xl shadow-lg max-xl:w-full">
       <div className="text-[#1B8392] text-lg">Sécurité et authentification</div>

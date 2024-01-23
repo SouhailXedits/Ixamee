@@ -1,14 +1,7 @@
 'use client';
 import * as z from 'zod';
-import React, { useState, useTransition } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import { Input } from '@/components/ui/input';
-import {
-  Select as CustomSelect,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/selectModifierStudent';
 import {
   Form,
   FormControl,
@@ -17,9 +10,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-
+import { useRef } from 'react';
 import Image from 'next/image';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
 import Select from 'react-select';
 import { getAllSubjects } from '@/actions/subjects';
@@ -31,15 +24,25 @@ import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
 import { updateTeacherCredentials } from '@/actions/profile/updateUserCredentials';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
+import { getMe } from '@/actions/examens';
 
 export default function InfoCard({ user, userEstablishment, teachersubject }: any) {
-  const [name, setName] = useState(user?.name);
-  const [email, setEmail] = useState(user?.email);
-  const [phoneNumber, setPhoneNumber] = useState(user?.phone_number);
-  const [government, setgovernment] = useState(user?.government);
+  const { name, email, phone_number: phoneNumber, government } = user;
   const govOptions = Tunisiangovernments;
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const [initialValues, setInitialValues] = useState<z.infer<typeof UpdateTeacherSchema> | null>(
+    null
+  );
+
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+
+  const [files, setFile] = useState<any>(null);
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string>(user.image);
+  const [selectedFileUrl1, setSelectedFileUrl1] = useState<string>(user.image);
+
   const {
     data: establishments,
     error: getEstabsError,
@@ -85,6 +88,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
   const form = useForm<z.infer<typeof UpdateTeacherSchema>>({
     resolver: zodResolver(UpdateTeacherSchema),
     defaultValues: {
+      image: selectedFileUrl,
       name: name,
       email: email,
       phone: phoneNumber || '',
@@ -96,16 +100,68 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
 
   const [isPending, startTransition] = useTransition();
 
+  useEffect(() => {
+    setInitialValues({
+      image: selectedFileUrl,
+      name: name,
+      email: email,
+      phone: phoneNumber || '',
+      government: government,
+      subject: defaultTeachersubject || [],
+      etablissement: defaultTeacherestablishments || [],
+    });
+  }, []);
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+
+      if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
+        const form = new FormData();
+        form.append('file', files as any);
+        form.append('upload_preset', 'firaslatrach');
+        const fileUrl = URL.createObjectURL(selectedFile);
+        setSelectedFileUrl1(fileUrl);
+
+        fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
+          method: 'post',
+          body: form,
+        })
+          .then((resp) => resp.json())
+          .then((data) => {
+            console.log('🚀 ~ .then ~ data:', data);
+            setSelectedFileUrl(data.url);
+          })
+          .catch((err) => console.log(err));
+      }
+    }
+  };
+  
   const onSubmit = (values: z.infer<typeof UpdateTeacherSchema>) => {
     setError('');
     setSuccess('');
+    values.image = selectedFileUrl;
+    console.log('🚀 ~ onSubmit ~ values.image:', values.image);
+
     startTransition(async () => {
-      updateTeacherCredentials(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        if (data.success) {
-        }
-      });
+      const isFormChanged =
+        values.image !== initialValues?.image ||
+        values.name !== initialValues?.name ||
+        values.email !== initialValues?.email ||
+        values.phone !== initialValues?.phone ||
+        values.government !== initialValues?.government ||
+        JSON.stringify(values.subject) !== JSON.stringify(initialValues?.subject) ||
+        JSON.stringify(values.etablissement) !== JSON.stringify(initialValues?.etablissement);
+
+      if (isFormChanged) {
+        updateTeacherCredentials(values).then(async (data) => {
+          setError(data.error);
+          setSuccess(data.success);
+        });
+      } else {
+        setError('Aucune modification détectée.');
+      }
     });
   };
 
@@ -117,23 +173,13 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
           <FormSuccess message={success} />
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-5">
-              {user?.image ? (
-                <Image
-                  src={user?.image}
-                  alt="uplodImage"
-                  width={100}
-                  height={100}
-                  className="rounded-full cursor-pointer"
-                />
-              ) : (
-                <Image
-                  src={'/uplodImage.svg'}
-                  alt="uplodImage"
-                  width={100}
-                  height={100}
-                  className="cursor-pointer"
-                />
-              )}
+              <Image
+                src={selectedFileUrl1 || '/uplodImage.svg'}
+                alt="uplodImage"
+                width={100}
+                height={100}
+                className="rounded-full cursor-pointer hover:opacity-75"
+              />
 
               <div className="flex flex-col gap-3">
                 <span className="text-[#727272]">Ajouter une photo de profil</span>
@@ -141,6 +187,12 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
               </div>
             </div>
             <div>
+              <input
+                type="file"
+                className="w-[200px] h-[60px] absolute opacity-0 cursor-pointer"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e)}
+              />
               <Image
                 src={'/editeIcon.svg'}
                 alt="editeIcon"
@@ -162,6 +214,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormControl>
                       <Input
                         {...field}
+                        ref={nameInputRef}
                         placeholder="Entrez votre e-mail"
                         type="text"
                         disabled={isPending}
@@ -181,9 +234,11 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                 width={20}
                 height={20}
                 className="cursor-pointer"
+                onClick={() => nameInputRef.current?.focus()}
               />
             </div>
           </div>
+
           <div className="flex justify-between p-1 rounded-lg border-l-[4px] border-[#99C6D3] items-center ">
             <div className="w-full">
               <FormField
@@ -195,6 +250,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormControl>
                       <Input
                         {...field}
+                        ref={emailInputRef}
                         defaultValue={email}
                         placeholder="Entrez votre e-mail"
                         type="email"
@@ -214,6 +270,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                 width={20}
                 height={20}
                 className="cursor-pointer"
+                onClick={() => emailInputRef.current?.focus()}
               />
             </div>
           </div>
@@ -228,6 +285,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormControl>
                       <Input
                         {...field}
+                        ref={phoneInputRef}
                         defaultValue={phoneNumber}
                         placeholder={
                           phoneNumber ? phoneNumber : 'Ajouter votre numéro de telephone'
@@ -249,6 +307,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                 width={20}
                 height={20}
                 className="cursor-pointer"
+                onClick={() => phoneInputRef.current?.focus()}
               />
             </div>
           </div>
@@ -261,18 +320,48 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                   <FormItem>
                     <FormLabel className="text-[#727272] pl-3">Gouvernorat</FormLabel>
                     <FormControl>
-                      <CustomSelect>
-                        <SelectTrigger className="w-[102%] border-none text-[#727272]">
-                          <SelectValue defaultValue={government} placeholder={government} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {govOptions.map((gov: any) => (
-                            <SelectItem value={gov.value} key={gov.id}>
-                              {gov.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </CustomSelect>
+                      <Select
+                        isDisabled={isPending}
+                        name="government"
+                        options={govOptions}
+                        placeholder={government}
+                        isSearchable={true}
+                        styles={{
+                          control: (provided, state) => ({
+                            ...provided,
+                            borderColor: 'transparent',
+                            '&:hover': {
+                              borderColor: 'transparent',
+                            },
+                            width: '101.5%',
+                          }),
+                          option: (provided, state) => ({
+                            ...provided,
+                            fontSize: '14px',
+                            backgroundColor: state.isFocused ? '#F0F6F8' : 'transparent',
+                            '&:hover': {
+                              backgroundColor: '#F0F6F8',
+                            },
+                          }),
+                          multiValue: (provided, state) => ({
+                            ...provided,
+                            backgroundColor: '#F0F6F8',
+                          }),
+                          dropdownIndicator: (provided, state) => ({
+                            ...provided,
+                            color: '#1B8392',
+                          }),
+                          indicatorSeparator: (provided, state) => ({
+                            ...provided,
+                            display: 'none',
+                          }),
+                          placeholder: (provided, state) => ({
+                            ...provided,
+                            color: '#727272',
+                          }),
+                        }}
+                        onChange={(selectedOption) => field.onChange(selectedOption?.value || '')}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -290,6 +379,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormLabel className="text-[#727272] pl-3">Établissement</FormLabel>
                     <FormControl>
                       <Select
+                        isDisabled={isPending || estabPending}
                         isMulti
                         name="user Establishment"
                         options={estabOptions}
@@ -337,7 +427,6 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                             color: '#727272',
                           }),
                         }}
-                        // defaultValue={userEstablishment || []}
                         value={estabOptions.filter((option: any) =>
                           field.value.some((selectedOption) => selectedOption.id === option.id)
                         )}
@@ -372,7 +461,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                             : 'Ajouter votre/vos matière(s)'
                         }
                         isSearchable={true}
-                        isDisabled={subPending}
+                        isDisabled={subPending || isPending}
                         styles={{
                           control: (provided, state) => ({
                             ...provided,

@@ -10,7 +10,7 @@ export const updateTeacherCredentials = async (values: z.infer<typeof UpdateTeac
   const existingUser = values?.email ? await getUserByEmail(values?.email) : undefined;
 
   if (!validatedFields.success) {
-    return { error: 'Veuillez renseigner les champs.' };
+    return { error: 'Taille maximale est de 2 Mo.' };
   }
 
   if (!validatedFields.success || !existingUser) {
@@ -27,6 +27,7 @@ export const updateTeacherCredentials = async (values: z.infer<typeof UpdateTeac
         name: values.name,
         email: values.email,
         phone_number: values.phone,
+        image: values.image,
         user_establishment: {
           connect: establishmentIds.map((id) => ({ id })),
         },

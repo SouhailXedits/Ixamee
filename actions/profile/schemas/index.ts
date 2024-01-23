@@ -26,6 +26,7 @@ export const UpdatePasswordSchema = z
   });
 
 export const UpdateTeacherSchema = z.object({
+  image: z.string(),
   name: z.string().min(2, {
     message: 'le nom est requis (3 lettre au minimum)',
   }),

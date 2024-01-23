@@ -14,7 +14,7 @@ import { getUserByEmail } from '@/data/user';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Hydration from './providers/hydration';
 import { getEstablishmentOfUser } from '@/actions/examens';
-import { redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -31,7 +31,9 @@ export default async function RootLayout({
   auth: React.ReactNode;
 }) {
   const session = await authentification();
-
+  console.log('🚀 ~ session:', session);
+  // const pathName = usePathname();
+  // console.log('🚀 ~ pathName:', pathName);
   // console.log(session?.user)
   // if(session?.user) {
   //   const estabs = await getEstablishmentOfUser(session?.user.id)
@@ -50,7 +52,7 @@ export default async function RootLayout({
           <Hydration>
             <ToastProvider />
             {/* {teacher} */}
-            {session?.user?.role === 'STUDENT'
+            {session?.user?.role === 'STUDENT' 
               ? student
               : session?.user?.role === 'TEACHER' || session?.user?.role === 'ADMIN'
               ? teacher

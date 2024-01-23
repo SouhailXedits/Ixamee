@@ -26,8 +26,9 @@ import { register } from '@/actions/auth/registerProf';
 import { SelectScrollable } from './SelectScrollable';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import bcryptjs from 'bcryptjs';
-import { Tunisiangovernments } from '@/public/auth/data/Tunisiangovernments';
+
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
+import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
 
 interface ProfFormProps {
   handleRole: (role: string) => void;

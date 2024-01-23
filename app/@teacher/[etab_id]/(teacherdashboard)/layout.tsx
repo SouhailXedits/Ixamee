@@ -27,11 +27,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
     staleTime: 0,
   });
 
-  const { data: teachersubject, isPending: isPendingSubject } = useQuery<any>({
-    queryKey: ['teachersubjects'],
-    queryFn: async () => await getSubjectOfUserById(data?.id as string),
-    staleTime: 0,
-  });
+  // const { data: teachersubject, isPending: isPendingSubject } = useQuery<any>({
+  //   queryKey: ['teachersubjects'],
+  //   queryFn: async () => await getSubjectOfUserById(data?.id as string),
+  //   staleTime: 0,
+  // });
 
   const { collapsed } = useSidebar((state) => state);
 
