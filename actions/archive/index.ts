@@ -105,22 +105,24 @@ export const unArchive = async (id: number, table: string) => {
   }
 };
 
-export const unArchiveClasse = async (id: number) => {
+export const archive = async (id: number, table: string) => {
   try {
-    console.log(id);
-    await db.classe.update({
+    await (db as any)[table].update({
       where: {
         id: id,
       },
       data: {
-        is_archived: false,
+        archived_at: new Date(),
+        is_archived: true,
       },
     });
-    console.log('classe edited succecfully ! ');
+    console.log('archived successfully ! ');
   } catch (error: any) {
     console.log(error);
     return {
-      error: 'Failed to edit classe.',
+      error: 'Failed to archive.',
     };
   }
 };
+
+

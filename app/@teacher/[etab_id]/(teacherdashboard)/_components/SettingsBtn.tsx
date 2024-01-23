@@ -29,7 +29,7 @@ function SettingsBtn({ onClick, isActive }: settingBtnProps) {
           className={cn('relative ', isActive && 'text-white  ')}
         />
 
-        {collapsed ? '' : 'Paramètres'}
+        {collapsed ? '' : <span className=' font-extralight'>Paramètres</span>}
       </span>
     </p>
   );

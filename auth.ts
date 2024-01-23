@@ -58,7 +58,8 @@ export const {
       if (!token.sub) {
         return token;
       }
-      const existingUser = await getUserById(token.sub);
+      // const existingUser = await getUserById(token.sub);
+      const existingUser = token ? await getUserById(token.sub) : undefined;
 
       if (!existingUser) {
         return token;

@@ -15,10 +15,12 @@ import { useParams, useRouter } from 'next/navigation';
 import { useNavigate } from 'react-router-dom';
 import UserExam from './components/UserExam';
 
+
+
 const userExams = [
   {
     id: 1,
-    name: 'Examen 1',
+    name: 'Devoir de Controle N°1 Maths',
     date: '22/03/2023',
     marksObtained: 15.5,
     totalScore: 20,
@@ -26,7 +28,7 @@ const userExams = [
   },
   {
     id: 2,
-    name: 'Examen 1',
+    name: 'Devoir de Controle physique',
     date: '22/03/2023',
     marksObtained: 15.5,
     totalScore: 20,
@@ -61,7 +63,7 @@ const Student = () => {
             </button>
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
-            <span className="cursor-pointer">{currentId}</span>
+            <span className="cursor-pointer">Firas Latrach</span>
           </div>
         </div>
 
@@ -103,25 +105,31 @@ const Student = () => {
       </div>
 
       <div className="flex overflow-auto gap-9 p-7">
-        <div className=" flex flex-col gap-6 shadow-lg rounded p-4">
-          <div className=" bg-mainGreen/35 p-2 rounded">Trimester 1</div>
-          <div className=" flex flex-col gap-10">
+        <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
+          <div className=" bg-mainGreen/35 p-2 rounded text-mainGreen font-semibold">
+            Trimester 1
+          </div>
+          <div className=" flex flex-col gap-4">
             {userExams.map((exam) => (
               <UserExam key={exam.id} exam={exam} />
             ))}
           </div>
         </div>
-        <div className=" flex flex-col gap-6">
-          <div className=" bg-mainGreen/35 p-2 rounded">Trimester 1</div>
-          <div className=" flex flex-col gap-10">
+        <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
+          <div className=" bg-mainGreen/35 p-2 rounded text-mainGreen font-semibold">
+            Trimester 1
+          </div>
+          <div className=" flex flex-col gap-4">
             {userExams.map((exam) => (
               <UserExam key={exam.id} exam={exam} />
             ))}
           </div>
         </div>
-        <div className=" flex flex-col gap-6">
-          <div className=" bg-mainGreen/35 p-2 rounded">Trimester 1</div>
-          <div className=" flex flex-col gap-10">
+        <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
+          <div className=" bg-mainGreen/35 text-mainGreen font-semibold p-2 rounded">
+            Trimester 1
+          </div>
+          <div className=" flex flex-col gap-4">
             {userExams.map((exam) => (
               <UserExam key={exam.id} exam={exam} />
             ))}
