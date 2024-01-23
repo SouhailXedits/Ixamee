@@ -20,7 +20,8 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
   const isActive =
     (pathname === `/${params.etab_id}` && href === `/`) ||
     pathname === href ||
-    (pathname.startsWith(`/${params.etab_id}${href}` ) && href !== '/');
+    (pathname.startsWith(`/${params.etab_id}${href}`) && href !== '/') ||
+    (pathname.endsWith('/archive/exams') && href === '/archive/classes'); ;
 
   const onClick = () => {
     if (href) router.push(`/${params.etab_id}${href}`);
@@ -46,7 +47,7 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
           className={cn('relative ', isActive && 'text-white  ')}
         />
 
-        {collapsed ? '' : label}
+        {collapsed ? '' : <span className=' font-extralight'>{label}</span> }
       </div>
     </button>
   );

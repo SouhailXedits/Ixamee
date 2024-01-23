@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { auth as authentification } from '@/auth';
 const poppins = Poppins({
-  weight: '400',
+  weight: ['200','300','400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-poppins',
   style: ['normal'],
@@ -14,7 +14,8 @@ import { getUserByEmail } from '@/data/user';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Hydration from './providers/hydration';
 import { getEstablishmentOfUser } from '@/actions/examens';
-import { redirect, usePathname } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -49,7 +50,8 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <QueryClientProviderWrapper>
-          <Hydration>
+          <Suspense>
+            {/* <Hydration> */}
             <ToastProvider />
             {/* {teacher} */}
             {session?.user?.role === 'STUDENT' 
@@ -57,7 +59,8 @@ export default async function RootLayout({
               : session?.user?.role === 'TEACHER' || session?.user?.role === 'ADMIN'
               ? teacher
               : auth}
-          </Hydration>
+          </Suspense>
+          {/* </Hydration> */}
         </QueryClientProviderWrapper>
       </body>
     </html>

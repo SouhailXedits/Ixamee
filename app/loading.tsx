@@ -1,9 +1,11 @@
+import Image from "next/image";
+
 function Loading() {
     return (
-        <div className="bg-red text-3xl fixed inset-0">
-            loading ...
-        </div>
-    )
+      <div className="w-full h-[100vh] flex items-center justify-center">
+        <Image src="/loading.svg" alt="bankicon" width={400} height={400} />
+      </div>
+    );
 }
 
 export default Loading
