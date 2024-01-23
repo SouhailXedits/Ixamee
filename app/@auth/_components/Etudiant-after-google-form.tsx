@@ -21,7 +21,7 @@ import { MdOutlineClass } from 'react-icons/md';
 // import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
-import { TunisianGoverments } from '@/public/auth/data/TunisianGoverments';
+import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
 import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
 import { getClassesByEstablishmentId } from '@/actions/classe';
 import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
@@ -66,7 +66,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
       })) ||
     [];
 
-  const govOptions = TunisianGoverments;
+  const govOptions = Tunisiangovernments;
 
   const classOptions = TunisianClasses;
 

@@ -6,10 +6,7 @@ import { RegisterProfSchema } from '@/actions/auth/schemas';
 import bcryptjs from 'bcryptjs';
 import { getUserByEmail } from '@/data/user';
 import { sendVerificationEmail } from '@/lib/mail';
-export const register = async (
-  values: z.infer<typeof RegisterProfSchema>,
-  code: number
-) => {
+export const register = async (values: z.infer<typeof RegisterProfSchema>, code: number) => {
   const validatedFields = RegisterProfSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };

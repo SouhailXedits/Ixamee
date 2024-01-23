@@ -15,6 +15,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Hydration from './providers/hydration';
 import { getEstablishmentOfUser } from '@/actions/examens';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -31,7 +32,6 @@ export default async function RootLayout({
   auth: React.ReactNode;
 }) {
   const session = await authentification();
-  console.log(session)
 
   // console.log(session?.user)
   // if(session?.user) {
@@ -48,7 +48,8 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <QueryClientProviderWrapper>
-          <Hydration>
+          <Suspense>
+            {/* <Hydration> */}
             <ToastProvider />
             {/* {teacher} */}
             {session?.user?.role === 'STUDENT'
@@ -56,7 +57,8 @@ export default async function RootLayout({
               : session?.user?.role === 'TEACHER' || session?.user?.role === 'ADMIN'
               ? teacher
               : auth}
-          </Hydration>
+          </Suspense>
+          {/* </Hydration> */}
         </QueryClientProviderWrapper>
       </body>
     </html>

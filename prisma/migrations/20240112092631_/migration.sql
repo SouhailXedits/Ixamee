@@ -52,11 +52,11 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateTable
-CREATE TABLE "Government" (
+CREATE TABLE "government" (
     "id" SERIAL NOT NULL,
     "government" TEXT NOT NULL,
 
-    CONSTRAINT "Government_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "government_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -204,7 +204,7 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_email_token_key" ON "VerificationToken"("email", "token");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_governmentId_fkey" FOREIGN KEY ("governmentId") REFERENCES "Government"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_governmentId_fkey" FOREIGN KEY ("governmentId") REFERENCES "government"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

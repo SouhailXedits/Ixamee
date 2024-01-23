@@ -163,6 +163,22 @@ export const getSubjectOfUser = async (user_id: string, data: any) => {
   return intersectionResult;
 };
 
+export const getSubjectOfUserById = async (user_id: string) => {
+  console.log(user_id);
+
+  const subject = await db.subject.findMany({
+    where: {
+      teacher: {
+        some: {
+          id: user_id,
+        },
+      },
+    },
+  });
+  console.log(subject);
+  return subject;
+};
+
 export const getTermOfUser = async (user_id: string) => {
   const term = await db.user.findUnique({
     where: {
@@ -187,11 +203,17 @@ export const getEstablishmentOfUser = async (user_id: string) => {
 
   return data;
 };
-
-export const getOneExamById = async ({ id }: { id: number }) => {
-  const exam = await db.exam.findUnique({ where: { id: id } });
-  console.log(exam);
-  return { data: exam, error: undefined };
+// getExamenById;
+export const getOneExamById = async ({ id }: { id: string }) => {
+  console.log(id);
+  const exam = await db.exam.findUnique({
+    where: { id: +id },
+    include: {
+      exercises: true,
+      exam_classess: true,
+    },
+  });
+  return exam;
 };
 
 export async function createExamm(data: any, user_id: string) {
