@@ -106,7 +106,9 @@ const Student = () => {
 
       <div className="flex overflow-auto gap-9 p-7">
         <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
-          <div className=" bg-mainGreen/35 p-2 rounded">Trimester 1</div>
+          <div className=" bg-mainGreen/35 p-2 rounded text-mainGreen font-semibold">
+            Trimester 1
+          </div>
           <div className=" flex flex-col gap-4">
             {userExams.map((exam) => (
               <UserExam key={exam.id} exam={exam} />
@@ -114,7 +116,9 @@ const Student = () => {
           </div>
         </div>
         <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
-          <div className=" bg-mainGreen/35 p-2 rounded">Trimester 1</div>
+          <div className=" bg-mainGreen/35 p-2 rounded text-mainGreen font-semibold">
+            Trimester 1
+          </div>
           <div className=" flex flex-col gap-4">
             {userExams.map((exam) => (
               <UserExam key={exam.id} exam={exam} />
@@ -122,7 +126,9 @@ const Student = () => {
           </div>
         </div>
         <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
-          <div className=" bg-mainGreen/35 text-mainGreen font-bold p-2 rounded">Trimester 1</div>
+          <div className=" bg-mainGreen/35 text-mainGreen font-semibold p-2 rounded">
+            Trimester 1
+          </div>
           <div className=" flex flex-col gap-4">
             {userExams.map((exam) => (
               <UserExam key={exam.id} exam={exam} />

@@ -6,7 +6,7 @@ function UserExam({exam}: any) {
     return (
       <div className="border-l-2 border-orangeColor/80 flex gap-14 p-2 rounded justify-between">
         <div className=" basis-[50%]">
-          <p className=" text-xl whitespace-nowrap text-black/80 ">{exam.name}</p>
+          <p className=" text-xl whitespace-nowrap text-black/80 font-medium ">{exam.name}</p>
           <p className=" text-black/50">Ajouté le: {exam.date}</p>
         </div>
         <div className=" flex items-center flex-col gap-1 text-mainGreen">
