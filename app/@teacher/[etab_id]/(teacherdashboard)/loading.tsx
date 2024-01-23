@@ -1,7 +1,12 @@
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 
 function Loading() {
-  return <Skeleton className="w-full h-[100vh] bg-[#99C6D3]" />;
+  return (
+    <div className="w-full h-[100vh] flex items-center justify-center">
+      <Image src="/loading.svg" alt="bankicon" width={400} height={400} />
+    </div>
+  );
 }
 
 export default Loading;
