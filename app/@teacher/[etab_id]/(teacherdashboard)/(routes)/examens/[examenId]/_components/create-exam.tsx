@@ -282,8 +282,14 @@ export const CreateSubQuestion = ({ allData, data, setFakeData }: any) => {
     });
   };
   const calculerSubMark = (data: any) => {
-    console.log(data);
-    return 2;
+    const children = data.children;
+    console.log(children);
+
+    let sum = 0;
+    children.forEach((child: any) => {
+      sum += child.mark;
+    });
+    return sum;
   };
   return (
     <>
@@ -418,6 +424,9 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
     });
     return sum;
   };
+  const updateQuestion = (e: any, data) => {
+    const contet = e.target.value
+  };
   return (
     <>
       <div
@@ -440,18 +449,15 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
             />
           </div>
           <div className="flex gap-3 item-center">
-            {console.log(calculerQuestionMark(data))}
             <Input
               className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
               // defaultValue={calculerQuestionMark(data)}
               maxLength={5}
               disabled={data.children && data.children.length > 0}
-              value={calculerQuestionMark(data)}
+              defaultValue={calculerQuestionMark(data)}
               onChange={(e) => {
-                // if (!(exercise.children && exercise.children.length > 0)) {
-                //   updateMark(e.target.value);
-                // }
+                updateQuestion(e, data);
               }}
             />
             <Image
