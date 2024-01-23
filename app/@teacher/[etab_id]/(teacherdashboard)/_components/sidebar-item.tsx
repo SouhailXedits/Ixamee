@@ -47,7 +47,7 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
           className={cn('relative ', isActive && 'text-white  ')}
         />
 
-        {collapsed ? '' : label}
+        {collapsed ? '' : <span className=' font-extralight'>{label}</span> }
       </div>
     </button>
   );
