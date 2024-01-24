@@ -1,6 +1,8 @@
 'use server';
 import Establishement from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/page';
 import { db } from '@/lib/db';
+import { sendInvitationEmail } from '@/lib/mail';
+import { generateInvitationToken } from '@/lib/tokens';
 import { Exo } from 'next/font/google';
 
 export const createClasse = async (
@@ -320,13 +322,26 @@ export const getUserById = async (id: string) => {
 };
 
 export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
-  const user = await db.user.update({
-    where: {
-      email: studentEmail,
-    },
-    data: {
-      invited_at: new Date(),
-    },
+  console.log(studentEmail, teacherEmail);
+
+  const invitationToken = await generateInvitationToken(studentEmail, teacherEmail);
+  await sendInvitationEmail(
+    invitationToken.recieverEmail,
+    invitationToken.senderEmail,
+    invitationToken.token
+  ).then(async (data) => {
+    if (data.success) {
+      const user = await db.user.update({
+        where: {
+          email: studentEmail,
+        },
+        data: {
+          invited_at: new Date(),
+        },
+      });
+      return user;
+    } else {
+      throw new Error(data.error);
+    }
   });
-  return user;
 };
