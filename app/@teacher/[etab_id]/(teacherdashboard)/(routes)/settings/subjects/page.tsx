@@ -46,7 +46,6 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
   //   console.log(jsonData);
   // };
 
-
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">

@@ -25,15 +25,16 @@ const FormSchema = z.object({
     required_error: 'You need to select a notification type.',
   }),
 });
-interface EtablissementItemProps {
-  data: {
+interface SideBarRadioItemProps {
+  data:
+    | {
         id: number;
         name: string;
       }[]
     | undefined;
 }
 
-export function EtablissementItem({ data }: EtablissementItemProps) {
+export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   if (!data) return null;
   const router = useRouter();
   const pathname = usePathname();
@@ -79,12 +80,12 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
             <>
               {field?.value !== undefined &&
                 (router.push(`/${field.value}/${currPath}`),
-                queryClient.removeQueries({ queryKey : ['classe']}))}
+                queryClient.removeQueries({ queryKey: ['classe'] }))}
               <FormItem className="space-y-3">
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
-                    defaultValue={''+currentestabName}
+                    defaultValue={'' + currentestabName}
                     // onChange={(e: any) => router.push(`/${e.target?.value}`)}
                     className="flex flex-col space-y-1"
                   >
@@ -98,8 +99,8 @@ export function EtablissementItem({ data }: EtablissementItemProps) {
                       >
                         <FormControl>
                           <RadioGroupItem
-                            id={''+lyce?.id} // Add an id for each item
-                            value={''+lyce?.id}
+                            id={'' + lyce?.id} // Add an id for each item
+                            value={'' + lyce?.id}
                             className="text-[#FBB800] border-[#F0F6F8] w-4 h-4"
                             // checked={+lyce.establishement?.id === etabId}
                             defaultChecked={+lyce?.id === etabId}

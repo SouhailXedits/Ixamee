@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { SidebarItem } from './sidebar-item';
+import { SidebarItem } from '../../../../../components/shared-components/sidebar-item';
 import SettingsBtn from './SettingsBtn';
 import { useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
@@ -72,7 +72,7 @@ const parametersRoutes = [
 ];
 
 function ParametersSidebar() {
-  const queryclient = useQueryClient()
+  const queryclient = useQueryClient();
   const { collapsed } = useSidebar((state) => state);
 
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -80,18 +80,16 @@ function ParametersSidebar() {
     setIsActive((prev) => !prev);
   }
   const paramroutes = parametersRoutes;
-  
-  const user = queryclient.getQueryData(['user']) as any
 
+  const user = queryclient.getQueryData(['user']) as any;
 
-  if(!user || user.role!== 'ADMIN') return null
-  
+  if (!user || user.role !== 'ADMIN') return null;
 
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
-        <AccordionTrigger onClick={onClick} className={cn(collapsed&& "flex-col")}>
-          <SettingsBtn isActive={isActive} onClick={onClick} /> 
+        <AccordionTrigger onClick={onClick} className={cn(collapsed && 'flex-col')}>
+          <SettingsBtn isActive={isActive} onClick={onClick} />
         </AccordionTrigger>
         <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
           {paramroutes.map((route) => (

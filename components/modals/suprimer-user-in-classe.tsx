@@ -1,4 +1,3 @@
-
 import { useDeleteUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useDeleteUser';
 import { Button } from '@/components/ui/button';
 import {

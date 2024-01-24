@@ -1,24 +1,24 @@
 'use client';
 import { useSidebar } from '@/store/use-sidebar';
-import Sidebar from './_components/sidebar';
 import { cn } from '@/lib/utils';
-import Navbar from '../../../../components/shared-components/navbar';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { auth } from '@/auth';
 import { getMe, getSubjectOfUserById } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
+import Navbar from '@/components/shared-components/navbar';
+import Sidebar from './components/sidebar';
 type DashboardLayoutProps = {
   params?: {
-    etab_id: string;
+    class_id: string;
   };
   children: React.ReactNode;
 };
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) => {
   const queryClient = useQueryClient();
 
-  if (params?.etab_id) {
-    queryClient.setQueryData(['etab_id'], params?.etab_id);
+  if (params?.class_id) {
+    queryClient.setQueryData(['class_id'], params?.class_id);
   }
 
   const { data, isPending } = useQuery({
@@ -71,3 +71,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
 };
 
 export default DashboardLayout;
+
+// function Layout() {
+//   return (
+//     <div>
+//       student
+//     </div>
+//   )
+// }
+
+// export default Layout;

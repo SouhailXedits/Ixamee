@@ -148,7 +148,4 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
   );
 };
 
-
-
-
 ModifierUneClasse;
