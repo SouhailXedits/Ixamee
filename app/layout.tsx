@@ -32,8 +32,8 @@ export default async function RootLayout({
   auth: React.ReactNode;
 }) {
   const session = await authentification();
-  // const pathName = usePathname();
-  // console.log('🚀 ~ pathName:', pathName);
+  console.log(session)
+
   // console.log(session?.user)
   // if(session?.user) {
   //   const estabs = await getEstablishmentOfUser(session?.user.id)

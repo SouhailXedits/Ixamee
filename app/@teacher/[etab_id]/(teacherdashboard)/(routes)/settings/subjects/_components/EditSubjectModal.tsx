@@ -35,7 +35,6 @@ interface AjouterUneClasse {
 //   alt: string;
 // }
 
-
 export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse) => {
   console.log(currentSubject);
 

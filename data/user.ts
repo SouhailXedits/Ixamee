@@ -1,3 +1,4 @@
+'use server'
 import { db } from '@/lib/db';
 export const getUserByEmail = async (email: string) => {
   try {
@@ -33,7 +34,7 @@ export const getUserEstablishmentByUserId = async (id: string) => {
           },
         },
       },
-    });
+     });
     
     console.log("🚀 ~ getUserEstablishmentByUserId ~ userEstablishments:", userEstablishments)
     return userEstablishments;
@@ -42,3 +43,27 @@ export const getUserEstablishmentByUserId = async (id: string) => {
     throw error;
   }
 };
+
+
+export const getClassesOfUser = async (user_id: string) => {
+  console.log(user_id)
+  const data = await db.classe.findMany({
+    where: {
+      student_class: {
+        some: {
+          id: user_id,
+        },
+      },
+      is_archived: false
+    },
+    select: {
+      id:true,
+      name: true
+    }
+  });
+  console.log(data)
+
+  return data;
+};
+
+
