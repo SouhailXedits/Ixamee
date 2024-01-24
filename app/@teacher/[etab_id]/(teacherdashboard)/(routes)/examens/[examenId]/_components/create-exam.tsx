@@ -93,7 +93,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
 
                   return {
                     ...subSubItem,
-                    mark: calcSumOfMarks(subSubItem),
+                    mark: 20,
                     children: subSubItem.children.map((subSubSubItem: any) => {
                       if (subSubSubItem.id === data.id) {
                         subSubSubItem.mark = +e.target.value;

@@ -318,3 +318,15 @@ export const getUserById = async (id: string) => {
   });
   return user;
 };
+
+export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
+  const user = await db.user.update({
+    where: {
+      email: studentEmail,
+    },
+    data: {
+      invited_at: new Date(),
+    },
+  });
+  return user;
+};

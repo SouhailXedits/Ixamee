@@ -1,3 +1,4 @@
+import { useInviteUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeInvitationState';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,6 +20,7 @@ export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) 
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(['user']);
   console.log(user.email);
+  const { updateInvitationUser, isPending } = useInviteUserInClasse();
 
   return (
     <Dialog>
@@ -44,9 +46,15 @@ export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) 
               Annuler
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
-            Inviter
-          </Button>
+          <DialogClose asChild>
+            <Button
+              type="submit"
+              className="w-full text-white bg-[#177C9A] hover:opacity-80"
+              onClick={() => updateInvitationUser(studentEmail, user.email)}
+            >
+              Inviter
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
