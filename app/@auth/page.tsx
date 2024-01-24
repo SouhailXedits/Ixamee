@@ -1,13 +1,16 @@
 import React from 'react';
-import Logo from '../../_components/Logo';
-import GoogleAfterForm from '../../_components/google-after-form';
+
 import { auth } from '@/auth';
 import { getUserById } from '@/data/user';
 import { redirect } from 'next/navigation';
+import GoogleAfterForm from './_components/google-after-form';
+import Logo from './_components/Logo';
 export default async function GoogleAfter() {
-  const session = await auth() as any;
+  const session = (await auth()) as any;
+  if (!session) {
+    redirect('/login');
+  }
   const existingUser = await getUserById(session?.user.id);
-  
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* left */}

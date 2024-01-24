@@ -28,11 +28,12 @@ export const RegisterEtudSchema = z
         message: 'Minimum 8 caractères',
       })
       .refine(
-        (value) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value), {
-        message:
-          'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (y compris + et -)',
-      }),
+        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value),
+        {
+          message:
+            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+        }
+      ),
     confirmPassword: z.string(),
     government: z.string().min(3, {
       message: 'La gouvernorat est requis',
@@ -85,11 +86,12 @@ export const RegisterProfSchema = z.object({
       message: 'Minimum 8 caractères',
     })
     .refine(
-      (value) =>
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value), {
-      message:
-        'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (y compris + et -)',
-    }),
+      (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value),
+      {
+        message:
+          'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+      }
+    ),
 });
 
 export const VerifSchema = z.object({
@@ -167,11 +169,34 @@ export const NewPasswordSchema = z
         message: 'Minimum 8 caractères',
       })
       .refine(
-        (value) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value), {
-        message:
-          'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (y compris + et -)',
-      }),
+        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value),
+        {
+          message:
+            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+        }
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Le mot de passe et la confirmation doivent être identiques',
+    path: ['confirmPassword'],
+  });
+
+export const InvitSchema = z
+  .object({
+    email: z.string(),
+    password: z
+      .string()
+      .min(8, {
+        message: 'Minimum 8 caractères',
+      })
+      .refine(
+        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value),
+        {
+          message:
+            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+        }
+      ),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {

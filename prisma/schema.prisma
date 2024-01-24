@@ -82,6 +82,16 @@ model PasswordResetToken {
   @@unique([email, token])
 }
 
+model InvitationToken {
+  id            String   @id @default(cuid())
+  recieverEmail String
+  senderEmail   String
+  token         String   @unique
+  expires       DateTime
+
+  @@unique([recieverEmail, senderEmail, token])
+}
+
 model Establishment {
   id                 Int      @id @default(autoincrement())
   name               String

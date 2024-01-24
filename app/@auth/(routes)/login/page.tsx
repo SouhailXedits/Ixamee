@@ -40,7 +40,7 @@ export default function page() {
         </div>
       </div>
       {/* right */}
-      <div className=" hidden flex-col justify-center  items-center gap-10 md:flex md:w-[70%] max-md:text-sm max-sm:text-xs">
+      <div className=" hidden flex-col justify-center  items-center gap-10 lg:flex md:w-[70%] max-md:text-sm max-sm:text-xs">
         <LoginSvg />
       </div>
     </div>
