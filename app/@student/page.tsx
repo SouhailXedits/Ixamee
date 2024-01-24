@@ -1,9 +1,5 @@
-"use client"
-import React from 'react';
-import { usePathname } from 'next/navigation';
-export default function mainPage() {
-  const pathName = usePathname();
-  console.log(pathName);
+import { redirect } from 'next/navigation';
 
-  return <div>hello</div>;
+export default async function page() {
+  // redirect('/');
 }

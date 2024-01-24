@@ -21,7 +21,9 @@ export const authRoutes = [
   '/teacher-after',
   '/google-after',
   '/reset-password',
-  '/new-password'
+  '/new-password',
+  '/invit-student',
+  '/',
 ];
 
 /**

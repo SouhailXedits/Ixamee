@@ -37,7 +37,7 @@ export default function ResetPassword() {
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* Left section */}
-      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-br-[100px] md:rounded-tr-[100px]  gap-10 max-sm:mt-28">
+      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-br-[100px] md:rounded-tr-[100px] gap-10">
         <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">
           Vérifiez votre E-mail
         </div>

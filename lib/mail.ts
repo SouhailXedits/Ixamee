@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-// const domain = process.env.NEXT_PUBLIC_APP_URL;
+// const resend = new Resend(process.env.RESEND_API_KEY);
+const domain = process.env.NEXT_PUBLIC_APP_URL;
 
 import nodemailer from 'nodemailer';
 
@@ -172,40 +172,6 @@ export const sendVerificationEmail = async (email: string, code: number) => {
   }
 };
 
-// export const sendPasswordResetEmail = async (email: string, token: string, code: number) => {
-//   try {
-//     await resend.emails
-//       .send({
-//         from: 'onboarding@resend.dev',
-//         to: email,
-//         subject: 'réinitialisez votre mot de passe',
-//         html: `
-//
-//     `,
-//       })
-//       .then(() => {
-//         return { success: 'E-mail renvouyer avec succes' };
-//       });
-//   } catch (error) {
-//     return { error: "Quelque chose s'est mal passé, sil vous plais essayez une autre fois" };
-//   }
-// };
-
-// export const sendVerificationEmail = async (email: string, code: number) => {
-//   try {
-//     await resend.emails
-//       .send({
-//         from: 'onboarding@resend.dev',
-//         to: email,
-//         subject: 'Verifier votre e-mail',
-//         html: `
-//
-//     `,
-//       })
-//       .then(() => {
-//         return { success: 'E-mail renvouyer avec succes' };
-//       });
-//   } catch (error) {
-//     return { error: "Quelque chose s'est mal passé, sil vous plais essayez une autre fois" };
-//   }
-// };
+export const sendInvitationEmail = async (email:string,teacherEmail:string,token:string)=>{
+  const invitLink=`${domain}/invit-student?token=${token}`
+}
