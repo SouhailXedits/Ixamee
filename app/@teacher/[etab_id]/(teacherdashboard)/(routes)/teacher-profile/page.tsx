@@ -2,15 +2,22 @@
 import Image from 'next/image';
 import ProfileCards from './_components/ProfileCards';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getUserEstablishmentByUserId } from '@/data/user';
 import { getSubjectOfUserById } from '@/actions/examens';
 
-const Profile = async () => {
+const Profile = () => {
   const queryClient = useQueryClient();
-  
+
   const user = queryClient.getQueryData(['user']) as any;
   const userEstablishment = queryClient.getQueryData(['AllEstabOfUser']) as any;
-  const teachersubject = queryClient.getQueryData(['teachersubjects']) as any;
+
+  const {
+    data: teachersubject,
+    error,
+    isPending,
+  } = useQuery<any>({
+    queryKey: ['teacherSubject', user?.id],
+    queryFn: async () => await getSubjectOfUserById(user?.id),
+  });
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -25,11 +32,17 @@ const Profile = async () => {
       </nav>
 
       <div>
-        <ProfileCards
-          user={user}
-          userEstablishment={userEstablishment}
-          teachersubject={teachersubject}
-        />
+        {isPending ? (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin border-mainGreen rounded-full h-8 w-8 border-t-2 border-blue-500 border-r-2 border-b-2 border-gray-300"></div>
+          </div>
+        ) : (
+          <ProfileCards
+            user={user}
+            userEstablishment={userEstablishment}
+            teachersubject={teachersubject}
+          />
+        )}
       </div>
     </main>
   );

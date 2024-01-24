@@ -25,7 +25,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { EtudiantAjouteAvecSucces } from '../../../../../../../../components/modals/etudiant-ajoute-avec-succes';
 import { useQuery } from '@tanstack/react-query';
-import {  getUserIdByEmail } from '@/actions/teachers';
+import { getUserIdByEmail } from '@/actions/teachers';
 import { useEditUser } from '../hooks/useEditUser';
 interface AjouterUneClasse {
   children: React.ReactNode;
@@ -35,7 +35,7 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
   const [userEmail, setUserEmail] = useState('');
   const [userId, setUserId] = useState<string | null>(null);
   const [showError, setShowError] = useState(false);
-  const {updateUserToAdmin, isPending} = useEditUser()
+  const { updateUserToAdmin, isPending } = useEditUser();
 
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
   function handleEmailChange(e: any) {
@@ -49,13 +49,12 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
     // Set a new timeout to perform the action after 500 milliseconds
     const timeoutId = setTimeout(async () => {
       const user = await getUserIdByEmail(value);
-      console.log(user)
-      if (user === null || user?.role !== 'TEACHER' && user?.role !== 'ADMIN') {
+      console.log(user);
+      if (user === null || (user?.role !== 'TEACHER' && user?.role !== 'ADMIN')) {
         setShowError(true);
         setUserId(null);
       }
       if (user) setUserId(user.id);
-
     }, 1000);
 
     setTypingTimeout(timeoutId);
@@ -64,7 +63,7 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
   function handleAddingAdmin() {
     console.log('clicked', userId);
     if (userId) {
-      updateUserToAdmin(userId)
+      updateUserToAdmin(userId);
       console.log(userId);
     }
   }
@@ -118,17 +117,16 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
         )}
 
         <DialogFooter>
-          <DialogClose className=' w-full'>
-
-          <Button
-            onClick={() => handleAddingAdmin()}
-            type="submit"
-            disabled={userId === null}
-            className="w-full bg-[#1B8392] hover:opacity-80 "
+          <DialogClose className=" w-full">
+            <Button
+              onClick={() => handleAddingAdmin()}
+              type="submit"
+              disabled={userId === null}
+              className="w-full bg-[#1B8392] hover:opacity-80 "
             >
-            Ajouter
-          </Button>
-            </DialogClose>
+              Ajouter
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -32,6 +32,7 @@ export default async function RootLayout({
   auth: React.ReactNode;
 }) {
   const session = await authentification();
+  console.log(session)
 
   // console.log(session?.user)
   // if(session?.user) {
@@ -52,7 +53,7 @@ export default async function RootLayout({
             {/* <Hydration> */}
             <ToastProvider />
             {/* {teacher} */}
-            {session?.user?.role === 'STUDENT'
+            {session?.user?.role === 'STUDENT' 
               ? student
               : session?.user?.role === 'TEACHER' || session?.user?.role === 'ADMIN'
               ? teacher

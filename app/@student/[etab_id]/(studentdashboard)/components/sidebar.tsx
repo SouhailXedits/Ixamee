@@ -1,6 +1,8 @@
-import { cn } from '@/lib/utils';
-import Logo from '../../../../../components/shared-components/logo';
+import { cn } from '@/lib/utils';;
 import { SidebarRoutes } from '../../../../../components/shared-components/sidebar-routes';
+import Logo from '@/components/shared-components/logo';
+
+
 
 const guestRoutes = [
   {
@@ -9,35 +11,18 @@ const guestRoutes = [
     label: 'Tableau de bord',
     href: '/',
   },
-  {
-    Clickedicon: '/classesicon.svg',
-    Defaulticon: '/defaultclassesicon.svg',
-    label: 'Classes',
-    href: '/classes',
-  },
-  {
-    Clickedicon: '/examensicon.svg',
-    Defaulticon: '/defaultexamensicon.svg',
-    label: 'Examens',
-    href: '/examens',
-  },
+
   {
     Clickedicon: '/bulletinsicon.svg',
     Defaulticon: '/defaultbulletinsicon.svg',
-    label: 'Bulletins',
-    href: '/bulletins',
+    label: 'Mes résultats',
+    href: '/results',
   },
   {
     Clickedicon: '/calendriericon.svg',
     Defaulticon: '/defaultcalendriericon.svg',
     label: 'Calendrier',
     href: '/calendrier',
-  },
-  {
-    Clickedicon: '/archiveicon.svg',
-    Defaulticon: '/defaultarchiveicon.svg',
-    label: 'Archive',
-    href: '/archive/classes',
   },
 ];
 

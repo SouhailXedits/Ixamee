@@ -1,28 +1,30 @@
 'use client';
 import Image from 'next/image';
-import { SideBarRadioItem } from '@/components/shared-components/SideBarRadioItem'; 
+import { RadioGroup } from '@radix-ui/react-radio-group';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
 import { getEstablishmentOfUser } from '@/actions/examens';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SideBarRadioItem } from '@/components/shared-components/SideBarRadioItem';
+import { getClassesOfUser } from '@/data/user';
 const Etablissement = () => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
 
   const { collapsed } = useSidebar((state) => state);
 
-  const { data: teacherEstab, isPending: isPendingTeacherEstab } = useQuery({
-    queryKey: ['AllEstabOfUser'],
-    queryFn: async () => await getEstablishmentOfUser(user?.id),
-    staleTime: 0,
+  const { data: userClasses, isPending: isPendingTeacherEstab } = useQuery({
+    queryKey: ['user-classes'],
+    queryFn: async () => await getClassesOfUser(user?.id),
   });
+  console.log(userClasses);
 
   return (
     <div className="border-t border-[#99C6D3] max-h-50">
       <div className="flex items-center gap-3 p-4">
         <Image src="/bankicon.svg" alt="bankicon" width={18} height={18} />
-        <span className={cn('text-[#99C6D3]', collapsed && 'hidden')}>Établissement</span>
+        <span className={cn('text-[#99C6D3]', collapsed && 'hidden')}>Classe</span>
       </div>
       {isPendingTeacherEstab ? (
         <div className="flex flex-col gap-4 overflow-x-auto overflow-y-hidden max-h-52">
@@ -32,7 +34,7 @@ const Etablissement = () => {
         </div>
       ) : (
         <div className="overflow-x-auto max-h-52">
-          <SideBarRadioItem data={teacherEstab} />
+          <SideBarRadioItem data={userClasses} />
         </div>
       )}
     </div>

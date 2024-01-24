@@ -42,8 +42,6 @@ interface AjouterUneClasse {
 //   alt: string;
 // }
 
-
-
 export const AddSubject = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -124,8 +122,8 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
               ))}
             </div>
           </div>
-          <DialogFooter className=' mt-3'>
-            <DialogClose className=' w-full'>
+          <DialogFooter className=" mt-3">
+            <DialogClose className=" w-full">
               <Button
                 // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
                 type="submit"

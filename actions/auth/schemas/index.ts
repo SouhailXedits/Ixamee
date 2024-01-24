@@ -5,7 +5,7 @@ export const LoginSchema = z.object({
     message: "L'email est requis",
   }),
   password: z.string().min(8, {
-    message: 'Le mot de passe est requis',
+    message: 'Le mot de passe est requis (Minimum 8 caractères',
   }),
   rememberMe: z.boolean(),
 });
@@ -28,12 +28,11 @@ export const RegisterEtudSchema = z
         message: 'Minimum 8 caractères',
       })
       .refine(
-        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value),
-        {
-          message:
-            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
-        }
-      ),
+        (value) =>
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value), {
+        message:
+          'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (y compris + et -)',
+      }),
     confirmPassword: z.string(),
     government: z.string().min(3, {
       message: 'La gouvernorat est requis',
@@ -85,9 +84,11 @@ export const RegisterProfSchema = z.object({
     .min(8, {
       message: 'Minimum 8 caractères',
     })
-    .refine((value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value), {
+    .refine(
+      (value) =>
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value), {
       message:
-        'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+        'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (y compris + et -)',
     }),
 });
 
@@ -166,12 +167,11 @@ export const NewPasswordSchema = z
         message: 'Minimum 8 caractères',
       })
       .refine(
-        (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value),
-        {
-          message:
-            'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
-        }
-      ),
+        (value) =>
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>+-])/.test(value), {
+        message:
+          'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (y compris + et -)',
+      }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {

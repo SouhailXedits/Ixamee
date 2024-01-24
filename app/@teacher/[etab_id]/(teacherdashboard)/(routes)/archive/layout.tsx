@@ -34,7 +34,6 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   //   // Handle the imported data in the external page
   //   console.log(jsonData);
   // };
-  
 
   function handleChangeTab(value: string) {
     setCurrentTab(value);
@@ -63,8 +62,8 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
           </div>
-          <FiltersModal/>
-          
+          <FiltersModal />
+
           {/* <div>
             <Select>
               <SelectTrigger className="w-[140px] rounded-xl">

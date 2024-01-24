@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Image from 'next/image';
 import { TeacherAdminsList } from './_components/TeacherAdminsList';
 import { AddTeacher } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/teachers/_components/AddTeacher';
@@ -7,8 +7,8 @@ import { getAllAdminTeachers } from '@/actions/teachers';
 import { useState } from 'react';
 
 const Teacher = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  console.log(searchQuery)
+  const [searchQuery, setSearchQuery] = useState('');
+  console.log(searchQuery);
 
   const {
     data: teachers,
@@ -26,7 +26,7 @@ const Teacher = () => {
   //   queryFn: async () => await getAllSearchQuery(searchQuery, table),
   // });
   console.log(teachers);
-  const data = teachers?.data
+  const data = teachers?.data;
 
   return (
     <main className="flex flex-col gap-6 p-10">

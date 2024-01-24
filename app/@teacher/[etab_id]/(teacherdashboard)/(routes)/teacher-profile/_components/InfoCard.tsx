@@ -1,14 +1,7 @@
 'use client';
 import * as z from 'zod';
-import React, { useState, useTransition } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import { Input } from '@/components/ui/input';
-import {
-  Select as CustomSelect,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/selectModifierStudent';
 import {
   Form,
   FormControl,
@@ -17,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-
+import { useRef } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
@@ -28,23 +21,28 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateTeacherSchema } from '@/actions/profile/schemas';
 import { Button } from '@/components/ui/button';
 import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
-import { updateTeacherCredentials } from '@/actions/profile/updateUserCredentials';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
+import { useUpdateCredentials } from '../hooks/useUpdateCredentials';
 
 export default function InfoCard({ user, userEstablishment, teachersubject }: any) {
-  const [name, setName] = useState(user?.name);
-  const [email, setEmail] = useState(user?.email);
-  const [phoneNumber, setPhoneNumber] = useState(user?.phone_number);
-  const [government, setgovernment] = useState(user?.government);
+  const { name, email, phone_number: phoneNumber, government } = user;
   const govOptions = Tunisiangovernments;
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const {
-    data: establishments,
-    error: getEstabsError,
-    isPending: estabPending,
-  } = useQuery<any>({
+  const [initialValues, setInitialValues] = useState<z.infer<typeof UpdateTeacherSchema> | null>(
+    null
+  );
+
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+
+  const [files, setFile] = useState<any>(null);
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string>(user.image);
+  const [selectedFileUrl1, setSelectedFileUrl1] = useState<string>(user.image);
+
+  const { data: establishments, isPending: estabPending } = useQuery<any>({
     queryKey: ['establishments'],
     queryFn: async () => await getAllEstabs(),
   });
@@ -55,11 +53,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
       })) ||
     [];
 
-  const {
-    data: subjects,
-    error: getSubError,
-    isPending: subPending,
-  } = useQuery<any>({
+  const { data: subjects, isPending: subPending } = useQuery<any>({
     queryKey: ['subjects'],
     queryFn: async () => await getAllSubjects(),
   });
@@ -85,6 +79,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
   const form = useForm<z.infer<typeof UpdateTeacherSchema>>({
     resolver: zodResolver(UpdateTeacherSchema),
     defaultValues: {
+      image: selectedFileUrl,
       name: name,
       email: email,
       phone: phoneNumber || '',
@@ -96,16 +91,70 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
 
   const [isPending, startTransition] = useTransition();
 
+  useEffect(() => {
+    setInitialValues({
+      image: selectedFileUrl,
+      name: name,
+      email: email,
+      phone: phoneNumber || '',
+      government: government,
+      subject: defaultTeachersubject || [],
+      etablissement: defaultTeacherestablishments || [],
+    });
+  }, []);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError('');
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+
+      if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
+        try {
+          const form = new FormData();
+          form.append('file', selectedFile);
+          form.append('upload_preset', 'firaslatrach');
+
+          const response = await fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
+            method: 'post',
+            body: form,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setSelectedFileUrl(data.url);
+            setSelectedFileUrl1(URL.createObjectURL(selectedFile));
+          } else {
+            setError('Error uploading the file. Please try again.');
+          }
+        } catch (error) {
+          setError('An error occurred during file upload. Please try again.');
+          console.error(error);
+        }
+      } else {
+        setError('Invalid file format or size. Please choose a valid image file (max 2MB).');
+      }
+    }
+  };
+  const { updateUser, isPending: updatePending } = useUpdateCredentials();
   const onSubmit = (values: z.infer<typeof UpdateTeacherSchema>) => {
     setError('');
     setSuccess('');
+    values.image = selectedFileUrl || user?.image;
     startTransition(async () => {
-      updateTeacherCredentials(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        if (data.success) {
-        }
-      });
+      const isFormChanged =
+        values.image !== initialValues?.image ||
+        values.name !== initialValues?.name ||
+        values.email !== initialValues?.email ||
+        values.phone !== initialValues?.phone ||
+        values.government !== initialValues?.government ||
+        JSON.stringify(values.subject) !== JSON.stringify(initialValues?.subject) ||
+        JSON.stringify(values.etablissement) !== JSON.stringify(initialValues?.etablissement);
+      if (isFormChanged) {
+        updateUser(values);
+      } else {
+        setError('Aucune modification détectée.');
+      }
     });
   };
 
@@ -115,25 +164,17 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
         <form onSubmit={form.handleSubmit(onSubmit)} method="post" className="flex flex-col gap-4">
           <FormError message={error} />
           <FormSuccess message={success} />
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-5">
-              {user?.image ? (
+          <div className="flex items-center justify-between ">
+            <div className="flex items-center gap-5 rounded-full">
+              <div className="flex w-[100px] h-[100px] rounded-full ">
                 <Image
-                  src={user?.image}
+                  src={selectedFileUrl1 || '/uplodImage.svg'}
                   alt="uplodImage"
                   width={100}
                   height={100}
-                  className="rounded-full cursor-pointer"
+                  className="rounded-full cursor-pointer hover:opacity-75 object-cover"
                 />
-              ) : (
-                <Image
-                  src={'/uplodImage.svg'}
-                  alt="uplodImage"
-                  width={100}
-                  height={100}
-                  className="cursor-pointer"
-                />
-              )}
+              </div>
 
               <div className="flex flex-col gap-3">
                 <span className="text-[#727272]">Ajouter une photo de profil</span>
@@ -141,6 +182,12 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
               </div>
             </div>
             <div>
+              <input
+                type="file"
+                className="w-[200px] h-[60px] absolute opacity-0 cursor-pointer"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e)}
+              />
               <Image
                 src={'/editeIcon.svg'}
                 alt="editeIcon"
@@ -162,6 +209,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormControl>
                       <Input
                         {...field}
+                        ref={nameInputRef}
                         placeholder="Entrez votre e-mail"
                         type="text"
                         disabled={isPending}
@@ -181,9 +229,11 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                 width={20}
                 height={20}
                 className="cursor-pointer"
+                onClick={() => nameInputRef.current?.focus()}
               />
             </div>
           </div>
+
           <div className="flex justify-between p-1 rounded-lg border-l-[4px] border-[#99C6D3] items-center ">
             <div className="w-full">
               <FormField
@@ -195,6 +245,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormControl>
                       <Input
                         {...field}
+                        ref={emailInputRef}
                         defaultValue={email}
                         placeholder="Entrez votre e-mail"
                         type="email"
@@ -214,6 +265,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                 width={20}
                 height={20}
                 className="cursor-pointer"
+                onClick={() => emailInputRef.current?.focus()}
               />
             </div>
           </div>
@@ -228,6 +280,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormControl>
                       <Input
                         {...field}
+                        ref={phoneInputRef}
                         defaultValue={phoneNumber}
                         placeholder={
                           phoneNumber ? phoneNumber : 'Ajouter votre numéro de telephone'
@@ -249,6 +302,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                 width={20}
                 height={20}
                 className="cursor-pointer"
+                onClick={() => phoneInputRef.current?.focus()}
               />
             </div>
           </div>
@@ -261,18 +315,48 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                   <FormItem>
                     <FormLabel className="text-[#727272] pl-3">Gouvernorat</FormLabel>
                     <FormControl>
-                      <CustomSelect>
-                        <SelectTrigger className="w-[102%] border-none text-[#727272]">
-                          <SelectValue defaultValue={government} placeholder={government} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {govOptions.map((gov: any) => (
-                            <SelectItem value={gov.value} key={gov.id}>
-                              {gov.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </CustomSelect>
+                      <Select
+                        isDisabled={isPending}
+                        name="government"
+                        options={govOptions}
+                        placeholder={government}
+                        isSearchable={true}
+                        styles={{
+                          control: (provided, state) => ({
+                            ...provided,
+                            borderColor: 'transparent',
+                            '&:hover': {
+                              borderColor: 'transparent',
+                            },
+                            width: '101.5%',
+                          }),
+                          option: (provided, state) => ({
+                            ...provided,
+                            fontSize: '14px',
+                            backgroundColor: state.isFocused ? '#F0F6F8' : 'transparent',
+                            '&:hover': {
+                              backgroundColor: '#F0F6F8',
+                            },
+                          }),
+                          multiValue: (provided, state) => ({
+                            ...provided,
+                            backgroundColor: '#F0F6F8',
+                          }),
+                          dropdownIndicator: (provided, state) => ({
+                            ...provided,
+                            color: '#1B8392',
+                          }),
+                          indicatorSeparator: (provided, state) => ({
+                            ...provided,
+                            display: 'none',
+                          }),
+                          placeholder: (provided, state) => ({
+                            ...provided,
+                            color: '#727272',
+                          }),
+                        }}
+                        onChange={(selectedOption) => field.onChange(selectedOption?.value || '')}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -290,6 +374,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                     <FormLabel className="text-[#727272] pl-3">Établissement</FormLabel>
                     <FormControl>
                       <Select
+                        isDisabled={isPending || estabPending}
                         isMulti
                         name="user Establishment"
                         options={estabOptions}
@@ -337,7 +422,6 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                             color: '#727272',
                           }),
                         }}
-                        // defaultValue={userEstablishment || []}
                         value={estabOptions.filter((option: any) =>
                           field.value.some((selectedOption) => selectedOption.id === option.id)
                         )}
@@ -372,7 +456,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                             : 'Ajouter votre/vos matière(s)'
                         }
                         isSearchable={true}
-                        isDisabled={subPending}
+                        isDisabled={subPending || isPending}
                         styles={{
                           control: (provided, state) => ({
                             ...provided,

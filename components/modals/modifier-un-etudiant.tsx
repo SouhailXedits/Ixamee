@@ -110,7 +110,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
         id: data.id,
         name: formatData.name,
         email: formatData.email.toLowerCase(),
-        image: selectedFileUrl ,
+        image: selectedFileUrl,
       });
       // if (!) setIsFirstModalOpen(!isFirstModalOpen);
       // else {
