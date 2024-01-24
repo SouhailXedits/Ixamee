@@ -20,6 +20,7 @@ import { IoKeyOutline } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
 import { newPassword } from '@/actions/auth/new-password';
 import { useSearchParams } from 'next/navigation';
+import AuthErrorPage from '../(routes)/error/page';
 interface VerificationData {
   email?: string;
 }
@@ -27,7 +28,9 @@ export default function ResetForm({ email }: VerificationData) {
   const searchParams = useSearchParams();
 
   const token = searchParams.get('token');
-
+  if (!token) {
+    return <AuthErrorPage />;
+  }
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();

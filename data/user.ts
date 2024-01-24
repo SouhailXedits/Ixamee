@@ -46,7 +46,6 @@ export const getUserEstablishmentByUserId = async (id: string) => {
 
 
 export const getClassesOfUser = async (user_id: string) => {
-  console.log(user_id)
   const data = await db.classe.findMany({
     where: {
       student_class: {

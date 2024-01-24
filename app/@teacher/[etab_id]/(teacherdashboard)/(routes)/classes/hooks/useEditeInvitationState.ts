@@ -8,7 +8,6 @@ export function useInviteUserInClasse() {
   const { mutate: updateInvitationUser, isPending } = useMutation({
     mutationFn: ({ studentEmail, teacherEmail }: { studentEmail: string; teacherEmail: string }) =>
       updateInvitationUserApi(studentEmail, teacherEmail),
-
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
       toast.success('invitation envoyée avec succès.');

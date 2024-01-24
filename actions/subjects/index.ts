@@ -2,18 +2,17 @@
 'use server';
 import { db } from '@/lib/db';
 import { Subject } from '@prisma/client';
-import { SubjectInputProps } from '@/types/subjects/subjectTypes'
-
+import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 
 export const createSubject = async (data: SubjectInputProps) => {
-  console.log(data)
+  console.log(data);
   try {
     const exam = await db.subject.create({
       data: data,
     });
     console.log('subject created succecfully ! ');
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     return {
       error: 'Failed to create subject.',
     };
@@ -29,7 +28,7 @@ export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') =
         name: {
           contains: name,
           mode: 'insensitive',
-        }
+        },
       },
       skip,
       take: pageSize,
@@ -48,15 +47,32 @@ export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') =
   }
 };
 
-
 export const getAllSubjects = async () => {
   try {
-
     const estabs = await db.subject.findMany();
 
     console.log(estabs);
 
-    return { data: estabs , error: undefined };
+    return { data: estabs, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get subjects.',
+    };
+  }
+};
+
+export const getAllSubjectsByUserId = async (id: number) => {
+  try {
+    const subjects = await db.classe.findMany({
+      where: {
+        id,
+      },
+      include: {
+        subject: true,
+      },
+    });
+    return subjects[0].subject;
   } catch (error: any) {
     return {
       data: undefined as any,
@@ -72,11 +88,11 @@ export const editSubject = async (id: number, data: SubjectInputProps) => {
       where: {
         id: id,
       },
-      data: data
+      data: data,
     });
     console.log('subject edited succecfully ! ');
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     return {
       error: 'Failed to edit subject.',
     };

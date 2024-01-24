@@ -172,6 +172,87 @@ export const sendVerificationEmail = async (email: string, code: number) => {
   }
 };
 
-export const sendInvitationEmail = async (email:string,teacherEmail:string,token:string)=>{
-  const invitLink=`${domain}/invit-student?token=${token}`
-}
+export const sendInvitationEmail = async (
+  studentEmail: string,
+  teacherEmail: string,
+  token: string
+) => {
+  const invitLink = `${domain}/invit-student?token=${token}`;
+
+  console.log("🚀 ~ invitLink:", invitLink)
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL,
+      to: studentEmail,
+      subject: `Invitation `,
+      html: `
+      <!DOCTYPE html>
+              <html lang="en">
+
+              <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                  body {
+                    font-family: 'Arial', sans-serif;
+                    line-height: 1.6;
+                    color: #fff;
+                    background-color: #1E2A2D;
+                    margin: 0;
+                    padding: 0;
+                  }
+
+                  .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #303E40;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                    border-radius: 5px;
+                  }
+
+                  h2 {
+                    color: #4CAF50;
+                  }
+
+                  p {
+                    margin-bottom: 20px;
+                    color: #fff;
+                  }
+
+                  code {
+                    background-color: #2C3C3D;
+                    padding: 5px 8px;
+                    border-radius: 3px;
+                    color: #4CAF50;
+                  }
+
+                  .footer {
+                    margin-top: 20px;
+                    padding-top: 10px;
+                    border-top: 1px solid #4CAF50;
+                    color: #4CAF50;
+                  }
+                </style>
+              </head>
+
+              <body>
+                <div class="container">
+                  <h2>Invitation de ${teacherEmail}</h2>
+                  <p>Bonjour,</p>
+                  <p>Vous etes ajoutez à Ixamee:</p>
+                  <p>cliquer<a href="${invitLink}" >  ici </a></p>
+                  <p>Ce code est nécessaire pour confirmer votre e-mail et accéder à votre compte.</p>
+                  <p>Bienvenue! Merci de faire partie de notre communauté! </p>
+                  <p class="footer">Cordialement,<br/>L'équipe Ixamee</p>
+                </div>
+              </body>
+
+              </html>
+      `,
+    });
+    return { success: 'E-mail renvoyé avec succès' };
+  } catch (error) {
+    return { error: "Quelque chose s'est mal passé, veuillez réessayer plus tard" };
+  }
+};

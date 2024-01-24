@@ -19,7 +19,7 @@ interface ArchiveUneClasse {
 export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(['user']);
-  console.log(user.email);
+  const teacherEmail = user.email;
   const { updateInvitationUser, isPending } = useInviteUserInClasse();
 
   return (
@@ -50,7 +50,7 @@ export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) 
             <Button
               type="submit"
               className="w-full text-white bg-[#177C9A] hover:opacity-80"
-              onClick={() => updateInvitationUser(studentEmail, user.email)}
+              onClick={() => updateInvitationUser({studentEmail, teacherEmail})}
             >
               Inviter
             </Button>

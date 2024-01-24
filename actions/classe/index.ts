@@ -1,6 +1,8 @@
 'use server';
 import Establishement from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/page';
 import { db } from '@/lib/db';
+import { sendInvitationEmail } from '@/lib/mail';
+import { generateInvitationToken } from '@/lib/tokens';
 import { Exo } from 'next/font/google';
 
 export const createClasse = async (
@@ -131,7 +133,7 @@ export const deleteClasse = async (id: number) => {
   return { data: data, error: undefined };
 };
 
-export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
+export const s = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
   try {
     const classes = await db.classe.findMany({
       where: {
@@ -320,14 +322,135 @@ export const getUserById = async (id: string) => {
   return user;
 };
 
-export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
-  const user = await db.user.update({
+export const getAllSubjectsByClasseId = async (classeId: number) => {
+  // const res = await db.classe.findMany({
+  //   select: {
+  //     id: true,
+  //     name: true,
+  //     subject: {
+  //       select: {
+  //         id: true,
+  //         name: true,
+  //         coefficient: true,
+  //         icon: true,
+  //         teacher: {
+  //           select: {
+  //             id: true,
+  //             name: true,
+  //             image: true,
+
+  //           },
+  //           where: {
+
+  //           }
+  //         },
+
+  //       },
+  //     },
+  //   },
+  //   where: {
+  //     id: classeId,
+  //     // teacher: {
+  //     //   some: {
+  //     //     classe_teacher: {
+  //     //       some: {
+  //     //         id: classeId
+  //     //       }
+  //     //     }
+  //     //   }
+  //     // },
+  //     subject: {
+  //       some: {
+  //         classe_subject: {
+  //           some: {
+  //             id: classeId
+  //           }
+  //         }
+  //       }
+  //     }
+  //   },
+  // });
+  const res = await db.subject.findMany({
     where: {
-      email: studentEmail,
+      classe_subject: {
+        some: {
+          id: classeId,
+        },
+      },
+      is_archived: false,
     },
-    data: {
-      invited_at: new Date(),
+    select: {
+      id: true,
+      name: true,
+      coefficient: true,
+      icon: true,
+      teacher: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          term:true,
+        },
+        where: {
+          classe_teacher: {
+            some: {
+              id: classeId,
+            },
+          },
+        },
+      },
+      classe_subject: {
+        select: {
+          id: true,
+          name: true,
+
+        },
+        where: {
+          id: classeId
+        }
+      },
+      // exams: {
+      //   select: {
+      //     id: true,
+      //     name: true,
+      //     term: true,
+      //   },
+      //   where: {
+      //     is_archived: false,
+      //     exam_classess: {
+      //       some: {
+      //         id: classeId,
+      //       },
+      //     },
+      //   },
+      // },
     },
   });
-  return user;
+  console.log(res);
+  return res;
+};
+
+export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
+  console.log(studentEmail, teacherEmail);
+
+  const invitationToken = await generateInvitationToken(studentEmail, teacherEmail);
+  await sendInvitationEmail(
+    invitationToken.recieverEmail,
+    invitationToken.senderEmail,
+    invitationToken.token
+  ).then(async (data) => {
+    if (data.success) {
+      const user = await db.user.update({
+        where: {
+          email: studentEmail,
+        },
+        data: {
+          invited_at: new Date(),
+        },
+      });
+      return user;
+    } else {
+      throw new Error(data.error);
+    }
+  });
 };

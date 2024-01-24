@@ -25,8 +25,9 @@ import bcryptjs from 'bcryptjs';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import { useRouter } from 'next/navigation';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
+import { RegisterInvitedStudent } from '@/actions/auth/registerInvitedStudent';
 
-export default function InvitForm() {
+export default function InvitForm({ email }: any) {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
@@ -47,38 +48,28 @@ export default function InvitForm() {
   const onSubmit = (values: z.infer<typeof InvitSchema>) => {
     setError('');
     setSuccess('');
+    values.email = email;
+
     startTransition(async () => {
       let code = generateSixDigitNumber();
       const hashedCode = await bcryptjs.hash(code + '', 10);
-      // login(values, code).then((data) => {
-      //   setError(data?.error);
-      //   setSuccess(data?.success);
-      //   if (data?.success === 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.') {
-      //     localStorage.setItem(
-      //       'new-verification',
-      //       JSON.stringify({
-      //         email: values.email,
-      //         code: hashedCode,
-      //         role: data.role,
-      //         password: values.password,
-      //         rememberMe: values.rememberMe,
-      //       })
-      //     );
-      //     sendEmailVerificationToken(values.email);
-      //   }
-      //   if (data?.success === 'Vous étes presque arrivé ! complete votre inscription') {
-      //     localStorage.setItem(
-      //       'new-verification',
-      //       JSON.stringify({
-      //         email: values.email,
-      //         code: hashedCode,
-      //         password: values.password,
-      //         rememberMe: values.rememberMe,
-      //       })
-      //     );
-      //     setRegistrationFormSuccessful(true);
-      //   }
-      // });
+      RegisterInvitedStudent(values, code).then((data) => {
+        setError(data?.error);
+
+        setSuccess(data?.success);
+        if (data?.success) {
+          localStorage.setItem(
+            'new-verification',
+            JSON.stringify({
+              email: values.email,
+              code: hashedCode,
+              password: values.password,
+              role:"STUDENT"
+            })
+          );
+          sendEmailVerificationToken(values.email);
+        }
+      });
     });
   };
 

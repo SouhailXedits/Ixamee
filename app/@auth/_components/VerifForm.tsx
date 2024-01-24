@@ -17,6 +17,7 @@ import { emailVerification } from '@/actions/auth/email-verification';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 import { login } from '@/actions/auth/login';
 import { renvoyer } from '@/actions/auth/renvoyer-email';
+import AuthErrorPage from '../(routes)/error/page';
 
 interface VerificationData {
   email?: string;
@@ -29,6 +30,9 @@ export default function VerifForm({ email, code }: VerificationData) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  if (!token) {
+    return <AuthErrorPage />;
+  }
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
   const [isDisabled, setDisabled] = useState<boolean>(false);
 
@@ -73,7 +77,6 @@ export default function VerifForm({ email, code }: VerificationData) {
         setSuccess(data.success);
         setError(data.error);
         if (data.success && !storedVerificationData?.role) {
-          // sendEmailVerificationToken(storedVerificationData.email);
           setRegistrationSuccessful(true);
         } else if (storedVerificationData?.role === 'STUDENT') {
           setDisabled(true);
@@ -81,7 +84,7 @@ export default function VerifForm({ email, code }: VerificationData) {
             {
               email: storedVerificationData?.email || '',
               password: storedVerificationData?.password,
-              rememberMe: storedVerificationData?.rememberMe,
+              rememberMe: storedVerificationData?.rememberMe || true,
             },
             123456
           ).then(() => {
