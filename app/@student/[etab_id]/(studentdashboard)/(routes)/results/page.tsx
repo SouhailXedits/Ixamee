@@ -29,7 +29,6 @@ function Results() {
       queryFn: async () => getAllSubjectsByClasseId(+id),
     });
     console.log(data)
-    if(isPending) return <Skeleton className=" h-[200px] w-[400px]"/>
     if(error) return;
     return (
       <div className=" p-10 flex flex-col gap-6">
@@ -44,6 +43,7 @@ function Results() {
           </div>
         </nav>
         <div className=" flex flex-wrap gap-8">
+          {isPending && <Skeleton className=" w-[350px] rounded-[20px] h-[200px]" />}
           {data?.map((subject) => (
             <SubjectCard key={subject.id} subject={subject} />
           ))}

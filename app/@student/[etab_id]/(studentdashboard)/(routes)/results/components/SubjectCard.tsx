@@ -6,12 +6,19 @@ function SubjectCard({ subject }: any) {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return (
     <div
-      className={`w-[350px] justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 `}
+      className={`w-[350px] justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden `}
       style={{
         backgroundColor: colors[randomIndex],
       }}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between relative ">
+        <Image
+          src={`/icons/icon-${randomIndex + 1}.svg`}
+          className=" absolute -top-4 -right-6"
+          alt={`${subject.name}-icon`}
+          height={80}
+          width={80}
+        />
         <div className="flex items-center gap-3">
           <Image alt="MatierIcon" src={subject.icon} width={29} height={29} />
           <div>
@@ -61,7 +68,7 @@ function SubjectCard({ subject }: any) {
       </div>
       <div className="p-2 flex justify-between items-center w-full ">
         <div className="flex items-center gap-3">
-          <Image alt="Teacher image" src={subject.teacher[0].image} width={29} height={29} />
+          <Image alt="Teacher image" src={subject.teacher[0].image} width={40} height={40} className=' rounded-full' />
           <div>
             <span className="text-[#1B8392] text-lg  leading-[25px]">Professeur:</span>
             <p>{subject.teacher[0].name}</p>
