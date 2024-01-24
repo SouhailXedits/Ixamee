@@ -1,11 +1,13 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CreateExam from './_components/create-exam';
 import { useQuery } from '@tanstack/react-query';
 import { getOneExamById } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
+// import { EmailSend } from './_components/test';
 // import { Editor } from './_components/toolbar-editor';
+
 export default function page({ params }: { params: { examenId: string } }) {
   const { examenId } = params;
   console.log(examenId);
@@ -14,6 +16,10 @@ export default function page({ params }: { params: { examenId: string } }) {
     queryFn: async () => await getOneExamById({ id: examenId }),
   });
   console.log(data);
+  const handleClick = () => {
+    console.log('click');
+  };
+
   return (
     <div className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -65,6 +71,8 @@ export default function page({ params }: { params: { examenId: string } }) {
         </div>
       </nav>
       {/* <CreateExam examId={examenId} /> */}
+      {/* <EmailSend /> */}
+
       <CreateExam data={data} />
     </div>
   );

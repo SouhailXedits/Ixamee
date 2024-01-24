@@ -54,7 +54,6 @@ function handleUpdateUser(user_id: number) {
 const Action = ({ row }: any) => {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <ModifierUnEtudiant data={row.original}>
@@ -81,7 +80,7 @@ const Action = ({ row }: any) => {
           className="cursor-not-allowed "
         />
       ) : (
-        <InviterUnEtudiant>
+        <InviterUnEtudiant studentEmail={row.original.email}>
           <Image
             src="/invitestudent.svg"
             alt=""
@@ -149,7 +148,7 @@ export const columns = [
         className="bg-white"
       />
     ),
-    cell: ({ row } : any) => (
+    cell: ({ row }: any) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -164,7 +163,7 @@ export const columns = [
     header: () => {
       return <span className="text-[#1B8392] ">Rang</span>;
     },
-    cell: ({ row } : any) => (
+    cell: ({ row }: any) => (
       <div className="w-10 h-[21px] p-2.5 bg-[#D8ECF3] rounded-[10px] border border-[#1B8392] flex-col justify-center items-center gap-2.5 inline-flex">
         <div className="text-center text-[#1B8392] text-sm font-semibold ">
           {/* {console.log(row.id)} */}
@@ -180,7 +179,7 @@ export const columns = [
     header: () => {
       return <span className="text-[#1B8392] ">Nom et prénom</span>;
     },
-    cell: ({ row } : any) => (
+    cell: ({ row }: any) => (
       <div className="flex items-center gap-2 capitalize">
         {console.log(row?.original?.image)}
         <Image
@@ -197,7 +196,7 @@ export const columns = [
 
   {
     accessorKey: 'email',
-    header: ({ column } : any) => {
+    header: ({ column }: any) => {
       return (
         <Button
           className="text-[#1B8392]  hover:text-[#1B8392]"
@@ -209,7 +208,7 @@ export const columns = [
         </Button>
       );
     },
-    cell: ({ row } :any) => <div className="lowercase text-[#727272]">{row.getValue('email')}</div>,
+    cell: ({ row }: any) => <div className="lowercase text-[#727272]">{row.getValue('email')}</div>,
   },
   // {
   //   accessorKey: 'correction',

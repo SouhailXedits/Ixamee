@@ -7,7 +7,7 @@ interface itemProps {
   id: number;
   name: string;
   NumberOfStudent: number;
-  student_class: any
+  student_class: any;
 }
 
 const ClasseCard = ({ data }: { data: itemProps }) => {
@@ -26,7 +26,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
           />
         </DropdownMenuItemSelect>
       </div>
-      <div className="w-full px-5 font-[600] text-lg text-[#727272] pb-7 ">
+      <div className="w-full px-5  text-lg text-[#727272] pb-7 ">
         {data?.student_class?.length} Etudiants
       </div>
 

@@ -5,9 +5,8 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Editor from './toolbar-editor';
 import { useState } from 'react';
+import { stat } from 'fs';
 import { sub } from 'date-fns';
-import { render } from 'react-dom';
-import next from 'next';
 export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
   console.log(data);
 
@@ -76,6 +75,44 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
       });
     });
   };
+  const calcSumOfMarks = (data) => {
+    console.log(data);
+    return 10;
+  };
+  const updateSubSubQuestion = (e, data) => {
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        if (item.id === allData.id) {
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              return {
+                ...subItem,
+                children: subItem.children.filter((subSubItem: any, index: number) => {
+                  console.log(subSubItem);
+
+                  return {
+                    ...subSubItem,
+                    mark: calcSumOfMarks(subSubItem),
+                    children: subSubItem.children.map((subSubSubItem: any) => {
+                      if (subSubSubItem.id === data.id) {
+                        subSubSubItem.mark = +e.target.value;
+                      }
+                      return subSubSubItem;
+                    }),
+                  };
+                }),
+              };
+            }),
+          };
+        }
+        return item;
+      });
+    });
+    console.log('update');
+    console.log(allData);
+  };
+  console.log(allData);
   return (
     <>
       <div
@@ -83,13 +120,13 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
       >
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
-            <span>{data.name}</span>
+            <span>{data?.name}</span>
             {/* Adjusted Editor component */}
             <Editor
               // initialContent={data.content}
               editable={true}
               onChange={onChange}
-              initialContent={data.content}
+              initialContent={data?.content}
             />
           </div>
           <div className="flex gap-3 item-center">
@@ -98,16 +135,13 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
               placeholder="--.--"
               // defaultValue={}
               maxLength={5}
-              // disabled={}
               // value={
               //   exercise.children && exercise.children.length > 0
               //     ? calculateSumOfMarks(exercise).toFixed(2)
               //     : exercise.mark
               // }
               onChange={(e) => {
-                // if (!(exercise.children && exercise.children.length > 0)) {
-                //   updateMark(e.target.value);
-                // }
+                updateSubSubQuestion(e, data);
               }}
             />
             <Image
@@ -124,8 +158,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
     </>
   );
 };
-export const CreateSubQuestion = ({ allData, data, setFakeData }: any) => {
-  console.log(data);
+export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
   const onChange = (content: string) => {
     console.log(content);
   };
@@ -234,7 +267,6 @@ export const CreateSubQuestion = ({ allData, data, setFakeData }: any) => {
   // ];
 
   const handleDeleteSubQuestion = () => {
-    console.log(data);
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
         if (item.id === allData.id) {
@@ -282,9 +314,42 @@ export const CreateSubQuestion = ({ allData, data, setFakeData }: any) => {
     });
   };
   const calculerSubMark = (data: any) => {
+    const children = data.children;
+    console.log(children);
     console.log(data);
-    return 2;
+    console.log(allData);
+
+    let sum = 0;
+
+    // data.mark = 0;
+    return sum;
   };
+  const updateSubQuestion = (e, data) => {
+    console.log(data);
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        if (item.id === allData.id) {
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              return {
+                ...subItem,
+                children: subItem.children.filter((subSubItem: any, index: number) => {
+                  if (subSubItem.id === data.id) {
+                    subSubItem.mark = +e.target.value;
+                  }
+                  return subSubItem;
+                }),
+              };
+            }),
+          };
+        }
+        return item;
+      });
+    });
+  };
+
+  console.log(allData);
   return (
     <>
       <div
@@ -311,7 +376,8 @@ export const CreateSubQuestion = ({ allData, data, setFakeData }: any) => {
             <Input
               className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
-              defaultValue={calculerSubMark(data)}
+              type="number"
+              defaultValue={data.mark}
               maxLength={5}
               disabled={data.children && data.children.length > 0}
               // value={
@@ -319,10 +385,9 @@ export const CreateSubQuestion = ({ allData, data, setFakeData }: any) => {
               //     ? calculateSumOfMarks(exercise).toFixed(2)
               //     : exercise.mark
               // }
+              value={data.mark}
               onChange={(e) => {
-                // if (!(exercise.children && exercise.children.length > 0)) {
-                //   updateMark(e.target.value);
-                // }
+                updateSubQuestion(e, data);
               }}
             />
             <Image
@@ -344,9 +409,10 @@ export const CreateSubQuestion = ({ allData, data, setFakeData }: any) => {
     </>
   );
 };
-export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
+export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
   console.log(data);
   console.log(allData);
+  console.log(fakeData);
   const onChange = (content: string) => {
     console.log(content);
   };
@@ -359,12 +425,12 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
     };
 
     // Update the state to include the new subquestion
-    setFakeData((prevData:any) => {
-      return prevData.map((item:any) => {
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
         if (item.id === allData.id) {
           return {
             ...item,
-            children: item.children.map((subItem:any) => {
+            children: item.children.map((subItem: any) => {
               if (subItem.id === data.id) {
                 return {
                   ...subItem,
@@ -407,17 +473,39 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
       });
     });
   };
-  const calculerQuestionMark = (data: any) => {
-    console.log(data);
-    const children = data.children;
-    console.log(children);
 
-    let sum = 0;
-    children.forEach((child: any) => {
-      sum += child.mark;
-    });
-    return sum;
+  const calculerQuestionMark = (data: any) => {
+    console.log(allData);
+
+    console.log(data);
+    const children = data?.children || [];
+    console.log(children);
+    data.mark = children?.reduce((acc: number, item: any) => {
+      return acc + item.mark;
+    }, 0);
+    console.log(allData);
+    console.log(fakeData);
+    setFakeData(fakeData);
+    return data.mark;
+
+    // data.mark = sum;
   };
+
+  const updateQuestion = (e: any, data: any) => {
+    setFakeData((prevData: any) => {
+      const updatedData = prevData.map((item: any) => {
+        item.children.map((state: any, index: number) => {
+          if (state.id === data.id) {
+            state.mark = +e;
+          }
+        });
+        return item;
+      });
+      return updatedData;
+    });
+  };
+
+  console.log(fakeData);
   return (
     <>
       <div
@@ -443,14 +531,16 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
             <Input
               className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
-              // defaultValue={calculerQuestionMark(data)}
+              type="number"
+              // value={data.mark}
               maxLength={5}
               disabled={data.children && data.children.length > 0}
-              value={calculerQuestionMark(data)}
+              // defaultValue={calculerQuestionMark(data)}
+              value={
+                data.children && data.children.length > 0 ? calculerQuestionMark(data) : data.mark
+              }
               onChange={(e) => {
-                // if (!(exercise.children && exercise.children.length > 0)) {
-                //   updateMark(e.target.value);
-                // }
+                updateQuestion(e.target.value, data);
               }}
             />
             <Image
@@ -465,7 +555,12 @@ export const CreateQuestion = ({ allData, data, setFakeData }: any) => {
         </div>
       </div>
       {data.children.map((item: any) => (
-        <CreateSubQuestion allData={allData} data={item} setFakeData={setFakeData} />
+        <CreateSubQuestion
+          allData={allData}
+          data={item}
+          setFakeData={setFakeData}
+          fakeData={fakeData}
+        />
       ))}
     </>
   );
@@ -483,7 +578,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
       const newData = {
         id: Math.random().toString(36).substring(7),
         name: getNextChar(data.children.length),
-        mark: 10,
+        mark: 0,
         children: [],
       };
 
@@ -502,6 +597,13 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
     const newData = allData.filter((item: any) => item.id !== data.id);
     setFakeData(newData);
   };
+  const calculerExerciceMark = () => {
+    data.mark = data.children.reduce((acc: number, item: any) => {
+      return acc + item.mark;
+    }, 0);
+    return data.mark;
+  };
+
   return (
     <div
       // key={}
@@ -548,6 +650,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
                     placeholder="--.--"
                     maxLength={5}
                     disabled
+                    // value={updateExericeMark}
                     // value={}
                     // defaultValue={}
                   />
@@ -556,21 +659,21 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
             ) : (
               <div
                 className={cn(
-                  'flex w-[210px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
+                  'flex w-[100px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
                 )}
               >
-                <div className={cn('flex text-center text-[#1B8392] leading-tight items-center')}>
+                <div className="flex items-center justify-center">
                   <Input
                     className={cn(
-                      'bg-transparent border-none text-[#1B8392] w-[90px] text-xl text-right placeholder:text-mainGreen p-3 border border-[#1B8392]'
+                      'bg-transparent border-none text-[#1B8392] w-[90px] text-xl  placeholder:text-mainGreen p-3 border border-[#1B8392] text-center'
                     )}
                     placeholder="--.--"
                     maxLength={5}
                     disabled
-                    // value={}
+                    value={Number(calculerExerciceMark(allData, data)).toFixed(2)}
                     // defaultValue={}
                   />
-                  <span className="text-xl">/ 20.00</span>
+                  {/* <span className="text-xl">/ 20.00</span> */}
                 </div>
               </div>
             )}
@@ -593,7 +696,12 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
             <span className="pr-10 -mb-4 text-xl pt-2 text-[#D9D9D9]">اكتب النص هنا</span>
           )} */}
           {data.children.map((item: any) => (
-            <CreateQuestion data={item} allData={data} setFakeData={setFakeData} />
+            <CreateQuestion
+              data={item}
+              allData={data}
+              fakeData={allData}
+              setFakeData={setFakeData}
+            />
           ))}
         </div>
         <div className="px-4 pt-4 -mb-10">
@@ -735,7 +843,7 @@ function CreateExam({ data }: any) {
     const newExercise = {
       id: Math.random().toString(36).substring(7),
       name: `Exercice ${fakeData.length + 1}`,
-      mark: 10,
+      mark: 0,
       children: [],
     };
     const newData = [...fakeData, newExercise];
@@ -745,7 +853,7 @@ function CreateExam({ data }: any) {
   return (
     <div dir={data?.language === 'fr' ? 'ltr' : 'rtl'}>
       <div className="flex flex-col gap-4">
-        {fakeData?.map((item: any, index:number) => (
+        {fakeData?.map((item: any, index: number) => (
           <CreateExercice allData={fakeData} data={item} setFakeData={setFakeData} key={index} />
         ))}
       </div>
