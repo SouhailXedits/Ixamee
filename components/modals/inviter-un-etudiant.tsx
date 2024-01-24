@@ -9,11 +9,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ArchiveUneClasse {
   children: React.ReactNode;
+  studentEmail: string;
 }
-export const InviterUnEtudiant = ({ children }: ArchiveUneClasse) => {
+export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) => {
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<any>(['user']);
+  console.log(user.email);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
