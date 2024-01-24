@@ -20,12 +20,12 @@ const DashboradStatistiques = () => {
             height={22}
           />
 
-          <span className=" text-[#727272] text-xl font-semibold  ">Statistiques Examens</span>
+          <span className=" text-11 text-xl font-[500]  ">Statistiques Examens</span>
         </div>
         <div className="flex gap-3">
           {/* Classe */}
           <Select>
-            <SelectTrigger className="w-[180px] rounded-xl">
+            <SelectTrigger className="w-[180px] text-11 rounded-xl">
               <SelectValue placeholder="Classes" />
             </SelectTrigger>
             <SelectContent>
@@ -35,7 +35,7 @@ const DashboradStatistiques = () => {
 
           {/* Devoir */}
           <Select>
-            <SelectTrigger className="w-[180px] rounded-xl">
+            <SelectTrigger className="w-[10px] text-11 rounded-xl">
               <SelectValue placeholder="Devoir" />
             </SelectTrigger>
             <SelectContent>

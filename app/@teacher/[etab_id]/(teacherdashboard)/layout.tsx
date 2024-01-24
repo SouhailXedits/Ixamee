@@ -21,11 +21,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
 
-  const { data, isPending } = useQuery({
-    queryKey: ['user'],
-    queryFn: async () => await getMe(),
-    staleTime: 0,
-  });
+  // const { data, isPending } = useQuery({
+  //   queryKey: ['user'],
+  //   queryFn: async () => await getMe(),
+  //   staleTime: 0,
+  // });
 
   // const { data: teachersubject, isPending: isPendingSubject } = useQuery<any>({
   //   queryKey: ['teachersubjects'],
@@ -37,35 +37,28 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
 
   return (
     <div className="h-full">
-      {isPending ? (
-        // <Skeleton className="w-full h-[100vh] bg-[#000000]" />
-        <div className="w-full h-[100vh] flex items-center justify-center">
-          <Image src="/loading.svg" alt="bankicon" width={400} height={400} />
+      <>
+        <div
+          className={cn(
+            'fixed inset-y-0 z-50 flex-col hidden h-full w-[260px] md:flex transition-width duration-300',
+            collapsed && 'w-[60px]'
+          )}
+        >
+          <Sidebar isOpen={collapsed} />
         </div>
-      ) : (
-        <>
-          <div
-            className={cn(
-              'fixed inset-y-0 z-50 flex-col hidden h-full w-[220px] md:flex transition-width duration-300',
-              collapsed && 'w-[60px]'
-            )}
-          >
-            <Sidebar isOpen={collapsed} />
-          </div>
-          <div>
-            <Navbar />
-          </div>
-          <main
-            className={cn(
-              !collapsed
-                ? 'pl-[225px] transition-all duration-500'
-                : 'pl-[63px] transition-all duration-500'
-            )}
-          >
-            {children}
-          </main>
-        </>
-      )}
+        <div>
+          <Navbar />
+        </div>
+        <main
+          className={cn(
+            !collapsed
+              ? 'pl-[260px] transition-all duration-500'
+              : 'pl-[63px] transition-all duration-500'
+          )}
+        >
+          {children}
+        </main>
+      </>
     </div>
   );
 };

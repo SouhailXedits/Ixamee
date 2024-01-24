@@ -1,3 +1,4 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 
 interface ApercuItemProps {
@@ -5,9 +6,12 @@ interface ApercuItemProps {
   icon: string;
   stat: string;
   name: string;
+  count: number | undefined;
+  isPending: boolean;
   textColor: string;
 }
-const ApercuItem = ({ color, icon, stat, name, textColor }: ApercuItemProps) => {
+const ApercuItem = ({ color, icon, stat, name, count, isPending, textColor }: ApercuItemProps) => {
+  let finalCount = count === 0 ? '-' : count;
   return (
     <div
       className="w-1/4 h-[93px] px-2.5 bg-red-50 rounded-[20px] justify-start items-center gap-2.5 inline-flex   min-w-[220px]"
@@ -23,14 +27,18 @@ const ApercuItem = ({ color, icon, stat, name, textColor }: ApercuItemProps) => 
         />
       </div>
       <div className="inline-flex flex-col items-start justify-center gap-2 grow shrink basis-0">
-        <div className="self-stretch text-lg font-[600] " style={{ color: textColor }}>
+        <div className="self-stretch text-lg " style={{ color: textColor }}>
           {name}
         </div>
         <div
           className="self-stretch text-red-500 text-lg font-medium "
           style={{ color: textColor }}
         >
-          {stat}
+          {isPending ? (
+            <Skeleton className="w-[30px] h-[20px]" style={{ background: textColor }} />
+          ) : (
+            finalCount
+          )}
         </div>
       </div>
     </div>

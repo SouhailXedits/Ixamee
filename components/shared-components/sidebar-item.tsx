@@ -21,7 +21,7 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
     (pathname === `/${params.etab_id}` && href === `/`) ||
     pathname === href ||
     (pathname.startsWith(`/${params.etab_id}${href}`) && href !== '/') ||
-    (pathname.endsWith('/archive/exams') && href === '/archive/classes'); ;
+    (pathname.endsWith('/archive/exams') && href === '/archive/classes');
 
   const onClick = () => {
     if (href) router.push(`/${params.etab_id}${href}`);
@@ -32,9 +32,9 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
       onClick={onClick}
       type="button"
       className={cn(
-        'flex items-start w-full  text-slate-500 text-sm font-[400] pl-3 transition-all',
+        'flex items-start w-full  text-slate-500 text-sm font-[400] pl-3 transition-all pt-[4px] pb-[4px] ',
         !isActive && 'hover:bg-slate-300/20 hover:bg-[#f0f6f82a] hover:rounded-lg duration-300',
-        isActive && 'bg-white  w-full text-mainGreen rounded-lg'
+        isActive && 'bg-white   w-full text-mainGreen rounded-lg'
       )}
     >
       <div className={cn('flex items-center w-full text-lg w gap-x-3 p-1', isActive && 'p-1')}>
@@ -42,12 +42,12 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
           src={isActive ? Clickedicon : Defaulticon}
           // src={'/icons/kebab-menu.svg'}
           alt={Clickedicon}
-          width={collapsed ? 20 : 17}
-          height={collapsed ? 20 : 17}
+          width={collapsed ? 22 : 22}
+          height={collapsed ? 22 : 22}
           className={cn('relative ', isActive && 'text-white  ')}
         />
 
-        {collapsed ? '' : <span className=' font-extralight'>{label}</span> }
+        {collapsed ? '' : <span className=" font-[400]">{label}</span>}
       </div>
     </button>
   );
