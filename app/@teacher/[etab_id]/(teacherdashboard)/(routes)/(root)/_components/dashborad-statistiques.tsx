@@ -35,7 +35,7 @@ const DashboradStatistiques = () => {
 
           {/* Devoir */}
           <Select>
-            <SelectTrigger className="w-[10px] text-11 rounded-xl">
+            <SelectTrigger className="w-[190px] text-11 rounded-xl">
               <SelectValue placeholder="Devoir" />
             </SelectTrigger>
             <SelectContent>

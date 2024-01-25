@@ -389,7 +389,7 @@ export const getAllSubjectsByClasseId = async (classeId: number) => {
           id: true,
           name: true,
           image: true,
-          term:true,
+          term: true,
         },
         where: {
           classe_teacher: {
@@ -403,11 +403,10 @@ export const getAllSubjectsByClasseId = async (classeId: number) => {
         select: {
           id: true,
           name: true,
-
         },
         where: {
-          id: classeId
-        }
+          id: classeId,
+        },
       },
       // exams: {
       //   select: {

@@ -1,7 +1,8 @@
 'use server';
 import { db } from '@/lib/db';
 
-export const getCountOfClasse = async (userId: string) => {
+export const getCountOfClasse = async (userId: string, etab_id: number) => {
+  console.log(userId, etab_id);
   const classCount = await db.classe.count({
     where: {
       teacher: {
@@ -9,12 +10,18 @@ export const getCountOfClasse = async (userId: string) => {
           id: userId,
         },
       },
+      establishment: {
+        some: {
+          id: +etab_id,
+        },
+      },
+      is_archived: false,
     },
   });
   console.log(classCount);
   return classCount;
 };
-export const getCountOfExamenes = async (userId: string) => {
+export const getCountOfExamenes = async (userId: string, etab_id: number) => {
   const examCount = await db.exam.count({
     where: {
       teacher: {
@@ -22,16 +29,35 @@ export const getCountOfExamenes = async (userId: string) => {
           id: userId,
         },
       },
+      exam_classess: {
+        some: {
+          establishment: {
+            some: {
+              id: +etab_id,
+            },
+          },
+        },
+      },
+      is_archived: false,
     },
   });
   return examCount;
 };
-export const getCountMonArchive = async (userId: string) => {
+export const getCountMonArchive = async (userId: string, etab_id: number) => {
   const examCount = await db.exam.count({
     where: {
       teacher: {
         some: {
           id: userId,
+        },
+      },
+      exam_classess: {
+        some: {
+          establishment: {
+            some: {
+              id: +etab_id,
+            },
+          },
         },
       },
       is_archived: true,
@@ -42,6 +68,11 @@ export const getCountMonArchive = async (userId: string) => {
       teacher: {
         some: {
           id: userId,
+        },
+      },
+      establishment: {
+        some: {
+          id: +etab_id,
         },
       },
       is_archived: true,
@@ -49,15 +80,11 @@ export const getCountMonArchive = async (userId: string) => {
   });
   return examCount + classCount;
 };
-// const   = async (userId: string) => {
-//   const studentCount = await db.classe.count({
-//     where: {
-//       student_class: {
-//         some: {
-//           id: userId,
-//         },
 
-//       },
-//     },
+// const getCountOfStudentByTeacher = async (userId: string) => {
+//   const studentCount = await db.classe.groupBy({
+//     by: ['id'],
+//     _sum: {},
 //   });
 // };
+// getCountOfStudentByTeacher();
