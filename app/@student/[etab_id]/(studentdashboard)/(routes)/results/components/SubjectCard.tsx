@@ -79,7 +79,7 @@ function SubjectCard({ subject, etab_id }: any) {
           />
           <div>
             <span className="text-[#1B8392] text-lg  leading-[25px]">Professeur:</span>
-            <p>{subject.teacher[0]?.name || 'unconnué'}</p>
+            <p>{subject.teacher[0]?.name || 'inconnue'}</p>
           </div>
         </div>
         <Link href={`/${etab_id}/results/${subject.id}`} className="bg-[#1B8392] w-24 p-1  text-white flex items-center justify-center rounded-lg font-extrabold text-[17px] hover:opacity-90 duration-150 cursor-pointer" >
