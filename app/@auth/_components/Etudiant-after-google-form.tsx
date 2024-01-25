@@ -18,11 +18,9 @@ import { SelectScrollable } from './SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { RiGovernmentLine } from 'react-icons/ri';
 import { MdOutlineClass } from 'react-icons/md';
-// import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
 import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
-import { TunisianClasses } from '@/public/auth/data/TunisianClasses';
 import { getClassesByEstablishmentId } from '@/actions/classe';
 import { updateStudentAfterGoogle } from '@/actions/auth/updateStudentAfterGoogle';
 import { useRouter } from 'next/navigation';
@@ -51,11 +49,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
       classe: [],
     },
   });
-  const {
-    data: establishments,
-    error: getEstabsError,
-    isPending: estabPending,
-  } = useQuery<any>({
+  const { data: establishments, isPending: estabPending } = useQuery<any>({
     queryKey: ['establishments'],
     queryFn: async () => await getAllEstabs(),
   });
@@ -67,8 +61,6 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
     [];
 
   const govOptions = Tunisiangovernments;
-
-  const classOptions = TunisianClasses;
 
   const [isTransPending, startTransition] = useTransition();
 
@@ -83,14 +75,12 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
       try {
         const { data: estabClasses } = await getClassesByEstablishmentId(selectedEtablissement.id);
         setChooseEstab(false);
-
-        const newOptions = [
-          {
-            id: estabClasses.id,
-            value: estabClasses.name,
-            label: estabClasses.name,
-          },
-        ] as any;
+        const newOptions =
+          (estabClasses &&
+            estabClasses.map((estab: any) => {
+              return { id: estab.id, value: estab.name, label: estab.name };
+            })) ||
+          [];
         setEstabClassesOptions(newOptions);
       } catch (error) {
         console.error('Error fetching classes:', error);
@@ -106,7 +96,6 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
   const onSubmit = async (values: z.infer<typeof EtudiantAfterSchema>) => {
     values.role = role;
     values.email = session?.email;
-    console.log(values);
     setUserEstab(values.etablissement);
     setError('');
     setSuccess('');
@@ -199,7 +188,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                 </FormLabel>
                 <FormControl className="flex-grow ">
                   <SelectScrollable
-                    disabled={isTransPending}
+                    disabled={isTransPending || estabPending}
                     field={field}
                     placeholder="Choisissez votre établissement"
                     options={estabOptions}

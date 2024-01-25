@@ -17,19 +17,32 @@ import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
 import { login } from '@/actions/auth/login';
-import { useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
 import bcryptjs from 'bcryptjs';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 
 export default function LoginForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
+  
+  const searchParams = useSearchParams();
+  const errorAuth = searchParams.get('error');
+  const onEnter = useCallback(async () => {
+    if (errorAuth) {
+      setError('E-mail déjà utilisée');
+    }
+  }, [errorAuth]);
+
+  useEffect(() => {
+    onEnter();
+  }, [onEnter]);
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {

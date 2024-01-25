@@ -288,7 +288,7 @@ export const deleteUserInClasse = async (id: string) => {
 
 export const getClassesByEstablishmentId = async (etab_id: number) => {
   try {
-    const classes = await db.classe.findFirst({
+    const classes = await db.classe.findMany({
       where: {
         establishment: {
           some: {
