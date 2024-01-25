@@ -9,8 +9,8 @@ import { getCountOfClasse, getCountOfExamenes, getCountMonArchive } from '@/acti
 
 export default function Home() {
   const queryClient = useQueryClient();
-  const user = queryClient.getQueryData(['user']);
-  const etab_id = queryClient.getQueryData(['etab_id']);
+  const user = queryClient.getQueryData(['user']) as any;
+  const etab_id = queryClient.getQueryData(['etab_id']) as any;
   console.log(etab_id);
 
   const { data: classeCount, isPending: classeCountPending } = useQuery({

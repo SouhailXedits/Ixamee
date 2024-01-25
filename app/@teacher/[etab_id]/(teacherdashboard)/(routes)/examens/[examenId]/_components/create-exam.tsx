@@ -807,7 +807,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
                     placeholder="--.--"
                     maxLength={5}
                     disabled
-                    value={Number(calculerExerciceMark(allData, data)).toFixed(2)}
+                    // value={Number(calculerExerciceMark(allData, data)).toFixed(2)}
                     // defaultValue={}
                   />
                   {/* <span className="text-xl">/ 20.00</span> */}
