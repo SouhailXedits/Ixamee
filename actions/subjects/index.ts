@@ -114,3 +114,111 @@ export const deleteSubject = async (id: number) => {
     };
   }
 };
+
+
+export const getAllSubjectsByClasseId = async (classeId: number) => {
+  // const res = await db.classe.findMany({
+  //   select: {
+  //     id: true,
+  //     name: true,
+  //     subject: {
+  //       select: {
+  //         id: true,
+  //         name: true,
+  //         coefficient: true,
+  //         icon: true,
+  //         teacher: {
+  //           select: {
+  //             id: true,
+  //             name: true,
+  //             image: true,
+
+  //           },
+  //           where: {
+
+  //           }
+  //         },
+
+  //       },
+  //     },
+  //   },
+  //   where: {
+  //     id: classeId,
+  //     // teacher: {
+  //     //   some: {
+  //     //     classe_teacher: {
+  //     //       some: {
+  //     //         id: classeId
+  //     //       }
+  //     //     }
+  //     //   }
+  //     // },
+  //     subject: {
+  //       some: {
+  //         classe_subject: {
+  //           some: {
+  //             id: classeId
+  //           }
+  //         }
+  //       }
+  //     }
+  //   },
+  // });
+  const res = await db.subject.findMany({
+    where: {
+      classe_subject: {
+        some: {
+          id: classeId,
+        },
+      },
+      is_archived: false,
+    },
+    select: {
+      id: true,
+      name: true,
+      coefficient: true,
+      icon: true,
+      teacher: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          term: true,
+        },
+        where: {
+          classe_teacher: {
+            some: {
+              id: classeId,
+            },
+          },
+        },
+      },
+      classe_subject: {
+        select: {
+          id: true,
+          name: true,
+        },
+        where: {
+          id: classeId,
+        },
+      },
+      // exams: {
+      //   select: {
+      //     id: true,
+      //     name: true,
+      //     term: true,
+      //   },
+      //   where: {
+      //     is_archived: false,
+      //     exam_classess: {
+      //       some: {
+      //         id: classeId,
+      //       },
+      //     },
+      //   },
+      // },
+    },
+  });
+  console.log(res);
+  return res;
+};

@@ -13,7 +13,7 @@
 // ];
 'use client'
 
-import { getAllSubjectsByClasseId } from "@/actions/classe";
+import { getAllSubjectsByClasseId } from "@/actions/subjects";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import SubjectCard from "./components/SubjectCard";
