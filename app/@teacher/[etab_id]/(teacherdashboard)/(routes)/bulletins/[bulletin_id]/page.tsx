@@ -13,9 +13,7 @@ import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useParams, useRouter } from 'next/navigation';
 import { useNavigate } from 'react-router-dom';
-import UserExam from './components/UserExam';
-
-
+import UserExam from '../../../../../../../components/shared-components/UserExam';
 
 const userExams = [
   {

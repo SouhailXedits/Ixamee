@@ -1,7 +1,9 @@
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 
-function SubjectCard({ subject }: any) {
+function SubjectCard({ subject, etab_id }: any) {
   const colors = ['#ECF1F9', '#FFF4F3', '#FFF4D3'];
   const randomIndex = Math.floor(Math.random() * colors.length);
   return (
@@ -58,9 +60,9 @@ function SubjectCard({ subject }: any) {
         </div>
       </div> */}
       <div className="items-center justify-center text-center text-[#4C4C4D]">
-        {subject.teacher[0]?.term === 'TRIMESTRE' ? (
+        {subject?.teacher[0]?.term === 'TRIMESTRE' ? (
           <p>Trimestre</p>
-        ) : subject.teacher[0]?.term === 'SEMESTRE' ? (
+        ) : subject?.teacher[0]?.term === 'SEMESTRE' ? (
           <p>Semestre</p>
         ) : (
           'Libre'
@@ -70,19 +72,19 @@ function SubjectCard({ subject }: any) {
         <div className="flex items-center gap-3">
           <Image
             alt="Teacher image"
-            src={subject.teacher[0]?.image}
+            src={subject.teacher[0]?.image || '/defaultUserAvatr.svg'}
             width={40}
             height={40}
             className=" rounded-full"
           />
           <div>
             <span className="text-[#1B8392] text-lg  leading-[25px]">Professeur:</span>
-            <p>{subject.teacher[0]?.name}</p>
+            <p>{subject.teacher[0]?.name || 'unconnué'}</p>
           </div>
         </div>
-        <span className="bg-[#1B8392] w-24 p-1  text-white flex items-center justify-center rounded-lg font-extrabold text-[17px] hover:opacity-90 duration-150 cursor-pointer">
+        <Link href={`/${etab_id}/results/${subject.id}`} className="bg-[#1B8392] w-24 p-1  text-white flex items-center justify-center rounded-lg font-extrabold text-[17px] hover:opacity-90 duration-150 cursor-pointer" >
           Ouvrir
-        </span>
+        </Link>
       </div>
     </div>
   );
