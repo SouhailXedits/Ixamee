@@ -66,3 +66,38 @@ export const UpdateTeacherSchema = z.object({
       message: "L'établissement est requis",
     }),
 });
+
+export const UpdateStudentSchema = z.object({
+  image: z.string(),
+  name: z.string().min(2, {
+    message: 'le nom est requis (3 lettre au minimum)',
+  }),
+  email: z.string().email({
+    message: "L'email est requis",
+  }),
+  government: z.string().min(3, {
+    message: 'La gouvernorat est requis',
+  }),
+  classe: z
+    .array(
+      z.object({
+        id: z.number(),
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .refine((data) => data.length >= 1, {
+      message: 'La matière est requise',
+    }),
+  etablissement: z
+    .array(
+      z.object({
+        id: z.number(),
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .refine((data) => data.length >= 1, {
+      message: "L'établissement est requis",
+    }),
+});

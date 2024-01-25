@@ -8,7 +8,7 @@ const Profile = () => {
 
   const user = queryClient.getQueryData(['user']) as any;
   const userEstablishment = queryClient.getQueryData(['AllEstabOfUser']) as any;
-  const teacherSubject = queryClient.getQueryData(['teacherSubject']) as any;
+  const classe = queryClient.getQueryData(['user-classes']) as any;
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -23,16 +23,12 @@ const Profile = () => {
       </nav>
 
       <div>
-        {!teacherSubject ? (
+        {!classe ? (
           <div className="flex items-center justify-center">
             <div className="animate-spin border-mainGreen rounded-full h-8 w-8 border-t-2 border-blue-500 border-r-2 border-b-2 border-gray-300"></div>
           </div>
         ) : (
-          <ProfileCards
-            user={user}
-            userEstablishment={userEstablishment}
-            teachersubject={teacherSubject}
-          />
+          <ProfileCards user={user} userEstablishment={userEstablishment} classe={classe} />
         )}
       </div>
     </main>

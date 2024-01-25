@@ -34,6 +34,7 @@ const NavbarProfile = () => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
 
+
   if (!user) {
     return null;
   }
@@ -48,7 +49,7 @@ const NavbarProfile = () => {
           src={user?.image || '/studenttestpicture.svg'}
           width={35}
           height={35}
-          className="rounded-full object-fill" 
+          className="rounded-full object-fill"
         />
       </div>
 
@@ -56,7 +57,9 @@ const NavbarProfile = () => {
         <span className="w-[120px] text-[#1B8392] text-sm font-semibold whitespace-nowrap ">
           {user?.name}{' '}
         </span>
-        <span className="w-[120px] text-[#99C6D3] text-xs font-thin ">Professeur</span>
+        <span className="w-[120px] text-[#99C6D3] text-xs font-thin ">
+          {user.role === 'TEACHER' ? 'Professeur' : 'Etudiant'}
+        </span>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -88,7 +91,11 @@ const NavbarProfile = () => {
           {/* </ModifierUnEtudiant> */}
           <DropdownMenuItem
             onClick={() => {
-              router.push(`/${params.etab_id}/teacher-profile`);
+              if (user.role === 'TEACHER') {
+                router.push(`/${params.etab_id}/teacher-profile`);
+              } else {
+                router.push(`/${params.etab_id}/student-profile`);
+              }
             }}
           >
             Mon profil
