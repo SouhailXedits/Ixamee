@@ -41,7 +41,6 @@ const NavbarProfile = () => {
     queryFn: async () => await getMe(),
   });
 
-  console.log('🚀 ~ NavbarProfile ~ user:', user);
   if (!user) {
     return null;
   }
