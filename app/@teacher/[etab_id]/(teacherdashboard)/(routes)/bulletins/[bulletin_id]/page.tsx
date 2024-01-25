@@ -14,31 +14,70 @@ import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useParams, useRouter } from 'next/navigation';
 import { useNavigate } from 'react-router-dom';
 import UserExam from '../../../../../../../components/shared-components/UserExam';
+import TermCard from '@/components/shared-components/TermCard';
 
-const userExams = [
+const trimesters = [
   {
-    id: 1,
-    name: 'Devoir de Controle N°1 Maths',
-    date: '22/03/2023',
-    marksObtained: 15.5,
-    totalScore: 20,
-    rang: 8,
+    name: 'Trimester 1',
+    exams: [
+      {
+        id: 1,
+        name: 'Devoir de Controle N°1 Maths',
+        date: '22/03/2023',
+        marksObtained: 15.5,
+        totalScore: 20,
+        rang: 8,
+      },
+      {
+        id: 2,
+        name: 'Devoir de Controle physique',
+        date: '22/03/2023',
+        marksObtained: 15.5,
+        totalScore: 20,
+        rang: 8,
+      },
+      {
+        id: 3,
+        name: 'Devoir de Controle N°1 Maths',
+        date: '22/03/2023',
+        marksObtained: 15.5,
+        totalScore: 20,
+        rang: 8,
+      },
+      {
+        id: 4,
+        name: 'Devoir de Controle physique',
+        date: '22/03/2023',
+        marksObtained: 15.5,
+        totalScore: 20,
+        rang: 8,
+      },
+    ],
   },
   {
-    id: 2,
-    name: 'Devoir de Controle physique',
-    date: '22/03/2023',
-    marksObtained: 15.5,
-    totalScore: 20,
-    rang: 8,
+    name: 'Trimester 2',
+    exams: [],
   },
   {
-    id: 3,
-    name: 'Examen 1',
-    date: '22/03/2023',
-    marksObtained: 15.5,
-    totalScore: 20,
-    rang: 8,
+    name: 'Trimester 3',
+    exams: [
+      {
+        id: 1,
+        name: 'Devoir de Controle N°1 Maths',
+        date: '22/03/2023',
+        marksObtained: 15.5,
+        totalScore: 20,
+        rang: 8,
+      },
+      {
+        id: 2,
+        name: 'Devoir de Controle physique',
+        date: '22/03/2023',
+        marksObtained: 15.5,
+        totalScore: 20,
+        rang: 8,
+      },
+    ],
   },
 ];
 const Student = () => {
@@ -103,36 +142,9 @@ const Student = () => {
       </div>
 
       <div className="flex overflow-auto gap-9 p-7">
-        <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
-          <div className=" bg-mainGreen/35 p-2 rounded text-mainGreen font-semibold">
-            Trimester 1
-          </div>
-          <div className=" flex flex-col gap-4">
-            {userExams.map((exam) => (
-              <UserExam key={exam.id} exam={exam} />
-            ))}
-          </div>
-        </div>
-        <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
-          <div className=" bg-mainGreen/35 p-2 rounded text-mainGreen font-semibold">
-            Trimester 1
-          </div>
-          <div className=" flex flex-col gap-4">
-            {userExams.map((exam) => (
-              <UserExam key={exam.id} exam={exam} />
-            ))}
-          </div>
-        </div>
-        <div className=" flex flex-col gap-6 shadow-lg rounded-xl p-4 hover:scale-105 transition-all">
-          <div className=" bg-mainGreen/35 text-mainGreen font-semibold p-2 rounded">
-            Trimester 1
-          </div>
-          <div className=" flex flex-col gap-4">
-            {userExams.map((exam) => (
-              <UserExam key={exam.id} exam={exam} />
-            ))}
-          </div>
-        </div>
+        {trimesters.map((trimester) => (
+          <TermCard term={trimester} />
+        ))}
       </div>
       <div className=" flex w-full justify-end gap-2 text-white">
         <p className=" p-2 bg-orangeColor rounded">Rang: 4</p>
