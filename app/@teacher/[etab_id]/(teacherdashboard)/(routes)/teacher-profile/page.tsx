@@ -1,14 +1,25 @@
 'use client';
 import Image from 'next/image';
 import ProfileCards from './_components/ProfileCards';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getEstablishmentOfUser, getSubjectOfUserById } from '@/actions/examens';
 
 const Profile = () => {
   const queryClient = useQueryClient();
 
   const user = queryClient.getQueryData(['user']) as any;
-  const userEstablishment = queryClient.getQueryData(['AllEstabOfUser']) as any;
-  const teacherSubject = queryClient.getQueryData(['teacherSubject']) as any;
+
+  const { data: userEstablishment, isPending: isPendingEstablishment } = useQuery<any>({
+    queryKey: ['AllEstabOfUser'],
+    queryFn: async () => await getEstablishmentOfUser(user?.id as string),
+    staleTime: 0,
+  });
+
+  const { data: teacherSubject, isPending: isPendingSubject } = useQuery<any>({
+    queryKey: ['teacherSubjects'],
+    queryFn: async () => await getSubjectOfUserById(user?.id as string),
+    staleTime: 0,
+  });
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -23,7 +34,7 @@ const Profile = () => {
       </nav>
 
       <div>
-        {!teacherSubject ? (
+        {isPendingSubject ? (
           <div className="flex items-center justify-center">
             <div className="animate-spin border-mainGreen rounded-full h-8 w-8 border-t-2 border-blue-500 border-r-2 border-b-2 border-gray-300"></div>
           </div>

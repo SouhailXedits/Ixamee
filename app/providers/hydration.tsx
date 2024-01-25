@@ -16,13 +16,11 @@ export default async function Hydration({ children }: { children: React.ReactNod
     queryKey: ['AllEstabOfUser'],
     queryFn: async () => await getEstablishmentOfUser(user?.id),
   });
+
   await queryClient.prefetchQuery({
     queryKey: ['teacherSubject'],
     queryFn: async () => await getSubjectOfUserById(user?.id),
   });
-
-
-
 
   // await queryClient.prefetchQuery({
   //   queryKey: ['examens'],

@@ -8,14 +8,14 @@ export function useUpdateCredentials() {
   const { mutate: updateUser, isPending } = useMutation({
     mutationFn: (values: any) => updateTeacherCredentials(values),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-      queryClient.invalidateQueries({ queryKey: ['teachersubjects'] });
-      queryClient.invalidateQueries({ queryKey: ['AllEstabOfUser'] });
       if (data?.success) {
+        queryClient.invalidateQueries({ queryKey: ['user'] });
+        queryClient.invalidateQueries({ queryKey: ['teacherSubjects'] });
+        queryClient.invalidateQueries({ queryKey: ['AllEstabOfUser'] });
         toast.success(data.success + '');
       }
       if (data?.error) {
-        toast.error(data.error)
+        toast.error(data.error);
       }
     },
     onError: (err) => {
