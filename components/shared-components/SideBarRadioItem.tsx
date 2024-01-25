@@ -26,12 +26,7 @@ const FormSchema = z.object({
   }),
 });
 interface SideBarRadioItemProps {
-  data:
-    | {
-        id: number;
-        name: string;
-      }[]
-    | undefined;
+  data: { name: string | null; id: number }[] | undefined;
 }
 
 export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
@@ -61,10 +56,10 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   const { collapsed } = useSidebar((state) => state);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {}
-  const shorting = (ch: string) => {
-    let arr = ch.split(' ');
+  const shorting = (ch: string | null) => {
+    let arr = ch?.split(' ');
     let newarr = '';
-    arr.map((arr) => {
+    arr?.map((arr) => {
       newarr += arr[0];
     });
     return newarr;
