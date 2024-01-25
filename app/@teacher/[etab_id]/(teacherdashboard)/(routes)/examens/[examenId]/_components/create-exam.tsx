@@ -5,10 +5,8 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Editor from './toolbar-editor';
 import { useState } from 'react';
-import { stat } from 'fs';
-import { sub } from 'date-fns';
+
 export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
-  console.log(data);
 
   const onChange = (content: string) => {
     console.log(content);
@@ -75,16 +73,16 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
       });
     });
   };
-  const calcSumOfMarks = (data) => {
+  const calcSumOfMarks = (data: any) => {
     console.log(data);
     let sum = 0;
-    data.children.map((item) => {
+    data.children.map((item: any) => {
       sum += +item.mark;
     });
 
     return sum;
   };
-  const updateSubSubQuestion = (e, data) => {
+  const updateSubSubQuestion = (e: any, data: any) => {
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
         if (item.id === allData.id) {
@@ -137,7 +135,6 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
     console.log('update');
     console.log(allData);
   };
-  console.log(allData);
   return (
     <>
       <div
@@ -291,112 +288,168 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any)
   //   },
   // ];
 
+  // Function to handle deleting a sub-subquestion
   const handleDeleteSubQuestion = () => {
+    // Updating the state to delete the specified sub-subquestion
     setFakeData((prevData: any) => {
+      // Mapping over the previous data to create a new updatedData array
       return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question
         if (item.id === allData.id) {
+          // Updating the children array of the parent question
           return {
             ...item,
             children: item.children.map((subItem: any) => {
+              // Updating the children array of the parent subquestion
               return {
                 ...subItem,
                 children: subItem.children.filter((subSubItem: any) => {
+                  // Checking if the current subsubitem's id matches the id of the sub-subquestion to be deleted
                   if (subSubItem.id === data.id) {
+                    // 🗑️ Returning false to exclude the sub-subquestion from the children array
                     return false;
                   }
-
-                  return subSubItem;
+                  // Returning true to keep other sub-subquestions in the children array
+                  return true;
                 }),
               };
             }),
           };
         }
+        // Returning unchanged items
         return item;
       });
     });
+
+    // Re-rendering sub-subquestions after deletion
     renderSubSubQuestion();
   };
+
+  // Function to render and update names of sub-subquestions
   const renderSubSubQuestion = () => {
+    // Updating the state to render and update sub-subquestions
     setFakeData((prevData: any) => {
+      // Mapping over the previous data to create a new updatedData array
       return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question
         if (item.id === allData.id) {
+          // Updating the children array of the parent question
           return {
             ...item,
             children: item.children.map((subItem: any) => {
+              // Updating the children array of the parent subquestion
               return {
                 ...subItem,
-                children: subItem.children.filter((subSubItem: any, index: number) => {
+                children: subItem.children.map((subSubItem: any, index: number) => {
+                  // 🆕 Updating the name of each sub-subquestion based on its index
                   subSubItem.name = index + 1 + ')';
-
+                  // Returning unchanged sub-subitems
                   return subSubItem;
                 }),
               };
             }),
           };
         }
+        // Returning unchanged items
         return item;
       });
     });
   };
+
+  // Function to calculate the sum of marks in a subquestion hierarchy
   const calculerSubMark = (data: any) => {
+    // Extracting children from the provided data
     const children = data.children;
+
+    // Logging children, data, and allData for debugging purposes
     console.log(children);
     console.log(data);
     console.log(allData);
 
+    // Initializing the sum variable to 0
     let sum = 0;
 
+    // Uncomment the following line if you intend to reset the mark of the provided data to 0
     // data.mark = 0;
+
+    // Returning the calculated sum (which is currently 0)
     return sum;
   };
-  const calcSumOfMarks = (data) => {
+
+  // Function to calculate the sum of marks in a subquestion hierarchy
+  const calcSumOfMarks = (data: any) => {
+    // Logging the data for debugging purposes
     console.log(data);
+
+    // Initializing the sum variable to 0
     let sum = 0;
-    data.children.map((item) => {
+
+    // Mapping over the children array of the provided data
+    data.children.map((item: any) => {
+      // Adding the mark of each child to the sum
       sum += +item.mark;
     });
 
+    // Returning the calculated sum
     return sum;
   };
-  const updateSubQuestion = (e, data) => {
+
+  // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
+  const updateSubQuestion = (e: any, data: any) => {
     console.log(data);
+
+    // Updating the mark of the specific subquestion
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question
         if (item.id === allData.id) {
+          // Updating 👍 the children array of the parent question
           return {
             ...item,
             children: item.children.map((subItem: any) => {
+              // Updating the children array of the parent subquestion
               return {
                 ...subItem,
-                children: subItem.children.filter((subSubItem: any, index: number) => {
+                children: subItem.children.map((subSubItem: any) => {
+                  // Checking if the current subsubitem's id matches the id of the subquestion to be updated
                   if (subSubItem.id === data.id) {
+                    // Updating the mark of the subquestion with the new value
                     subSubItem.mark = +e.target.value;
                   }
+                  // Returning unchanged subsubitems
                   return subSubItem;
                 }),
               };
             }),
           };
         }
+        // Returning unchanged items
         return item;
       });
     });
+
+    // Recalculating marks in the hierarchy
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question and it has children
         if (item.id === allData.id && item.children.length > 0) {
+          // Updating the children array of the parent question
           return {
             ...item,
             children: item.children.map((subItem: any) => {
+              // Updating the children array of the parent subquestion
               return {
                 ...subItem,
                 mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
-                children: subItem.children.filter((subSubItem: any, index: number) => {
+                children: subItem.children.map((subSubItem: any) => {
+                  // Returning unchanged subsubitems
                   return subSubItem;
                 }),
               };
             }),
           };
         }
+        // Returning unchanged items
         return item;
       });
     });
@@ -463,97 +516,130 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any)
   );
 };
 export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
-  console.log(data);
-  console.log(allData);
-  console.log(fakeData);
+  //  this the content of the Editor 🙄
   const onChange = (content: string) => {
     console.log(content);
   };
+  // Function to create and add a new subquestion to a specific question in fake data
   const createSubQuestion = () => {
+    // Generating a new subquestion with a random id, name, initial mark, and an empty children array
     const newSubQuestion = {
       id: Math.random().toString(36).substring(7),
-      name: `${data.children.length + 1})`,
+      name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
       mark: 0,
       children: [],
     };
 
     // Update the state to include the new subquestion
     setFakeData((prevData: any) => {
+      // Mapping over the previous data to create a new updatedData array
       return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question
         if (item.id === allData.id) {
+          // Updating the children array of the parent question
           return {
             ...item,
             children: item.children.map((subItem: any) => {
+              // Checking if the current subitem's id matches the id of the parent subquestion
               if (subItem.id === data.id) {
+                // Adding the new subquestion to the children array of the parent subquestion
                 return {
                   ...subItem,
                   children: [...subItem.children, newSubQuestion],
                 };
               }
+              // Returning unchanged subitems
               return subItem;
             }),
           };
         }
+        // Returning unchanged items
         return item;
       });
     });
   };
+
+  // Function to handle deleting a question from fake data
   const handelDeleteQuestion = () => {
+    // 🚨 Logging the previous data for debugging purposes
     setFakeData((prevData: any) => {
       console.log(prevData);
+      // Mapping over the previous data to create a new updatedData array
       return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the question to be deleted
         if (item.id === allData.id) {
+          // 🗑️ Removing the specific child with the matching id from the children array
           return {
             ...item,
             children: item.children.filter((subItem: any) => subItem.id !== data.id),
           };
         }
+        // Returning unchanged items
         return item;
       });
     });
+    // 🔄 Triggering a re-render of questions after deletion
     handeRenderQuestion();
   };
+
+  // Function to handle rendering questions and updating their names
   const handeRenderQuestion = () => {
+    // 🚨 Logging the previous data for debugging purposes
     setFakeData((prevData: any) => {
       console.log(prevData);
+      // Mapping over the previous data to create a new updatedData array
       return prevData.map((item: any) => {
+        // Function to get the next character in a sequence based on the index
         const getNextChar = (num: number) => String.fromCharCode(0x2160 + num);
+
+        // Mapping over the children array of each item
         item.children.map((state: any, index: number) => {
+          // 🌟 Updating the name of each child with the next character in the sequence
           state.name = getNextChar(index);
         });
 
+        // Returning the updated item
         return item;
       });
     });
   };
 
-  const calculerQuestionMark = (data: any) => {
-    console.log(allData);
-
-    console.log(data);
+  /**
+   * Calculate the mark for the given data
+   * @param data - The data containing children and mark
+   * @returns The calculated mark
+   */
+  const calculateMark = (data: any) => {
+    // If data has no children, default to an empty array
     const children = data?.children || [];
-    console.log(children);
+
+    // Calculate the mark by summing up the marks of the children
     data.mark = children?.reduce((acc: number, item: any) => {
       return acc + item.mark;
     }, 0);
-    console.log(allData);
-    console.log(fakeData);
-    setFakeData(fakeData);
-    return data.mark;
 
-    // data.mark = sum;
+    // Return the calculated mark
+    return data.mark;
   };
 
+  // Function to update a question's mark in the fake data
   const updateQuestion = (e: any, data: any) => {
+    // Using setFakeData to update the state based on previous data
     setFakeData((prevData: any) => {
+      // Mapping over the previous data to create a new updatedData array
       const updatedData = prevData.map((item: any) => {
+        // Mapping over the children array of each item
         item.children.map((state: any, index: number) => {
+          // Checking if the current child's id matches the provided data's id
           if (state.id === data.id) {
+            // Updating the mark of the matching child with the new value (+e)
             state.mark = +e;
           }
         });
+        // Returning the updated item
         return item;
       });
+      // Returning the updatedData to setFakeData
       return updatedData;
     });
   };
@@ -589,9 +675,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) =>
               maxLength={5}
               disabled={data.children && data.children.length > 0}
               // defaultValue={calculerQuestionMark(data)}
-              value={
-                data.children && data.children.length > 0 ? calculerQuestionMark(data) : data.mark
-              }
+              value={data.children && data.children.length > 0 ? calculateMark(data) : data.mark}
               onChange={(e) => {
                 updateQuestion(e.target.value, data);
               }}
@@ -773,124 +857,123 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
 
 function CreateExam({ data }: any) {
   const [fakeData, setFakeData] = useState<any>([
-    // {
-    //   name: 'Exerice n1',
-    //   mark: 10,
-    //   id: '1x23ds',
-    //   children: [
-    //     // {
-    //     //   name: 'I)',
-    //     //   mark: '10',
-    //     //   content:
-    //     //     '[\n' +
-    //     //     '  {\n' +
-    //     //     '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
-    //     //     '    "type": "paragraph",\n' +
-    //     //     '    "props": {\n' +
-    //     //     '      "textColor": "default",\n' +
-    //     //     '      "backgroundColor": "default",\n' +
-    //     //     '      "textAlignment": "left"\n' +
-    //     //     '    },\n' +
-    //     //     '    "content": [\n' +
-    //     //     '      {\n' +
-    //     //     '        "type": "text",\n' +
-    //     //     '        "text": "what is 1+1",\n' +
-    //     //     '        "styles": {}\n' +
-    //     //     '      }\n' +
-    //     //     '    ],\n' +
-    //     //     '    "children": []\n' +
-    //     //     '  },\n' +
-    //     //     '  {\n' +
-    //     //     '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
-    //     //     '    "type": "paragraph",\n' +
-    //     //     '    "props": {\n' +
-    //     //     '      "textColor": "default",\n' +
-    //     //     '      "backgroundColor": "default",\n' +
-    //     //     '      "textAlignment": "left"\n' +
-    //     //     '    },\n' +
-    //     //     '    "content": [],\n' +
-    //     //     '    "children": []\n' +
-    //     //     '  }\n' +
-    //     //     ']',
-    //     //   children: [
-    //     //     {
-    //     //       name: '1)',
-    //     //       mark: '2',
-    //     //       content:
-    //     //         '[\n' +
-    //     //         '  {\n' +
-    //     //         '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
-    //     //         '    "type": "paragraph",\n' +
-    //     //         '    "props": {\n' +
-    //     //         '      "textColor": "default",\n' +
-    //     //         '      "backgroundColor": "default",\n' +
-    //     //         '      "textAlignment": "left"\n' +
-    //     //         '    },\n' +
-    //     //         '    "content": [\n' +
-    //     //         '      {\n' +
-    //     //         '        "type": "text",\n' +
-    //     //         '        "text": "what is 1+1",\n' +
-    //     //         '        "styles": {}\n' +
-    //     //         '      }\n' +
-    //     //         '    ],\n' +
-    //     //         '    "children": []\n' +
-    //     //         '  },\n' +
-    //     //         '  {\n' +
-    //     //         '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
-    //     //         '    "type": "paragraph",\n' +
-    //     //         '    "props": {\n' +
-    //     //         '      "textColor": "default",\n' +
-    //     //         '      "backgroundColor": "default",\n' +
-    //     //         '      "textAlignment": "left"\n' +
-    //     //         '    },\n' +
-    //     //         '    "content": [],\n' +
-    //     //         '    "children": []\n' +
-    //     //         '  }\n' +
-    //     //         ']',
-    //     //       children: [
-    //     //         {
-    //     //           name: 'a)',
-    //     //           mark: '1',
-    //     //           content:
-    //     //             '[\n' +
-    //     //             '  {\n' +
-    //     //             '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
-    //     //             '    "type": "paragraph",\n' +
-    //     //             '    "props": {\n' +
-    //     //             '      "textColor": "default",\n' +
-    //     //             '      "backgroundColor": "default",\n' +
-    //     //             '      "textAlignment": "left"\n' +
-    //     //             '    },\n' +
-    //     //             '    "content": [\n' +
-    //     //             '      {\n' +
-    //     //             '        "type": "text",\n' +
-    //     //             '        "text": "what is 1+1",\n' +
-    //     //             '        "styles": {}\n' +
-    //     //             '      }\n' +
-    //     //             '    ],\n' +
-    //     //             '    "children": []\n' +
-    //     //             '  },\n' +
-    //     //             '  {\n' +
-    //     //             '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
-    //     //             '    "type": "paragraph",\n' +
-    //     //             '    "props": {\n' +
-    //     //             '      "textColor": "default",\n' +
-    //     //             '      "backgroundColor": "default",\n' +
-    //     //             '      "textAlignment": "left"\n' +
-    //     //             '    },\n' +
-    //     //             '    "content": [],\n' +
-    //     //             '    "children": []\n' +
-    //     //             '  }\n' +
-    //     //             ']',
-    //     //         },
-    //     //       ],
-    //     //     },
-    //     //   ],
-    //     // },
-    //   ],
-    // },
+    {
+      name: 'Exerice n1',
+      mark: 10,
+      id: '1x23ds',
+      children: [
+        {
+          name: 'I)',
+          mark: '10',
+          content:
+            '[\n' +
+            '  {\n' +
+            '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
+            '    "type": "paragraph",\n' +
+            '    "props": {\n' +
+            '      "textColor": "default",\n' +
+            '      "backgroundColor": "default",\n' +
+            '      "textAlignment": "left"\n' +
+            '    },\n' +
+            '    "content": [\n' +
+            '      {\n' +
+            '        "type": "text",\n' +
+            '        "text": "what is 1+1",\n' +
+            '        "styles": {}\n' +
+            '      }\n' +
+            '    ],\n' +
+            '    "children": []\n' +
+            '  },\n' +
+            '  {\n' +
+            '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
+            '    "type": "paragraph",\n' +
+            '    "props": {\n' +
+            '      "textColor": "default",\n' +
+            '      "backgroundColor": "default",\n' +
+            '      "textAlignment": "left"\n' +
+            '    },\n' +
+            '    "content": [],\n' +
+            '    "children": []\n' +
+            '  }\n' +
+            ']',
+          children: [
+            {
+              name: '1)',
+              mark: '2',
+              content:
+                '[\n' +
+                '  {\n' +
+                '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
+                '    "type": "paragraph",\n' +
+                '    "props": {\n' +
+                '      "textColor": "default",\n' +
+                '      "backgroundColor": "default",\n' +
+                '      "textAlignment": "left"\n' +
+                '    },\n' +
+                '    "content": [\n' +
+                '      {\n' +
+                '        "type": "text",\n' +
+                '        "text": "what is 1+1",\n' +
+                '        "styles": {}\n' +
+                '      }\n' +
+                '    ],\n' +
+                '    "children": []\n' +
+                '  },\n' +
+                '  {\n' +
+                '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
+                '    "type": "paragraph",\n' +
+                '    "props": {\n' +
+                '      "textColor": "default",\n' +
+                '      "backgroundColor": "default",\n' +
+                '      "textAlignment": "left"\n' +
+                '    },\n' +
+                '    "content": [],\n' +
+                '    "children": []\n' +
+                '  }\n' +
+                ']',
+              children: [
+                {
+                  name: 'a)',
+                  mark: '1',
+                  content:
+                    '[\n' +
+                    '  {\n' +
+                    '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
+                    '    "type": "paragraph",\n' +
+                    '    "props": {\n' +
+                    '      "textColor": "default",\n' +
+                    '      "backgroundColor": "default",\n' +
+                    '      "textAlignment": "left"\n' +
+                    '    },\n' +
+                    '    "content": [\n' +
+                    '      {\n' +
+                    '        "type": "text",\n' +
+                    '        "text": "what is 1+1",\n' +
+                    '        "styles": {}\n' +
+                    '      }\n' +
+                    '    ],\n' +
+                    '    "children": []\n' +
+                    '  },\n' +
+                    '  {\n' +
+                    '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
+                    '    "type": "paragraph",\n' +
+                    '    "props": {\n' +
+                    '      "textColor": "default",\n' +
+                    '      "backgroundColor": "default",\n' +
+                    '      "textAlignment": "left"\n' +
+                    '    },\n' +
+                    '    "content": [],\n' +
+                    '    "children": []\n' +
+                    '  }\n' +
+                    ']',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ]);
-  console.log(fakeData);
 
   const createExercice = (fakeData: any) => {
     const newExercise = {

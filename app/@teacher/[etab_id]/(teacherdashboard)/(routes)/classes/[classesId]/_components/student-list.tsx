@@ -43,9 +43,9 @@ import { SupprimerUserInClasse } from '@/components/modals/suprimer-user-in-clas
 import { usePathname, useRouter } from 'next/navigation';
 
 function calculateDateDifference(date1: Date, date2: Date): number {
-  // console.log(dataExported);
   const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+  console.log(differenceInDays);
   return differenceInDays;
 }
 function handleUpdateUser(user_id: number) {
@@ -69,27 +69,29 @@ const Action = ({ row }: any) => {
               className="cursor-pointer "
             />
           </CorrectExam> */}
-
-      {calculateDateDifference(row.original.invited_at, row.original.invited_at) > 1 ? (
-        <Image
-          src="/userInvited.svg"
-          alt=""
-          width={20}
-          height={20}
-          aria-disabled={true}
-          className="cursor-not-allowed "
-        />
-      ) : (
-        <InviterUnEtudiant studentEmail={row.original.email}>
+      {console.log(row.original.emailVerified)}
+      {!row.original.emailVerified ? (
+        calculateDateDifference(row.original.invited_at, row.original.invited_at) == 0 ? (
           <Image
-            src="/invitestudent.svg"
+            src="/userInvited.svg"
             alt=""
             width={20}
             height={20}
-            className="cursor-pointer "
+            aria-disabled={true}
+            className="cursor-not-allowed "
           />
-        </InviterUnEtudiant>
-      )}
+        ) : (
+          <InviterUnEtudiant studentEmail={row.original.email}>
+            <Image
+              src="/invitestudent.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="cursor-pointer "
+            />
+          </InviterUnEtudiant>
+        )
+      ) : null}
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -289,8 +291,6 @@ export function StudentList({ data, isPending }: any) {
       rowSelection,
     },
   });
-
-  console.log(data);
 
   return (
     <div className="w-full">
