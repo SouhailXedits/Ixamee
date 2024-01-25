@@ -28,6 +28,7 @@ function Results() {
       queryKey: ['user-subjects', id],
       queryFn: async () => getAllSubjectsByClasseId(+id),
     });
+
     console.log(data)
     if(error) return;
     return (
@@ -45,7 +46,7 @@ function Results() {
         <div className=" flex flex-wrap gap-8">
           {isPending && <Skeleton className=" w-[350px] rounded-[20px] h-[200px]" />}
           {data?.map((subject) => (
-            <SubjectCard key={subject.id} subject={subject} />
+            <SubjectCard key={subject.id} subject={subject} etab_id={id} />
           ))}
         </div>
         {/* <SubjectCard/> */}

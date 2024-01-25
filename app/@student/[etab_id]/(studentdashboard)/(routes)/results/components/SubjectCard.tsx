@@ -1,7 +1,9 @@
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 
-function SubjectCard({ subject }: any) {
+function SubjectCard({ subject, etab_id }: any) {
   const colors = ['#ECF1F9', '#FFF4F3', '#FFF4D3'];
   const randomIndex = Math.floor(Math.random() * colors.length);
   return (
@@ -80,9 +82,9 @@ function SubjectCard({ subject }: any) {
             <p>{subject.teacher[0]?.name || 'unconnué'}</p>
           </div>
         </div>
-        <span className="bg-[#1B8392] w-24 p-1  text-white flex items-center justify-center rounded-lg font-extrabold text-[17px] hover:opacity-90 duration-150 cursor-pointer">
+        <Link href={`/${etab_id}/results/${subject.id}`} className="bg-[#1B8392] w-24 p-1  text-white flex items-center justify-center rounded-lg font-extrabold text-[17px] hover:opacity-90 duration-150 cursor-pointer" >
           Ouvrir
-        </span>
+        </Link>
       </div>
     </div>
   );
