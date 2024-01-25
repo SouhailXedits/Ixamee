@@ -167,6 +167,7 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
         },
       },
     });
+    console.log(classes);
     return { data: classes, error: undefined };
   } catch (error: any) {
     return {

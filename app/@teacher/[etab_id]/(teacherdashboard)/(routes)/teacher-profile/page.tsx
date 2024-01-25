@@ -9,15 +9,7 @@ const Profile = () => {
 
   const user = queryClient.getQueryData(['user']) as any;
   const userEstablishment = queryClient.getQueryData(['AllEstabOfUser']) as any;
-
-  const {
-    data: teachersubject,
-    error,
-    isPending,
-  } = useQuery<any>({
-    queryKey: ['teacherSubject', user?.id],
-    queryFn: async () => await getSubjectOfUserById(user?.id),
-  });
+  const teacherSubject = queryClient.getQueryData(['teacherSubject']) as any;
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -32,7 +24,7 @@ const Profile = () => {
       </nav>
 
       <div>
-        {isPending ? (
+        {!teacherSubject ? (
           <div className="flex items-center justify-center">
             <div className="animate-spin border-mainGreen rounded-full h-8 w-8 border-t-2 border-blue-500 border-r-2 border-b-2 border-gray-300"></div>
           </div>
@@ -40,7 +32,7 @@ const Profile = () => {
           <ProfileCards
             user={user}
             userEstablishment={userEstablishment}
-            teachersubject={teachersubject}
+            teachersubject={teacherSubject}
           />
         )}
       </div>

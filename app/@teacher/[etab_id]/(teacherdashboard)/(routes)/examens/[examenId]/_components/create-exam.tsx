@@ -77,7 +77,12 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
   };
   const calcSumOfMarks = (data) => {
     console.log(data);
-    return 10;
+    let sum = 0;
+    data.children.map((item) => {
+      sum += +item.mark;
+    });
+
+    return sum;
   };
   const updateSubSubQuestion = (e, data) => {
     setFakeData((prevData: any) => {
@@ -88,18 +93,38 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
             children: item.children.map((subItem: any) => {
               return {
                 ...subItem,
-                children: subItem.children.filter((subSubItem: any, index: number) => {
-                  console.log(subSubItem);
-
+                children: subItem.children.map((subSubItem: any, index: number) => {
+                  console.log(subSubItem.mark, '🐳');
                   return {
                     ...subSubItem,
-                    mark: 20,
                     children: subSubItem.children.map((subSubSubItem: any) => {
                       if (subSubSubItem.id === data.id) {
                         subSubSubItem.mark = +e.target.value;
                       }
                       return subSubSubItem;
                     }),
+                  };
+                }),
+              };
+            }),
+          };
+        }
+        return item;
+      });
+    });
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        if (item.id === allData.id) {
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              return {
+                ...subItem,
+                children: subItem.children.map((subSubItem: any, index: number) => {
+                  console.log(subSubItem.mark, '🐳');
+                  return {
+                    ...subSubItem,
+                    mark: calcSumOfMarks(subSubItem),
                   };
                 }),
               };
@@ -324,6 +349,15 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any)
     // data.mark = 0;
     return sum;
   };
+  const calcSumOfMarks = (data) => {
+    console.log(data);
+    let sum = 0;
+    data.children.map((item) => {
+      sum += +item.mark;
+    });
+
+    return sum;
+  };
   const updateSubQuestion = (e, data) => {
     console.log(data);
     setFakeData((prevData: any) => {
@@ -338,6 +372,25 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any)
                   if (subSubItem.id === data.id) {
                     subSubItem.mark = +e.target.value;
                   }
+                  return subSubItem;
+                }),
+              };
+            }),
+          };
+        }
+        return item;
+      });
+    });
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        if (item.id === allData.id && item.children.length > 0) {
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              return {
+                ...subItem,
+                mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
+                children: subItem.children.filter((subSubItem: any, index: number) => {
                   return subSubItem;
                 }),
               };

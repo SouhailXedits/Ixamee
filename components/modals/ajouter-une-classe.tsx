@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 interface AjouterUneClasse {
   children: React.ReactNode;
@@ -31,11 +31,14 @@ const schema = z.object({
 import Select from 'react-select';
 
 export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse) => {
+  const queryClient = useQueryClient();
+
   const { createClass, isPending } = useCreateClasse();
-  const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
-    queryKey: ['teachersubject'],
-    queryFn: async () => await getUserSubject(user_id),
-  });
+  // const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
+  //   queryKey: ['teachersubject'],
+  //   queryFn: async () => await getUserSubject(user_id),
+  // });
+  const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
   const subjectoptions = Teachersubject?.map((item) => {
     return {
       value: item.id,

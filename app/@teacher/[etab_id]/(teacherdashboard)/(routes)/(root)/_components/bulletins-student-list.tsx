@@ -64,7 +64,7 @@ const BulletinsStudentList = () => {
       <TableHeader className="bg-[#F0F6F8]">
         <TableRow>
           <TableHead
-            className="flex items-center gap-3 w-[180px]"
+            className="flex items-center gap-3  text-2 w-[200px]"
             onClick={handleSortClick}
             style={{ cursor: 'pointer' }}
           >
@@ -76,8 +76,8 @@ const BulletinsStudentList = () => {
             />
             Nom d’étudiant
           </TableHead>
-          <TableHead>Classe</TableHead>
-          <TableHead>Note</TableHead>
+          <TableHead className=" text-2">Classe</TableHead>
+          <TableHead className=" text-2">Note</TableHead>
           <TableHead className="flex items-center gap-3">
             <Image
               src="dashboard/bulttin/doubleRow.svg"
@@ -87,7 +87,7 @@ const BulletinsStudentList = () => {
               className="cursor-pointer"
               onClick={handleSortClick}
             />
-            <span className="text-right">Rang</span>
+            <span className="text-right  text-2">Rang</span>
           </TableHead>
         </TableRow>
       </TableHeader>

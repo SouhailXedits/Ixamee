@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { SideBarRadioItem } from '@/components/shared-components/SideBarRadioItem'; 
+import { SideBarRadioItem } from '@/components/shared-components/SideBarRadioItem';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
 import { getEstablishmentOfUser } from '@/actions/examens';
@@ -9,14 +9,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 const Etablissement = () => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
+  const teacherEstab = queryClient.getQueryData(['AllEstabOfUser']) as any;
 
   const { collapsed } = useSidebar((state) => state);
-
-  const { data: teacherEstab, isPending: isPendingTeacherEstab } = useQuery({
-    queryKey: ['AllEstabOfUser'],
-    queryFn: async () => await getEstablishmentOfUser(user?.id),
-    staleTime: 0,
-  });
 
   return (
     <div className="border-t border-[#99C6D3] max-h-50">
@@ -24,7 +19,7 @@ const Etablissement = () => {
         <Image src="/bankicon.svg" alt="bankicon" width={18} height={18} />
         <span className={cn('text-[#99C6D3]', collapsed && 'hidden')}>Établissement</span>
       </div>
-      {isPendingTeacherEstab ? (
+      {!teacherEstab ? (
         <div className="flex flex-col gap-4 overflow-x-auto overflow-y-hidden max-h-52">
           <Skeleton className="w-full h-[20px]" />
           <Skeleton className="w-full h-[20px]" />
