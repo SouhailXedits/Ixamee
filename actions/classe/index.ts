@@ -133,7 +133,7 @@ export const deleteClasse = async (id: number) => {
   return { data: data, error: undefined };
 };
 
-export const s = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
+export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
   try {
     const classes = await db.classe.findMany({
       where: {
