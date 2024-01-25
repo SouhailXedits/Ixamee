@@ -42,6 +42,7 @@ const NavbarProfile = () => {
   });
 
 
+
   if (!user) {
     return null;
   }
