@@ -133,7 +133,7 @@ export const deleteClasse = async (id: number) => {
   return { data: data, error: undefined };
 };
 
-export const s = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
+export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
   try {
     const classes = await db.classe.findMany({
       where: {
@@ -389,7 +389,7 @@ export const getAllSubjectsByClasseId = async (classeId: number) => {
           id: true,
           name: true,
           image: true,
-          term:true,
+          term: true,
         },
         where: {
           classe_teacher: {
@@ -403,11 +403,10 @@ export const getAllSubjectsByClasseId = async (classeId: number) => {
         select: {
           id: true,
           name: true,
-
         },
         where: {
-          id: classeId
-        }
+          id: classeId,
+        },
       },
       // exams: {
       //   select: {

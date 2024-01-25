@@ -3,22 +3,30 @@ import PieChartItem from './pie-chartItem';
 const StatistiquesItems = () => {
   const items = [
     {
-      color: '#F04438',
+      // color: '#F04438',
+      color: '#D0D5DD',
+
       firstMessage: 'Entre 0 - 30%',
       studentNumber: '3',
     },
     {
-      color: '#F69D16',
+      // color: '#F69D16',
+      color: '#D0D5DD',
+
       firstMessage: 'Entre 30 - 60%',
       studentNumber: '7',
     },
     {
-      color: '#12B76A',
+      // color: '#12B76A',
+      color: '#D0D5DD',
+
       firstMessage: 'Entre 60 - 80%',
       studentNumber: '8',
     },
     {
-      color: '#1B8392',
+      // color: '#1B8392',
+      color: '#D0D5DD',
+
       firstMessage: 'Plus de 80%',
       studentNumber: '10',
     },
@@ -26,13 +34,14 @@ const StatistiquesItems = () => {
 
   return (
     <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px] ">
-      {/* <PieChartItem
-        series={[11, 11, 13, 8]}
-        colors={['#12b76a', '#f04438', '#1b8392', '#f69d16']}
-        numberOfStudent={29}
+      <PieChartItem
+        // series={[11, 11, 13, 8]}
+        series={[100]}
+        colors={['#D9D9D9']}
+        // colors={['#12b76a', '#f04438', '#1b8392', '#f69d16']}
+        numberOfStudent={0}
       />
-      <PieChartItem /> */}
-      PieChartItem
+      {/* PieChartItem */}
       <div className="flex  ">
         {items.map((item) => (
           <div key={item.color} className="flex  gap-2 pl-6">

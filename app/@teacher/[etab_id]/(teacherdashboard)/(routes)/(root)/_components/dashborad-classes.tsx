@@ -2,6 +2,10 @@ import Image from 'next/image';
 import DashboardClassesCard from './dashborad-classes-card';
 
 const DashboradClasses = () => {
+  
+
+
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex w-full justify-between">

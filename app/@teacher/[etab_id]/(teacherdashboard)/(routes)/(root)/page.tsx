@@ -10,19 +10,22 @@ import { getCountOfClasse, getCountOfExamenes, getCountMonArchive } from '@/acti
 export default function Home() {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']);
+  const etab_id = queryClient.getQueryData(['etab_id']);
+  console.log(etab_id);
+
   const { data: classeCount, isPending: classeCountPending } = useQuery({
     queryKey: ['classeCount'],
-    queryFn: async () => await getCountOfClasse(user?.id),
+    queryFn: async () => await getCountOfClasse(user?.id, etab_id),
   });
 
   const { data: examCount, isPending: examCountPending } = useQuery({
     queryKey: ['examCount'],
-    queryFn: async () => await getCountOfExamenes(user?.id),
+    queryFn: async () => await getCountOfExamenes(user?.id, etab_id),
   });
 
   const { data: archiveCount, isPending: archiveCountPending } = useQuery({
     queryKey: ['archiveCount'],
-    queryFn: async () => await getCountMonArchive(user?.id),
+    queryFn: async () => await getCountMonArchive(user?.id, etab_id),
   });
 
   return (
