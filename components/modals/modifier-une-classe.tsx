@@ -1,5 +1,5 @@
 'use client';
-import { getSubjectOfUser, getUserSubject } from '@/actions/examens';
+import { getSubjectOfUser, getSubjectOfUserById, getUserSubject } from '@/actions/examens';
 import { useCreateClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreateClasse';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 interface AjouterUneClasse {
   children: React.ReactNode;
@@ -32,13 +32,15 @@ import { useEditeClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(rou
 
 export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
   const classesubject = data?.subject;
+  const queryClient = useQueryClient();
   const { editeClass, isPending } = useEditeClasse();
   console.log(data);
-  const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
-    queryKey: ['teachersubject'],
-    queryFn: async () => await getUserSubject(data?.teacher_id),
-  });
-  const subjectoptions = Teachersubject?.map((item) => {
+  // const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
+  //   queryKey: ['teachersubject'],
+  //   queryFn: async () => await getSubjectOfUserById(data?.teacher_id),
+  // });
+  const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
+  const subjectoptions = Teachersubject?.map((item:any) => {
     return {
       value: item.id,
       label: item.name,

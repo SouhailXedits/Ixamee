@@ -36,7 +36,8 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>, code:
   }
   const mappedRole =
     role === 'TEACHER' ? UserRole.TEACHER : role === 'STUDENT' ? UserRole.STUDENT : UserRole.ADMIN;
-  const image = '/defaultUserAvatr.svg';
+  const image =
+    'https://res.cloudinary.com/dm5d9jmf4/image/upload/v1706173047/hhg5o35yn2emjs9ehlb6.svg';
 
   await db.user.create({
     data: {
