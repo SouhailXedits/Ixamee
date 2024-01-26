@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { CreateSubQuestion } from "./CreateSubQuestion";
-import { Input } from "@/components/ui/input";
-import Editor from "./toolbar-editor";
+import Image from 'next/image';
+import { CreateSubQuestion } from './CreateSubQuestion';
+import { Input } from '@/components/ui/input';
+import Editor from './toolbar-editor';
 
 export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
   //  this the content of the Editor 🙄

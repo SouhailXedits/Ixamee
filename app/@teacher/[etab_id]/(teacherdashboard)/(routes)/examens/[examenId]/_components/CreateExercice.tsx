@@ -1,7 +1,8 @@
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
-import { CreateQuestion } from "./CreateQuestion";
-import { cn } from "@/lib/utils";
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
+import { CreateQuestion } from './CreateQuestion';
+import { cn } from '@/lib/utils';
+import { calculateChildrenMarks, calculerExerciceMark } from './calculateChildrenMarks';
 
 export const CreateExercice = ({ allData, data, setFakeData }: any) => {
   if (!data) return;
@@ -34,12 +35,8 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
     const newData = allData.filter((item: any) => item.id !== data.id);
     setFakeData(newData);
   };
-  const calculerExerciceMark = () => {
-    data.mark = data.children.reduce((acc: number, item: any) => {
-      return acc + item.mark;
-    }, 0);
-    return data.mark;
-  };
+  
+  //   calculateChildrenMarks(allData);
 
   return (
     <div
@@ -85,6 +82,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
                       'bg-transparent border-none text-[#1B8392] w-[90px] text-xl text-right placeholder:text-mainGreen p-3 border border-[#1B8392]'
                     )}
                     placeholder="--.--"
+                    // value={}
                     maxLength={5}
                     disabled
                     // value={updateExericeMark}
@@ -107,7 +105,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
                     placeholder="--.--"
                     maxLength={5}
                     disabled
-                    // value={Number(calculerExerciceMark(allData, data)).toFixed(2)}
+                    value={Number(calculerExerciceMark(data)).toFixed(2)}
                     // defaultValue={}
                   />
                   {/* <span className="text-xl">/ 20.00</span> */}

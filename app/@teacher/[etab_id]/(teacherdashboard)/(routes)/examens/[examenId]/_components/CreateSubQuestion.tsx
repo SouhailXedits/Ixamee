@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { CreateSubSubQuestion } from "./CreateSubSubQuestion";
-import { Input } from "@/components/ui/input";
-import Editor from "./toolbar-editor";
+import Image from 'next/image';
+import { CreateSubSubQuestion } from './CreateSubSubQuestion';
+import { Input } from '@/components/ui/input';
+import Editor from './toolbar-editor';
 
 export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
   const onChange = (content: string) => {
@@ -253,6 +253,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any)
 
     // Recalculating marks in the hierarchy
     setFakeData((prevData: any) => {
+      console.log(prevData);
       return prevData.map((item: any) => {
         // Checking if the current item's id matches the id of the parent question and it has children
         if (item.id === allData.id && item.children.length > 0) {

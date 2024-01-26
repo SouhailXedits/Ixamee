@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Editor from "./toolbar-editor";
 import { Input } from "@/components/ui/input";
+import { calculerExerciceMark } from "./calculateChildrenMarks";
 
 export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
   const onChange = (content: string) => {
@@ -113,8 +114,38 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
             children: item.children.map((subItem: any) => {
               return {
                 ...subItem,
+
                 children: subItem.children.map((subSubItem: any, index: number) => {
                   console.log(subSubItem.mark, '🐳');
+                  return {
+                    ...subSubItem,
+                    mark: calcSumOfMarks(subSubItem),
+                  };
+                }),
+                mark: calculerExerciceMark(allData),
+              };
+            }),
+            mark: calculerExerciceMark(allData),
+          };
+        }
+        return item;
+      });
+    });
+    setFakeData((prevData: any) => {
+      console.log(prevData);
+      return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question and it has children
+        if (item.id === allData.id && item.children.length > 0) {
+          // Updating the children array of the parent question
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              // Updating the children array of the parent subquestion
+              return {
+                ...subItem,
+                mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
+                children: subItem.children.map((subSubItem: any) => {
+                  // Returning unchanged subsubitems
                   return {
                     ...subSubItem,
                     mark: calcSumOfMarks(subSubItem),
@@ -124,11 +155,13 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
             }),
           };
         }
+        // Returning unchanged items
         return item;
       });
     });
     console.log('update');
     console.log(allData);
+    calculerExerciceMark(allData);
   };
   return (
     <>
