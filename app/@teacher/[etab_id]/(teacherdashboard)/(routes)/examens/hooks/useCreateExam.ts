@@ -9,7 +9,8 @@ export function useCreateExam() {
   const { mutate: creatExam, isPending } = useMutation({
     mutationFn: ({ data, user_id }: { data: any; user_id: string }) =>
       createExammApi(data, user_id),
-    onSuccess: () => {
+    onSuccess: ({data}:any) => {
+      console.log(data)
       queryClient.invalidateQueries({ queryKey: ['examens'] });
       toast.success('Exam ajoute avec succès.');
     },

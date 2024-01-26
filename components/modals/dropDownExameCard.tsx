@@ -34,7 +34,7 @@ export const DropdownMenuItemSelect = ({ children  , exam}: DropdownMenuItemSele
               <span className="text-lg ">Supprimer</span>
             </DropdownMenuLabel>
           </DeleteExame>
-          <ArchiveExame>
+          <ArchiveExame id={exam?.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
               <span className="text-lg">Archiver</span>
             </DropdownMenuLabel>
