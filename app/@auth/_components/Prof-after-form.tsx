@@ -265,12 +265,12 @@ export default function ProfAfterForm() {
         </div>
 
         <Button
-          disabled={isTransPending || isTransPending || disable}
+          disabled={isTransPending || disable}
           className={`${
             form.formState.isValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          Suivant
+          {isTransPending ? 'Enregistrement en cours...' : ' Suivant'}
         </Button>
       </form>
     </Form>

@@ -293,7 +293,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
             form.formState.isValid ? 'bg-2' : 'bg-[#99c6d3]'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          Suivant
+          {isTransPending ? 'Enregistrement en cours...' : 'Suivant'}
         </Button>
       </form>
     </Form>

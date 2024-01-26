@@ -138,7 +138,7 @@ export default function InvitForm({ email }: any) {
             form.formState.isValid ? 'bg-2' : 'bg-12'
           }  w-full h-10 pt-2  items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          Accepter l’invitation
+          {isPending ? ' en cours...' : "Accepter l'invitation"}
         </Button>
       </form>
     </Form>

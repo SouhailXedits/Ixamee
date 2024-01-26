@@ -1,6 +1,6 @@
 import React from 'react';
 import InfoCard from './InfoCard';
-import SecurityCard from './SecurityCard';
+import SecurityCard from '@/components/shared-components/SecurityCard';
 
 export default function ProfileCards({ user, userEstablishment, classe }: any) {
   return (

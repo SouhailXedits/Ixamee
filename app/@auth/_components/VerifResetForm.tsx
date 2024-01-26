@@ -121,7 +121,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
             isCodeValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          Vérifier
+          {isTransPending ? 'Verification en cours...' : 'Vérifier'}
         </Button>
         <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
           <div className="flex ">
