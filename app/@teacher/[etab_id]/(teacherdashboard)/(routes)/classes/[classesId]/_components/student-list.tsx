@@ -59,17 +59,6 @@ const Action = ({ row }: any) => {
       <ModifierUnEtudiant data={row.original}>
         <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
       </ModifierUnEtudiant>
-      {/* To DO   */}
-      {/* <CorrectExam>
-            <Image
-              src="/correctionExam.svg"
-              alt=""
-              width={20}
-              height={20}
-              className="cursor-pointer "
-            />
-          </CorrectExam> */}
-      {console.log(row.original.emailVerified)}
       {!row.original.emailVerified ? (
         calculateDateDifference(row.original.invited_at, row.original.invited_at) == 0 ? (
           <Image

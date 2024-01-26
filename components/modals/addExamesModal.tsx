@@ -450,14 +450,16 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
             </div>
           </div>
         </div>
-        <Button
-          type="submit"
-          className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
-          onClick={handleSubmit}
-        >
-          {' '}
-          Ajouter
-        </Button>
+        <DialogClose>
+          <Button
+            type="submit"
+            className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
+            onClick={handleSubmit}
+          >
+            {' '}
+            Ajouter
+          </Button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );
