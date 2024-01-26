@@ -5,7 +5,6 @@ import ParametersSidebar from '../../app/@teacher/[etab_id]/(teacherdashboard)/_
 import Classes from '@/app/@student/[etab_id]/(studentdashboard)/components/Classes';
 
 export const SidebarRoutes = ({ guestRoutes }: any) => {
-  console.log(guestRoutes);
   return (
     <div className="flex flex-col w-full gap-10 overflow-auto justify-between">
       <div className="flex flex-col items-start gap-4 mt-14">

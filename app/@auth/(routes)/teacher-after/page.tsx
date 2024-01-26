@@ -1,7 +1,7 @@
 import React from 'react';
-import Logo from '../../_components/Logo';
+import Logo from '../../../../components/modals/Logo';
 import Link from 'next/link';
-import Social from '../../_components/Social';
+import Social from '../../../../components/modals/SocialButton';
 import GoogleAfterForm from '../../_components/google-after-form';
 import ProfAfterForm from '../../_components/Prof-after-form';
 export default function TeacheAfter() {

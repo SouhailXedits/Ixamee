@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Logo from '../../_components/Logo';
+import Logo from '../../../../components/modals/Logo';
 import SendEmailResetForm from '../../_components/SendEmailResetForm';
 import ResetForm from '../../_components/ResetForm';
 

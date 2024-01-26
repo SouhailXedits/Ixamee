@@ -4,7 +4,7 @@ import { auth } from '@/auth';
 import { getUserById } from '@/data/user';
 import { redirect } from 'next/navigation';
 import GoogleAfterForm from './_components/google-after-form';
-import Logo from './_components/Logo';
+import Logo from '../../components/modals/Logo';
 export default async function GoogleAfter() {
   const session = (await auth()) as any;
   if (!session) {

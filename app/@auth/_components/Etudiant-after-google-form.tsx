@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { useTransition } from 'react';
 import { EtudiantAfterSchema } from '@/actions/auth/schemas';
-import { SelectScrollable } from './SelectScrollable';
+import { SelectScrollable } from '../../../components/modals/SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { RiGovernmentLine } from 'react-icons/ri';
 import { MdOutlineClass } from 'react-icons/md';
@@ -118,7 +118,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
         router.push(`/${userEstab[0].id}`);
         router.refresh();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   }, [isRegistrationSuccessful, router, userEstab]);

@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
-import Logo from './@auth/_components/Logo';
-import LoginSvg from './@auth/_components/LoginSvg';
+import Logo from '../components/modals/Logo';
+import LoginSvg from '../components/modals/LoginSvg';
 
 export default function NotFound() {
   return (

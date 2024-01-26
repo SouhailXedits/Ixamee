@@ -41,7 +41,6 @@ const NavbarProfile = () => {
     queryFn: async () => await getMe(),
   });
 
-  console.log('🚀 ~ NavbarProfile ~ user:', user);
   if (!user) {
     return null;
   }
@@ -102,6 +101,7 @@ const NavbarProfile = () => {
                 router.push(`/${params.etab_id}/student-profile`);
               }
             }}
+            className=" cursor-pointer"
           >
             Mon profil
           </DropdownMenuItem>
@@ -109,6 +109,7 @@ const NavbarProfile = () => {
             onClick={async () => {
               await logout();
             }}
+            className=" cursor-pointer"
           >
             Se déconnecter
           </DropdownMenuItem>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import LoginSvg from '../../_components/LoginSvg';
-import Logo from '../../_components/Logo';
+import LoginSvg from '../../../../components/modals/LoginSvg';
+import Logo from '../../../../components/modals/Logo';
 import { Button } from '@/components/ui/button';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
 

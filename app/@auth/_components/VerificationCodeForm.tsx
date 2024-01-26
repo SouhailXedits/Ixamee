@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import { VerifSchema } from '@/actions/auth/schemas';
-import { CodeInput } from './CodeInput';
+import { CodeInput } from '../../../components/modals/CodeInput';
 import bcryptjs from 'bcryptjs';
 import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
 import Link from 'next/link';

@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { useTransition } from 'react';
 import { ProfAfterSchema } from '@/actions/auth/schemas';
-import { SelectScrollable } from './SelectScrollable';
+import { SelectScrollable } from '../../../components/modals/SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { MdOutlineClass } from 'react-icons/md';
 import { MdOutlineTimer } from 'react-icons/md';

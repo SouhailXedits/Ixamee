@@ -22,7 +22,7 @@ import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import Select from 'react-select';
 import { register } from '@/actions/auth/registerEtudiant';
-import { SelectScrollable } from './SelectScrollable';
+import { SelectScrollable } from '../../../components/modals/SelectScrollable';
 import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';

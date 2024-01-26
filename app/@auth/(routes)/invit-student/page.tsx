@@ -1,6 +1,6 @@
 'use client';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import Logo from '../../_components/Logo';
+import Logo from '../../../../components/modals/Logo';
 import Image from 'next/image';
 import InvitForm from '../../_components/invit-form';
 import Link from 'next/link';

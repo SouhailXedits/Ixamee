@@ -15,7 +15,6 @@ export interface SubjectIconProps {
 }
 
 function SubjectIcon({ icon, onClick, isSelected }: SubjectIconProps) {
-  // console.log(icon);
   return (
     <div
       onClick={onClick}

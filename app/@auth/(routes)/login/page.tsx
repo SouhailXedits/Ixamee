@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import LoginSvg from '../../_components/LoginSvg';
+import LoginSvg from '../../../../components/modals/LoginSvg';
 import LoginForm from '../../_components/LoginForm';
-import Social from '../../_components/Social';
-import Logo from '../../_components/Logo';
+import Logo from '../../../../components/modals/Logo';
+import SocialButton from '../../../../components/modals/SocialButton';
 export default function page() {
   return (
     <div
@@ -22,7 +22,7 @@ export default function page() {
             <LoginForm />
           </div>
           <div className="flex flex-col gap-3 w-full items-center">
-            <Social />
+            <SocialButton />
 
             <div className="flex">
               <p className="text-center text-[#727272] max-md:text-sm max-sm:text-xs">

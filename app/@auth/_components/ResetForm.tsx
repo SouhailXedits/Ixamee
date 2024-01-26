@@ -127,7 +127,7 @@ export default function ResetForm({ email }: VerificationData) {
             form.formState.isValid ? 'bg-2' : 'bg-12'
           }  w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75 `}
         >
-          {isPending ? 'en cours...' : 'Soumettre'}
+          {isPending ? 'En cours...' : 'Soumettre'}
         </Button>
       </form>
     </Form>

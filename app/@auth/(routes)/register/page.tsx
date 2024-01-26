@@ -1,7 +1,7 @@
 import React from 'react';
-import Logo from '../../_components/Logo';
 import Link from 'next/link';
-import Social from '../../_components/Social';
+import SocialButton from '@/components/modals/SocialButton';
+import Logo from '@/components/modals/Logo';
 import RegisterForm from '../../_components/RegisterForm';
 export default function page() {
   return (
@@ -21,7 +21,7 @@ export default function page() {
         <div className="flex flex-col gap-5 w-3/5 items-start">
           <div className="flex flex-col gap-3 w-full items-center  gap-x-2">
             <RegisterForm />
-            <Social />
+            <SocialButton />
             <div className="flex ">
               <p className="text-center text-[#727272] max-md:text-sm max-sm:text-xs ">
                 Vous avez déjà un compte?{' '}

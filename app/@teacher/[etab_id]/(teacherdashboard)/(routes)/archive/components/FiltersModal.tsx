@@ -1,5 +1,5 @@
 'use client';
-import { SelectScrollable } from '@/app/@auth/_components/SelectScrollable';
+import { SelectScrollable } from '@/components/modals/SelectScrollable';
 import { DatePickerWithRange } from '@/components/ui/RangeDatePicker';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,15 +10,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { DialogClose } from '@radix-ui/react-dialog';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FaGraduationCap } from 'react-icons/fa';
 
 function FiltersModal() {
-  const pathname = usePathname()
-  const currRoute = pathname.split('/')[3]
+  const pathname = usePathname();
+  const currRoute = pathname.split('/')[3];
   return (
     <Dialog>
       <DialogTrigger className=" bg-transparent border-mainGreen/60 flex gap-3 items-center border text-mainGreen rounded p-2">

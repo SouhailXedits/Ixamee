@@ -19,7 +19,7 @@ export function useUpdateCredentials() {
       }
     },
     onError: (err) => {
-      console.log('ERROR', err);
+      console.error(err);
       toast.error('Une erreur est survenue ressayer une autre fois');
     },
     retry: false,
