@@ -22,7 +22,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string | undefined>('');
-  const [seccess, setSuccess] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -47,6 +47,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
     try {
       const verificationCode = getVerificationCode();
       const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+      console.log('🚀 ~ onSubmit ~ storedVerificationData:', storedVerificationData);
       if (codeValues) {
         const codeMatch = await bcryptjs.compare(verificationCode, storedVerificationData.code);
 
@@ -76,7 +77,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
     setError('');
     startTransition(async () => {
       if (email && code) {
-        renvoyer(email, 'reset-password').then((data) => {
+        renvoyer(email, '').then((data) => {
           setError(data.error);
           setSuccess(data.success);
           const hashedCode = data.hashedCode;
@@ -99,6 +100,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
     <Form {...form}>
       <form className="space-y-6 w-full" onSubmit={form.handleSubmit(onSubmit)}>
         <FormError message={error} />
+        <FormSuccess message={success} />
         <div className="flex mb-2 gap-2 rtl:space-x-reverse justify-between">
           {[1, 2, 3, 4, 5, 6].map((index) => (
             <CodeInput
@@ -116,7 +118,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
           type="submit"
           disabled={isTransPending}
           className={`${
-            isCodeValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            isCodeValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Vérifier
@@ -126,7 +128,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
             <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
             &nbsp;
             <Link
-              className="text-center text-[#1b8392] hover:underline font-semibold"
+              className="text-center text-2 hover:underline font-semibold"
               href={''}
               onClick={handleResendVerificationEmail}
             >

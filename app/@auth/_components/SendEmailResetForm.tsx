@@ -90,7 +90,7 @@ export default function SendEmailResetForm() {
           name="submitButton"
           type="submit"
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75 mt-24`}
         >
           Continuer

@@ -64,7 +64,7 @@ export default function InvitForm({ email }: any) {
               email: values.email,
               code: hashedCode,
               password: values.password,
-              role:"STUDENT"
+              role: 'STUDENT',
             })
           );
           sendEmailVerificationToken(values.email);
@@ -135,7 +135,7 @@ export default function InvitForm({ email }: any) {
           type="submit"
           disabled={isPending}
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           }  w-full h-10 pt-2  items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Accepter l’invitation

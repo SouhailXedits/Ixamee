@@ -52,7 +52,7 @@ export default function ResetForm({ email }: VerificationData) {
     setError('');
     setSuccess('');
     values.email = email || '';
-    
+
     startTransition(async () => {
       newPassword(values, token).then((data) => {
         setError(data?.error);
@@ -124,7 +124,7 @@ export default function ResetForm({ email }: VerificationData) {
           type="submit"
           disabled={isPending}
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           }  w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75 `}
         >
           Soumettre

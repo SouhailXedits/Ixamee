@@ -38,7 +38,11 @@ export const CodeInput: React.FC<CodeInputProps> = ({
         onChange={(e) => onChange(e.currentTarget.value)}
         id={id}
         className={`block w-16 h-16 max-md:w-12 max-md:h-12 max-md:flex py-3 text-sm font-extrabold text-center text-black bg-white border ${
-          isValid === true ? 'border-[#12B76A] bg-[#d4f1e2] text-[#12B76A]' : isValid === false ? 'border-[#F04438] bg-[#fae0de] text-[#F04438] ' : ''
+          isValid === true
+            ? 'border-[#12B76A] bg-[#d4f1e2] text-[#12B76A]'
+            : isValid === false
+            ? 'border-red bg-[#fae0de] text-red '
+            : ''
         } rounded-lg  focus:ring-black focus:border-black`}
         required
       />

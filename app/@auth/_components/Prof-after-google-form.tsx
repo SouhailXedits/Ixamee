@@ -121,12 +121,12 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
         <FormSuccess message={success} />
         <div
           id="ButtonsRoot"
-          className="bg-[#99c6d3] flex flex-row gap-4 w-full cursor-pointer  items-start pt-2 px-1 rounded-[50px]"
+          className="bg-12 flex flex-row gap-4 w-full cursor-pointer  items-start pt-2 px-1 rounded-[50px]"
         >
           <div
             id="Buttons"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'TEACHER' ? 'bg-[#1b8392] ' : ''
+              role === 'TEACHER' ? 'bg-2 ' : ''
             }`}
             onClick={() => {
               setRole('TEACHER');
@@ -138,7 +138,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
           <div
             id="Buttons1"
             className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
-              role === 'STUDENT' ? 'bg-[#1b8392] ' : ''
+              role === 'STUDENT' ? 'bg-2 ' : ''
             }`}
             onClick={() => {
               setRole('STUDENT');
@@ -286,7 +286,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
           type="submit"
           disabled={isTransPending}
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Suivant

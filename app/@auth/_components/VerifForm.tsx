@@ -3,7 +3,7 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { VerifSchema } from '@/actions/auth/schemas';
+import { NewVerifSchema } from '@/actions/auth/schemas';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
@@ -52,8 +52,8 @@ export default function VerifForm({ email, code }: VerificationData) {
     };
   }, [renvoyerDisabled]);
 
-  const form = useForm<z.infer<typeof VerifSchema>>({
-    resolver: zodResolver(VerifSchema),
+  const form = useForm<z.infer<typeof NewVerifSchema>>({
+    resolver: zodResolver(NewVerifSchema),
     defaultValues: {
       code: '',
     },
@@ -163,7 +163,7 @@ export default function VerifForm({ email, code }: VerificationData) {
           disabled={isPending || isDisabled}
           type="submit"
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Vérifier
@@ -174,9 +174,7 @@ export default function VerifForm({ email, code }: VerificationData) {
             &nbsp;
             <Link
               className={`text-center ${
-                renvoyerDisabled
-                  ? 'text-gray-500 cursor-not-allowed'
-                  : 'text-[#1b8392] hover:underline'
+                renvoyerDisabled ? 'text-gray-500 cursor-not-allowed' : 'text-2 hover:underline'
               } font-semibold`}
               href={''}
               onClick={renvoyerDisabled ? undefined : handleResendVerificationEmail}

@@ -4,7 +4,9 @@ import React from 'react';
 
 const LoginSvg = () => {
   return (
-    <Image src="auth/loginSvg.svg" alt="LoginSvg" width={400} height={250} className=" max-xl:w-[75%]" />
+    <div className="animate-bounce repeat-infinite max-xl:w-[75%] transition-all duration-1">
+      <Image src="/auth/loginSvg.svg" alt="LoginSvg" width={400} height={250} />
+    </div>
   );
 };
 

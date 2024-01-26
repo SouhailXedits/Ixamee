@@ -30,7 +30,7 @@ export default function LoginForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
-  
+
   const searchParams = useSearchParams();
   const errorAuth = searchParams.get('error');
   const onEnter = useCallback(async () => {
@@ -184,7 +184,7 @@ export default function LoginForm() {
           type="submit"
           disabled={isPending}
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           }  w-full h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
           Se connecter
