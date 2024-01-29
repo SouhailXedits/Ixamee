@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession } from 'next-auth';
+import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from '@/lib/db';
 import authConfig from '@/auth.config';
@@ -58,7 +58,6 @@ export const {
       if (!token.sub) {
         return token;
       }
-      // const existingUser = await getUserById(token.sub);
       const existingUser = token ? await getUserById(token.sub) : undefined;
 
       if (!existingUser) {

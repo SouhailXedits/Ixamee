@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import Logo from '../../_components/Logo';
+import Logo from '../../../../components/modals/Logo';
 import VerifCodeResetForm from '../../_components/VerificationCodeForm';
 
 interface VerificationData {
@@ -38,9 +38,7 @@ export default function ResetPassword() {
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* Left section */}
       <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-br-[100px] md:rounded-tr-[100px] gap-10">
-        <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">
-          Vérifiez votre E-mail
-        </div>
+        <div className="text-center text-2 text-4xl max-lg:text-3xl">Vérifiez votre E-mail</div>
         <div className="text-center text-base text-[#727272] w-full ">
           Veuillez entrer le code de vérification envoyé à&nbsp;
           <span className="text-lg text-[#102528]">
@@ -61,7 +59,7 @@ export default function ResetPassword() {
         <div className="text-center  text-[#4c4c4d] w-full text-4xl max-lg:text-2xl  mt-[5%]">
           Une seule plateforme
           <br />
-          pour tous vos <span className=" text-[#1b8392] hover:opacity-50 ">examens</span>
+          pour tous vos <span className=" text-2 hover:opacity-50 ">examens</span>
         </div>
       </div>
     </div>

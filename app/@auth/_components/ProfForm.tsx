@@ -20,10 +20,10 @@ import { IoKeyOutline } from 'react-icons/io5';
 import { useTransition } from 'react';
 import { LucidePencil } from 'lucide-react';
 import { RiGovernmentLine } from 'react-icons/ri';
-import TnFlag from './TnFlag';
+import TnFlag from '../../../components/modals/TnFlag';
 import { RegisterProfSchema } from '@/actions/auth/schemas';
 import { register } from '@/actions/auth/registerProf';
-import { SelectScrollable } from './SelectScrollable';
+import { SelectScrollable } from '../../../components/modals/SelectScrollable';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import bcryptjs from 'bcryptjs';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
@@ -274,7 +274,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
             form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          S&apos;inscrire
+          {isTransPending ? 'Inscriptoin en cours...' : "S'inscrire"}
         </Button>
       </form>
     </Form>

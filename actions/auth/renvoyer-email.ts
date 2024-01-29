@@ -19,9 +19,9 @@ export const renvoyer = async (email: string, field: string) => {
 
   if (field === 'reset-password') {
     await sendPasswordResetEmail(existingUser.email, '', code);
+  } else {
+    await sendVerificationEmail(existingUser.email, code);
   }
-
-  await sendVerificationEmail(existingUser.email, code);
 
   return { success: 'Nous vous avons renvoyé un email', hashedCode };
 };

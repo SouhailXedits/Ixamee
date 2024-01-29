@@ -36,7 +36,6 @@ export const getUserEstablishmentByUserId = async (id: string) => {
       },
      });
     
-    console.log("🚀 ~ getUserEstablishmentByUserId ~ userEstablishments:", userEstablishments)
     return userEstablishments;
   } catch (error) {
     console.error('Error getting UserEstablishment:', error);
@@ -60,7 +59,6 @@ export const getClassesOfUser = async (user_id: string) => {
       name: true
     }
   });
-  console.log(data)
 
   return data;
 };

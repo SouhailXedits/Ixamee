@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import { VerifSchema } from '@/actions/auth/schemas';
-import { CodeInput } from './CodeInput';
+import { CodeInput } from '../../../components/modals/CodeInput';
 import bcryptjs from 'bcryptjs';
 import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string | undefined>('');
-  const [seccess, setSuccess] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -71,6 +71,7 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
       setError("Quelque chose s'est mal passé");
     }
   };
+  const [renvoyerDisabled, setRenvoyerDisabled] = useState<boolean>(false);
   const handleResendVerificationEmail = async () => {
     setSuccess('');
     setError('');
@@ -79,8 +80,8 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
         renvoyer(email, 'reset-password').then((data) => {
           setError(data.error);
           setSuccess(data.success);
+          setRenvoyerDisabled(false);
           const hashedCode = data.hashedCode;
-
           const expirationTimestamp = currentTimestamp + 1 * 60 * 1000;
           localStorage.setItem(
             'email-verification',
@@ -99,6 +100,7 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
     <Form {...form}>
       <form className="w-full space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FormError message={error} />
+        <FormSuccess message={success} />
         <div className="flex justify-between gap-2 mb-2 rtl:space-x-reverse">
           {[1, 2, 3, 4, 5, 6].map((index) => (
             <CodeInput
@@ -116,19 +118,21 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
           type="submit"
           disabled={isTransPending}
           className={`${
-            isCodeValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            isCodeValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          Vérifier
+          {isTransPending ? 'Verification en cours...' : 'Vérifier'}
         </Button>
         <div className="flex flex-col items-center w-full gap-3 gap-x-2">
           <div className="flex ">
             <p className="text-center text-[#727272] ">Vous n&apos;avez pas reçu le code? </p>
             &nbsp;
             <Link
-              className="text-center text-[#1b8392] hover:underline font-semibold"
+              className={`text-center ${
+                renvoyerDisabled ? 'text-gray-500 cursor-not-allowed' : 'text-2 hover:underline'
+              } font-semibold`}
               href={''}
-              onClick={handleResendVerificationEmail}
+              onClick={renvoyerDisabled ? undefined : handleResendVerificationEmail}
             >
               Renvoyez
             </Link>

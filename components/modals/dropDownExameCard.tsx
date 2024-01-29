@@ -26,17 +26,18 @@ export const DropdownMenuItemSelect = ({ children  , exam}: DropdownMenuItemSele
               <span className="text-lg">Modifier</span>
             </DropdownMenuLabel>
           </EditeExame> */}
-          <EditeExame />
-            
+          <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
+            <span >edit</span>
+          </DropdownMenuLabel>
 
           <DeleteExame exam_id={exam?.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-              <span className="text-lg ">Supprimer</span>
+              <span >Supprimer</span>
             </DropdownMenuLabel>
           </DeleteExame>
-          <ArchiveExame>
+          <ArchiveExame id={exam?.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-              <span className="text-lg">Archiver</span>
+              <span >Archiver</span>
             </DropdownMenuLabel>
           </ArchiveExame>
         </DropdownMenuGroup>

@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Logo from '../../_components/Logo';
+import Logo from '../../../../components/modals/Logo';
 import VerifForm from '../../_components/VerifForm';
 import { useSearchParams } from 'next/navigation';
 
@@ -28,15 +28,13 @@ export default function EmailVerification() {
         <div className="text-center  text-[#4c4c4d] w-full text-4xl max-lg:text-2xl  mt-[5%]">
           Une seule plateforme
           <br />
-          pour tous vos <span className=" text-[#1b8392] hover:opacity-50 ">examens</span>
+          pour tous vos <span className=" text-2 hover:opacity-50 ">examens</span>
         </div>
       </div>
       {/* right */}
 
-      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-bl-[100px] md:rounded-tl-[100px] md:rounded-tr-none  gap-10 max-sm:mt-28">
-        <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">
-          Vérifiez votre E-mail
-        </div>
+      <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center  md:rounded-bl-[100px] md:rounded-tl-[100px] md:rounded-tr-none  gap-10 ">
+        <div className="text-center text-2 text-4xl max-lg:text-3xl">Vérifiez votre E-mail</div>
 
         <div className="text-center text-base text-[#727272] w-full">
           Veuillez entrer le code envoyé sur l’e-mail&nbsp;

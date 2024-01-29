@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import LoginSvg from '../../_components/LoginSvg';
-import Logo from '../../_components/Logo';
+import LoginSvg from '../../../../components/modals/LoginSvg';
+import Logo from '../../../../components/modals/Logo';
 import { Button } from '@/components/ui/button';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
 
@@ -16,7 +16,7 @@ export default function AuthErrorPage() {
       <div className="bg-white w-full flex flex-col justify-center h-[100vh] gap-8 items-center  md:rounded-br-[100px] md:rounded-tr-[100px]  ">
         <div className="flex flex-col ml-3 gap-5 items-center">
           <Logo className={' max-xl:w-[50%]'} width={200} height={100} />
-          <div className="text-center text-[#F04438] text-3xl max-lg:text-2xl">
+          <div className="text-center text-red text-3xl max-lg:text-2xl">
             Quelque chose s&apos;est mal passé !
           </div>
           <Link href="/login" className="w-full text-center ">

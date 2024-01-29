@@ -27,19 +27,24 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logout } from '@/actions/auth/logout';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
+import { getMe } from '@/actions/examens';
 
 const NavbarProfile = () => {
+  const router = useRouter();
+  const params = useParams();
   const queryClient = useQueryClient();
-  const user = queryClient.getQueryData(['user']) as any;
+  // const user = queryClient.getQueryData(['user']) as any;
+  const { data: user, isPending: estabPending } = useQuery<any>({
+    queryKey: ['user'],
+    queryFn: async () => await getMe(),
+  });
 
   if (!user) {
     return null;
   }
 
-  const router = useRouter();
-  const params = useParams();
   return (
     <div className="flex items-center gap-5 justify-center">
       <div className="rounded-full">
@@ -48,7 +53,7 @@ const NavbarProfile = () => {
           src={user?.image || '/studenttestpicture.svg'}
           width={35}
           height={35}
-          className="rounded-full object-fill" 
+          className="rounded-full object-fill"
         />
       </div>
 
@@ -56,7 +61,9 @@ const NavbarProfile = () => {
         <span className="w-[120px] text-[#1B8392] text-sm font-semibold whitespace-nowrap ">
           {user?.name}{' '}
         </span>
-        <span className="w-[120px] text-[#99C6D3] text-xs font-thin ">Professeur</span>
+        <span className="w-[120px] text-[#99C6D3] text-xs font-thin ">
+          {user.role === 'ADMIN' ? 'Admin' : user.role === 'TEACHER' ? 'Professeur' : 'Etudiant'}
+        </span>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -88,8 +95,13 @@ const NavbarProfile = () => {
           {/* </ModifierUnEtudiant> */}
           <DropdownMenuItem
             onClick={() => {
-              router.push(`/${params.etab_id}/teacher-profile`);
+              if (user.role === 'TEACHER' || user.role === 'ADMIN') {
+                router.push(`/${params.etab_id}/teacher-profile`);
+              } else {
+                router.push(`/${params.etab_id}/student-profile`);
+              }
             }}
+            className=" cursor-pointer"
           >
             Mon profil
           </DropdownMenuItem>
@@ -97,6 +109,7 @@ const NavbarProfile = () => {
             onClick={async () => {
               await logout();
             }}
+            className=" cursor-pointer"
           >
             Se déconnecter
           </DropdownMenuItem>

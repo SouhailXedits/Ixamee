@@ -1,6 +1,6 @@
 'use client';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import Logo from '../../_components/Logo';
+import Logo from '../../../../components/modals/Logo';
 import Image from 'next/image';
 import InvitForm from '../../_components/invit-form';
 import Link from 'next/link';
@@ -60,10 +60,8 @@ export default function Page() {
     <div id="SignUpRoot" className="bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* Left section */}
       <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center md:rounded-br-[100px] md:rounded-tr-[100px] gap-10">
-        <div className="text-center text-[#1b8392] text-4xl max-lg:text-3xl">
-          Bienvenue à Ixamee
-        </div>
-        <div className="flex flex-col items-start w-3/5 text-[#1b8392] text-xl gap-5">
+        <div className="text-center text-2 text-4xl max-lg:text-3xl">Bienvenue à Ixamee</div>
+        <div className="flex flex-col items-start w-3/5 text-2 text-xl gap-5">
           Créons votre compte
         </div>
         <div className="w-full bg-[#F0F6F8]">
@@ -87,9 +85,15 @@ export default function Page() {
                     </span>
                   </li>
                   <li className="text-gray">
-                    Matière(s):
+                    Matière(s):&nbsp;
                     <span className="text-[#727272] font-extralight">
-                      {subjects.length && subjects?.map((subject: any) => ' ' + subject.name)}
+                      {subjects.length &&
+                        subjects?.map((subject: any, index: number) => (
+                          <span key={index}>
+                            {subject.name}
+                            {index < subjects.length - 1 && ' / '}
+                          </span>
+                        ))}
                     </span>
                   </li>
                 </ul>
@@ -123,7 +127,7 @@ export default function Page() {
         <div className="text-center text-[#4c4c4d] w-full text-4xl max-lg:text-2xl mt-[5%]">
           Une seule plateforme
           <br />
-          pour tous vos <span className="text-[#1b8392] hover:opacity-50 ">examens</span>
+          pour tous vos <span className="text-2 hover:opacity-50 ">examens</span>
         </div>
       </div>
     </div>

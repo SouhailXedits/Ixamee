@@ -94,8 +94,20 @@ export const RegisterProfSchema = z.object({
     ),
 });
 
+export const NewVerifSchema = z.object({
+  code: z
+    .string()
+    .min(6, {
+      message: 'Le code est requis (6 chiffres)',
+    })
+    .max(6, {
+      message: 'Le code est requis (6 chiffres)',
+    }),
+});
+
 export const VerifSchema = z.object({
-  code: z.string(),
+  code: z
+    .string()
 });
 
 export const EtudiantAfterSchema = z.object({

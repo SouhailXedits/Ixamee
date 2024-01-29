@@ -7,6 +7,7 @@ import Loading from '@/app/loading';
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const [isClient, setIsClient] = useState(false);
   const queryClient = useQueryClient();
+  
   const user = queryClient.getQueryData(['user']) as any;
 
   useEffect(() => {

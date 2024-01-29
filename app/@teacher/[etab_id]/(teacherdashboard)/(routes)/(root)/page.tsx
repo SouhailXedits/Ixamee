@@ -11,7 +11,6 @@ export default function Home() {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']);
   const etab_id = queryClient.getQueryData(['etab_id']);
-  console.log(etab_id);
 
   const { data: classeCount, isPending: classeCountPending } = useQuery({
     queryKey: ['classeCount'],

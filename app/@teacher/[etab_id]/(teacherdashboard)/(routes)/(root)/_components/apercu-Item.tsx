@@ -7,7 +7,7 @@ interface ApercuItemProps {
   stat: string;
   name: string;
   count: number | undefined;
-  isPending: boolean;
+  isPending: boolean | undefined;
   textColor: string;
 }
 const ApercuItem = ({ color, icon, stat, name, count, isPending, textColor }: ApercuItemProps) => {

@@ -2,7 +2,6 @@
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Checkbox } from '@/components/ui/auth-checkbox';
 import {
   Form,
   FormControl,
@@ -16,10 +15,7 @@ import { Input } from '@/components/ui/auth-input';
 import { Button } from '@/components/ui/button';
 import FormError from '@/components/ui/form-error';
 import FormSuccess from '@/components/ui/form-success';
-import { login } from '@/actions/auth/login';
 import { useEffect, useState, useTransition } from 'react';
-import Link from 'next/link';
-import { MdOutlineEmail } from 'react-icons/md';
 import { IoKeyOutline } from 'react-icons/io5';
 import bcryptjs from 'bcryptjs';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
@@ -64,7 +60,7 @@ export default function InvitForm({ email }: any) {
               email: values.email,
               code: hashedCode,
               password: values.password,
-              role:"STUDENT"
+              role: 'STUDENT',
             })
           );
           sendEmailVerificationToken(values.email);
@@ -135,10 +131,10 @@ export default function InvitForm({ email }: any) {
           type="submit"
           disabled={isPending}
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           }  w-full h-10 pt-2  items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          Accepter l’invitation
+          {isPending ? ' En cours...' : "Accepter l'invitation"}
         </Button>
       </form>
     </Form>

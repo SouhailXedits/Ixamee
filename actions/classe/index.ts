@@ -288,7 +288,7 @@ export const deleteUserInClasse = async (id: string) => {
 
 export const getClassesByEstablishmentId = async (etab_id: number) => {
   try {
-    const classes = await db.classe.findFirst({
+    const classes = await db.classe.findMany({
       where: {
         establishment: {
           some: {
@@ -322,112 +322,7 @@ export const getUserById = async (id: string) => {
   return user;
 };
 
-export const getAllSubjectsByClasseId = async (classeId: number) => {
-  // const res = await db.classe.findMany({
-  //   select: {
-  //     id: true,
-  //     name: true,
-  //     subject: {
-  //       select: {
-  //         id: true,
-  //         name: true,
-  //         coefficient: true,
-  //         icon: true,
-  //         teacher: {
-  //           select: {
-  //             id: true,
-  //             name: true,
-  //             image: true,
 
-  //           },
-  //           where: {
-
-  //           }
-  //         },
-
-  //       },
-  //     },
-  //   },
-  //   where: {
-  //     id: classeId,
-  //     // teacher: {
-  //     //   some: {
-  //     //     classe_teacher: {
-  //     //       some: {
-  //     //         id: classeId
-  //     //       }
-  //     //     }
-  //     //   }
-  //     // },
-  //     subject: {
-  //       some: {
-  //         classe_subject: {
-  //           some: {
-  //             id: classeId
-  //           }
-  //         }
-  //       }
-  //     }
-  //   },
-  // });
-  const res = await db.subject.findMany({
-    where: {
-      classe_subject: {
-        some: {
-          id: classeId,
-        },
-      },
-      is_archived: false,
-    },
-    select: {
-      id: true,
-      name: true,
-      coefficient: true,
-      icon: true,
-      teacher: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          term: true,
-        },
-        where: {
-          classe_teacher: {
-            some: {
-              id: classeId,
-            },
-          },
-        },
-      },
-      classe_subject: {
-        select: {
-          id: true,
-          name: true,
-        },
-        where: {
-          id: classeId,
-        },
-      },
-      // exams: {
-      //   select: {
-      //     id: true,
-      //     name: true,
-      //     term: true,
-      //   },
-      //   where: {
-      //     is_archived: false,
-      //     exam_classess: {
-      //       some: {
-      //         id: classeId,
-      //       },
-      //     },
-      //   },
-      // },
-    },
-  });
-  console.log(res);
-  return res;
-};
 
 export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
   console.log(studentEmail, teacherEmail);

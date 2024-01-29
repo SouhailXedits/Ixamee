@@ -16,7 +16,6 @@ export const SidebarItem = ({ Clickedicon, Defaulticon, label, href }: SidebarIt
   const pathname = usePathname();
   const router = useRouter();
   const { collapsed } = useSidebar((state) => state);
-  console.log(`/${params.etab_id}${href}`);
   const isActive =
     (pathname === `/${params.etab_id}` && href === `/`) ||
     pathname === href ||

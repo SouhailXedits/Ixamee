@@ -16,7 +16,7 @@ import FormSuccess from '@/components/ui/form-success';
 import { useEffect, useState } from 'react';
 import { useTransition } from 'react';
 import { ProfAfterSchema } from '@/actions/auth/schemas';
-import { SelectScrollable } from './SelectScrollable';
+import { SelectScrollable } from '../../../components/modals/SelectScrollable';
 import { FaGraduationCap } from 'react-icons/fa';
 import { updateTeacherAfterGoogle } from '@/actions/auth/updateTeacherAfterGoogle';
 import { MdOutlineClass, MdOutlineTimer } from 'react-icons/md';
@@ -265,12 +265,12 @@ export default function ProfAfterForm() {
         </div>
 
         <Button
-          disabled={isTransPending || isTransPending || disable}
+          disabled={isTransPending || disable}
           className={`${
-            form.formState.isValid ? 'bg-[#1B8392]' : 'bg-[#99c6d3]'
+            form.formState.isValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          Suivant
+          {isTransPending ? 'Enregistrement en cours...' : ' Suivant'}
         </Button>
       </form>
     </Form>

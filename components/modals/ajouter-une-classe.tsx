@@ -39,7 +39,7 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
   //   queryFn: async () => await getUserSubject(user_id),
   // });
   const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
-  const subjectoptions = Teachersubject?.map((item) => {
+  const subjectoptions = Teachersubject?.map((item: any) => {
     return {
       value: item.id,
       label: item.name,
