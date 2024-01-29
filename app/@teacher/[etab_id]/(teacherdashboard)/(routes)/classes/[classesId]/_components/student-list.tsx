@@ -44,7 +44,6 @@ import { usePathname, useRouter } from 'next/navigation';
 function calculateDateDifference(date1: Date, date2: Date): number {
   const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-  console.log(differenceInDays);
   return differenceInDays;
 }
 function handleUpdateUser(user_id: number) {
