@@ -19,7 +19,7 @@ interface ArchiveUneClasse {
 export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(['user']);
-  const teacherEmail = user.email;
+  const teacherEmail = user?.email;
   const { updateInvitationUser, isPending } = useInviteUserInClasse();
 
   return (
