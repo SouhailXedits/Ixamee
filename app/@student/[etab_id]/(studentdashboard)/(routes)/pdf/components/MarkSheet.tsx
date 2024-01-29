@@ -1,4 +1,6 @@
 import React from 'react';
+import data from './fakeMarkSheetsData';
+import StudentRow from './StudentRow';
 
 // const getImageAsBase64 = async (url) => {
 //   try {
@@ -303,51 +305,38 @@ export const MarkSheetPdfClass = () => {
           />
         </div>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
-        <tr>
-          <th
-            style={{
-              border: '1px solid #000',
-              padding: '8px',
-              textAlign: 'center',
-              backgroundColor: '#f2f2f2',
-            }}
-          >
-            Name
-          </th>
-          <td style={{ border: '1px solid #000', padding: '8px', textAlign: 'center' }}>
-            John Doe
-          </td>
-        </tr>
-        <tr>
-          <th
-            style={{
-              border: '1px solid #000',
-              padding: '8px',
-              textAlign: 'center',
-              backgroundColor: '#f2f2f2',
-            }}
-          >
-            Roll Number
-          </th>
-          <td style={{ border: '1px solid #000', padding: '8px', textAlign: 'center' }}>2021001</td>
-        </tr>
-        <tr>
-          <th
-            style={{
-              border: '1px solid #000',
-              padding: '8px',
-              textAlign: 'center',
-              backgroundColor: '#f2f2f2',
-            }}
-          >
-            Class
-          </th>
-          <td style={{ border: '1px solid #000', padding: '8px', textAlign: 'center' }}>
-            Grade 10
-          </td>
-        </tr>
-      </table>
+      <div className="flex justify-center">
+        <table className=" text-center w-[700px] border border-black/50 ">
+          <thead className="text-white">
+            <td rowSpan={2} className="bg-[#99C6D3] ">
+              Etudiant
+            </td>
+            <th className="border border-black/50 bg-[#99C6D3]" colSpan={2}>
+              DC 1
+            </th>
+            <th className="border border-black/50 bg-[#99C6D3]" colSpan={2}>
+              DC 2
+            </th>
+            <th className="border bg-[#99C6D3] border-black/50" colSpan={2}>
+              DS 1
+            </th>
+          </thead>
+          <tbody>
+            <tr className=" text-[#1B8392]">
+              <td className="bg-[#99C6D3]"></td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
+            </tr>
+            {data.map((student, i) => (
+              <StudentRow data={student} key={i} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
