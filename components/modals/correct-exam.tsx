@@ -19,8 +19,16 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 interface CorrectExam {
   children: React.ReactNode;
+  data: any;
 }
-export const CorrectExam = ({ children }: CorrectExam) => {
+export const CorrectExam = ({ children, data }: CorrectExam) => {
+  console.log(data.exam);
+  let totatlMark = data?.classe.exam_classe.filter((item) => item.id == data.exam);
+  console.log(totatlMark);
+  const new_total_mark = totatlMark[0].total_mark;
+
+  const totalMark = data?.classe?.total_mark || 0;
+  console.log(totalMark);
   const [item, setItem] = useState<string | null>(null);
   return (
     <Dialog>
@@ -36,15 +44,15 @@ export const CorrectExam = ({ children }: CorrectExam) => {
           <div>
             <span className="text-[#959595] text-[15px]">Accorder une note</span>
             <div className="flex items-center gap-2">
-              <div className=" relative w-[170px] p-2 pl-10 pr-10 rounded-lg bg-[#F0F6F8] flex items-center justify-center">
+              <div className=" relative p-2 pl-10 pr-10 rounded-lg bg-[#F0F6F8] flex items-center justify-center">
                 <div className=" flex items-center justify-center   text-lg  text-[#1B8392] flex-1">
                   <Input
                     placeholder="--"
                     className="w-6 p-0 text-xl text-right bg-transparent border-none"
-                    maxLength={2}
+                    maxLength={new_total_mark.toString().length}
                   />
                   <span>/</span>
-                  <span className="flex items-center text-xl ">20</span>
+                  <span className="flex items-center text-xl ">{new_total_mark}</span>
                 </div>
               </div>
             </div>

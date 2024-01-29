@@ -5,26 +5,61 @@ import CreateExam from './_components/create-exam';
 import { useQuery } from '@tanstack/react-query';
 import { getOneExamById } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
-import { usePathname, useRouter } from 'next/navigation';
-// import { Editor } from './_components/toolbar-editor';
+import { useRouter } from 'next/navigation';
+import { useEditExamContent } from '../hooks/useEditExamContent';
+import Loading from '@/app/loading';
+import { toast } from 'react-hot-toast';
+import { calcAllMark } from './_components/calculateChildrenMarks';
+import { cn } from '@/lib/utils';
 
-export default function page({ params }: { params: { examenId: string } }) {
-  const router = useRouter()
+export default function Page({ params }: { params: { examenId: string } }) {
+  const [sum, setSum] = useState(0);
+
+  const router = useRouter();
   const { examenId } = params;
-  console.log(examenId);
+
   const { data, isPending } = useQuery({
     queryKey: ['examenById'],
     queryFn: async () => await getOneExamById({ id: examenId }),
   });
   console.log(data);
-  // const handleClick = () => {
-  //   console.log('click');
-  // };
-  function handleCancel() {
-    router.back()
-    // navigate(-1)
-  }
+  const { editExam, isPending: isPendingEdit } = useEditExamContent();
 
+  const [fakeData, setFakeData] = useState<any>([]);
+  useEffect(() => {
+    if (!isPending && data && data.content) {
+      setFakeData(data.content);
+      setSum(calcAllMark(fakeData));
+    }
+  }, [isPending, data]);
+
+  useEffect(() => {
+    setSum(calcAllMark(fakeData));
+  }, [fakeData]);
+
+  if (isPending) return <Loading />;
+
+  function handleCancel() {
+    router.back();
+  }
+  const arabic = data?.language === 'ar' ? true : false;
+
+  const handleSaveData = () => {
+    if (fakeData === data?.content) {
+      toast.error("Aucune modification n'a été effectuee.");
+      return;
+    }
+    if (sum > data?.total_mark) {
+      toast.error(`La note doit être minimum a ${data?.total_mark}`);
+      return;
+    }
+    let exam_id = examenId;
+    editExam({ exam_id, content: fakeData });
+  };
+  // useEffect(() => {
+  //   if (fakeData) {
+  //   }
+  // }, [fakeData]);
   return (
     <div className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -53,8 +88,26 @@ export default function page({ params }: { params: { examenId: string } }) {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+          <div
+            className={cn(
+              'flex items-center w-[109px]  gap-3  border rounded-lg cursor-pointer border-[#F04438]  text-[rgb(240,68,56)] hover:opacity-80',
+              +sum < +data?.total_mark && 'bg-[#dea53b1b] border-[#dea53b] text-[#dea53b] ',
+              +sum === +data?.total_mark && 'bg-[#d1fadf] border-[#399739] text-[#399739] '
+            )}
+          >
+            <button
+              className={cn(
+                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold font-[500] leading-tight '
+              )}
+            >
+              {sum} / {data?.total_mark}
+            </button>
+          </div>
           <div className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer border-[#F04438] text-[#F04438] hover:opacity-80 ">
-            <button onClick={() => handleCancel()} className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center">
+            <button
+              onClick={() => handleCancel()}
+              className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
+            >
               <Image src="/redcloseicon2.svg" alt="icons" width={10} height={10} />
               Annuler
             </button>
@@ -68,7 +121,10 @@ export default function page({ params }: { params: { examenId: string } }) {
           </div>
 
           <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-            <div className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center">
+            <div
+              className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
+              onClick={handleSaveData}
+            >
               <Image src={'/enregistreIcon.svg'} alt="icons" width={20} height={20} className="" />
               Enregister
             </div>
@@ -78,7 +134,7 @@ export default function page({ params }: { params: { examenId: string } }) {
       {/* <CreateExam examId={examenId} /> */}
       {/* <EmailSend /> */}
 
-      <CreateExam data={data} />
+      <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />
     </div>
   );
 }

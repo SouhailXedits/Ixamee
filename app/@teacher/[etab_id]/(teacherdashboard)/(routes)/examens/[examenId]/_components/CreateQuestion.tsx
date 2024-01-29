@@ -2,8 +2,9 @@ import Image from 'next/image';
 import { CreateSubQuestion } from './CreateSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from './toolbar-editor';
+import { cn } from '@/lib/utils';
 
-export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
+export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
   //  this the content of the Editor 🙄
   const onChange = (content: string) => {
     updateContetn(content, data);
@@ -155,14 +156,18 @@ export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) =>
   return (
     <>
       <div
-        className={`relative border flex h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
+        className={`relative border flex  h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
       >
         <div
-          className="bg-[#CFE8E6] p-2 rounded-full absolute -left-3 cursor-pointer"
+          className={cn(
+            'bg-[#CFE8E6] p-2 rounded-full  cursor-pointer',
+            !isArabic ? 'absolute -left-3' : 'absolute -right-3'
+          )}
           onClick={createSubQuestion}
         >
           <Image src="/plusiconforsubexercice.svg" width={10} height={10} alt="plusicon" />
         </div>
+
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
             <div className="flex items-center gap-1">
@@ -206,6 +211,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) =>
           allData={allData}
           data={item}
           setFakeData={setFakeData}
+          isArabic={isArabic}
           fakeData={fakeData}
         />
       ))}

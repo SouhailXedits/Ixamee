@@ -2,11 +2,10 @@ import Image from 'next/image';
 import { CreateSubSubQuestion } from './CreateSubSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from './toolbar-editor';
+import { cn } from '@/lib/utils';
 
-export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
+export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
   const onChange = (content: string) => {
-    console.log(data);
-    console.log(content);
     updateContentSubQuestion(content, data);
   };
   const updateContentSubQuestion = (contetn: any, data: any) => {
@@ -319,10 +318,16 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any)
   return (
     <>
       <div
-        className={`relative border flex h-auto min-h-[79px] mr-3 ml-[6rem] rounded-xl flex items-center justify-start`}
+        className={cn(
+          `relative border flex h-auto min-h-[79px] mr-3  rounded-xl flex items-center justify-start`,
+          !isArabic ? 'ml-[6rem]' : 'mr-[6rem]'
+        )}
       >
         <div
-          className="bg-[#CFE8E6] p-2 rounded-full absolute -left-3 cursor-pointer"
+          className={cn(
+            'bg-[#CFE8E6] p-2 rounded-full absolute  cursor-pointer',
+            !isArabic ? '-left-3' : '-right-3'
+          )}
           onClick={createSubSubQuestion}
         >
           <Image src="/plusiconforsubexercice.svg" width={10} height={10} alt="plusicon" />
@@ -370,7 +375,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any)
         </div>
       </div>
       {data.children.map((item: any) => (
-        <CreateSubSubQuestion data={item} setFakeData={setFakeData} allData={allData} />
+        <CreateSubSubQuestion data={item} setFakeData={setFakeData} isArabic={isArabic} allData={allData} />
       ))}
     </>
   );

@@ -23,6 +23,7 @@ import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { any } from 'zod';
+import { useState } from 'react';
 interface classe {
   id: number;
   name: string;
@@ -34,7 +35,6 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const { classesId } = params;
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
-  console.log(classesId);
   const handleImportedData = (jsonData: any) => {
     // Handle the imported data in the external page
     console.log(jsonData);
@@ -49,7 +49,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
   console.log(data);
-
+  const [exam, setExam] = useState(0);
+  const newData = data?.map((item: any) => {
+    return {
+      ...item,
+      exam: exam, // Add your new field here
+      classe: classe,
+    };
+  });
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -68,27 +75,53 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          <Select>
-            <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
-              <SelectValue
-                placeholder={
-                  <div className="flex items-center">
-                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
-                    <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
-                  </div>
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="corrige" className="">
-                Corrigé
-              </SelectItem>
-              <SelectItem value="en-cours">En cours</SelectItem>
-              <SelectItem value="non-corrigé">Non corrigé</SelectItem>
-              <SelectItem value="non-classé">Non classé</SelectItem>
-              <SelectItem value="absent">Absent</SelectItem>
-            </SelectContent>
-          </Select>
+          <div>
+            <Select onValueChange={(value) => setExam(value)}>
+              <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
+                <SelectValue
+                  placeholder={
+                    <div className="flex items-center">
+                      <span className="ml-2 text-[#1B8392] text-base  ">
+                        Sélectionner un examen
+                      </span>
+                    </div>
+                  }
+                />
+              </SelectTrigger>
+
+              <SelectContent>
+                {classe?.exam_classe?.map((exam: any) => (
+                  <SelectItem value={exam.id} className="">
+                    {exam.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {exam !== 0 && (
+            <Select>
+              <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
+                <SelectValue
+                  placeholder={
+                    <div className="flex items-center">
+                      <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
+                      <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
+                    </div>
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="corrige" className="">
+                  Corrigé
+                </SelectItem>
+                <SelectItem value="en-cours">En cours</SelectItem>
+                <SelectItem value="non-corrigé">Non corrigé</SelectItem>
+                <SelectItem value="non-classé">Non classé</SelectItem>
+                <SelectItem value="absent">Absent</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
 
           {/* {data?.length === 0 && ( */}
           <ImportUneClasse data={data} class_id={classesId} etab_id={etab_id}>
@@ -129,7 +162,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       </nav>
 
       <div>
-        <StudentList data={data} isPending={isPending} />
+        <StudentList data={newData} isPending={isPending} />
       </div>
     </main>
   );

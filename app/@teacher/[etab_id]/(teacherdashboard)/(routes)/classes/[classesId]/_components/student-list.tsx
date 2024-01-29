@@ -41,24 +41,36 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { InviterUnEtudiant } from '@/components/modals/inviter-un-etudiant';
 import { SupprimerUserInClasse } from '@/components/modals/suprimer-user-in-classe';
 import { usePathname, useRouter } from 'next/navigation';
-
 function calculateDateDifference(date1: Date, date2: Date): number {
   const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-  console.log(differenceInDays);
   return differenceInDays;
 }
 function handleUpdateUser(user_id: number) {
   // console.log(user_id);
 }
 const Action = ({ row }: any) => {
+  console.log(row);
   const router = useRouter();
   const pathname = usePathname();
+
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <ModifierUnEtudiant data={row.original}>
         <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
       </ModifierUnEtudiant>
+      {row?.original?.exam !== 0 && (
+        <CorrectExam data={row?.original}>
+          <Image
+            src="/correctionExam.svg"
+            alt=""
+            width={20}
+            height={20}
+            className="cursor-pointer "
+          />
+        </CorrectExam>
+      )}
+
       {!row.original.emailVerified ? (
         calculateDateDifference(row.original.invited_at, row.original.invited_at) == 0 ? (
           <Image
@@ -206,42 +218,43 @@ export const columns = [
   //   header: () => {
   //     return <span className="text-[#1B8392] ">Correction</span>;
   //   },
-  //   cell: ({ row }) => {
-  //     const correction = row.getValue('correction');
-  //     switch (correction) {
-  //       case 'Corrigé':
-  //         return (
-  //           <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />
-  //         );
-  //       case 'Non corrigé':
-  //         return (
-  //           <CorrectionTag
-  //             correction="Non corrigé"
-  //             bgcolor="#FFF4F3"
-  //             color="#F04438"
-  //             width="100px"
-  //           />
-  //         );
-  //       case 'Non classé':
-  //         return (
-  //           <CorrectionTag
-  //             correction="Non classé"
-  //             bgcolor="#F4EFFF"
-  //             color="#8862F5"
-  //             width="100px"
-  //           />
-  //         );
-  //       case 'Absent':
-  //         return (
-  //           <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />
-  //         );
-  //       case 'En cours':
-  //         return (
-  //           <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
-  //         );
-  //       default:
-  //         return null;
-  //     }
+  //   cell: ({ row } :any) => {
+  //     console.log(row);
+
+  //     // switch (correction) {
+  //     //   case 'Corrigé':
+  //     //     return (
+  //     //       <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />
+  //     //     );
+  //     //   case 'Non corrigé':
+  //     //     return (
+  //     //       <CorrectionTag
+  //     //         correction="Non corrigé"
+  //     //         bgcolor="#FFF4F3"
+  //     //         color="#F04438"
+  //     //         width="100px"
+  //     //       />
+  //     //     );
+  //     //   case 'Non classé':
+  //     //     return (
+  //     //       <CorrectionTag
+  //     //         correction="Non classé"
+  //     //         bgcolor="#F4EFFF"
+  //     //         color="#8862F5"
+  //     //         width="100px"
+  //     //       />
+  //     //     );
+  //     //   case 'Absent':
+  //     //     return (
+  //     //       <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />
+  //     //     );
+  //     //   case 'En cours':
+  //     //     return (
+  //     //       <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
+  //     //     );
+  //     //   default:
+  //     //     return null;
+  //     // }
   //   },
   // },
 
@@ -257,6 +270,7 @@ export const columns = [
 ];
 
 export function StudentList({ data, isPending }: any) {
+  // let newData = [data, exam];
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});

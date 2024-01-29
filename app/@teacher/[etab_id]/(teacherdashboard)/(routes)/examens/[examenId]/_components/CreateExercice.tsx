@@ -4,13 +4,11 @@ import { CreateQuestion } from './CreateQuestion';
 import { cn } from '@/lib/utils';
 import { calculateChildrenMarks, calculerExerciceMark } from './calculateChildrenMarks';
 
-export const CreateExercice = ({ allData, data, setFakeData }: any) => {
+export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) => {
   if (!data) return;
-  // const language = data?.language;
-  const language = 'fr';
 
-  // const isArabic = language === 'ar';
-  const isArabic = false;
+  // // const isArabic = language === 'ar';
+  // const isArabic = false;
   const AddQuestion = () => {
     setFakeData((prevData: any) => {
       const getNextChar = (num: number) => String.fromCharCode(0x2160 + num);
@@ -19,7 +17,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
         id: Math.random().toString(36).substring(7),
         name: getNextChar(data.children.length),
         mark: 0,
-        content : "",
+        content: '',
         children: [],
       };
 
@@ -53,7 +51,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
               type="text"
               className={cn(
                 'text-2xl bg-transparent border-none w-[220px] -mr-10 -ml-1 text-[#1B8392]',
-                isArabic && 'pr-14'
+                isArabic && 'pr-[3rem]'
               )}
               // defaultValue={data.name || !isArabic ? 'Exercice 1' : 'تمرين 1'}
               defaultValue={data.name}
@@ -71,50 +69,25 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
           </div>
           {}
           <div className="flex items-center gap-3 ">
-            {isArabic ? (
-              <div
-                className={cn(
-                  'flex w-[210px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
-                )}
-              >
-                <div className={cn('flex text-center text-[#1B8392] leading-tight items-center')}>
-                  <span className="text-xl"> 20.00/</span>
-
-                  <Input
-                    className={cn(
-                      'bg-transparent border-none text-[#1B8392] w-[90px] text-xl text-right placeholder:text-mainGreen p-3 border border-[#1B8392]'
-                    )}
-                    placeholder="--.--"
-                    // value={}
-                    maxLength={5}
-                    disabled
-                    // value={updateExericeMark}
-                    // value={}
-                    // defaultValue={}
-                  />
-                </div>
+            <div
+              className={cn(
+                'flex w-[100px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
+              )}
+            >
+              <div className="flex items-center justify-center">
+                <Input
+                  className={cn(
+                    'bg-transparent border-none text-[#1B8392] w-[90px] text-xl  placeholder:text-mainGreen p-3 border border-[#1B8392] text-center'
+                  )}
+                  placeholder="--.--"
+                  maxLength={5}
+                  disabled
+                  value={Number(calculerExerciceMark(data)).toFixed(2)}
+                  // defaultValue={}
+                />
+                {/* <span className="text-xl">/ 20.00</span> */}
               </div>
-            ) : (
-              <div
-                className={cn(
-                  'flex w-[100px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
-                )}
-              >
-                <div className="flex items-center justify-center">
-                  <Input
-                    className={cn(
-                      'bg-transparent border-none text-[#1B8392] w-[90px] text-xl  placeholder:text-mainGreen p-3 border border-[#1B8392] text-center'
-                    )}
-                    placeholder="--.--"
-                    maxLength={5}
-                    disabled
-                    value={Number(calculerExerciceMark(data)).toFixed(2)}
-                    // defaultValue={}
-                  />
-                  {/* <span className="text-xl">/ 20.00</span> */}
-                </div>
-              </div>
-            )}
+            </div>
 
             <Image
               src="/redcloseicon.svg"
@@ -138,6 +111,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
               data={item}
               allData={data}
               fakeData={allData}
+              isArabic={isArabic}
               setFakeData={setFakeData}
             />
           ))}
@@ -148,7 +122,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
             onClick={() => AddQuestion()}
           >
             <Image src="/plusicon.svg" width={20} height={20} alt="plusicon" />
-            {language === 'fr' ? 'Ajoutez une question' : 'إضافة سؤال'}
+            {!isArabic ? 'Ajoutez une question' : 'إضافة سؤال'}
           </div>
         </div>
       </div>

@@ -166,7 +166,7 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Modifier votre étudiant
+            Ajouter un étudiant
           </DialogTitle>
         </DialogHeader>
 

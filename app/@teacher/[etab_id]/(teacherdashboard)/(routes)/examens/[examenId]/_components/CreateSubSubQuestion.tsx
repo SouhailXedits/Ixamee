@@ -2,8 +2,9 @@ import Image from 'next/image';
 import Editor from './toolbar-editor';
 import { Input } from '@/components/ui/input';
 import { calculerExerciceMark } from './calculateChildrenMarks';
+import { cn } from '@/lib/utils';
 
-export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
+export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: any) => {
   const onChange = (content: string) => {
     console.log(data);
     console.log(content);
@@ -38,6 +39,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
       });
     });
   };
+
   function numberToLetters(num: number) {
     let letters = '';
     while (num > 0) {
@@ -101,7 +103,6 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
     });
   };
   const calcSumOfMarks = (data: any) => {
-    console.log(data);
     let sum = 0;
     data.children.map((item: any) => {
       sum += +item.mark;
@@ -197,7 +198,10 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
   return (
     <>
       <div
-        className={`relative border flex h-auto min-h-[79px] mr-3 ml-[12rem] rounded-xl flex items-center justify-start`}
+        className={cn(
+          `relative border flex h-auto min-h-[79px] mr-3  rounded-xl flex items-center justify-start`,
+          !isArabic ? 'ml-[12rem]' : ' mr-[12rem] '
+        )}
       >
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
@@ -215,7 +219,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
               className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
               type="number"
-              // defaultValue={}
+              defaultValue={data.mark}
               maxLength={5}
               // value={
               //   exercise.children && exercise.children.length > 0

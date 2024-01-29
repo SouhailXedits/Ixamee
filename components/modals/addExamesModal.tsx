@@ -150,6 +150,14 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     label: item.name,
   }));
   const { creatExam, isPending } = useCreateExam();
+  const verfierSchema = () => {
+    let ok = false;
+    try {
+      examSchema.parse(formData);
+      ok = true;
+    } catch (error) {}
+    return ok;
+  };
   const handleSubmit = async () => {
     try {
       // Validate the form data
@@ -450,16 +458,29 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
             </div>
           </div>
         </div>
-        <DialogClose>
+
+        {verfierSchema() ? (
+          <DialogClose>
+            <Button
+              type="submit"
+              className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
+              onClick={handleSubmit}
+            >
+              {' '}
+              Ajouter
+            </Button>
+          </DialogClose>
+        ) : (
           <Button
             type="submit"
+            disabled={true}
             className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
             onClick={handleSubmit}
           >
             {' '}
             Ajouter
           </Button>
-        </DialogClose>
+        )}
       </DialogContent>
     </Dialog>
   );

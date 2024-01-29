@@ -2,132 +2,9 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { CreateExercice } from './CreateExercice';
-import { calculateChildrenMarks } from './calculateChildrenMarks';
+import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
 
-function CreateExam({ data }: any) {
-  const [fakeData, setFakeData] = useState<any>([
-    // {
-    //   name: 'Exerice n1',
-    //   mark: 10,
-    //   id: '1x23ds',
-    //   children: [
-    //     {
-    //       name: 'I)',
-    //       mark: '10',
-    //       content:
-    //         '[\n' +
-    //         '  {\n' +
-    //         '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
-    //         '    "type": "paragraph",\n' +
-    //         '    "props": {\n' +
-    //         '      "textColor": "default",\n' +
-    //         '      "backgroundColor": "default",\n' +
-    //         '      "textAlignment": "left"\n' +
-    //         '    },\n' +
-    //         '    "content": [\n' +
-    //         '      {\n' +
-    //         '        "type": "text",\n' +
-    //         '        "text": "what is 1+1",\n' +
-    //         '        "styles": {}\n' +
-    //         '      }\n' +
-    //         '    ],\n' +
-    //         '    "children": []\n' +
-    //         '  },\n' +
-    //         '  {\n' +
-    //         '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
-    //         '    "type": "paragraph",\n' +
-    //         '    "props": {\n' +
-    //         '      "textColor": "default",\n' +
-    //         '      "backgroundColor": "default",\n' +
-    //         '      "textAlignment": "left"\n' +
-    //         '    },\n' +
-    //         '    "content": [],\n' +
-    //         '    "children": []\n' +
-    //         '  }\n' +
-    //         ']',
-    //       children: [
-    //         {
-    //           name: '1)',
-    //           mark: '2',
-    //           content:
-    //             '[\n' +
-    //             '  {\n' +
-    //             '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
-    //             '    "type": "paragraph",\n' +
-    //             '    "props": {\n' +
-    //             '      "textColor": "default",\n' +
-    //             '      "backgroundColor": "default",\n' +
-    //             '      "textAlignment": "left"\n' +
-    //             '    },\n' +
-    //             '    "content": [\n' +
-    //             '      {\n' +
-    //             '        "type": "text",\n' +
-    //             '        "text": "what is 1+2",\n' +
-    //             '        "styles": {}\n' +
-    //             '      }\n' +
-    //             '    ],\n' +
-    //             '    "children": []\n' +
-    //             '  },\n' +
-    //             '  {\n' +
-    //             '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
-    //             '    "type": "paragraph",\n' +
-    //             '    "props": {\n' +
-    //             '      "textColor": "default",\n' +
-    //             '      "backgroundColor": "default",\n' +
-    //             '      "textAlignment": "left"\n' +
-    //             '    },\n' +
-    //             '    "content": [],\n' +
-    //             '    "children": []\n' +
-    //             '  }\n' +
-    //             ']',
-    //           children: [
-    //             {
-    //               name: 'a)',
-    //               mark: '1',
-    //               content:
-    //                 '[\n' +
-    //                 '  {\n' +
-    //                 '    "id": "f8452588-88e4-4770-8037-720fc0cc4e13",\n' +
-    //                 '    "type": "paragraph",\n' +
-    //                 '    "props": {\n' +
-    //                 '      "textColor": "default",\n' +
-    //                 '      "backgroundColor": "default",\n' +
-    //                 '      "textAlignment": "left"\n' +
-    //                 '    },\n' +
-    //                 '    "content": [\n' +
-    //                 '      {\n' +
-    //                 '        "type": "text",\n' +
-    //                 '        "text": "what is 1+1",\n' +
-    //                 '        "styles": {}\n' +
-    //                 '      }\n' +
-    //                 '    ],\n' +
-    //                 '    "children": []\n' +
-    //                 '  },\n' +
-    //                 '  {\n' +
-    //                 '    "id": "ced59dcb-903c-4038-acad-3c28466f95cb",\n' +
-    //                 '    "type": "paragraph",\n' +
-    //                 '    "props": {\n' +
-    //                 '      "textColor": "default",\n' +
-    //                 '      "backgroundColor": "default",\n' +
-    //                 '      "textAlignment": "left"\n' +
-    //                 '    },\n' +
-    //                 '    "content": [],\n' +
-    //                 '    "children": []\n' +
-    //                 '  }\n' +
-    //                 ']',
-    //             },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-  ]);
-  console.log(fakeData)
-
-  
-
-
+function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
   // function calculateTotalMark(data: any) {
   //   let totalMark = 0;
 
@@ -153,23 +30,28 @@ function CreateExam({ data }: any) {
   // const totalMark = calculateTotalMark(fakeData);
   // console.log('Total Mark:', totalMark);
 
-
   const createExercice = (fakeData: any) => {
     const newExercise = {
       id: Math.random().toString(36).substring(7),
-      name: `Exercice ${fakeData.length + 1}`,
+      name: isArabic ? ` تمرين ${fakeData.length + 1}` : `Exercice ${fakeData.length + 1}`,
       mark: 0,
       children: [],
     };
     const newData = [...fakeData, newExercise];
     setFakeData(newData);
   };
-  if (!data) return;
+  // if (!data) return;
   return (
-    <div dir={data?.language === 'fr' ? 'ltr' : 'rtl'}>
+    <div dir={!isArabic ? 'ltr' : 'rtl'}>
       <div className="flex flex-col gap-4">
         {fakeData?.map((item: any, index: number) => (
-          <CreateExercice allData={fakeData} data={item} setFakeData={setFakeData} key={index} />
+          <CreateExercice
+            allData={fakeData}
+            data={item}
+            setFakeData={setFakeData}
+            key={index}
+            isArabic={isArabic}
+          />
         ))}
       </div>
 
@@ -184,7 +66,7 @@ function CreateExam({ data }: any) {
               className="cursor-pointer"
             />
           </div>
-          {data?.language === 'fr' ? (
+          {!isArabic ? (
             <span className="text-[#D9D9D9]">Ajoutez un exercice</span>
           ) : (
             <span className="text-[#D9D9D9] ">أضف تمرينا</span>

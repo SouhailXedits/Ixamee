@@ -143,6 +143,7 @@ model Exam {
   exam_classess   Classe[]         @relation("ExamClasseToUser")
   language        Language? // Consider using an enum for style
   create_at       DateTime?        @default(now())
+  content         Json?
 }
 
 enum Language {

@@ -198,7 +198,7 @@ export const getEstablishmentOfUser = async (user_id: string) => {
       },
     },
   });
-  console.log("🚀 ~ getEstablishmentOfUser ~ data:", data)
+  console.log('🚀 ~ getEstablishmentOfUser ~ data:', data);
 
   return data;
 };
@@ -331,6 +331,25 @@ export const deleteExame = async (id: number) => {
     return {
       error: 'Failed to delete Exam.',
     };
+  }
+};
+export const updateExamContent = async (examId: string, content: any) => {
+  console.log(examId, content);
+  try {
+    const updatedExam = await db.exam.update({
+      where: {
+        id: +examId,
+      },
+
+      data: {
+        content: content,
+      },
+    });
+
+    return updatedExam;
+  } catch (error) {
+    console.error('Error updating exam:', error);
+    throw error;
   }
 };
 

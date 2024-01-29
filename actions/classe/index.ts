@@ -64,7 +64,57 @@ export const updateClasse = async (name: string, classe_id: number, matiere: any
   }
 };
 // image, name, range, email, class_id, establishmentId;
-
+export const createUserInClasse = async (
+  image: string,
+  name: string,
+  range: number,
+  email: string,
+  class_id: string,
+  establishmentId: number
+) => {
+  const data = await db.user.findUnique({
+    where: {
+      email: email,
+      NOT: {
+        classe: {
+          some: {
+            id: +class_id,
+          },
+        },
+      },
+    },
+  });
+  if (!data) {
+    const user = await db.user.create({
+      data: {
+        name: name,
+        image: image,
+        range: range,
+        email: email,
+        role: 'STUDENT',
+        classe: {
+          connect: { id: +class_id },
+        },
+        user_establishment: {
+          connect: { id: +establishmentId },
+        },
+      },
+    });
+  } else {
+    const user = await db.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        classe: {
+          connect: {
+            id: +class_id,
+          },
+        },
+      },
+    });
+  }
+};
 export const createUserWithImportInClasse = async (
   image: string,
   name: string,
@@ -194,32 +244,6 @@ export const getStudentOfClasse = async (classe_id: number) => {
   return res;
 };
 
-export const createUserInClasse = async (
-  image: string,
-  name: string,
-  range: number,
-  email: string,
-  class_id: string,
-  establishmentId: number
-) => {
-  const user = await db.user.create({
-    data: {
-      name: name,
-      image: image,
-      range: range,
-      email: email,
-      role: 'STUDENT',
-      classe: {
-        connect: { id: +class_id },
-      },
-      user_establishment: {
-        connect: { id: +establishmentId },
-      },
-    },
-  });
-  console.log(user);
-  return user;
-};
 // export const createManyUserInClasseApi = async (
 //   name: string,
 //   range: number,
@@ -321,8 +345,6 @@ export const getUserById = async (id: string) => {
   });
   return user;
 };
-
-
 
 export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
   console.log(studentEmail, teacherEmail);
