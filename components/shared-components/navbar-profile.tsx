@@ -41,6 +41,7 @@ const NavbarProfile = () => {
     queryFn: async () => await getMe(),
   });
 
+
   if (!user) {
     return null;
   }

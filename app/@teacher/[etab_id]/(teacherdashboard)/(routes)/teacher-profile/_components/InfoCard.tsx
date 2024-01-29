@@ -189,7 +189,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                 onChange={(e) => handleFileChange(e)}
               />
               <Image
-                src={'/editeIcon.svg'}
+                src={'/editeicon.svg'}
                 alt="editeIcon"
                 width={20}
                 height={20}
@@ -224,7 +224,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
             </div>
             <div>
               <Image
-                src={'/editeIcon.svg'}
+                src={'/editeicon.svg'}
                 alt="editeIcon"
                 width={20}
                 height={20}
@@ -260,7 +260,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
             </div>
             <div>
               <Image
-                src={'/editeIcon.svg'}
+                src={'/editeicon.svg'}
                 alt="editeIcon"
                 width={20}
                 height={20}
@@ -297,7 +297,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
             </div>
             <div>
               <Image
-                src={'/editeIcon.svg'}
+                src={'/editeicon.svg'}
                 alt="editeIcon"
                 width={20}
                 height={20}

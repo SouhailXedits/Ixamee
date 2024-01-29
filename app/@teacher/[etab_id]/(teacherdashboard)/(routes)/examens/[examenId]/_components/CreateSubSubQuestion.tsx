@@ -153,10 +153,10 @@ export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
                     mark: calcSumOfMarks(subSubItem),
                   };
                 }),
-                mark: calculerExerciceMark(allData),
+                // mark: calculerExerciceMark(allData),
               };
             }),
-            mark: calculerExerciceMark(allData),
+            // mark: calculerExerciceMark(allData),
           };
         }
         return item;
