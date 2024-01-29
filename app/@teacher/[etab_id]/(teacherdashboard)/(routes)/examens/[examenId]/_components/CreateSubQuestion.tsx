@@ -5,8 +5,44 @@ import Editor from './toolbar-editor';
 
 export const CreateSubQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
   const onChange = (content: string) => {
+    console.log(data);
     console.log(content);
+    updateContentSubQuestion(content, data);
   };
+  const updateContentSubQuestion = (contetn: any, data: any) => {
+    // Updating the mark of the specific subquestion
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question
+        if (item.id === allData.id) {
+          // Updating 👍 the children array of the parent question
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              // Updating the children array of the parent subquestion
+              return {
+                ...subItem,
+                children: subItem.children.map((subSubItem: any) => {
+                  // Checking if the current subsubitem's id matches the id of the subquestion to be updated
+                  if (subSubItem.id === data.id) {
+                    // Updating the mark of the subquestion with the new value
+                    subSubItem.content = contetn;
+                  }
+                  // Returning unchanged subsubitems
+                  return subSubItem;
+                }),
+              };
+            }),
+          };
+        }
+        // Returning unchanged items
+        return item;
+      });
+    });
+
+    // Recalculating marks in the hierarchy
+  };
+
   const createSubSubQuestion = () => {
     const getNextName = (currentName: string) => {
       const alphabet = 'abcdefghijklmnopqrstuvwxyz';

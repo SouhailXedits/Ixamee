@@ -1,11 +1,42 @@
-import Image from "next/image";
-import Editor from "./toolbar-editor";
-import { Input } from "@/components/ui/input";
-import { calculerExerciceMark } from "./calculateChildrenMarks";
+import Image from 'next/image';
+import Editor from './toolbar-editor';
+import { Input } from '@/components/ui/input';
+import { calculerExerciceMark } from './calculateChildrenMarks';
 
 export const CreateSubSubQuestion = ({ data, setFakeData, allData }: any) => {
   const onChange = (content: string) => {
+    console.log(data);
     console.log(content);
+    updateContentSubSubQuestion(content, data);
+  };
+  const updateContentSubSubQuestion = (content: any, data: any) => {
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        if (item.id === allData.id) {
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              return {
+                ...subItem,
+                children: subItem.children.map((subSubItem: any, index: number) => {
+                  console.log(subSubItem.mark, '🐳');
+                  return {
+                    ...subSubItem,
+                    children: subSubItem.children.map((subSubSubItem: any) => {
+                      if (subSubSubItem.id === data.id) {
+                        subSubSubItem.content = content;
+                      }
+                      return subSubSubItem;
+                    }),
+                  };
+                }),
+              };
+            }),
+          };
+        }
+        return item;
+      });
+    });
   };
   function numberToLetters(num: number) {
     let letters = '';

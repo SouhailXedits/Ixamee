@@ -6,7 +6,7 @@ import Editor from './toolbar-editor';
 export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) => {
   //  this the content of the Editor 🙄
   const onChange = (content: string) => {
-    console.log(content);
+    updateContetn(content, data);
   };
   // Function to create and add a new subquestion to a specific question in fake data
   const createSubQuestion = () => {
@@ -109,6 +109,26 @@ export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) =>
     // Return the calculated mark
     return data.mark;
   };
+  const updateContetn = (contetn: string, data: any) => {
+    // Using setFakeData to update the state based on previous data
+    setFakeData((prevData: any) => {
+      // Mapping over the previous data to create a new updatedData array
+      const updatedData = prevData.map((item: any) => {
+        // Mapping over the children array of each item
+        item.children.map((state: any, index: number) => {
+          // Checking if the current child's id matches the provided data's id
+          if (state.id === data.id) {
+            // Updating the mark of the matching child with the new value (+e)
+            state.content = contetn;
+          }
+        });
+        // Returning the updated item
+        return item;
+      });
+      // Returning the updatedData to setFakeData
+      return updatedData;
+    });
+  };
 
   // Function to update a question's mark in the fake data
   const updateQuestion = (e: any, data: any) => {
@@ -132,7 +152,6 @@ export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) =>
     });
   };
 
-  console.log(fakeData);
   return (
     <>
       <div
@@ -146,7 +165,10 @@ export const CreateQuestion = ({ allData, data, setFakeData, fakeData }: any) =>
         </div>
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
-            <span>{data.name} </span> {/* Adjusted Editor component */}
+            <div className="flex items-center gap-1">
+              <span>{data.name} </span>
+              <span>)</span>
+            </div>
             <Editor
               // initialContent={data.content}
               editable={true}

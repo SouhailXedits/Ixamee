@@ -6,7 +6,9 @@ import { calculateChildrenMarks, calculerExerciceMark } from './calculateChildre
 
 export const CreateExercice = ({ allData, data, setFakeData }: any) => {
   if (!data) return;
-  const language = data?.language;
+  // const language = data?.language;
+  const language = 'fr';
+
   // const isArabic = language === 'ar';
   const isArabic = false;
   const AddQuestion = () => {
@@ -17,6 +19,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
         id: Math.random().toString(36).substring(7),
         name: getNextChar(data.children.length),
         mark: 0,
+        content : "",
         children: [],
       };
 
@@ -35,7 +38,7 @@ export const CreateExercice = ({ allData, data, setFakeData }: any) => {
     const newData = allData.filter((item: any) => item.id !== data.id);
     setFakeData(newData);
   };
-  
+
   //   calculateChildrenMarks(allData);
 
   return (
