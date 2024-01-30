@@ -329,7 +329,7 @@ export const MarkSheetPdfClass = () => {
               <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
               <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
               <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td>
             </tr>
             {data.map((student, i) => (
               <StudentRow data={student} key={i} />

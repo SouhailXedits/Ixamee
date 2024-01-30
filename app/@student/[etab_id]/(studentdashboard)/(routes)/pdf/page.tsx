@@ -11,9 +11,9 @@ function page() {
     <>
       <PDFExport pdfName="bulletin">
         {/* <MarkSheetPdfClass /> */}
-        <p>souhal</p>
-      </PDFExport>
+        {/* <p>souhal</p> */}
     <MarkSheetPdfClass />
+      </PDFExport>
     </>
   );
 }
