@@ -308,7 +308,7 @@ export const MarkSheetPdfClass = () => {
       <div className="flex justify-center">
         <table className=" text-center w-[700px] border border-black/50 ">
           <thead className="text-white">
-            <td rowSpan={2} className="bg-[#99C6D3] ">
+            <td rowSpan={2} className="bg-[#99C6D3] p-1">
               Etudiant
             </td>
             <th className="border border-black/50 bg-[#99C6D3]" colSpan={2}>

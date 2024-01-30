@@ -13,7 +13,8 @@ const PDFExport = ({ children, pdfName }: any) => {
       html2canvas: { scale: 3, useCORS: true },
       jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
     };
-    html2pdf().set(opt).from(element).save();
+    html2pdf(element).set(opt)
+    // html2pdf().set(opt).from(element).save();
   };
 
   return (
