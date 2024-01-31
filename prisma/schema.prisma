@@ -3,11 +3,11 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-
+ 
 generator client {
   provider = "prisma-client-js"
 }
-
+ 
 model User {
   id                 String          @id @default(cuid())
   name               String
@@ -33,19 +33,19 @@ model User {
   createdAt          DateTime?       @default(now())
   ExamCorrection     ExamCorrection[]
 }
-
+ 
 enum Term {
   TRIMESTRE
   SEMESTRE
   LIBRE
 }
-
+ 
 enum Role {
   STUDENT
   TEACHER
   ADMIN
 }
-
+ 
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -59,47 +59,47 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@unique([provider, providerAccountId])
 }
-
+ 
 model VerificationToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
-
+ 
   @@unique([email, token])
 }
-
+ 
 model PasswordResetToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
-
+ 
   @@unique([email, token])
 }
-
+ 
 model InvitationToken {
   id            String   @id @default(cuid())
   recieverEmail String
   senderEmail   String
   token         String   @unique
   expires       DateTime
-
+ 
   @@unique([recieverEmail, senderEmail, token])
 }
-
+ 
 model Establishment {
   id                 Int      @id @default(autoincrement())
   name               String
   user_establishment User[]   @relation("UserEstablishmentToUser")
   classes            Classe[] @relation("EstablishmentToClasse")
 }
-
+ 
 // Classe Table
 model Classe {
   id            Int             @id @default(autoincrement())
@@ -112,10 +112,9 @@ model Classe {
   is_archived   Boolean?        @default(false)
   archived_at   DateTime?
   createdAt          DateTime?       @default(now())
-
   exam_classe   Exam[]          @relation("ExamClasseToUser")
 }
-
+ 
 // Subject Table
 model Subject {
   id             Int      @id @default(autoincrement())
@@ -127,7 +126,7 @@ model Subject {
   is_archived    Boolean? @default(false)
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
 }
-
+ 
 model Exam {
   id              Int              @id @default(autoincrement())
   name            String
@@ -159,8 +158,10 @@ model ExamCorrection {
   mark_obtained Float
   user         User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id       String?
-  feedback        String?
+  feedback      Json?
+  correction_exam_content Json?
 }
-
-
-
+ 
+ 
+ 
+ 
