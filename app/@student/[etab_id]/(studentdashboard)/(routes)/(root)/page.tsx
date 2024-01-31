@@ -5,15 +5,9 @@ import DashboradBulletinsDesEtudiants from './_components/dashborad-bulletins-de
 import DashboradClasses from './_components/dashborad-classes';
 import DashboradCorrectionsRecentes from './_components/dashborad-corrections-recentes';
 import DashboradStatistiques from './_components/dashborad-statistiques';
-import {
-  getCountOfClasse,
-  getCountOfStudentExams,
-  getCountOfStudentSubjects,
-  getStudentMarksheet,
-} from '@/actions/dashboard';
+
 import { useParams } from 'next/navigation';
 import {
-  getAllSubjectsByClasseId,
   getAllSubjectsByClasseIdByPage,
   getAllSubjectsCount,
 } from '@/actions/subjects';

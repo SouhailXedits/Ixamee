@@ -6,7 +6,6 @@ import {
 } from '@/actions/dashboard';
 import { getEstablishmentOfUser, getMe, getSubjectOfUserById } from '@/actions/examens';
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 
 export default async function Hydration({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
