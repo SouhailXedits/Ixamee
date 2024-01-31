@@ -269,7 +269,7 @@ export const getAllSubjectsByClasseIdByPage = async (pageSize = 2, classeId: num
   } catch (error: any) {
     return {
       data: undefined as any,
-      error: 'Failed to get subjects.',
+      error: 'Failed to getAllSubjectsByClasseIdByPage.',
     };
   }
 };
@@ -286,12 +286,13 @@ export const getAllSubjectsCount = async (classeId: number) => {
         is_archived: false,
       },
     });
-    console.log("🚀 ~ getAllSubjectsCount ~ res:", res)
     return res;
   } catch (error: any) {
     return {
       data: undefined as any,
-      error: 'Failed to get subjects.',
+      error: 'Failed to getAllSubjectsCount.',
     };
   }
 };
+
+

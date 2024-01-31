@@ -1,19 +1,14 @@
 'use server';
-
 import {
   getCountOfStudentExams,
   getCountOfStudentSubjects,
   getStudentMarksheet,
 } from '@/actions/dashboard';
-import { getAllExam, getEstablishmentOfUser, getMe, getSubjectOfUserById } from '@/actions/examens';
-import { getAllSubjectsByClasseIdByPage } from '@/actions/subjects';
+import { getEstablishmentOfUser, getMe, getSubjectOfUserById } from '@/actions/examens';
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 
 export default async function Hydration({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
-  // const params = useParams();
-  // const id = params.etab_id;
   await queryClient.prefetchQuery({
     queryKey: ['user'],
     queryFn: async () => await getMe(),
@@ -29,8 +24,6 @@ export default async function Hydration({ children }: { children: React.ReactNod
     queryKey: ['teacherSubject'],
     queryFn: async () => await getSubjectOfUserById(user?.id),
   });
-  const allSubjects = queryClient.getQueryData(['teacherSubject']) as any;
-
   
   await queryClient.prefetchQuery({
     queryKey: ['subjectCount'],
@@ -44,7 +37,6 @@ export default async function Hydration({ children }: { children: React.ReactNod
     queryKey: ['examCount'],
     queryFn: async () => await getCountOfStudentExams(user.id),
   });
-
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
 }

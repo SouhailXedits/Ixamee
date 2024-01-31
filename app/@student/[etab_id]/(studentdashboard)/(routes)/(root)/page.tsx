@@ -1,40 +1,31 @@
 'use client';
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import DashboradApercu from './_components/dashborad-apercu';
 import DashboradBulletinsDesEtudiants from './_components/dashborad-bulletins-des-etudiants';
 import DashboradClasses from './_components/dashborad-classes';
 import DashboradCorrectionsRecentes from './_components/dashborad-corrections-recentes';
 import DashboradStatistiques from './_components/dashborad-statistiques';
-import {
-  getCountOfClasse,
-  getCountOfStudentExams,
-  getCountOfStudentSubjects,
-  getStudentMarksheet,
-} from '@/actions/dashboard';
+
 import { useParams } from 'next/navigation';
 import {
-  getAllSubjectsByClasseId,
   getAllSubjectsByClasseIdByPage,
   getAllSubjectsCount,
 } from '@/actions/subjects';
-
 export default function Home() {
   const queryClient = useQueryClient();
 
-  const user = queryClient.getQueryData(['user']) as any;
   const subjectCount = queryClient.getQueryData(['subjectCount']) as any;
   const examCount = queryClient.getQueryData(['examCount']) as any;
   const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
-  const allSubjects = queryClient.getQueryData(['teacherSubject']) as any;
-
+  // const allSubjects = queryClient.getQueryData(['teacherSubject']) as any;
   const params = useParams();
   const classId = params.etab_id;
+  const { data: allSubjects, isPending: allSubjectsPending } = useQuery({
+    queryKey: ['user-subjectsCount', classId],
+    queryFn: async () => getAllSubjectsCount(+classId),
+  });
 
-  const {
-    data: subjects,
-    isPending,
-    error,
-  } = useQuery({
+  const { data: subjects, isPending } = useQuery({
     queryKey: ['user-subjects-dash', classId],
     queryFn: async () => getAllSubjectsByClasseIdByPage(2, +classId),
   });
@@ -55,7 +46,7 @@ export default function Home() {
             classId={classId}
             subjects={subjects}
             isPending={isPending}
-            allSubjectsCount={allSubjects.length}
+            allSubjectsCount={allSubjects}
           />
         </div>
 

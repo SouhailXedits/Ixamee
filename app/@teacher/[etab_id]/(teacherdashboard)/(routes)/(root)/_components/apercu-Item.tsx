@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 
 interface ApercuItemProps {
@@ -32,12 +31,7 @@ const ApercuItem = ({ color, icon, stat, name, count, isPending, textColor }: Ap
     return () => clearInterval(interval);
   }, [count, isPending]);
 
-  let finalCount = isPending ? (
-    <Skeleton className="w-[30px] h-[20px]" style={{ background: textColor }} />
-  ) : (
-    animatedCount
-  );
-
+  let finalCount = animatedCount;
   return (
     <div
       className="w-1/4 h-[93px] px-2.5 bg-red-50 rounded-[20px] justify-start items-center gap-2.5 inline-flex   min-w-[220px]"
@@ -60,7 +54,7 @@ const ApercuItem = ({ color, icon, stat, name, count, isPending, textColor }: Ap
           className="self-stretch text-red-500 text-lg font-medium "
           style={{ color: textColor }}
         >
-          {finalCount}
+          {finalCount || '-'}
         </div>
       </div>
     </div>

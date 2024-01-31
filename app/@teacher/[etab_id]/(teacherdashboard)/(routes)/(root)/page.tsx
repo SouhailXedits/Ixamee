@@ -12,28 +12,39 @@ export default function Home() {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
   const etab_id = queryClient.getQueryData(['etab_id']) as any;
-  console.log('🚀 ~ Home ~ etab_id:', etab_id);
 
   const { data: classeCount, isPending: classeCountPending } = useQuery({
     queryKey: ['classeCount'],
     queryFn: async () => await getCountOfClasse(user?.id, etab_id),
   });
+  console.log('🚀 ~ Home ~ classeCount:', classeCount);
 
   const { data: examCount, isPending: examCountPending } = useQuery({
     queryKey: ['examCount'],
     queryFn: async () => await getCountOfExamenes(user?.id, etab_id),
   });
 
+  console.log('🚀 ~ Home ~ examCount:', examCount);
   const { data: archiveCount, isPending: archiveCountPending } = useQuery({
     queryKey: ['archiveCount'],
     queryFn: async () => await getCountMonArchive(user?.id, etab_id),
   });
 
+  console.log('🚀 ~ Home ~ archiveCount:', archiveCount);
   const { data: classe, isPending: isPendingClasse } = useQuery({
     queryKey: ['classe'],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
-  console.log('🚀 ~ Home ~ classe:', classe);
+  const countStudent = () => {
+    let sum = 0;
+    classe &&
+      classe.data.map((clas: any) => {
+        sum += clas?.student_class.length;
+      });
+    return sum;
+  };
+  const studentCount = classe && countStudent();
+
   return (
     <div className="flex flex-col w-full h-full p-9">
       <div className="text-2 text-2xl font-[500] pl-4 ">Tableau de bord</div>
@@ -47,9 +58,11 @@ export default function Home() {
             classeCountPending={classeCountPending}
             examCountPending={examCountPending}
             archiveCountPending={archiveCountPending}
+            studentCount={studentCount}
+            studentCountPending={isPendingClasse}
           />
           <DashboradStatistiques />
-          <DashboradClasses classe={classe?.data} etabId={etab_id} />
+          <DashboradClasses classe={classe?.data} isPending={isPendingClasse} etabId={etab_id} />
         </div>
 
         <div className="w-[40%] p-2 flex flex-col gap-8 max-2xl:w-[100%]">
