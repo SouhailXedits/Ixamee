@@ -111,6 +111,8 @@ model Classe {
   student_class User[]          @relation("StudentClassToUser")
   is_archived   Boolean?        @default(false)
   archived_at   DateTime?
+  createdAt          DateTime?       @default(now())
+
   exam_classe   Exam[]          @relation("ExamClasseToUser")
 }
 
