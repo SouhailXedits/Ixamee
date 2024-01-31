@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { CreateExercice } from './CreateExercice';
 import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
 
-function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
+function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
+  console.log(realExamContetn);
   // function calculateTotalMark(data: any) {
   //   let totalMark = 0;
 
@@ -29,17 +30,6 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
   // // Call the function passing the fakeData array to get the total mark
   // const totalMark = calculateTotalMark(fakeData);
   // console.log('Total Mark:', totalMark);
-
-  const createExercice = (fakeData: any) => {
-    const newExercise = {
-      id: Math.random().toString(36).substring(7),
-      name: isArabic ? ` تمرين ${fakeData.length + 1}` : `Exercice ${fakeData.length + 1}`,
-      mark: 0,
-      children: [],
-    };
-    const newData = [...fakeData, newExercise];
-    setFakeData(newData);
-  };
   // if (!data) return;
   return (
     <div dir={!isArabic ? 'ltr' : 'rtl'}>
@@ -50,29 +40,13 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
             data={item}
             setFakeData={setFakeData}
             key={index}
+            realExamContetn={realExamContetn}
             isArabic={isArabic}
           />
         ))}
       </div>
 
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col items-center justify-center relative top-[30px]">
-          <div className="bg-[#1B8392] p-2 rounded-full" onClick={() => createExercice(fakeData)}>
-            <Image
-              src="/ajouter-un-exercice-icon.svg"
-              width={20}
-              height={20}
-              alt="plusicon"
-              className="cursor-pointer"
-            />
-          </div>
-          {!isArabic ? (
-            <span className="text-[#D9D9D9]">Ajoutez un exercice</span>
-          ) : (
-            <span className="text-[#D9D9D9] ">أضف تمرينا</span>
-          )}
-        </div>
-      </div>
+      <div className="flex flex-col gap-4"></div>
     </div>
   );
 }

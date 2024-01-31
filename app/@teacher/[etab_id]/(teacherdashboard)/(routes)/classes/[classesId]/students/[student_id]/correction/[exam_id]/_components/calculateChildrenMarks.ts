@@ -25,4 +25,18 @@ export const calcAllMark = (fakeData: any) => {
   });
   return sum;
 };
+export const getMarkOfExerciceWithId = (content: any, id: string): number | null => {
+  for (const item of content) {
+    if (item.id === id) {
+      return item.mark;
+    }
+    if (item.children) {
+      const mark = getMarkOfExerciceWithId(item.children, id);
+      if (mark !== null) {
+        return mark;
+      }
+    }
+  }
+  return null;
+};
 // Call the function passing the fakeData array to get the sum of marks for immediate children

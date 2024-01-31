@@ -31,6 +31,7 @@ model User {
   range              Int?
   invited_at         DateTime?
   createdAt          DateTime?       @default(now())
+  ExamCorrection     ExamCorrection[]
 }
 
 enum Term {
@@ -110,6 +111,8 @@ model Classe {
   student_class User[]          @relation("StudentClassToUser")
   is_archived   Boolean?        @default(false)
   archived_at   DateTime?
+  createdAt          DateTime?       @default(now())
+
   exam_classe   Exam[]          @relation("ExamClasseToUser")
 }
 
@@ -128,7 +131,6 @@ model Subject {
 model Exam {
   id              Int              @id @default(autoincrement())
   name            String
-  exercises       Exercise[]
   total_mark      Float
   coefficient     Float
   teacher         User[]           @relation("ExamToUser")
@@ -143,61 +145,22 @@ model Exam {
   exam_classess   Classe[]         @relation("ExamClasseToUser")
   language        Language? // Consider using an enum for style
   create_at       DateTime?        @default(now())
+  content         Json?
 }
-
 enum Language {
   fr
   ar
 }
-
-// Exercise Table
-model Exercise {
-  id                  Int                  @id @default(autoincrement())
-  name                String
-  exam                Exam?                @relation(fields: [exam_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  exam_id             Int?
-  marks               Float
-  question_type       String
-  exercise_correction ExerciseCorrection[]
-  is_archived         Boolean?             @default(false)
-
-  questions question[]
-}
-
-model question {
-  id                  Int                  @id @default(autoincrement())
-  name                String
-  exercise            Exercise?            @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  exercise_id         Int?
-  marks               Float
-  parent_id           Int? // Add this field to reference the parent Exercise
-  parent              question?            @relation("questionToSubquestion", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  subquestions        question[]           @relation("questionToSubquestion")
-  question_type       String
-  content             String?
-  exercise_correction QuestionCorrection[]
-}
-
 // ExamCorrection Table
 model ExamCorrection {
   id            Int   @id @default(autoincrement())
   exam          Exam? @relation(fields: [exam_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   exam_id       Int
   mark_obtained Float
+  user         User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id       String?
+  feedback        String?
 }
 
-model ExerciseCorrection {
-  id            Int       @id @default(autoincrement())
-  exercise      Exercise? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  exercise_id   Int
-  content       String?
-  mark_obtained Float
-}
 
-model QuestionCorrection {
-  id            Int       @id @default(autoincrement())
-  question      question? @relation(fields: [exercise_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  exercise_id   Int
-  content       String?
-  mark_obtained Float
-}
+

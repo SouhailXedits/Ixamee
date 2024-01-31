@@ -55,27 +55,32 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
   //     }
   //   }
   // };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
 
       if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-        const form = new FormData();
-        form.append('file', files as any);
-        form.append('upload_preset', 'firaslatrach');
-        const fileUrl = URL.createObjectURL(selectedFile);
-        setSelectedFileUrl1(fileUrl);
+        try {
+          const form = new FormData();
+          form.append('file', selectedFile);
+          form.append('upload_preset', 'firaslatrach');
 
-        fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
-          method: 'post',
-          body: form,
-        })
-          .then((resp) => resp.json())
-          .then((data) => {
+          const response = await fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
+            method: 'post',
+            body: form,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
             setSelectedFileUrl(data.url);
-          })
-          .catch((err) => console.log(err));
+            setSelectedFileUrl1(URL.createObjectURL(selectedFile));
+          } else {
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
       }
     }
   };

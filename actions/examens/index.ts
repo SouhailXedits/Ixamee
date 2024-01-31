@@ -198,25 +198,31 @@ export const getEstablishmentOfUser = async (user_id: string) => {
       },
     },
   });
-  console.log("🚀 ~ getEstablishmentOfUser ~ data:", data)
+  console.log('🚀 ~ getEstablishmentOfUser ~ data:', data);
 
   return data;
 };
 // getExamenById;
 export const getOneExamById = async ({ id }: { id: string }) => {
-  console.log(id);
   const exam = await db.exam.findUnique({
     where: { id: +id },
     include: {
-      exercises: true,
       exam_classess: true,
+    },
+  });
+  return exam;
+};
+export const getExamContent = async ({ id }: { id: string }) => {
+  const exam = await db.exam.findUnique({
+    where: { id: +id },
+    select: {
+      content: true,
     },
   });
   return exam;
 };
 
 export async function createExamm(data: any, user_id: string) {
-  try {
     console.log(data, user_id);
     const examm = await db.exam.create({
       data: {
@@ -246,12 +252,8 @@ export async function createExamm(data: any, user_id: string) {
         language: data.style,
       },
     });
-    console.log(examm);
     return examm;
-  } catch (error) {
-    console.error('Error creating exam:', error);
-    throw error;
-  }
+  
 }
 export async function updateExam(examId: number, data: any, user_id: string) {
   console.log(data);
@@ -331,6 +333,25 @@ export const deleteExame = async (id: number) => {
     return {
       error: 'Failed to delete Exam.',
     };
+  }
+};
+export const updateExamContent = async (examId: string, content: any) => {
+  console.log(examId, content);
+  try {
+    const updatedExam = await db.exam.update({
+      where: {
+        id: +examId,
+      },
+
+      data: {
+        content: content,
+      },
+    });
+
+    return updatedExam;
+  } catch (error) {
+    console.error('Error updating exam:', error);
+    throw error;
   }
 };
 

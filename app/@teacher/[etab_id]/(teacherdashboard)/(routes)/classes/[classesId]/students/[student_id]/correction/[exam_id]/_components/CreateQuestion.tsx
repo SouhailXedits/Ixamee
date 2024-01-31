@@ -3,8 +3,10 @@ import { CreateSubQuestion } from './CreateSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from './toolbar-editor';
 import { cn } from '@/lib/utils';
+import { getMarkOfExerciceWithId } from './calculateChildrenMarks';
+import toast from 'react-hot-toast';
 
-export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
+export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, isArabic, fakeData }: any) => {
   //  this the content of the Editor 🙄
   const onChange = (content: string) => {
     updateContetn(content, data);
@@ -133,6 +135,15 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
 
   // Function to update a question's mark in the fake data
   const updateQuestion = (e: any, data: any) => {
+    const mark = getMarkOfExerciceWithId(realExamContetn, data.id);
+    if (+e > +mark) {
+      toast.error("la note ne doit pas de passer la note de l'exercice");
+      return;
+    }
+    if (+e < 0) {
+      toast.error('la note ne doit pas etre inferieur a 0');
+      return;
+    }
     // Using setFakeData to update the state based on previous data
     setFakeData((prevData: any) => {
       // Mapping over the previous data to create a new updatedData array
@@ -158,16 +169,6 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
       <div
         className={`relative border flex  h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
       >
-        <div
-          className={cn(
-            'bg-[#CFE8E6] p-2 rounded-full  cursor-pointer',
-            !isArabic ? 'absolute -left-3' : 'absolute -right-3'
-          )}
-          onClick={createSubQuestion}
-        >
-          <Image src="/plusiconforsubexercice.svg" width={10} height={10} alt="plusicon" />
-        </div>
-
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
             <div className="flex items-center gap-1">
@@ -191,17 +192,10 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
               disabled={data.children && data.children.length > 0}
               // defaultValue={calculerQuestionMark(data)}
               value={data.children && data.children.length > 0 ? calculateMark(data) : data.mark}
+              // max={10}
               onChange={(e) => {
                 updateQuestion(e.target.value, data);
               }}
-            />
-            <Image
-              src="/redcloseicon.svg"
-              width={20}
-              height={20}
-              alt="redcloseicon"
-              className="cursor-pointer"
-              onClick={() => handelDeleteQuestion()}
             />
           </div>
         </div>
@@ -212,6 +206,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
           data={item}
           setFakeData={setFakeData}
           isArabic={isArabic}
+          realExamContetn={realExamContetn}
           fakeData={fakeData}
         />
       ))}

@@ -17,11 +17,29 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { usePathname, useRouter } from 'next/navigation';
 interface CorrectExam {
   children: React.ReactNode;
+  data: any;
 }
-export const CorrectExam = ({ children }: CorrectExam) => {
+export const CorrectExam = ({ children, data }: CorrectExam) => {
+  console.log(data.exam);
+  let examan = data?.classe.exam_classe.filter((item) => item.id == data.exam);
+  console.log(examan);
+  const new_total_mark = examan[0].total_mark;
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const totalMark = data?.classe?.total_mark || 0;
+  console.log(totalMark);
   const [item, setItem] = useState<string | null>(null);
+  const [note, setNote] = useState(0);
+  const handelCorrectExam = () => {
+    const examanId = examan[0].id;
+    const user_id = data?.id;
+    router.push(pathname + `/students/${user_id}/correction/${examanId}`);
+  };
+  const handelSubmitCorrectionExam = () => {};
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -36,16 +54,16 @@ export const CorrectExam = ({ children }: CorrectExam) => {
           <div>
             <span className="text-[#959595] text-[15px]">Accorder une note</span>
             <div className="flex items-center gap-2">
-              <div className=" relative w-[170px] p-2 pl-10 pr-10 rounded-lg bg-[#F0F6F8] flex items-center justify-center">
-                <div className=" flex items-center justify-center   text-lg  text-[#1B8392] flex-1">
-                  <Input
-                    placeholder="--"
-                    className="w-6 p-0 text-xl text-right bg-transparent border-none"
-                    maxLength={2}
-                  />
-                  <span>/</span>
-                  <span className="flex items-center text-xl ">20</span>
-                </div>
+              <div className=" relative w-[170px]  h-[54px] pr-10 rounded-lg bg-[#F0F6F8] text-2 flex items-center justify-center ">
+                <Input
+                  placeholder="--"
+                  className="p-0 text-xl text-right bg-transparent border-none "
+                  maxLength={new_total_mark.toString().length}
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+                <span>/</span>
+                <span className="flex items-center text-xl ">{new_total_mark}</span>
               </div>
             </div>
           </div>
@@ -58,7 +76,10 @@ export const CorrectExam = ({ children }: CorrectExam) => {
           <div>
             <span className="text-[#959595] text-[15px]">Corriger l’examen</span>
             <div className="flex items-center gap-2">
-              <div className=" relative w-[170px] p-3 pl-10 pr-10 rounded-lg bg-[#F0F6F8] flex items-center justify-center ">
+              <div
+                className=" relative w-[170px] p-3 pl-10 pr-10 rounded-lg bg-[#F0F6F8] flex items-center justify-center "
+                onClick={handelCorrectExam}
+              >
                 <Image
                   src={'/iconbark.svg'}
                   alt="iconbark"
@@ -117,7 +138,11 @@ export const CorrectExam = ({ children }: CorrectExam) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
+          <Button
+            type="submit"
+            className="w-full text-white bg-[#177C9A] hover:opacity-80"
+            onClick={handelSubmitCorrectionExam}
+          >
             Enregistrer
           </Button>
         </DialogFooter>

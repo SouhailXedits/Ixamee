@@ -3,35 +3,50 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import CreateExam from './_components/create-exam';
 import { useQuery } from '@tanstack/react-query';
-import { getOneExamById } from '@/actions/examens';
+import { getExamContent, getOneExamById } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
-import { useEditExamContent } from '../hooks/useEditExamContent';
+// import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
 import { calcAllMark } from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
-
-export default function Page({ params }: { params: { examenId: string } }) {
+import { getNameOfuserById, getUserById } from '@/actions/classe';
+import { StudentFeadback } from '@/components/modals/studentFeadback';
+export default function Page({
+  params,
+}: {
+  params: { exam_id: string; classesId: string; student_id: string };
+}) {
   const [sum, setSum] = useState(0);
-
+  console.log(params);
   const router = useRouter();
-  const { examenId } = params;
-
+  const { exam_id } = params;
+  const { student_id } = params;
   const { data, isPending } = useQuery({
-    queryKey: ['examenById'],
-    queryFn: async () => await getOneExamById({ id: examenId }),
+    queryKey: ['examenByIdd'],
+    queryFn: async () => await getOneExamById({ id: exam_id }),
   });
-  console.log(data);
-  const { editExam, isPending: isPendingEdit } = useEditExamContent();
+  const { data: examContent, isPending: isPendingExamContent } = useQuery({
+    queryKey: ['exameContent'],
+    queryFn: async () => await getExamContent({ id: exam_id }),
+  });
+
+  const { data: userData, isPending: isPendingUser } = useQuery({
+    queryKey: ['userName'],
+    queryFn: async () => await getNameOfuserById(student_id),
+  });
+
+  // const { editExam, isPending: isPendingEdit } = useEditExamContent();
 
   const [fakeData, setFakeData] = useState<any>([]);
   useEffect(() => {
     if (!isPending && data && data.content) {
-      setFakeData(data.content);
+      // const fakeData = data.content;
+      setFakeData(data?.content);
       setSum(calcAllMark(fakeData));
     }
-  }, [isPending, data]);
+  }, [isPending]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
@@ -45,21 +60,27 @@ export default function Page({ params }: { params: { examenId: string } }) {
   const arabic = data?.language === 'ar' ? true : false;
 
   const handleSaveData = () => {
-    if (fakeData === data?.content) {
-      toast.error("Aucune modification n'a été effectuee.");
-      return;
-    }
-    if (sum > data?.total_mark) {
-      toast.error(`La note doit être minimum a ${data?.total_mark}`);
-      return;
-    }
-    let exam_id = examenId;
-    editExam({ exam_id, content: fakeData });
+    // if (fakeData === data?.content) {
+    //   toast.error("Aucune modification n'a été effectuee.");
+    //   return;
+    // }
+    console.log(student_id);
+    console.log(sum);
+    console.log(exam_id);
+
+    // if (sum > data?.total_mark) {
+    //   toast.error(`La note doit être minimum a ${data?.total_mark}`);
+    //   return;
+    // }
+    // let exam_id = examenId;
+    // editExam({ exam_id, content: fakeData });
   };
   // useEffect(() => {
   //   if (fakeData) {
   //   }
   // }, [fakeData]);
+  const examContentt = examContent?.content;
+
   return (
     <div className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -114,13 +135,6 @@ export default function Page({ params }: { params: { examenId: string } }) {
           </div>
 
           <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-            <div className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center">
-              <Image src="/importerIcon.svg" alt="icons" width={20} height={20} />
-              Importer
-            </div>
-          </div>
-
-          <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
             <div
               className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
               onClick={handleSaveData}
@@ -134,7 +148,25 @@ export default function Page({ params }: { params: { examenId: string } }) {
       {/* <CreateExam examId={examenId} /> */}
       {/* <EmailSend /> */}
 
-      <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />
+      <CreateExam
+        // data={data}
+        isArabic={arabic}
+        setFakeData={setFakeData}
+        fakeData={fakeData}
+        realExamContetn={examContentt}
+      />
+
+      <div className="absolute right-4 bottom-4">
+        <StudentFeadback>
+          <Image
+            src="/bigEditNote.svg"
+            width={100}
+            height={100}
+            alt="editicon"
+            className="cursor-pointer"
+          />
+        </StudentFeadback>
+      </div>
     </div>
   );
 }

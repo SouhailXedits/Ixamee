@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { calculerExerciceMark } from './calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 
-export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: any) => {
+export const CreateSubSubQuestion = ({ data, setFakeData, isArabic,realExamContetn , allData }: any) => {
   const onChange = (content: string) => {
     console.log(data);
     console.log(content);

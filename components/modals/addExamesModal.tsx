@@ -149,12 +149,21 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     value: item.id,
     label: item.name,
   }));
-  const { creatExam, isPending } = useCreateExam();
+  const { creatExam, isPending  } = useCreateExam();
+  const verfierSchema = () => {
+    let ok = false;
+    try {
+      examSchema.parse(formData);
+      ok = true;
+    } catch (error) {}
+    return ok;
+  };
   const handleSubmit = async () => {
     try {
       // Validate the form data
       examSchema.parse(formData);
-      creatExam({ data: formData, user_id });
+      creatExam({ data: formData, user_id })
+      
       // Clear form errors
       setFormErrors(null);
     } catch (error: any) {
@@ -450,16 +459,29 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
             </div>
           </div>
         </div>
-        <DialogClose>
+
+        {verfierSchema() ? (
+          <DialogClose>
+            <Button
+              type="submit"
+              className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
+              onClick={handleSubmit}
+            >
+              {' '}
+              Ajouter
+            </Button>
+          </DialogClose>
+        ) : (
           <Button
             type="submit"
+            disabled={true}
             className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
             onClick={handleSubmit}
           >
             {' '}
             Ajouter
           </Button>
-        </DialogClose>
+        )}
       </DialogContent>
     </Dialog>
   );

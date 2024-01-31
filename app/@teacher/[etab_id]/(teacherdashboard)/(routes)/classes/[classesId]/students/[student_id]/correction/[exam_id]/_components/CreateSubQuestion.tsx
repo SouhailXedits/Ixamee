@@ -3,8 +3,17 @@ import { CreateSubSubQuestion } from './CreateSubSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from './toolbar-editor';
 import { cn } from '@/lib/utils';
+import { getMarkOfExerciceWithId } from './calculateChildrenMarks';
+import toast from 'react-hot-toast';
 
-export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
+export const CreateSubQuestion = ({
+  allData,
+  data,
+  setFakeData,
+  isArabic,
+  realExamContetn,
+  fakeData,
+}: any) => {
   const onChange = (content: string) => {
     updateContentSubQuestion(content, data);
   };
@@ -235,7 +244,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
   };
 
   // Function to calculate the sum of marks in a subquestion hierarchy
-  const calcSumOfMarks = (data: any) => {
+  const calcSumOfMarks = (data: any)  => {
     // Logging the data for debugging purposes
     console.log(data);
 
@@ -253,8 +262,17 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
   };
 
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
+  console.log(realExamContetn);
   const updateSubQuestion = (e: any, data: any) => {
-    console.log(data);
+    const mark  = getMarkOfExerciceWithId(realExamContetn, data.id);
+    if (+e.target.value > +mark ) {
+      toast.error("la note ne doit pas de passer la note de l'exercice");
+      return;
+    }
+    if (+e.target.value < 0) {
+      toast.error("la note ne doit pas etre inferieur a 0");
+      return;
+    }
 
     // Updating the mark of the specific subquestion
     setFakeData((prevData: any) => {
@@ -323,15 +341,6 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
           !isArabic ? 'ml-[6rem]' : 'mr-[6rem]'
         )}
       >
-        <div
-          className={cn(
-            'bg-[#CFE8E6] p-2 rounded-full absolute  cursor-pointer',
-            !isArabic ? '-left-3' : '-right-3'
-          )}
-          onClick={createSubSubQuestion}
-        >
-          <Image src="/plusiconforsubexercice.svg" width={10} height={10} alt="plusicon" />
-        </div>
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
             <span>{data.name}</span>
@@ -361,21 +370,17 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
                 updateSubQuestion(e, data);
               }}
             />
-            <Image
-              src="/redcloseicon.svg"
-              width={20}
-              height={20}
-              alt="redcloseicon"
-              className="cursor-pointer"
-              onClick={() => {
-                handleDeleteSubQuestion();
-              }}
-            />
           </div>
         </div>
       </div>
       {data.children.map((item: any) => (
-        <CreateSubSubQuestion data={item} setFakeData={setFakeData} isArabic={isArabic} allData={allData} />
+        <CreateSubSubQuestion
+          data={item}
+          setFakeData={setFakeData}
+          isArabic={isArabic}
+          realExamContetn={realExamContetn}
+          allData={allData}
+        />
       ))}
     </>
   );

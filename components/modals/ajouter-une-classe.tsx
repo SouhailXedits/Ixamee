@@ -29,6 +29,7 @@ const schema = z.object({
   // matiere: z.array().min(1, { message: 'Matières est requis' }),
 });
 import Select from 'react-select';
+import { DialogClose } from '@radix-ui/react-dialog';
 
 export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse) => {
   const queryClient = useQueryClient();
@@ -142,13 +143,27 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
         {/* Choisir le rang de classe */}
 
         <DialogFooter>
-          <Button
-            type="submit"
-            className="w-full bg-[#1B8392] hover:opacity-80"
-            onClick={handelSubmitInput}
-          >
-            Ajouter
-          </Button>
+          {formatData.classe === '' || formatData.matiere === '' ? (
+            <Button
+              type="submit"
+              className="w-full bg-[#1B8392] hover:opacity-80"
+              onClick={handelSubmitInput}
+              disabled={formatData.classe === '' || formatData.matiere === ''}
+            >
+              Ajouter
+            </Button>
+          ) : (
+            <DialogClose className=' w-full'>
+              <Button
+                type="submit"
+                className="w-full bg-[#1B8392] hover:opacity-80"
+                onClick={handelSubmitInput}
+                disabled={formatData.classe === '' || formatData.matiere === ''}
+              >
+                Ajouter
+              </Button>
+            </DialogClose>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
