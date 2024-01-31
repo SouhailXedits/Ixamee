@@ -149,7 +149,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     value: item.id,
     label: item.name,
   }));
-  const { creatExam, isPending } = useCreateExam();
+  const { creatExam, isPending  } = useCreateExam();
   const verfierSchema = () => {
     let ok = false;
     try {
@@ -162,7 +162,8 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     try {
       // Validate the form data
       examSchema.parse(formData);
-      creatExam({ data: formData, user_id });
+      creatExam({ data: formData, user_id })
+      
       // Clear form errors
       setFormErrors(null);
     } catch (error: any) {

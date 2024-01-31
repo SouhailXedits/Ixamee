@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -11,11 +12,13 @@ import {
 } from '@/components/ui/dialog';
 import Image from 'next/image';
 import { Textarea } from '@/components/ui/textarea';
+import { useState } from 'react';
 
 interface studentFeadback {
   children: React.ReactNode;
 }
 export const StudentFeadback = ({ children }: studentFeadback) => {
+  const [feedback, setFeedback] = useState([]);
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -35,7 +38,10 @@ export const StudentFeadback = ({ children }: studentFeadback) => {
           </DialogTitle>
         </DialogHeader>
         <div className=" h-[200px] border border-9 p-1 rounded-lg">
-          <Textarea className="border-none resize-none " />
+          <Textarea
+            className="border-none resize-none text-[#B5B5B5] placeholder:text-[#B5B5B5] "
+            placeholder="Tapez votre remarque ici."
+          />
         </div>
 
         <DialogFooter>

@@ -223,7 +223,6 @@ export const getExamContent = async ({ id }: { id: string }) => {
 };
 
 export async function createExamm(data: any, user_id: string) {
-  try {
     console.log(data, user_id);
     const examm = await db.exam.create({
       data: {
@@ -253,12 +252,8 @@ export async function createExamm(data: any, user_id: string) {
         language: data.style,
       },
     });
-    console.log(examm);
     return examm;
-  } catch (error) {
-    console.error('Error creating exam:', error);
-    throw error;
-  }
+  
 }
 export async function updateExam(examId: number, data: any, user_id: string) {
   console.log(data);
