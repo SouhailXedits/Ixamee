@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import CorrectionsRecentes from './corrections-recentes-item';
 import BulletinsDesEtudiants from './bulletins-des-etudiants';
+import Link from 'next/link';
 
-const DashboradBulletinsDesEtudiants = () => {
+const DashboradBulletinsDesEtudiants = ({ etabId }: any) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between w-full">
@@ -11,7 +12,7 @@ const DashboradBulletinsDesEtudiants = () => {
           <span className=" text-[#727272] text-xl font-[600] ">Bulletins des étudiants</span>
         </div>
         <div className="text-[#1B8392] cursor-pointer text-lg font-medium  underline">
-          Voir plus (0)
+        <Link href={`/${etabId}/bulletins`}>Voir plus (0)</Link>
         </div>
       </div>
 

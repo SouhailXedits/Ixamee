@@ -32,6 +32,16 @@ const examCorrectionData = [
     percentageColor: '#F04438',
     percentage: '0%',
   },
+  {
+    id: 4,
+    name: 'Jawher Souguir',
+    avatarSrc: '/userAvatar/user3.svg',
+    statusColor: '#F04438',
+    bgstatusColor: '#FEE4E2',
+    statusText: 'Non corrigé',
+    percentageColor: '#F04438',
+    percentage: '0%',
+  },
 ];
 
 const ExamCorrectionList = () => {

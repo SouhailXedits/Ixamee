@@ -115,7 +115,6 @@ export const deleteSubject = async (id: number) => {
   }
 };
 
-
 export const getAllSubjectsByClasseId = async (classeId: number) => {
   // const res = await db.classe.findMany({
   //   select: {
@@ -221,4 +220,78 @@ export const getAllSubjectsByClasseId = async (classeId: number) => {
   });
   console.log(res);
   return res;
+};
+
+export const getAllSubjectsByClasseIdByPage = async (pageSize = 2, classeId: number) => {
+  try {
+    const res = await db.subject.findMany({
+      where: {
+        classe_subject: {
+          some: {
+            id: classeId,
+          },
+        },
+        is_archived: false,
+      },
+      select: {
+        id: true,
+        name: true,
+        coefficient: true,
+        icon: true,
+        teacher: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            term: true,
+          },
+          where: {
+            classe_teacher: {
+              some: {
+                id: classeId,
+              },
+            },
+          },
+        },
+        classe_subject: {
+          select: {
+            id: true,
+            name: true,
+          },
+          where: {
+            id: classeId,
+          },
+        },
+      },
+      take: pageSize,
+    });
+    return res;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get subjects.',
+    };
+  }
+};
+
+export const getAllSubjectsCount = async (classeId: number) => {
+  try {
+    const res = await db.subject.count({
+      where: {
+        classe_subject: {
+          some: {
+            id: classeId,
+          },
+        },
+        is_archived: false,
+      },
+    });
+    console.log("🚀 ~ getAllSubjectsCount ~ res:", res)
+    return res;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get subjects.',
+    };
+  }
 };

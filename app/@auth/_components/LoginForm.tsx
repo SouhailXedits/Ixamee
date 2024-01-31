@@ -187,7 +187,7 @@ export default function LoginForm() {
             isPending ? ' animate-bounce-text-opacity  ' : ''
           }  w-full h-10 pt-2  font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          {isPending ? 'Connection en cours...' : ' Se connecter'}
+          {isPending ? 'Connexion en cours...' : ' Se connecter'}
         </Button>
       </form>
     </Form>

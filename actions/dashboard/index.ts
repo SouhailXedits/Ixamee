@@ -2,7 +2,6 @@
 import { db } from '@/lib/db';
 
 export const getCountOfClasse = async (userId: string, etab_id: number) => {
-  console.log(userId, etab_id);
   const classCount = await db.classe.count({
     where: {
       teacher: {
@@ -18,7 +17,7 @@ export const getCountOfClasse = async (userId: string, etab_id: number) => {
       is_archived: false,
     },
   });
-  console.log(classCount);
+
   return classCount;
 };
 export const getCountOfExamenes = async (userId: string, etab_id: number) => {
@@ -88,3 +87,58 @@ export const getCountMonArchive = async (userId: string, etab_id: number) => {
 //   });
 // };
 // getCountOfStudentByTeacher();
+
+export const getCountOfStudentExams = async (userId: string) => {
+  const examCount = await db.exam.count({
+    where: {
+      exam_classess: {
+        some: {
+          student_class: {
+            some: {
+              id: userId,
+            },
+          },
+        },
+      },
+      is_archived: false,
+    },
+  });
+  return examCount;
+};
+
+export const getCountOfStudentSubjects = async (userId: string) => {
+  const subjectCount = await db.subject.count({
+    where: {
+      classe_subject: {
+        some: {
+          student_class: {
+            some: {
+              id: userId,
+            },
+          },
+        },
+      },
+      is_archived: false,
+    },
+  });
+  return subjectCount;
+};
+
+export const getStudentMarksheet = async (userId: string) => {
+  const marksheet = await db.examCorrection.count({
+    where: {
+      exam: {
+        exam_classess: {
+          some: {
+            student_class: {
+              some: {
+                id: userId,
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  return marksheet;
+};

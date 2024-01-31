@@ -1,11 +1,8 @@
 import Image from 'next/image';
 import DashboardClassesCard from './dashborad-classes-card';
+import Link from 'next/link';
 
-const DashboradClasses = () => {
-  
-
-
-
+const DashboradClasses = ({ classe,etabId }: any) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex w-full justify-between">
@@ -18,11 +15,11 @@ const DashboradClasses = () => {
           className="text-[#1B8392] text-lg font-[500] 
       underline cursor-pointer"
         >
-          Voir plus (0)
+          <Link href={`/${etabId}/classe`}>Voir plus (0)</Link>
         </span>
       </div>
 
-      <DashboardClassesCard />
+      <DashboardClassesCard classes={classe}/>
     </div>
   );
 };

@@ -163,6 +163,7 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
           },
           select: {
             id: true,
+            image: true,
           },
         },
       },
@@ -321,8 +322,6 @@ export const getUserById = async (id: string) => {
   });
   return user;
 };
-
-
 
 export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
   console.log(studentEmail, teacherEmail);

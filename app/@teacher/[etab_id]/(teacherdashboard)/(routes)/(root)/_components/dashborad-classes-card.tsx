@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import ClassesCards from './classes-cards';
 
-const DashboardClassesCard = () => {
+const DashboardClassesCard = ({classes}:any) => {
   return (
     // <div className="w-full h-[301px]  gap-24  rounded-[20px] border border-[8] gap-14  flex items-center justify-center">
     //   <Image
@@ -21,7 +21,7 @@ const DashboardClassesCard = () => {
     // </div>
 
     <div className="w-full h-[301px] p-3   rounded-[20px] border border-[8] gap-14  flex items-center justify-start">
-      <ClassesCards />
+      <ClassesCards classes={classes} />
     </div>
   );
 };
