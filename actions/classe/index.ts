@@ -345,7 +345,17 @@ export const getUserById = async (id: string) => {
   });
   return user;
 };
-
+export const getNameOfuserById = async (id: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      name: true,
+    },
+  });
+  return user;
+}
 export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
   console.log(studentEmail, teacherEmail);
 

@@ -204,12 +204,19 @@ export const getEstablishmentOfUser = async (user_id: string) => {
 };
 // getExamenById;
 export const getOneExamById = async ({ id }: { id: string }) => {
-  console.log(id);
   const exam = await db.exam.findUnique({
     where: { id: +id },
     include: {
-      exercises: true,
       exam_classess: true,
+    },
+  });
+  return exam;
+};
+export const getExamContent = async ({ id }: { id: string }) => {
+  const exam = await db.exam.findUnique({
+    where: { id: +id },
+    select: {
+      content: true,
     },
   });
   return exam;

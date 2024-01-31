@@ -37,8 +37,6 @@ export const CorrectExam = ({ children, data }: CorrectExam) => {
   const handelCorrectExam = () => {
     const examanId = examan[0].id;
     const user_id = data?.id;
-    console.log(user_id);
-    // console.log(pathname);
     router.push(pathname + `/students/${user_id}/correction/${examanId}`);
   };
   const handelSubmitCorrectionExam = () => {};

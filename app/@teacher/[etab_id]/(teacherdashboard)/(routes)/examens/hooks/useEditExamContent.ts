@@ -9,7 +9,7 @@ export function useEditExamContent() {
     mutationFn: ({ exam_id, content }: { exam_id: string; content: any }) =>
       updateExamContentApi(exam_id, content), // Call your API function to update the exam
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['examenById']   });
+      // queryClient.invalidateQueries({ queryKey: ['examenById']   });
       toast.success('Exame Enregistre avec succès.');
     },
     onError: (err) => {

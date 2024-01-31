@@ -157,6 +157,7 @@ model ExamCorrection {
   mark_obtained Float
   user         User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id       String?
+  feedback        String?
 }
 
 
