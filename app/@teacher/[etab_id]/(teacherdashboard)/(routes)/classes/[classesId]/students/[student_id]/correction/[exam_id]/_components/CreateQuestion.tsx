@@ -135,7 +135,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, is
 
   // Function to update a question's mark in the fake data
   const updateQuestion = (e: any, data: any) => {
-    const mark = getMarkOfExerciceWithId(realExamContetn, data.id);
+    const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
     if (+e > +mark) {
       toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
@@ -167,7 +167,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, is
   return (
     <>
       <div
-        className={`relative border flex  h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
+        className={`relative border flex  h-auto min-h-[79px] mr-3 rounded-xl items-center justify-start`}
       >
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
