@@ -119,34 +119,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                 </span>
               </p>
             )}
-            <p
-              style={{
-                alignSelf: 'stretch',
-                color: 'var(--x-1)',
-                fontFamily: '"Poppins", Helvetica',
-                fontSize: '12px',
-                fontWeight: '400',
-                letterSpacing: '0',
-                lineHeight: '18px',
-                marginTop: '-1px',
-                position: 'relative',
-              }}
-            >
-              <span style={{ fontWeight: '600' }}>Classe : </span>
-              <span
-                style={{
-                  color: '#102528',
-                  fontFamily: '"Poppins", Helvetica',
-                  fontSize: '12px',
-                  fontWeight: '400',
-                  letterSpacing: '0',
-                  lineHeight: '18px',
-                }}
-              >
-                {meta.classe}
-              </span>
-            </p>
-            {type === 'MSStudent' && (
+            {type !== 'MSStudent' && (
               <p
                 style={{
                   alignSelf: 'stretch',
@@ -160,7 +133,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                   position: 'relative',
                 }}
               >
-                <span style={{ fontWeight: '600' }}>range : </span>
+                <span style={{ fontWeight: '600' }}>Classe : </span>
                 <span
                   style={{
                     color: '#102528',
@@ -174,6 +147,65 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                   {meta.classe}
                 </span>
               </p>
+            )}
+            {type === 'MSStudent' && (
+              <>
+                <p
+                  style={{
+                    alignSelf: 'stretch',
+                    color: 'var(--x-1)',
+                    fontFamily: '"Poppins", Helvetica',
+                    fontSize: '12px',
+                    fontWeight: '400',
+                    letterSpacing: '0',
+                    lineHeight: '18px',
+                    marginTop: '-1px',
+                    position: 'relative',
+                  }}
+                >
+                  <span style={{ fontWeight: '600' }}>Moyenne generale : </span>
+                  <span
+                    style={{
+                      color: '#102528',
+                      fontFamily: '"Poppins", Helvetica',
+                      fontSize: '12px',
+                      fontWeight: '400',
+                      letterSpacing: '0',
+                      lineHeight: '18px',
+                    }}
+                  >
+                    {meta.average}
+                  </span>
+                </p>
+
+                <p
+                  style={{
+                    alignSelf: 'stretch',
+                    color: 'var(--x-1)',
+                    fontFamily: '"Poppins", Helvetica',
+                    fontSize: '12px',
+                    fontWeight: '400',
+                    letterSpacing: '0',
+                    lineHeight: '18px',
+                    marginTop: '-1px',
+                    position: 'relative',
+                  }}
+                >
+                  <span style={{ fontWeight: '600' }}>rang : </span>
+                  <span
+                    style={{
+                      color: '#102528',
+                      fontFamily: '"Poppins", Helvetica',
+                      fontSize: '12px',
+                      fontWeight: '400',
+                      letterSpacing: '0',
+                      lineHeight: '18px',
+                    }}
+                  >
+                    {meta.range}
+                  </span>
+                </p>
+              </>
             )}
           </div>
 
@@ -243,7 +275,36 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                     lineHeight: '18px',
                   }}
                 >
-                  {meta.TeacherName}
+                  {meta.teacherName}
+                </span>
+              </p>
+            )}
+            {type === 'MSStudent' && (
+              <p
+                style={{
+                  alignSelf: 'stretch',
+                  color: 'var(--x-1)',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '18px',
+                  marginTop: '-1px',
+                  position: 'relative',
+                }}
+              >
+                <span style={{ fontWeight: '600' }}>Classe : </span>
+                <span
+                  style={{
+                    color: '#102528',
+                    fontFamily: '"Poppins", Helvetica',
+                    fontSize: '12px',
+                    fontWeight: '400',
+                    letterSpacing: '0',
+                    lineHeight: '18px',
+                  }}
+                >
+                  {meta.classe}
                 </span>
               </p>
             )}

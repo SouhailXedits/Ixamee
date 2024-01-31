@@ -5,6 +5,7 @@ import PDFExport from '@/app/_utils/ExportAsPdf';
 import Test from './components/Test';
 import Table from './components/Table';
 import DevoirSyntheseN2 from './components/TableBul';
+import { MarkSheetStudent } from './components/MarkSheetStudent';
 
 function page() {
   return (
@@ -12,7 +13,8 @@ function page() {
       <PDFExport pdfName="bulletin">
         {/* <MarkSheetPdfClass /> */}
         {/* <p>souhal</p> */}
-    <MarkSheetPdfClass />
+        {/* <MarkSheetPdfClass /> */}
+        <MarkSheetStudent/>
       </PDFExport>
     </>
   );

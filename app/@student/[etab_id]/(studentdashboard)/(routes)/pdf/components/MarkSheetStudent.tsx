@@ -3,16 +3,29 @@ import data from './fakeMarkSheetsData';
 import StudentRow from './StudentRow';
 import PdfHeader from '@/components/shared-components/PdfHeader';
 
-export const MarkSheetPdfClass = () => {
+export const MarkSheetStudent = () => {
+  // const data = {
+  //   terms = [{trimester1: [exams= {}}]
+  // }
   return (
     <div>
       <PdfHeader
-        meta={{ estab: 'Lycée Privé Élite Nabeul', heading: 'Bulletin de notes', session: '2023-2024', term : {
-          type: 'Trimester', 
-          number: 2
-        }, classe: 'Bac math 2', studentsNum: 20 }}
-        type="MSTeach"
+        meta={{
+          estab: 'Lycée Privé Élite Nabeul',
+          heading: 'Bulletin de notes',
+          session: '2023-2024',
+          term: {
+            type: 'Trimester',
+            number: 2,
+          },
+          classe: 'Bac math 2',
+          fullName: 'souhail brahmi',
+          teacherName: 'firas latrach',
+          range: 1,
+          average: 15.57 }}
+        type="MSStudent"
       />
+      {/* {data.terms.map(term => ())} */}
       <div className="flex justify-center">
         <table className=" text-center w-[700px] border border-black/50 ">
           <thead className="text-white">
