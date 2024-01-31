@@ -9,17 +9,18 @@ const PDFExport = ({ children, pdfName }: any) => {
   const exportPDF = () => {
     const element = contentRef.current;
     const opt = {
-      margin: 0,
       filename: `${pdfName}.pdf`,
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'p' },
+      html2canvas: { scale: 3, useCORS: true },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
     };
+    // html2pdf(element).set(opt)
     html2pdf().set(opt).from(element).save();
   };
 
   return (
     <div>
-      <div className=" fixed -bottom-96">
+      {/* <div className=" fixed -bottom-96"> */}
+      <div >
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>
