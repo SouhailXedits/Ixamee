@@ -112,7 +112,6 @@ model Classe {
   is_archived   Boolean?        @default(false)
   archived_at   DateTime?
   createdAt          DateTime?       @default(now())
-
   exam_classe   Exam[]          @relation("ExamClasseToUser")
 }
  
@@ -159,6 +158,10 @@ model ExamCorrection {
   mark_obtained Float
   user         User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id       String?
-  feedback        String?
+  feedback      Json?
+  correction_exam_content Json?
 }
-
+ 
+ 
+ 
+ 
