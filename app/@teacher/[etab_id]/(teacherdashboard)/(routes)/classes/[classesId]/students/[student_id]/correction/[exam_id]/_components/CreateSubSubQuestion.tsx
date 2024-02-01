@@ -1,15 +1,23 @@
 import Image from 'next/image';
 import Editor from './toolbar-editor';
 import { Input } from '@/components/ui/input';
-import { calculerExerciceMark } from './calculateChildrenMarks';
+import { calculerExerciceMark, getMarkOfExerciceWithId } from './calculateChildrenMarks';
 import { cn } from '@/lib/utils';
+import toast from 'react-hot-toast';
 
-export const CreateSubSubQuestion = ({ data, setFakeData, isArabic,realExamContetn , allData }: any) => {
+export const CreateSubSubQuestion = ({
+  data,
+  setFakeData,
+  isArabic,
+  realExamContetn,
+  allData,
+}: any) => {
   const onChange = (content: string) => {
     console.log(data);
     console.log(content);
     updateContentSubSubQuestion(content, data);
   };
+  console.log(allData);
   const updateContentSubSubQuestion = (content: any, data: any) => {
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
@@ -111,6 +119,15 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic,realExamConte
     return sum;
   };
   const updateSubSubQuestion = (e: any, data: any) => {
+    const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
+    if (+e.target.value > +mark) {
+      toast.error("la note ne doit pas de passer la note de l'exercice");
+      return;
+    }
+    if (+e.target.value < 0) {
+      toast.error('la note ne doit pas etre inferieur a 0');
+      return;
+    }
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
         if (item.id === allData.id) {
@@ -221,22 +238,10 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic,realExamConte
               type="number"
               defaultValue={data.mark}
               maxLength={5}
-              // value={
-              //   exercise.children && exercise.children.length > 0
-              //     ? calculateSumOfMarks(exercise).toFixed(2)
-              //     : exercise.mark
-              // }
+              value={data.mark}
               onChange={(e) => {
                 updateSubSubQuestion(e, data);
               }}
-            />
-            <Image
-              src="/redcloseicon.svg"
-              width={20}
-              height={20}
-              alt="redcloseicon"
-              className="cursor-pointer"
-              onClick={handelDeleteSubSubQuestion}
             />
           </div>
         </div>

@@ -15,7 +15,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
     const newSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
-      mark: 0,
+      mark: '00.00',
       children: [],
     };
 
@@ -107,9 +107,13 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
       return acc + item.mark;
     }, 0);
 
-    // Return the calculated mark
-    return data.mark;
+    // Format the mark to have two decimal places
+    const formattedMark = data.mark.toFixed(2);
+
+    // Return the formatted mark
+    return formattedMark;
   };
+
   const updateContetn = (contetn: string, data: any) => {
     // Using setFakeData to update the state based on previous data
     setFakeData((prevData: any) => {
@@ -183,11 +187,10 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
           </div>
           <div className="flex gap-3 item-center">
             <Input
-              className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
+              className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 border text-center border-[#1B8392]"
               placeholder="--.--"
               type="number"
               // value={data.mark}
-              maxLength={5}
               disabled={data.children && data.children.length > 0}
               // defaultValue={calculerQuestionMark(data)}
               value={data.children && data.children.length > 0 ? calculateMark(data) : data.mark}

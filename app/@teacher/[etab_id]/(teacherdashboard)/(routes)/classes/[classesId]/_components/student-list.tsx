@@ -51,25 +51,25 @@ function handleUpdateUser(user_id: number) {
   // console.log(user_id);
 }
 const Status = ({ row }: any) => {
-  // console.log(row.original);
-  // switch (row.original?.status[0]) {
-  //   case 'done':
-  //     return <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />;
-  //   case 'notClassified':
-  //     return (
-  //       <CorrectionTag correction="Non classé" bgcolor="#F4EFFF" color="#8862F5" width="100px" />
-  //     );
-  //   case 'absent':
-  //     return <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />;
-  //   case 'pending':
-  //     return (
-  //       <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
-  //     );
-  //   default:
-  //     return (
-  //       <CorrectionTag correction="Non corrigé" bgcolor="#FFF4F3" color="#F04438" width="100px" />
-  //     );
-  // }
+  console.log(row.original.status);
+  switch (row.original.status) {
+    case 'done':
+      return <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />;
+    case 'notClassified':
+      return (
+        <CorrectionTag correction="Non classé" bgcolor="#F4EFFF" color="#8862F5" width="100px" />
+      );
+    case 'absent':
+      return <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />;
+    case 'pending':
+      return (
+        <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
+      );
+    default:
+      return (
+        <CorrectionTag correction="Non corrigé" bgcolor="#FFF4F3" color="#F04438" width="100px" />
+      );
+  }
   // getStatusById(row?.original?.id)
   //   .then((correction) => {
   //     switch (correction[0]?.status) {

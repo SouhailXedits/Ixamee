@@ -23,7 +23,6 @@ interface CorrectExam {
   data: any;
 }
 export const CorrectExam = ({ children, data }: CorrectExam) => {
-  console.log(data.exam);
   let examan = data?.classe?.exam_classe?.filter((item) => item?.id == data?.exam);
   const new_total_mark = examan[0]?.total_mark;
   const router = useRouter();
@@ -31,7 +30,6 @@ export const CorrectExam = ({ children, data }: CorrectExam) => {
 
   const totalMark = data?.classe?.total_mark || 0;
 
-  
   const [item, setItem] = useState<string | null>(null);
   const [note, setNote] = useState(0);
   const handelCorrectExam = () => {
