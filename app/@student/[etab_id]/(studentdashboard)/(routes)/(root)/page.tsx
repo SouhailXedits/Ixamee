@@ -11,6 +11,8 @@ import {
   getAllSubjectsByClasseIdByPage,
   getAllSubjectsCount,
 } from '@/actions/subjects';
+
+
 export default function Home() {
   const queryClient = useQueryClient();
 

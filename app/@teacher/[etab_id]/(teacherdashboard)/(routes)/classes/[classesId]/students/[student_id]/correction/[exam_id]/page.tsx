@@ -13,6 +13,7 @@ import { calcAllMark } from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 import { getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
+import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorrection';
 export default function Page({
   params,
 }: {
@@ -23,22 +24,22 @@ export default function Page({
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
-  const { data, isPending } = useQuery({
+  const { data, isPending } = useQuery<any>({
     queryKey: ['examenByIdd'],
     queryFn: async () => await getOneExamById({ id: exam_id }),
   });
-  const { data: examContent, isPending: isPendingExamContent } = useQuery({
+  const { data: examContent, isPending: isPendingExamContent } = useQuery<any>({
     queryKey: ['exameContent'],
     queryFn: async () => await getExamContent({ id: exam_id }),
   });
 
-  const { data: userData, isPending: isPendingUser } = useQuery({
+  const { data: userData, isPending: isPendingUser } = useQuery<any>({
     queryKey: ['userName'],
     queryFn: async () => await getNameOfuserById(student_id),
   });
 
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
-
+  const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
   useEffect(() => {
     if (!isPending && data && data.content) {
@@ -58,27 +59,29 @@ export default function Page({
     router.back();
   }
   const arabic = data?.language === 'ar' ? true : false;
+  // const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
 
-  const handleSaveData = () => {
-    // if (fakeData === data?.content) {
-    //   toast.error("Aucune modification n'a été effectuee.");
-    //   return;
-    // }
-    console.log(student_id);
-    console.log(sum);
-    console.log(exam_id);
+  const handleSaveData = async () => {
+    try {
+      // Assuming you have the necessary data
+      const dataToSave = {
+        exam_id: parseInt(exam_id),
+        mark_obtained: sum, // or any other value you want to use
+        user_id: student_id,
+        correction_exam_content: fakeData,
+      };
+      console.log(dataToSave);
 
-    // if (sum > data?.total_mark) {
-    //   toast.error(`La note doit être minimum a ${data?.total_mark}`);
-    //   return;
-    // }
-    // let exam_id = examenId;
-    // editExam({ exam_id, content: fakeData });
+      createExamCorrectionn(dataToSave);
+
+      // Additional logic after creating the exam correction, if needed
+
+      console.log('Exam correction created successfully');
+    } catch (error) {
+      console.error('Error creating exam correction:', error);
+    }
   };
-  // useEffect(() => {
-  //   if (fakeData) {
-  //   }
-  // }, [fakeData]);
+
   const examContentt = examContent?.content;
 
   return (
@@ -118,7 +121,7 @@ export default function Page({
           >
             <button
               className={cn(
-                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold font-[500] leading-tight '
+                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
               )}
             >
               {sum} / {data?.total_mark}
@@ -156,7 +159,7 @@ export default function Page({
         realExamContetn={examContentt}
       />
 
-      <div className="absolute right-4 bottom-4">
+      <div className="fixed right-4 bottom-4">
         <StudentFeadback>
           <Image
             src="/bigEditNote.svg"

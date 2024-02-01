@@ -80,7 +80,66 @@ export const getUserSubject = async (user_id: string) => {
   console.log(subject);
   return subject;
 };
+export const createExamCorrection = async (
+  exam_id: number,
+  mark_obtained: number,
+  user_id: string,
+  correction_exam_content: any
+) => {
+  console.log(exam_id, mark_obtained, user_id, correction_exam_content);
 
+  // Check if there is an existing examCorrection for the given exam_id and user_id
+  const existingExamCorrection = await db.examCorrection.findMany({
+    where: {
+      exam_id: exam_id,
+      user_id: user_id,
+    },
+  });
+
+  console.log(existingExamCorrection);
+
+  // let examCorrection;
+
+  if (existingExamCorrection.length === 0) {
+    // Create a new examCorrection if it doesn't exist
+    console.log(exam_id, mark_obtained, user_id, correction_exam_content);
+    console.log(correction_exam_content);
+
+    const examCorrection = await db.examCorrection.create({
+      data: {
+        exam: {
+          connect: {
+            id: exam_id,
+          },
+        },
+        mark_obtained: +mark_obtained,
+        correction_exam_content: correction_exam_content,
+        user: {
+          connect: {
+            id: user_id,
+          },
+        },
+      },
+    });
+
+    return examCorrection;
+  } else {
+    // Update the existing examCorrection if it already exists
+    const examCorrection = await db.examCorrection.updateMany({
+      where: {
+        exam_id: exam_id,
+        user_id: user_id,
+      },
+      data: {
+        exam_id: exam_id,
+        mark_obtained: mark_obtained,
+        correction_exam_content: correction_exam_content,
+        user_id: user_id,
+      },
+    });
+    return examCorrection;
+  }
+};
 export const getMe = async () => {
   const session = await auth();
   const user = await db.user.findUnique({
@@ -223,37 +282,67 @@ export const getExamContent = async ({ id }: { id: string }) => {
 };
 
 export async function createExamm(data: any, user_id: string) {
-    console.log(data, user_id);
-    const examm = await db.exam.create({
-      data: {
-        name: data.name,
-        total_mark: +data.totalMarks,
-        coefficient: +data.coefficient,
-        teacher: {
-          connect: {
-            id: user_id,
-          },
+  console.log(data, user_id);
+  const examm = await db.exam.create({
+    data: {
+      name: data.name,
+      total_mark: +data.totalMarks,
+      coefficient: +data.coefficient,
+      teacher: {
+        connect: {
+          id: user_id,
         },
-        teacher_id: user_id,
-
-        subject: {
-          connect: {
-            id: +data.subject.value,
-          },
-        },
-        term: data.term,
-
-        exam_classess: {
-          connect: data.classes.map((class_id: any) => ({
-            id: +class_id.value,
-          })),
-        },
-        is_archived: false,
-        language: data.style,
       },
-    });
-    return examm;
+      teacher_id: user_id,
+
+      subject: {
+        connect: {
+          id: +data.subject.value,
+        },
+      },
+      term: data.term,
+
+      exam_classess: {
+        connect: data.classes.map((class_id: any) => ({
+          id: +class_id.value,
+        })),
+      },
+      is_archived: false,
+      language: data.style,
+    },
+  });
+
+  const allUsers = await db.classe.findMany({
+    where: {
+      id: {
+        in: data.classes.map((class_id: any) => +class_id.value),
+      },
+    },
+    select: {
+      student_class: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  const flattenedUsers = Array.from(
+    new Set(allUsers.flatMap((user) => user.student_class.map((student) => ({ id: student.id }))))
+  );
+
+  console.log(flattenedUsers);
+  const allData = await db.examCorrection.createMany({
+    data: flattenedUsers.map((user) => ({
+      exam_id: examm.id,
+      user_id: user.id,
+      mark_obtained: 0,
+      status: 'notCorrected',
+    })),
+  });
   
+
+  return examm;
 }
 export async function updateExam(examId: number, data: any, user_id: string) {
   console.log(data);

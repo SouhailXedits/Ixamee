@@ -163,96 +163,80 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
+      <DialogContent className="sm:max-w-[518px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
             Ajouter un étudiant
           </DialogTitle>
         </DialogHeader>
 
-        {!isFirstModalOpen ? (
-          <div className="flex flex-col gap-6 placeholder:text-[#727272]">
-            <div className="flex flex-col gap-2">
-              <Label className="text-[#959595]">Photo de profil</Label>
-              <input
-                type="file"
-                className="w-[200px] h-[60px] absolute opacity-0 cursor-pointer"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e)}
-              />
-              <div className="flex items-center gap-3">
-                {selectedFileUrl1 ? (
-                  <Image
-                    src={selectedFileUrl1}
-                    alt="upload"
-                    width={55}
-                    height={55}
-                    className="object-cover rounded-full"
-                  />
-                ) : (
-                  <Image src={'/uploadimageicon.svg'} alt="upload" width={55} height={55} />
-                )}
-                <div className="flex flex-col items-start justify-start text-[#727272] gap-2">
-                  <span className="text-sm">Ajoutez une photo</span>
-                  <span className="text-xs">Taille maximale : 2Mo</span>
-                </div>
+        <div className="flex flex-col gap-6 placeholder:text-[#727272]">
+          <div className="flex flex-col gap-2">
+            <Label className="text-[#959595]">Photo de profil</Label>
+            <input
+              type="file"
+              className="w-[200px] h-[60px] absolute opacity-0 cursor-pointer"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e)}
+            />
+            <div className="flex items-center gap-3">
+              {selectedFileUrl1 ? (
+                <Image
+                  src={selectedFileUrl1}
+                  alt="upload"
+                  width={55}
+                  height={55}
+                  className="object-cover rounded-full"
+                />
+              ) : (
+                <Image src={'/uploadimageicon.svg'} alt="upload" width={55} height={55} />
+              )}
+              <div className="flex flex-col items-start justify-start text-[#727272] gap-2">
+                <span className="text-sm">Ajoutez une photo</span>
+                <span className="text-xs">Taille maximale : 2Mo</span>
               </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label className="text-[#959595]">
-                Nom et prénom <span className="text-red">*</span>{' '}
-              </Label>
-              <Input
-                placeholder="Entrer le nom complet de l’étudiant"
-                className="placeholder:text-[#727272]"
-                value={formatData.name}
-                onChange={(e) => handelUpdateSetFormatData('name', e.target.value)}
-              />
-              {renderFieldError('name')}
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label className="text-[#959595]">
-                Rang dans la classe<span className="text-red">*</span>
-              </Label>
-              <Input
-                placeholder="1"
-                value={formatData.rang}
-                type="number"
-                min={minrange}
-                onChange={(e) => handelUpdateSetFormatData('rang', e.target.value)}
-                className="placeholder:text-[#727272]"
-              />
-              {renderFieldError('rang')}
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label className="text-[#959595]">
-                E-mail <span className="text-red">*</span>
-              </Label>
-              <Input
-                type="email"
-                placeholder="Entrer l’e-amail de l’étudiant"
-                value={formatData.email}
-                onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
-                className="placeholder:text-[#727272]"
-              />
-              {renderFieldError('email')}
-            </div>
           </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-5">
-            <Image
-              src={'/etudiantajouteravecsucces.svg'}
-              alt=""
-              width={150}
-              height={150}
-              className=""
+          <div className="flex flex-col gap-2">
+            <Label className="text-[#959595]">
+              Nom et prénom <span className="text-red">*</span>{' '}
+            </Label>
+            <Input
+              placeholder="Entrer le nom complet de l’étudiant"
+              className="placeholder:text-[#727272]"
+              value={formatData.name}
+              onChange={(e) => handelUpdateSetFormatData('name', e.target.value)}
             />
-            <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
-              <Image src={'/greenusericon.svg'} alt="user" width={15} height={15} />
-              étudiant ajouté avec succès.
-            </div>
+            {renderFieldError('name')}
           </div>
-        )}
+          <div className="flex flex-col gap-2">
+            <Label className="text-[#959595]">
+              Rang dans la classe<span className="text-red">*</span>
+            </Label>
+            <Input
+              placeholder="1"
+              value={formatData.rang}
+              type="number"
+              min={minrange}
+              onChange={(e) => handelUpdateSetFormatData('rang', e.target.value)}
+              className="placeholder:text-[#727272]"
+            />
+            {renderFieldError('rang')}
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label className="text-[#959595]">
+              E-mail <span className="text-red">*</span>
+            </Label>
+            <Input
+              type="email"
+              placeholder="Entrer l’e-amail de l’étudiant"
+              value={formatData.email}
+              onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
+              className="placeholder:text-[#727272]"
+            />
+            {renderFieldError('email')}
+          </div>
+        </div>
 
         <DialogFooter>
           <Button

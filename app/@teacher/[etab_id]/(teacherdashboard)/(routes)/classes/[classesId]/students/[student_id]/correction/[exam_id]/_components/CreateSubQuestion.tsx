@@ -244,7 +244,7 @@ export const CreateSubQuestion = ({
   };
 
   // Function to calculate the sum of marks in a subquestion hierarchy
-  const calcSumOfMarks = (data: any)  => {
+  const calcSumOfMarks = (data: any) => {
     // Logging the data for debugging purposes
     console.log(data);
 
@@ -264,13 +264,13 @@ export const CreateSubQuestion = ({
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
   console.log(realExamContetn);
   const updateSubQuestion = (e: any, data: any) => {
-    const mark  = getMarkOfExerciceWithId(realExamContetn, data.id);
+    const mark  = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
     if (+e.target.value > +mark ) {
       toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
     }
     if (+e.target.value < 0) {
-      toast.error("la note ne doit pas etre inferieur a 0");
+      toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
 
@@ -331,7 +331,6 @@ export const CreateSubQuestion = ({
       });
     });
   };
-
   console.log(allData);
   return (
     <>
@@ -365,7 +364,8 @@ export const CreateSubQuestion = ({
               //     ? calculateSumOfMarks(exercise).toFixed(2)
               //     : exercise.mark
               // }
-              value={data.mark !== 0 && data.mark}
+              // value={data.mark !== 0 && data.mark}
+              value={0}
               onChange={(e: any) => {
                 updateSubQuestion(e, data);
               }}

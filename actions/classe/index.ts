@@ -100,6 +100,7 @@ export const createUserInClasse = async (
         },
       },
     });
+    return user;
   } else {
     const user = await db.user.update({
       where: {
@@ -113,6 +114,7 @@ export const createUserInClasse = async (
         },
       },
     });
+    return user;
   }
 };
 export const createUserWithImportInClasse = async (
@@ -336,6 +338,7 @@ export const getStudentClassCount = async ({
 
 
 export const getStudentOfClasse = async (classe_id: number) => {
+  console.log(classe_id);
   const res = await db.user.findMany({
     where: {
       role: 'STUDENT',
@@ -351,6 +354,30 @@ export const getStudentOfClasse = async (classe_id: number) => {
   });
   console.log(res);
   return res;
+};
+export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
+  console.log(class_id, data, exam_id);
+  const res = await db.examCorrection.findMany({
+    where: {
+      exam_id: +exam_id,
+      user: {
+        classe: {
+          some: {
+            id: +class_id,
+          },
+        },
+      },
+      user_id: {
+        in: data.map((el: any) => el.id),
+      },
+    },
+  });
+  console.log(res);
+
+  // const res = await db.examCorrection.findMany({
+  //   // relationLoadStrategy: 'join',
+  //   include: {},
+  // });
 };
 
 // export const createManyUserInClasseApi = async (
@@ -488,4 +515,43 @@ export const updateInvitationUser = async (studentEmail: string, teacherEmail: s
       throw new Error(data.error);
     }
   });
+};
+// export const getStudentOfClasse = async (classe_id: number, exma_id: number) => {
+//   console.log(classe_id, exma_id);
+//   const res = await db.examCorrection.findMany({
+//     where: {
+//       id: exma_id,
+
+//       // user: {
+//       //   classe: {
+//       //     some: {
+//       //       id: classe_id,
+//       //     },
+//       //   },
+//       // },
+//     },
+//     include: {
+//       user: {
+//         include: {
+//           classe: true,
+//         },
+//       },
+//     },
+//   });
+//   console.log(res);
+//   return res;
+// };
+
+export const getStatusById = async (id: any) => {
+  console.log(id);
+  const data = await db.examCorrection.findMany({
+    where: {
+      id: id,
+    },
+    select: {
+      status: true,
+    },
+  });
+  console.log(data);
+  return data;
 };

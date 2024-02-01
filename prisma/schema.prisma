@@ -160,8 +160,15 @@ model ExamCorrection {
   user_id       String?
   feedback      Json?
   correction_exam_content Json?
+  status        Status?
 }
- 
- 
- 
- 
+
+
+
+enum Status {
+  pending
+  done
+  absent
+  notClassified
+  notCorrected
+}

@@ -24,14 +24,14 @@ interface CorrectExam {
 }
 export const CorrectExam = ({ children, data }: CorrectExam) => {
   console.log(data.exam);
-  let examan = data?.classe.exam_classe.filter((item) => item.id == data.exam);
-  console.log(examan);
-  const new_total_mark = examan[0].total_mark;
+  let examan = data?.classe?.exam_classe?.filter((item) => item?.id == data?.exam);
+  const new_total_mark = examan[0]?.total_mark;
   const router = useRouter();
   const pathname = usePathname();
 
   const totalMark = data?.classe?.total_mark || 0;
-  console.log(totalMark);
+
+  
   const [item, setItem] = useState<string | null>(null);
   const [note, setNote] = useState(0);
   const handelCorrectExam = () => {
@@ -58,9 +58,9 @@ export const CorrectExam = ({ children, data }: CorrectExam) => {
                 <Input
                   placeholder="--"
                   className="p-0 text-xl text-right bg-transparent border-none "
-                  maxLength={new_total_mark.toString().length}
+                  maxLength={new_total_mark?.toString().length}
                   value={note}
-                  onChange={(e) => setNote(e.target.value)}
+                  onChange={(e) => setNote(+e.target.value)}
                 />
                 <span>/</span>
                 <span className="flex items-center text-xl ">{new_total_mark}</span>

@@ -12,7 +12,7 @@ import { StudentList } from './_components/student-list';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getClasseById, getStudentOfClasse } from '@/actions/classe';
+import { getClasseById, getCorrectionOfUser, getStudentOfClasse } from '@/actions/classe';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +23,8 @@ import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { any } from 'zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Loading from '@/app/loading';
 interface classe {
   id: number;
   name: string;
@@ -32,6 +33,9 @@ interface classe {
   exam_classe: [];
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
+  const [exam, setExam] = useState<any>(0);
+  console.log(exam);
+
   const { classesId } = params;
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
@@ -39,17 +43,31 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     // Handle the imported data in the external page
     console.log(jsonData);
   };
-  const { data: classe, isPending: isPendingClasse } = useQuery({
-    queryKey: ['classe'],
-    queryFn: async () => await getClasseById(+classesId),
-  });
-  console.log(classe);
   const { data, isPending } = useQuery({
     queryKey: ['userOfClasses'],
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
+  const { data: classe, isPending: isPendingClasse } = useQuery({
+    queryKey: ['classe'],
+    queryFn: async () => await getClasseById(+classesId),
+  });
+  useEffect(() => {
+    setExam(classe?.exam_classe[0]?.id + '');
+  }, [classe]);
+
+  console.log(exam);
   console.log(data);
-  const [exam, setExam] = useState(0);
+
+  const { data: userCorrection, isPending: isPendingUser } = useQuery({
+    queryKey: ['userCorrection'],
+    queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
+    staleTime: 0,
+  });
+  console.log(userCorrection);
+
+  if (isPendingClasse) return <Loading />;
+
+  console.log(data);
   const newData = data?.map((item: any) => {
     return {
       ...item,
@@ -76,7 +94,10 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
           <div>
-            <Select onValueChange={(value) => setExam(value)}>
+            <Select
+              onValueChange={(value) => setExam(value)}
+              defaultValue={classe?.exam_classe[0]?.id + ''}
+            >
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
                 <SelectValue
                   placeholder={
@@ -91,7 +112,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
               <SelectContent>
                 {classe?.exam_classe?.map((exam: any) => (
-                  <SelectItem value={exam.id} className="">
+                  <SelectItem value={exam.id + ''} className="">
                     {exam.name}
                   </SelectItem>
                 ))}
