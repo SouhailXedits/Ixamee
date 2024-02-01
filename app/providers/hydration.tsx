@@ -26,10 +26,10 @@ export default async function Hydration({ children }: { children: React.ReactNod
     queryFn: async () => await getSubjectOfUserById(user?.id),
   });
   
-  await queryClient.prefetchQuery({
-    queryKey: ['subjectCount'],
-    queryFn: async () => await getCountOfStudentSubjects(user.id),
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['subjectCount'],
+  //   queryFn: async () => await getCountOfStudentSubjects(user.id),
+  // });
   await queryClient.prefetchQuery({
     queryKey: ['marksheetCount'],
     queryFn: async () => await getStudentMarksheet(user.id),
