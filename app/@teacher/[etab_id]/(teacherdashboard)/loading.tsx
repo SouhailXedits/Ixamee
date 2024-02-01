@@ -1,4 +1,3 @@
-import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 
 function Loading() {

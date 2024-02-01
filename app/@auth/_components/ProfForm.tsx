@@ -84,13 +84,13 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full transition-all duration-300 ease-in-out">
         <FormError message={error} />
         <FormSuccess message={success} />
 
         <div
           id="ButtonsRoot"
-          className="bg-[#99c6d3] flex flex-row gap-4 w-full cursor-pointer  items-start pt-2 px-1 rounded-[50px]"
+          className="bg-[#99c6d3] flex flex-row gap-4 w-full cursor-pointer  items-start pt-2 px-1 rounded-[50px] "
         >
           <div
             id="Buttons"
@@ -118,7 +118,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           </div>
         </div>
 
-        <div className="flex flex-row w-full gap-4 max-xs:flex-col">
+        <div className="flex flex-row w-full gap-4 max-xs:flex-col ">
           <div className="w-full">
             <FormField
               control={form.control}

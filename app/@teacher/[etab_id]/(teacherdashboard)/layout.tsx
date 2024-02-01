@@ -3,11 +3,8 @@ import { useSidebar } from '@/store/use-sidebar';
 import Sidebar from './_components/sidebar';
 import { cn } from '@/lib/utils';
 import Navbar from '../../../../components/shared-components/navbar';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { auth } from '@/auth';
-import { getMe, getSubjectOfUserById } from '@/actions/examens';
-import { Skeleton } from '@/components/ui/skeleton';
-import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
+
 type DashboardLayoutProps = {
   params?: {
     etab_id: string;
@@ -34,7 +31,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   // });
 
   const { collapsed } = useSidebar((state) => state);
-  console.log(collapsed);
   
   return (
     <div className="h-full">
