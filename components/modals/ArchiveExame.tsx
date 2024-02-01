@@ -14,15 +14,14 @@ import {
 
 interface ArchiveUneClasse {
   children: React.ReactNode;
-  id: number,
+  id: number;
 }
-export const ArchiveExame = ({ children , id}: ArchiveUneClasse) => {
-  const {archiveField, isPending} = useArchive('exams')
+export const ArchiveExame = ({ children, id }: ArchiveUneClasse) => {
+  const { archiveField, isPending } = useArchive('exams');
   function handleArchive() {
-    const table = "exam"
-    archiveField({id, table })
-    console.log("clicked", id)
-
+    const table = 'exam';
+    archiveField({ id, table });
+    console.log('clicked', id);
   }
   return (
     <Dialog>
@@ -47,7 +46,11 @@ export const ArchiveExame = ({ children , id}: ArchiveUneClasse) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button className="w-full text-white bg-[#177C9A] hover:opacity-80" onClick={() => handleArchive()}>
+          <Button
+            name="bnt"
+            className="w-full text-white bg-[#177C9A] hover:opacity-80"
+            onClick={() => handleArchive()}
+          >
             Archiver
           </Button>
         </DialogFooter>

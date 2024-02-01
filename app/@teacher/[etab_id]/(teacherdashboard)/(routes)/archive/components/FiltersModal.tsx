@@ -91,7 +91,9 @@ function FiltersModal() {
           )}
         </DialogHeader>
         <DialogClose>
-          <Button className=" bg-mainGreen">Appliquer les filtres</Button>
+          <Button name="bnt" className=" bg-mainGreen">
+            Appliquer les filtres
+          </Button>
         </DialogClose>
       </DialogContent>
     </Dialog>

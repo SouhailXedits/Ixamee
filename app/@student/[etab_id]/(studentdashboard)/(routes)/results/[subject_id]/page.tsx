@@ -81,7 +81,7 @@ function SubjectLayout() {
           <div className="flex items-center text-[#727272]">
             {/* <Image src="/arrowleft.svg" alt="icons" width={20} height={20} /> */}
 
-            <button className="cursor-pointer" onClick={handleGoBack}>
+            <button name='btn' className="cursor-pointer" onClick={handleGoBack}>
               Mes résultats
             </button>
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />

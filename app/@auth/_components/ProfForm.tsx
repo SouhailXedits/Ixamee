@@ -132,6 +132,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                     <Input
                       {...field}
                       placeholder="Entrez votre nom"
+                      name="nom"
                       type="text"
                       icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
@@ -157,6 +158,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       {...field}
                       type="text"
                       placeholder="Entrez votre prénom"
+                      name="prénom"
                       icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
@@ -182,6 +184,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                     <Input
                       {...field}
                       placeholder="Entrez votre e-mail"
+                      name="e-mail"
                       type="email"
                       icon={<MdOutlineEmail className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
@@ -206,6 +209,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                     <Input
                       {...field}
                       placeholder="+216 00 000 000"
+                      name="Phone Number"
                       type="tel"
                       icon={<TnFlag width={20} height={20} className="" />}
                       disabled={isTransPending}
@@ -259,6 +263,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
+                      name='mot de passe'
                     />
                   </FormControl>
                   <FormMessage />

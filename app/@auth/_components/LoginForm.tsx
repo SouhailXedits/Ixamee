@@ -117,6 +117,7 @@ export default function LoginForm() {
                   <Input
                     {...field}
                     placeholder="Entrez votre e-mail"
+                    name="e-mail"
                     type="email"
                     icon={<MdOutlineEmail className="text-muted-foreground w-5 h-5" />}
                     disabled={isPending}
@@ -136,6 +137,7 @@ export default function LoginForm() {
                   <Input
                     {...field}
                     placeholder="Entrez votre mot de passe"
+                    name="mot de passe"
                     type={showPassword ? 'text' : 'password'}
                     icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                     disabled={isPending}
@@ -172,6 +174,7 @@ export default function LoginForm() {
                   variant="link"
                   asChild
                   className="text-center text-mainGreen hover:underline text-sm font-semibold max-md:text-xs"
+                  name="btn"
                 >
                   <Link href={'/reset-password'}>Mot de passe oublié?</Link>
                 </Button>

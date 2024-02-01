@@ -20,7 +20,10 @@ export default function AuthErrorPage() {
             Quelque chose s&apos;est mal passé !
           </div>
           <Link href="/login" className="w-full text-center ">
-            <Button className="bg-[#ed6157] w-2/5 h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75">
+            <Button
+              name="bnt"
+              className="bg-[#ed6157] w-2/5 h-10 pt-2 font-semibold items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75"
+            >
               <IoReturnUpBackOutline /> &nbsp; Retournez
             </Button>
           </Link>
