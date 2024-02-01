@@ -22,12 +22,12 @@ function SubjectCard({ subject, etab_id }: any) {
           width={80}
         />
         <div className="flex items-center gap-3">
-          <Image alt="MatierIcon" src={subject.icon} width={29} height={29} />
-          <div>
+          <Image alt="MatierIcon" src={subject.icon} width={35} height={35} />
+          <div className='whitespace-nowrap w-full truncate'>
             <span className="text-[#1B8392] text-lg  leading-[25px] font-semibold">
               {subject.name}{' '}
             </span>
-            <span className=" text-mainGreen/70">({subject.classe_subject[0].name})</span>
+            <span className=" text-mainGreen/70 truncate ">({subject.classe_subject[0].name})</span>
             <p className="text-mainGreen/70">coefficient : {subject.coefficient}</p>
           </div>
         </div>
@@ -78,11 +78,14 @@ function SubjectCard({ subject, etab_id }: any) {
             className=" rounded-full"
           />
           <div>
-            <span className="text-[#1B8392] text-lg  leading-[25px]">Professeur:</span>
-            <p>{subject.teacher[0]?.name || 'inconnue'}</p>
+            <span className="text-[#1B8392] text-lg  leading-[25px] ">Professeur:</span>
+            <p className=" w-32 truncate">{subject.teacher[0]?.name || 'inconnue'}</p>
           </div>
         </div>
-        <Link href={`/${etab_id}/results/${subject.id}`} className="bg-[#1B8392] w-24 p-1  text-white flex items-center justify-center rounded-lg font-extrabold text-[17px] hover:opacity-90 duration-150 cursor-pointer" >
+        <Link
+          href={`/${etab_id}/results/${subject.id}`}
+          className="bg-[#1B8392] w-24 p-1  text-white flex items-center justify-center rounded-lg font-extrabold text-[17px] hover:opacity-90 duration-150 cursor-pointer"
+        >
           Ouvrir
         </Link>
       </div>

@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import ApercuItem from './apercu-Item';
-import { useQueryClient } from '@tanstack/react-query';
 
 const DashboradApercu = ({
   classeCount,
@@ -10,6 +9,8 @@ const DashboradApercu = ({
   classeCountPending,
   examCountPending,
   archiveCountPending,
+  studentCount,
+  studentCountPending,
 }: {
   classeCount: number | undefined;
   examCount: number | undefined;
@@ -17,9 +18,9 @@ const DashboradApercu = ({
   classeCountPending: boolean;
   examCountPending: boolean;
   archiveCountPending: boolean;
+  studentCount: number | undefined;
+  studentCountPending: boolean;
 }) => {
-  const queryClient = useQueryClient();
-
   const items = [
     {
       itemName: 'Mes classes',
@@ -35,8 +36,8 @@ const DashboradApercu = ({
       itemColor: '#F0F6F8',
       itemIcon: 'dashboard/apercu/etudiants.svg',
       itemStat: '-',
-      count: 10,
-      isPending: false,
+      count: studentCount,
+      isPending: studentCountPending,
       textColor: '#1B8392',
     },
     {

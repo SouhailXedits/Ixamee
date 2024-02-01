@@ -215,6 +215,7 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
           },
           select: {
             id: true,
+            image: true,
           },
         },
       },

@@ -18,7 +18,7 @@ export default function Page({ params }: { params: { examenId: string } }) {
   const router = useRouter();
   const { examenId } = params;
 
-  const { data, isPending } = useQuery({
+  const { data, isPending } = useQuery<any>({
     queryKey: ['examenById'],
     queryFn: async () => await getOneExamById({ id: examenId }),
   });

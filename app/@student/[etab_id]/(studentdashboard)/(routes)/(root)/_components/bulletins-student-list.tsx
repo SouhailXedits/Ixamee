@@ -39,7 +39,14 @@ const BulletinsStudentList = () => {
         grade: 8,
         rank: 3,
       },
-      // Add more student data as needed
+      {
+        id: 3,
+        name: 'Jawher Souguir',
+        avatarSrc: '/userAvatar/user3.svg',
+        className: 'Bac Info_1',
+        grade: 8,
+        rank: 3,
+      },
     ],
     []
   );
@@ -61,7 +68,7 @@ const BulletinsStudentList = () => {
 
   return (
     <Table className="rounded-2xl">
-      <TableHeader className="bg-[#F0F6F8]">
+      {/* <TableHeader className="bg-[#F0F6F8]">
         <TableRow>
           <TableHead
             className="flex items-center gap-3  text-2 w-[200px]"
@@ -90,7 +97,7 @@ const BulletinsStudentList = () => {
             <span className="text-right  text-2">Rang</span>
           </TableHead>
         </TableRow>
-      </TableHeader>
+      </TableHeader> */}
       <TableBody>
         {sortData().map((student) => (
           <TableRow key={student.id} className="">

@@ -36,9 +36,6 @@ export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
     });
 
     const totalCount = await db.establishment.count();
-    console.log(totalCount)
-
-    console.log(estabs);
 
     return { data: {estabs, totalCount}, error: undefined };
   } catch (error: any) {

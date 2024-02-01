@@ -24,16 +24,16 @@ export default function Page({
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
-  const { data, isPending } = useQuery({
+  const { data, isPending } = useQuery<any>({
     queryKey: ['examenByIdd'],
     queryFn: async () => await getOneExamById({ id: exam_id }),
   });
-  const { data: examContent, isPending: isPendingExamContent } = useQuery({
+  const { data: examContent, isPending: isPendingExamContent } = useQuery<any>({
     queryKey: ['exameContent'],
     queryFn: async () => await getExamContent({ id: exam_id }),
   });
 
-  const { data: userData, isPending: isPendingUser } = useQuery({
+  const { data: userData, isPending: isPendingUser } = useQuery<any>({
     queryKey: ['userName'],
     queryFn: async () => await getNameOfuserById(student_id),
   });
@@ -121,7 +121,7 @@ export default function Page({
           >
             <button
               className={cn(
-                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold font-[500] leading-tight '
+                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
               )}
             >
               {sum} / {data?.total_mark}

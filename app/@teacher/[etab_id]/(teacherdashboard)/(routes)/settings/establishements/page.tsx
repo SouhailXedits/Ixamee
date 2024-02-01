@@ -31,7 +31,7 @@ const Establishement = () => {
 
   return (
     <main className="flex flex-col gap-6 p-10">
-      <nav className="flex justify-between w-full ">
+      <nav className="flex justify-between w-full flex-col sm:flex-row ">
         <div className="flex flex-col gap-4">
           <div className="text-[#1B8392] text-2xl font-semibold ">Paramètres</div>
           <div className="flex items-center text-[#727272]">

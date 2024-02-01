@@ -60,7 +60,7 @@ export const CorrectExam = ({ children, data }: CorrectExam) => {
                   className="p-0 text-xl text-right bg-transparent border-none "
                   maxLength={new_total_mark?.toString().length}
                   value={note}
-                  onChange={(e) => setNote(e.target.value)}
+                  onChange={(e) => setNote(+e.target.value)}
                 />
                 <span>/</span>
                 <span className="flex items-center text-xl ">{new_total_mark}</span>

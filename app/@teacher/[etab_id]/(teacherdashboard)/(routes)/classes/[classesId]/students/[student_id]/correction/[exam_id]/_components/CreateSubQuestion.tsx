@@ -264,8 +264,8 @@ export const CreateSubQuestion = ({
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
   console.log(realExamContetn);
   const updateSubQuestion = (e: any, data: any) => {
-    const mark = getMarkOfExerciceWithId(realExamContetn, data.id);
-    if (+e.target.value > +mark) {
+    const mark  = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
+    if (+e.target.value > +mark ) {
       toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
     }
