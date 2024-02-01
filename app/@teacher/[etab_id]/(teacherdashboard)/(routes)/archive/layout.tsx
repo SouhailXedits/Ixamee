@@ -2,8 +2,8 @@
 import Image from 'next/image';
 import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
 import { getAllEstabs } from '@/actions/establishements';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Children, cloneElement, useEffect, useState } from 'react';
 import { SearchModal } from '@/components/modals/SearchModal';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -21,6 +21,7 @@ import FiltersModal from './components/FiltersModal';
 import { getAllArchivedClasses } from '@/actions/archive';
 
 const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
+
   const params = useParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -28,6 +29,8 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
 
   const [currentTab, setCurrentTab] = useState<string>(currPath);
   const currEtabId = params.etab_id;
+
+ 
   // const [currentPage, setCurrentPage] = useState(1); // State to track the current page
   // console.log(currentPage);
   // const handleImportedData = (jsonData: any) => {
@@ -42,7 +45,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <main className="flex flex-col gap-6 p-10">
-      <nav className="flex justify-between w-full ">
+      <nav className="flex justify-between w-full sm:flex-row flex-col ">
         <div className="flex flex-col gap-4">
           <div className="text-[#1B8392] text-2xl font-semibold ">Archive</div>
           <div className="flex items-center text-[#727272]">
@@ -62,7 +65,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
           </div>
-          <FiltersModal />
+          <FiltersModal  />
 
           {/* <div>
             <Select>
@@ -99,7 +102,9 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
           Examens
         </button>
       </div>
-      <div>{children}</div>
+      <div>
+        {children}
+      </div>
     </main>
   );
 };
