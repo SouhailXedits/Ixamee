@@ -9,6 +9,7 @@ export function useDeleteExam() {
   const { mutate: deleteExam, isPending } = useMutation({
     mutationFn: (id: number) => deleteExameApi(id),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
       queryClient.invalidateQueries({ queryKey: ['examens'] });
       toast.success('Exam supprimé avec succès.');
     },

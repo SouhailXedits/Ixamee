@@ -5,12 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import Image from 'next/image';
-import ExamCorrectionList from './exam-correction-list';
 import BulletinsStudentList from './bulletins-student-list';
 import Rien from '@/app/@student/[etab_id]/(studentdashboard)/(routes)/(root)/_components/Rien';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { AddExameModal } from '@/components/modals/addExamesModal';
 
 const CorrectionsRecentes = ({ data, etabId }: any) => {
@@ -23,13 +19,6 @@ const CorrectionsRecentes = ({ data, etabId }: any) => {
             className="flex flex-col gap-6 justify-center"
             message="Pas d'examens pour le moment"
           />
-          {/* <Link href={`/${etabId}/examens`} className="w-2/5">
-            <Button
-              className={` bg-2 font-semibold h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
-            >
-              Ajouter un examen
-            </Button>
-          </Link> */}
           <AddExameModal>
             <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">

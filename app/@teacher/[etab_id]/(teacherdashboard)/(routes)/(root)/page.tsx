@@ -6,7 +6,10 @@ import DashboradClasses from './_components/dashborad-classes';
 import DashboradCorrectionsRecentes from './_components/dashborad-corrections-recentes';
 import DashboradStatistiques from './_components/dashborad-statistiques';
 import { getCountOfClasse, getCountOfExamenes, getCountMonArchive } from '@/actions/dashboard';
-import { getAllClasse, getClasseById } from '@/actions/classe';
+import {
+  getAllClasseByPage,
+  getStudentClassCount,
+} from '@/actions/classe';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -14,43 +17,35 @@ export default function Home() {
   const etab_id = queryClient.getQueryData(['etab_id']) as any;
 
   const { data: classeCount, isPending: classeCountPending } = useQuery({
-    queryKey: ['classeCount'],
+    queryKey: ['dashClasseCount'],
     queryFn: async () => await getCountOfClasse(user?.id, etab_id),
   });
-  console.log('🚀 ~ Home ~ classeCount:', classeCount);
 
   const { data: examCount, isPending: examCountPending } = useQuery({
-    queryKey: ['examCount'],
+    queryKey: ['dashExamCount'],
     queryFn: async () => await getCountOfExamenes(user?.id, etab_id),
   });
 
-  console.log('🚀 ~ Home ~ examCount:', examCount);
   const { data: archiveCount, isPending: archiveCountPending } = useQuery({
-    queryKey: ['archiveCount'],
+    queryKey: ['dashArchiveCount'],
     queryFn: async () => await getCountMonArchive(user?.id, etab_id),
   });
 
-  console.log('🚀 ~ Home ~ archiveCount:', archiveCount);
   const { data: classe, isPending: isPendingClasse } = useQuery({
-    queryKey: ['classe'],
-    queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
+    queryKey: ['dashClasses'],
+    queryFn: async () => await getAllClasseByPage({ user_id: user?.id, etab_id }),
   });
-  const countStudent = () => {
-    let sum = 0;
-    classe &&
-      classe.data.map((clas: any) => {
-        sum += clas?.student_class.length;
-      });
-    return sum;
-  };
-  const studentCount = classe && countStudent();
+  const { data: studentCount, isPending: isPendingStudentClasse } = useQuery({
+    queryKey: ['dashStudentClasses'],
+    queryFn: async () => await getStudentClassCount({ user_id: user?.id, etab_id }),
+  });
 
   return (
     <div className="flex flex-col w-full h-full p-9">
       <div className="text-2 text-2xl font-[500] pl-4 ">Tableau de bord</div>
       <div className="flex gap-6 pt-10 flex-nowrap max-2xl:flex-wrap">
         {/* first section 👺  */}
-        <div className=" flex flex-col gap-20 w-[60%] max-2xl:w-[100%] ">
+        <div className=" flex flex-col gap-6 w-[60%] max-2xl:w-[100%] ">
           <DashboradApercu
             classeCount={classeCount}
             examCount={examCount}
@@ -58,14 +53,19 @@ export default function Home() {
             classeCountPending={classeCountPending}
             examCountPending={examCountPending}
             archiveCountPending={archiveCountPending}
-            studentCount={studentCount}
-            studentCountPending={isPendingClasse}
+            studentCount={studentCount?.data}
+            studentCountPending={isPendingStudentClasse}
           />
           <DashboradStatistiques />
-          <DashboradClasses classe={classe?.data} isPending={isPendingClasse} etabId={etab_id} />
+          <DashboradClasses
+            classe={classe?.data}
+            classeCount={classeCount}
+            isPending={isPendingClasse}
+            etabId={etab_id}
+          />
         </div>
 
-        <div className="w-[40%] p-2 flex flex-col gap-8 max-2xl:w-[100%]">
+        <div className="w-[40%] h-full p-2 flex flex-col gap-6 max-2xl:w-[100%]">
           <DashboradCorrectionsRecentes etabId={etab_id} />
           <DashboradBulletinsDesEtudiants etabId={etab_id} />
         </div>

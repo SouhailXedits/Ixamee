@@ -17,6 +17,9 @@ export function useCreateClasse() {
       createClasseApi(name, matiere, establishmentId, teacherId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['classe'] });
+      queryClient.invalidateQueries({ queryKey: ['dashClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['dashClasseCount'] });
+      queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
       toast.success('Class added successfully.');
     },
     onError: (err) => {

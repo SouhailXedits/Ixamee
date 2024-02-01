@@ -12,11 +12,11 @@ const DashboradBulletinsDesEtudiants = ({ etabId }: any) => {
           <span className=" text-[#727272] text-xl font-[600] ">Bulletins des étudiants</span>
         </div>
         <div className="text-[#1B8392] cursor-pointer text-lg font-medium  underline">
-        <Link href={`/${etabId}/bulletins`}>Voir plus (0)</Link>
+          <Link href={`/${etabId}/bulletins`}>Voir plus (0)</Link>
         </div>
       </div>
 
-      <BulletinsDesEtudiants />
+      <BulletinsDesEtudiants etabId={etabId}/>
     </div>
   );
 };

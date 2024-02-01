@@ -14,7 +14,7 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
           <Skeleton key={index} className="w-[250px] h-[270px] rounded-xl pt-10" />
         ))}
       {classes &&
-        classes.slice(0, 3).map((classe: any) => {
+        classes.map((classe: any) => {
           return (
             <div className="w-[260.50px] h-[271px] py-[15px] bg-[#F0F6F8] rounded-[20px] flex-col justify-center items-center gap-[38px] inline-fle p-5 hover:opacity-75">
               <div className="flex items-center justify-between">

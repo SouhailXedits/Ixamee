@@ -23,6 +23,7 @@ export function useCreateUserInClasse() {
       createUserInClasseApi(image, name, range, email, class_id, establishmentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
       toast.success('Student added successfully.');
     },
     onError: (err) => {

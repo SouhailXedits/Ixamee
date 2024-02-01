@@ -9,6 +9,7 @@ import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query
 
 export default async function Hydration({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
+  
   await queryClient.prefetchQuery({
     queryKey: ['user'],
     queryFn: async () => await getMe(),

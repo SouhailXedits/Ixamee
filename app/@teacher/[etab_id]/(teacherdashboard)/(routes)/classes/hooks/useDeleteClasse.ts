@@ -10,6 +10,9 @@ export function useDeleteClasse() {
     mutationFn: (id: number) => deleteClasseeApi(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['classe'] });
+      queryClient.invalidateQueries({ queryKey: ['dashClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['dashClasseCount'] });
+      queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
       toast.success('Classe supprimé avec succès.');
     },
     onError: (err) => {

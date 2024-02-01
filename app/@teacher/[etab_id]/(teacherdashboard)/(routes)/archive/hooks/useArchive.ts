@@ -16,7 +16,7 @@ export function useArchive(table: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`archived_${table}`] });
       queryClient.invalidateQueries({ queryKey: [`examens`] });
-      queryClient.invalidateQueries({ queryKey: [`examens`] });
+      queryClient.invalidateQueries({ queryKey: [`dashArchiveCount`] });
       toast.success('archivé avec succeé.');
     },
     onError: (err) => {

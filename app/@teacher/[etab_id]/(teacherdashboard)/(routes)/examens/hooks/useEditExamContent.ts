@@ -10,6 +10,7 @@ export function useEditExamContent() {
       updateExamContentApi(exam_id, content), // Call your API function to update the exam
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ['examenById']   });
+      queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
       toast.success('Exame Enregistre avec succès.');
     },
     onError: (err) => {
