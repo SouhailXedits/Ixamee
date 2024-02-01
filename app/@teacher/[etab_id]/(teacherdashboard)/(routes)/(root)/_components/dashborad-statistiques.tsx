@@ -11,7 +11,9 @@ import StatistiquesItems from './statistiques-items';
 const DashboradStatistiques = ({
   allStudentCount,
   studentCountPending,
+  classesName,
 }: {
+  classesName:any,
   allStudentCount: number;
   studentCountPending: boolean;
 }) => {
@@ -50,7 +52,10 @@ const DashboradStatistiques = ({
         </div>
       </div>
       <div>
-        <StatistiquesItems allStudentCount={allStudentCount} studentCountPending={studentCountPending}/>
+        <StatistiquesItems
+          allStudentCount={allStudentCount}
+          studentCountPending={studentCountPending}
+        />
       </div>
     </div>
   );
