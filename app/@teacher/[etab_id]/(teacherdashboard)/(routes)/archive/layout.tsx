@@ -45,7 +45,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <main className="flex flex-col gap-6 p-10">
-      <nav className="flex justify-between w-full ">
+      <nav className="flex justify-between w-full sm:flex-row flex-col ">
         <div className="flex flex-col gap-4">
           <div className="text-[#1B8392] text-2xl font-semibold ">Archive</div>
           <div className="flex items-center text-[#727272]">

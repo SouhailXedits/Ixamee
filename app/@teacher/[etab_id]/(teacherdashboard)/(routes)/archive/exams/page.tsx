@@ -29,6 +29,11 @@ function ExamsLayout({filters} : any) {
       );
     const data = exams?.data || [];
     console.log(data);
+    if(data.length === 0) return (
+      <p>
+        Pas d’examens archivés pour le moment.<br/>N’oubliez pas d’archiver les examens non actifs.
+      </p>
+    );
   return (
     <div className=" flex gap-7 flex-wrap">
       {data.map((exam: any) => (
