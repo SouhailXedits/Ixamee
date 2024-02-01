@@ -4,7 +4,7 @@ import { ApexOptions } from 'apexcharts';
 interface PieChartItemProps {
   series: number[];
   colors: string[];
-  numberOfStudent: number;
+  numberOfStudent: number | "-";
 }
 const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStudent }) => {
   // const series = [11, 11, 13, 8]

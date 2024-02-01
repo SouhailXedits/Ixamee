@@ -8,7 +8,15 @@ import {
 } from '@/components/ui/select';
 import StatistiquesItems from './statistiques-items';
 
-const DashboradStatistiques = () => {
+const DashboradStatistiques = ({
+  allStudentCount,
+  studentCountPending,
+  classesName,
+}: {
+  classesName:any,
+  allStudentCount: number;
+  studentCountPending: boolean;
+}) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between">
@@ -33,19 +41,21 @@ const DashboradStatistiques = () => {
             </SelectContent>
           </Select>
 
-          {/* Devoir */}
           <Select>
-            <SelectTrigger className="w-[190px] text-11 rounded-xl">
-              <SelectValue placeholder="Devoir" />
+            <SelectTrigger className="w-[180px] text-11 rounded-xl">
+              <SelectValue placeholder="Classes" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Devoir de Controle</SelectItem>
+              <SelectItem value="light">3_eme_info</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
       <div>
-        <StatistiquesItems />
+        <StatistiquesItems
+          allStudentCount={allStudentCount}
+          studentCountPending={studentCountPending}
+        />
       </div>
     </div>
   );

@@ -134,7 +134,10 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 w-full transition-all duration-300 ease-in-out"
+      >
         <FormError message={error} />
         <FormSuccess message={success} />
 

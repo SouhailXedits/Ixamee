@@ -17,7 +17,6 @@ const ApercuItem = ({ color, icon, stat, name, count, isPending, textColor }: Ap
 
   useEffect(() => {
     if (isPending || count === undefined) return;
-
     let startCount = 0;
     const interval = setInterval(() => {
       startCount += 1;

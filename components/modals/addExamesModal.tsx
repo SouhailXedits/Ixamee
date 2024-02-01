@@ -36,7 +36,6 @@ import {
   getTermOfUser,
 } from '@/actions/examens';
 import { Skeleton } from '../ui/skeleton';
-import { auth } from '@/auth';
 import { useCreateExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useCreateExam';
 import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
 interface AjouterUneClasse {
@@ -69,7 +68,6 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       label: item?.name,
     };
   });
-  console.log(userEstablishmentoptions);
 
   const examSchema = z.object({
     establishment: z

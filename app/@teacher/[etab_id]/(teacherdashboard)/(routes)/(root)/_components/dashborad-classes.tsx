@@ -2,7 +2,7 @@ import Image from 'next/image';
 import DashboardClassesCard from './dashborad-classes-card';
 import Link from 'next/link';
 
-const DashboradClasses = ({ classe, classeCount, isPending, etabId }: any) => {
+const DashboradClasses = ({ classe,classeCount, isPending, etabId }: any) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex w-full justify-between">

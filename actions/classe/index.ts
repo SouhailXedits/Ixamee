@@ -229,6 +229,56 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
     };
   }
 };
+export const getAllClasseName = async ({
+  user_id,
+  etab_id,
+}: {
+  user_id: string;
+  etab_id: number;
+}) => {
+  try {
+    const classes = await db.classe.findMany({
+      where: {
+        teacher: {
+          some: {
+            id: user_id,
+          },
+        },
+        establishment: {
+          some: {
+            id: +etab_id,
+          },
+        },
+        is_archived: false,
+        subject: {
+          some: {
+            is_archived: false,
+          },
+        },
+      },
+      include: {
+        subject: {
+          select: {
+            name: true, // Include only the 'name' field from the 'subject'
+          },
+        },
+        student_class: {
+          where: {
+            role: 'STUDENT',
+          },
+        },
+      },
+    });
+
+    console.log(classes);
+    return { data: classes, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get classes.',
+    };
+  }
+};
 
 export const getAllClasseByPage = async ({
   user_id,
