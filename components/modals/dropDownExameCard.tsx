@@ -7,15 +7,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 // import { EditeExame } from './EditeExame';
-import  EditeExame  from './EditeExame';
+import EditeExame from './EditeExame';
 import { DeleteExame } from './DeleteExame';
 import { ArchiveExame } from './ArchiveExame';
 interface DropdownMenuItemSelectProps {
   children: React.ReactNode;
-  exam : any
+  exam: any;
 }
 
-export const DropdownMenuItemSelect = ({ children  , exam}: DropdownMenuItemSelectProps) => {
+export const DropdownMenuItemSelect = ({ children, exam }: DropdownMenuItemSelectProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -27,17 +27,17 @@ export const DropdownMenuItemSelect = ({ children  , exam}: DropdownMenuItemSele
             </DropdownMenuLabel>
           </EditeExame> */}
           <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-            <span >edit</span>
+            <span>Modifier</span>
           </DropdownMenuLabel>
 
           <DeleteExame exam_id={exam?.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-              <span >Supprimer</span>
+              <span>Supprimer</span>
             </DropdownMenuLabel>
           </DeleteExame>
           <ArchiveExame id={exam?.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-              <span >Archiver</span>
+              <span>Archiver</span>
             </DropdownMenuLabel>
           </ArchiveExame>
         </DropdownMenuGroup>

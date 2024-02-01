@@ -18,11 +18,29 @@ interface studentFeadback {
   children: React.ReactNode;
 }
 export const StudentFeadback = ({ children }: studentFeadback) => {
-  const [feedback, setFeedback] = useState([]);
+  const [feedback, setFeedback] = useState<string[]>([]);
+  const [feedbackMessage, setFeedbackMessage] = useState();
+
+  console.log(feedback);
+  const [listFeedback, setListFeedback] = useState([
+    'Excellent travail! Vous êtes sur la bonne voie!',
+    'Bon travail! Continuez ainsi.',
+    'Assez bien! Vous pouvez mieux faire la prochaine fois!',
+    'Travail insuffisant!',
+  ]);
+  const handelSubmitFeedback = () => {
+    console.log(feedback);
+    console.log(feedbackMessage);
+    const newfedback = {
+      feedback,
+      description: feedbackMessage,
+    };
+    console.log(newfedback);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[545px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
             <div className="absolute -top-14 -left-16">
@@ -37,11 +55,49 @@ export const StudentFeadback = ({ children }: studentFeadback) => {
             Ajouter une remarque
           </DialogTitle>
         </DialogHeader>
-        <div className=" h-[200px] border border-9 p-1 rounded-lg">
+        <div className=" h-[290px] border border-9 p-1 rounded-lg overflow-scroll">
+          <div className="flex flex-col gap-2">
+            {feedback.map((item: string) => {
+              return (
+                <div
+                  key={item}
+                  className="bg-[#F0F6F8] flex items-center justify-between text-11 rounded-lg p-2 cursor-pointer"
+                >
+                  <span>{item}</span>
+                  <Image
+                    src={'/gray-x-icon.svg'}
+                    width={20}
+                    height={20}
+                    alt="x"
+                    onClick={() => {
+                      setFeedback(feedback.filter((i) => i !== item));
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
           <Textarea
-            className="border-none resize-none text-[#B5B5B5] placeholder:text-[#B5B5B5] "
+            className="border-none resize-none  placeholder:text-[#B5B5B5] "
             placeholder="Tapez votre remarque ici."
+            onChange={(e) => setFeedbackMessage(e.target.value)}
+            value={feedbackMessage}
           />
+          {feedback.length === 0 && (
+            <div className="flex flex-col gap-2">
+              {listFeedback.map((item) => {
+                return (
+                  <div
+                    key={item}
+                    className="bg-[#F0F6F8] text-11 rounded-lg p-2 cursor-pointer"
+                    onClick={() => setFeedback([...feedback, item])}
+                  >
+                    {item}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <DialogFooter>
@@ -54,7 +110,11 @@ export const StudentFeadback = ({ children }: studentFeadback) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full text-white bg-2 hover:opacity-80">
+          <Button
+            type="submit"
+            className="w-full text-white bg-2 hover:opacity-80"
+            onClick={handelSubmitFeedback}
+          >
             Soumettre
           </Button>
         </DialogFooter>

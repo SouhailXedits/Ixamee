@@ -41,17 +41,78 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { InviterUnEtudiant } from '@/components/modals/inviter-un-etudiant';
 import { SupprimerUserInClasse } from '@/components/modals/suprimer-user-in-classe';
 import { usePathname, useRouter } from 'next/navigation';
+import { getStatusById } from '@/actions/classe';
 function calculateDateDifference(date1: Date, date2: Date): number {
   const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-  console.log(differenceInDays);
   return differenceInDays;
 }
 function handleUpdateUser(user_id: number) {
   // console.log(user_id);
 }
+const Status = ({ row }: any) => {
+  // console.log(row.original);
+  // switch (row.original?.status[0]) {
+  //   case 'done':
+  //     return <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />;
+  //   case 'notClassified':
+  //     return (
+  //       <CorrectionTag correction="Non classé" bgcolor="#F4EFFF" color="#8862F5" width="100px" />
+  //     );
+  //   case 'absent':
+  //     return <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />;
+  //   case 'pending':
+  //     return (
+  //       <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
+  //     );
+  //   default:
+  //     return (
+  //       <CorrectionTag correction="Non corrigé" bgcolor="#FFF4F3" color="#F04438" width="100px" />
+  //     );
+  // }
+  // getStatusById(row?.original?.id)
+  //   .then((correction) => {
+  //     switch (correction[0]?.status) {
+  //       case 'done':
+  //         return (
+  //           <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />
+  //         );
+  //       case 'notClassified':
+  //         return (
+  //           <CorrectionTag
+  //             correction="Non classé"
+  //             bgcolor="#F4EFFF"
+  //             color="#8862F5"
+  //             width="100px"
+  //           />
+  //         );
+  //       case 'absent':
+  //         return (
+  //           <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />
+  //         );
+  //       case 'pending':
+  //         return (
+  //           <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
+  //         );
+  //       default:
+  //         return (
+  //           <CorrectionTag
+  //             correction="Non corrigé"
+  //             bgcolor="#FFF4F3"
+  //             color="#F04438"
+  //             width="100px"
+  //           />
+  //         );
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     // Handle the error if needed
+  //     // return null;
+  //   });
+};
+
 const Action = ({ row }: any) => {
-  console.log(row);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -68,7 +129,6 @@ const Action = ({ row }: any) => {
             width={20}
             height={20}
             aria-disabled={true}
-            className="cursor-not-allowed "
           />
         </CorrectExam>
       )}
@@ -215,50 +275,13 @@ export const columns = [
     },
     cell: ({ row }: any) => <div className="lowercase text-[#727272]">{row.getValue('email')}</div>,
   },
-  // {
-  //   accessorKey: 'correction',
-  //   header: () => {
-  //     return <span className="text-[#1B8392] ">Correction</span>;
-  //   },
-  //   cell: ({ row } :any) => {
-  //     console.log(row);
-
-  //     // switch (correction) {
-  //     //   case 'Corrigé':
-  //     //     return (
-  //     //       <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />
-  //     //     );
-  //     //   case 'Non corrigé':
-  //     //     return (
-  //     //       <CorrectionTag
-  //     //         correction="Non corrigé"
-  //     //         bgcolor="#FFF4F3"
-  //     //         color="#F04438"
-  //     //         width="100px"
-  //     //       />
-  //     //     );
-  //     //   case 'Non classé':
-  //     //     return (
-  //     //       <CorrectionTag
-  //     //         correction="Non classé"
-  //     //         bgcolor="#F4EFFF"
-  //     //         color="#8862F5"
-  //     //         width="100px"
-  //     //       />
-  //     //     );
-  //     //   case 'Absent':
-  //     //     return (
-  //     //       <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />
-  //     //     );
-  //     //   case 'En cours':
-  //     //     return (
-  //     //       <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
-  //     //     );
-  //     //   default:
-  //     //     return null;
-  //     // }
-  //   },
-  // },
+  {
+    accessorKey: 'correction',
+    header: () => {
+      return <span className="text-[#1B8392] ">Correction</span>;
+    },
+    cell: ({ row }: any) => Status({ row }),
+  },
 
   {
     header: () => {

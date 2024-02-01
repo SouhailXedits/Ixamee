@@ -159,8 +159,17 @@ model ExamCorrection {
   mark_obtained Float
   user         User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id       String?
-  feedback        String?
+  feedback      Json?
+  correction_exam_content Json?
+  status        Status?
 }
 
 
 
+enum Status {
+  pending
+  done
+  absent
+  notClassified
+  notCorrected
+}
