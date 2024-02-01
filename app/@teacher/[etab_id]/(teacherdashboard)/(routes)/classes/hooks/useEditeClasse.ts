@@ -19,11 +19,11 @@ export function useEditeClasse() {
       queryClient.invalidateQueries({ queryKey: ['dashClasses'] });
       queryClient.invalidateQueries({ queryKey: ['dashClasseCount'] });
       queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
-      toast.success('Class Edite successfully.');
+      toast.success('Classe modifiée avec succès.');
     },
     onError: (err) => {
       console.error('Error edite class:', err);
-      toast.error('Error edite class');
+      toast.error('Erreur lors de la modification de la classe.');
     },
     retry: false,
   });

@@ -35,7 +35,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
   const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
   const new_total_mark = examan[0]?.total_mark;
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent'],
+    queryKey: ['CorigeExameContent', +examan[0]?.id, data?.id],
     queryFn: async () => await getCorigeExameContent(+examan[0]?.id, data?.id),
   });
 

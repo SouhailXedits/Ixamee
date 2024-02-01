@@ -23,10 +23,9 @@ export function createManyUserInClass() {
       createUserWithImportInClasseAPi(image, name, range, email, +class_id, establishmentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
-      toast.success('Students added successfully.');
+      toast.success('Étudiants ajoutés avec succès.');
     },
     onError: (err) => {
-      console.error('Error creating Student:', err);
       toast.error("Une erreur s'est produite lors de la création de l'étudiant");
     },
     retry: false,

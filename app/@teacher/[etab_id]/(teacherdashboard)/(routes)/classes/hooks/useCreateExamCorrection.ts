@@ -23,11 +23,10 @@ export function useCreateExamCorrection() {
       createExamCorrectionApi(exam_id, mark_obtained, user_id, correction_exam_content, status),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['examCorrections'] });
-      toast.success('Exam correction added successfully.');
+      toast.success("Correction de l'examen ajoutée avec succès.");
     },
     onError: (err) => {
-      console.error('Error creating exam correction:', err);
-      toast.error('There was an error creating the exam correction');
+      toast.error("Il y a eu une erreur lors de la création de la correction de l'examen.");
     },
     retry: false,
   });

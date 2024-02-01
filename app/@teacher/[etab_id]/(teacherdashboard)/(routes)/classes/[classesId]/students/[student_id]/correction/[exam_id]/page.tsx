@@ -25,22 +25,22 @@ export default function Page({
   const { exam_id } = params;
   const { student_id } = params;
   const { data, isPending } = useQuery<any>({
-    queryKey: ['examenByIdd'],
+    queryKey: ['examenByIdd', exam_id],
     queryFn: async () => await getOneExamByIdForCorrection({ id: exam_id }),
   });
 
   const { data: examContent, isPending: isPendingExamContent } = useQuery<any>({
-    queryKey: ['exameContent'],
+    queryKey: ['exameContent', exam_id],
     queryFn: async () => await getExamContent({ id: exam_id }),
   });
 
   const { data: userData, isPending: isPendingUser } = useQuery<any>({
-    queryKey: ['userName'],
+    queryKey: ['userName', student_id],
     queryFn: async () => await getNameOfuserById(student_id),
   });
 
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent'],
+    queryKey: ['CorigeExameContent', +exam_id, student_id],
     queryFn: async () => await getCorigeExameContent(+exam_id, student_id),
   });
 
