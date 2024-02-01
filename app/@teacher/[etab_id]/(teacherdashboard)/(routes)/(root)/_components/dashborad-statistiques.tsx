@@ -30,14 +30,23 @@ const DashboradStatistiques = ({
         </div>
         <div className="flex gap-3">
           {/* Classe */}
-          {/* <Select>
+          <Select>
             <SelectTrigger className="w-[180px] text-11 rounded-xl">
               <SelectValue placeholder="Classes" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="light">3_eme_info</SelectItem>
             </SelectContent>
-          </Select> */}
+          </Select>
+
+          <Select>
+            <SelectTrigger className="w-[180px] text-11 rounded-xl">
+              <SelectValue placeholder="Classes" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">3_eme_info</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div>

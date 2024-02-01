@@ -6,7 +6,7 @@ import DashboradClasses from './_components/dashborad-classes';
 import DashboradCorrectionsRecentes from './_components/dashborad-corrections-recentes';
 import DashboradStatistiques from './_components/dashborad-statistiques';
 import { getCountOfClasse, getCountOfExamenes, getCountMonArchive } from '@/actions/dashboard';
-import { getAllClasseByPage, getStudentClassCount } from '@/actions/classe';
+import { getAllClasseByPage, getAllClasseName, getCorrectionOfUser, getStudentClassCount } from '@/actions/classe';
 import Loading from '@/app/loading';
 
 export default function Home() {
@@ -37,7 +37,10 @@ export default function Home() {
     queryKey: ['dashStudentClasses'],
     queryFn: async () => await getStudentClassCount({ user_id: user?.id, etab_id }),
   });
-
+  const { data: classesName, isPending: isPendingClassesName } = useQuery<any>({
+    queryKey: ['dashClassesName'],
+    queryFn: async () => await getAllClasseName({ user_id: user?.id, etab_id }),
+  });
   return isPendingStudentClasse ? (
     <Loading />
   ) : (
@@ -57,10 +60,12 @@ export default function Home() {
             studentCountPending={isPendingStudentClasse}
           />
           <DashboradStatistiques
+          classesName={classesName}
             allStudentCount={studentCount?.data}
             studentCountPending={isPendingStudentClasse}
           />
           <DashboradClasses
+          
             classe={classe?.data}
             classeCount={classeCount}
             isPending={isPendingClasse}

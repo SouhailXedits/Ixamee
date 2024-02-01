@@ -229,6 +229,56 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
     };
   }
 };
+export const getAllClasseName = async ({
+  user_id,
+  etab_id,
+}: {
+  user_id: string;
+  etab_id: number;
+}) => {
+  try {
+    const classes = await db.classe.findMany({
+      where: {
+        teacher: {
+          some: {
+            id: user_id,
+          },
+        },
+        establishment: {
+          some: {
+            id: +etab_id,
+          },
+        },
+        is_archived: false,
+        subject: {
+          some: {
+            is_archived: false,
+          },
+        },
+      },
+      include: {
+        subject: {
+          select: {
+            name: true, // Include only the 'name' field from the 'subject'
+          },
+        },
+        student_class: {
+          where: {
+            role: 'STUDENT',
+          },
+        },
+      },
+    });
+
+    console.log(classes);
+    return { data: classes, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get classes.',
+    };
+  }
+};
 
 export const getAllClasseByPage = async ({
   user_id,
@@ -383,22 +433,7 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
   //   include: {},
   // });
 };
-export const getStudentExamCorrection = async (teacherId: string, exam_id: string) => {
-  console.log(teacherId, exam_id);
-  const res = await db.examCorrection.findMany({
-    where: {
-      user: {
-        id: teacherId,
-      },
-    },
-  });
-  console.log(res);
 
-  // const res = await db.examCorrection.findMany({
-  //   // relationLoadStrategy: 'join',
-  //   include: {},
-  // });
-};
 // export const createManyUserInClasseApi = async (
 //   name: string,
 //   range: number,
