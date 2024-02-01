@@ -42,9 +42,10 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
                 name: true,
                 image: true,
             }
-        }, 
+        },
         
-      }
+      },
+      
     });
 
     console.log(markSheets);
