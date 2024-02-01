@@ -23,7 +23,8 @@ interface CorrectExam {
   data: any;
 }
 export const CorrectExam = ({ children, data }: CorrectExam) => {
-  let examan = data?.classe?.exam_classe?.filter((item) => item?.id == data?.exam);
+  console.log(data.exam);
+  let examan = data?.classe?.exam_classe?.filter((item:any) => item?.id == data?.exam);
   const new_total_mark = examan[0]?.total_mark;
   const router = useRouter();
   const pathname = usePathname();
