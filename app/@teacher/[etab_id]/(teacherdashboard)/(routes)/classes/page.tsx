@@ -11,7 +11,7 @@ export default function Classes() {
   const user = queryClient.getQueryData(['user']) as any;
 
   const { data, isPending } = useQuery({
-    queryKey: ['classe'],
+    queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
 

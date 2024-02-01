@@ -152,7 +152,7 @@ const Action = ({ row }: any) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
+          <Button variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="w-4 h-4" />
           </Button>

@@ -11,7 +11,7 @@ import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
 import { calcAllMark, transferAllMarkToNull } from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
-import { getNameOfuserById, getUserById } from '@/actions/classe';
+import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
 import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorrection';
 export default function Page({
@@ -39,17 +39,28 @@ export default function Page({
     queryFn: async () => await getNameOfuserById(student_id),
   });
 
+  const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
+    queryKey: ['CorigeExameContent'],
+    queryFn: async () => await getCorigeExameContent(+exam_id, student_id),
+  });
+
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
+
   console.log(fakeData);
+
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
-      setFakeData(data?.content);
+      if (getCorrigeExamOfUser != undefined) {
+        setFakeData(getCorrigeExamOfUser);
+      } else {
+        setFakeData(data?.content);
+      }
       setSum(calcAllMark(fakeData));
     }
-  }, [isPending]);
+  }, [isPending, getCorrigeExamOfUser]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
@@ -128,9 +139,14 @@ export default function Page({
                 <Skeleton className="w-[80px] h-[20px]" />
               </span>
             ) : (
-              <span className="cursor-pointer">
-                {data?.exam_classess.map((item: any) => item.name).join(', ')}
-              </span>
+              <>
+                <span className="cursor-pointer">
+                  {data?.exam_classess.map((item: any) => item.name).join(', ')}
+                </span>
+                <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
+
+                <span className="cursor-pointer"> {userData?.name}</span>
+              </>
             )}
           </div>
         </div>
