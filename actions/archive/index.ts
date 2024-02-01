@@ -45,9 +45,15 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
   }
 };
 
-export const getAllArchivedClasses = async (id: string, estabId: number) => {
-  console.log(id, estabId)
+export const getAllArchivedClasses = async (
+  id: string,
+  estabId: number,
+  filters?: any
+) => {
+  console.log(filters)
   try {
+    const { dateRange } = filters || {};
+
     const classe = await db.classe.findMany({
       where: {
         is_archived: true,
@@ -60,6 +66,15 @@ export const getAllArchivedClasses = async (id: string, estabId: number) => {
           some: {
             id: estabId,
           },
+        },
+        archived_at: {
+          // Add date range filter if it exists
+          ...(dateRange
+            ? {
+                gte: dateRange.from,
+                lte: dateRange.to,
+              }
+            : {}),
         },
       },
       select: {
@@ -74,8 +89,6 @@ export const getAllArchivedClasses = async (id: string, estabId: number) => {
       },
     });
 
-    console.log(classe);
-
     return { data: classe, error: undefined };
   } catch (error: any) {
     console.log(error);
@@ -85,7 +98,6 @@ export const getAllArchivedClasses = async (id: string, estabId: number) => {
     };
   }
 };
-
 export const unArchive = async (id: number, table: string) => {
   try {
     await (db as any)[table].update({

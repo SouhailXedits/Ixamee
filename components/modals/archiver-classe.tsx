@@ -38,7 +38,11 @@ export const ArchiveUneClasse = ({ children }: ArchiveUneClasse) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
+          <Button
+            name="bnt"
+            type="submit"
+            className="w-full text-white bg-[#177C9A] hover:opacity-80"
+          >
             Archiver
           </Button>
         </DialogFooter>

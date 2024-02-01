@@ -193,37 +193,37 @@ const getIntersectionOfArrays = (arrays: any) => {
 
   return intersection;
 };
-export const getSubjectOfUser = async (user_id: string, data: any) => {
-  const findOneSubject = async (user_id: string, classe: any) => {
-    const subject = await db.subject.findMany({
-      where: {
-        teacher: {
-          some: {
-            id: user_id,
-          },
-        },
-        classe_subject: {
-          some: {
-            id: {
-              in: [classe.value],
-            },
-          },
-        },
-        is_archived: false,
-      },
-    });
+// export const getSubjectOfUser = async (user_id: string, data: any) => {
+//   const findOneSubject = async (user_id: string, classe: any) => {
+//     const subject = await db.subject.findMany({
+//       where: {
+//         teacher: {
+//           some: {
+//             id: user_id,
+//           },
+//         },
+//         classe_subject: {
+//           some: {
+//             id: {
+//               in: [classe.value],
+//             },
+//           },
+//         },
+//         is_archived: false,
+//       },
+//     });
 
-    return subject;
-  };
+//     return subject;
+//   };
 
-  const result = await Promise.all(
-    data.map(async (classe: any) => await findOneSubject(user_id, classe))
-  );
+//   const result = await Promise.all(
+//     data.map(async (classe: any) => await findOneSubject(user_id, classe))
+//   );
 
-  const intersectionResult = getIntersectionOfArrays(result);
+//   const intersectionResult = getIntersectionOfArrays(result);
 
-  return intersectionResult;
-};
+//   return intersectionResult;
+// };
 
 export const getSubjectOfUserById = async (user_id: string) => {
   const subject = await db.subject.findMany({

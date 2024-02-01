@@ -95,7 +95,7 @@ const Student = () => {
           <div className="flex items-center text-[#727272]">
             {/* <Image src="/arrowleft.svg" alt="icons" width={20} height={20} /> */}
 
-            <button className="cursor-pointer" onClick={handleGoBack}>
+            <button name="btn" className="cursor-pointer" onClick={handleGoBack}>
               Bulletins
             </button>
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />

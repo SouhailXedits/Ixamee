@@ -30,7 +30,7 @@ const Student = () => {
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
   
-  const defaultTerm = user.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
+  const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
 
   const [filters, setFilters] = useState({
     term: defaultTerm,
@@ -116,14 +116,14 @@ const Student = () => {
             </SelectTrigger>
 
             <SelectContent>
-              {user.term === 'TRIMESTRE' && (
+              {user?.term === 'TRIMESTRE' && (
                 <>
                   <SelectItem value="trimestre_1">Trimester 1</SelectItem>
                   <SelectItem value="trimestre_2">Trimester 2</SelectItem>
                   <SelectItem value="trimestre_3">Trimester 3</SelectItem>
                 </>
               )}
-              {user.term === 'SEMESTRE' && (
+              {user?.term === 'SEMESTRE' && (
                 <>
                   <SelectItem value="semestre_1">Semestre 1</SelectItem>
                   <SelectItem value="semestre_2">Semestre 2</SelectItem>

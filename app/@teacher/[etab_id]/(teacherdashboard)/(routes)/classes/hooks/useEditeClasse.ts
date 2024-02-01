@@ -16,6 +16,9 @@ export function useEditeClasse() {
       updateClasseApi(name, classe_id, matiere),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['classe'] });
+      queryClient.invalidateQueries({ queryKey: ['dashClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['dashClasseCount'] });
+      queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
       toast.success('Class Edite successfully.');
     },
     onError: (err) => {

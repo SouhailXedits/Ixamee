@@ -5,46 +5,29 @@ import { getAllArchivedClasses } from '@/actions/archive';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useParams } from 'next/navigation';
 
-const fakeClassData = [
-  {
-    id: 9,
-    name: 'bac info 3',
-    archived_at: '12/03/2023',
-    number_students: 36,
-  },
-  {
-    id: 1,
-    name: ' zertzet zertyzey',
-    archived_at: '12/03/2023',
-    number_students: 12,
-  },
-  {
-    id: 2,
-    name: ' zertzet',
-    archived_at: '12/03/2023',
-    number_students: 3,
-  },
-  {
-    id: 3,
-    name: ' zertzet',
-    archived_at: '12/03/2023',
-    number_students: 3,
-  },
-];
 
 function ClassesLayout() {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(['user']);
   const params = useParams()
   const estabId = params.etab_id
+
+  const filters = queryClient.getQueryData(['a-classes-filters']);
+  console.log(filters)
+
+  
+  
+  
   const {
     data: classes,
     error,
     isPending,
   } = useQuery<any>({
-    queryKey: ['archived_classes', 1],
-    queryFn: async () => await getAllArchivedClasses(user.id, +estabId),
+    queryKey: ['archived_classes', 1, filters],
+    queryFn: async () => await getAllArchivedClasses(user.id, +estabId, filters),
   });
+
+
   if (isPending)
     return (
       <div className=" flex gap-3">
@@ -64,7 +47,9 @@ function ClassesLayout() {
     };
   });
   console.log(reformedData);
-  if (reformedData.length === 0) return null;
+  if (reformedData.length === 0) return (
+    <p>Pas de classes archivés pour le moment.<br/>N’oubliez pas d’archiver les classes non actifs.</p>
+  );
 
   return (
     <div className=" flex gap-7 flex-wrap">

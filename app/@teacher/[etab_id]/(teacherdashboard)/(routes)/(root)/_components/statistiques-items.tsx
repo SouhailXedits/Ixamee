@@ -7,28 +7,27 @@ const StatistiquesItems = () => {
       color: '#D0D5DD',
 
       firstMessage: 'Entre 0 - 30%',
-      studentNumber: '3',
+      studentNumber: 0,
     },
     {
       // color: '#F69D16',
       color: '#D0D5DD',
 
       firstMessage: 'Entre 30 - 60%',
-      studentNumber: '7',
+      studentNumber: 0,
     },
     {
       // color: '#12B76A',
       color: '#D0D5DD',
 
       firstMessage: 'Entre 60 - 80%',
-      studentNumber: '8',
+      studentNumber: 0,
     },
     {
       // color: '#1B8392',
       color: '#D0D5DD',
-
       firstMessage: 'Plus de 80%',
-      studentNumber: '10',
+      studentNumber: 0,
     },
   ];
 

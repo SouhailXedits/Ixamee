@@ -8,7 +8,7 @@ const DashboradApercu = ({
   examCount,
   marksheetCount,
 }: {
-  subjectCount: number | undefined;
+  subjectCount: any | undefined;
   examCount: number | undefined;
   marksheetCount: number | undefined;
 }) => {

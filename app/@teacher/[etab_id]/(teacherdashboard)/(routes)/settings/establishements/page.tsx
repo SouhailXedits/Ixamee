@@ -58,7 +58,7 @@ const Establishement = () => {
             />
           </div>
           <AddEstab>
-            <button className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
+            <button name='btn' className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               Ajouter une établissements
             </button>
           </AddEstab>

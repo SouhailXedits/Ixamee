@@ -7,18 +7,15 @@ import DashboradCorrectionsRecentes from './_components/dashborad-corrections-re
 import DashboradStatistiques from './_components/dashborad-statistiques';
 
 import { useParams } from 'next/navigation';
-import {
-  getAllSubjectsByClasseIdByPage,
-  getAllSubjectsCount,
-} from '@/actions/subjects';
-
+import { getAllSubjectsByClasseIdByPage, getAllSubjectsCount } from '@/actions/subjects';
 
 export default function Home() {
   const queryClient = useQueryClient();
 
-  const subjectCount = queryClient.getQueryData(['subjectCount']) as any;
   const examCount = queryClient.getQueryData(['examCount']) as any;
+  console.log('🚀 ~ Home ~ examCount:', examCount);
   const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
+  console.log('🚀 ~ Home ~ marksheetCount:', marksheetCount);
   // const allSubjects = queryClient.getQueryData(['teacherSubject']) as any;
   const params = useParams();
   const classId = params.etab_id;
@@ -27,6 +24,7 @@ export default function Home() {
     queryFn: async () => getAllSubjectsCount(+classId),
   });
 
+  console.log('🚀 ~ Home ~ allSubjects:', allSubjects);
   const { data: subjects, isPending } = useQuery({
     queryKey: ['user-subjects-dash', classId],
     queryFn: async () => getAllSubjectsByClasseIdByPage(2, +classId),
@@ -39,7 +37,7 @@ export default function Home() {
         {/* first section 👺  */}
         <div className=" flex flex-col gap-9 w-[60%] max-2xl:w-[100%] ">
           <DashboradApercu
-            subjectCount={subjectCount}
+            subjectCount={allSubjects}
             examCount={examCount}
             marksheetCount={marksheetCount}
           />

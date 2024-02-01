@@ -229,6 +229,114 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
     };
   }
 };
+
+export const getAllClasseByPage = async ({
+  user_id,
+  etab_id,
+}: {
+  user_id: string;
+  etab_id: number;
+}) => {
+  try {
+    const classes = await db.classe.findMany({
+      where: {
+        teacher: {
+          some: {
+            id: user_id,
+          },
+        },
+        establishment: {
+          some: {
+            id: +etab_id,
+          },
+        },
+        is_archived: false,
+        subject: {
+          some: {
+            is_archived: false,
+          },
+        },
+      },
+
+      include: {
+        subject: true,
+        student_class: {
+          where: {
+            role: 'STUDENT',
+          },
+          select: {
+            id: true,
+            image: true,
+          },
+        },
+      },
+      take: 3,
+    });
+    console.log(classes);
+    return { data: classes, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get classes.',
+    };
+  }
+};
+export const getStudentClassCount = async ({
+  user_id,
+  etab_id,
+}: {
+  user_id: string;
+  etab_id: number;
+}) => {
+  try {
+    const studentClasses = await db.classe.findMany({
+      where: {
+        teacher: {
+          some: {
+            id: user_id,
+          },
+        },
+        establishment: {
+          some: {
+            id: +etab_id,
+          },
+        },
+        is_archived: false,
+        subject: {
+          some: {
+            is_archived: false,
+          },
+        },
+        student_class: {
+          some: {
+            role: 'STUDENT',
+          },
+        },
+      },
+      include: {
+        student_class: {
+          where: {
+            role: 'STUDENT',
+          },
+        },
+      },
+    });
+
+    const totalStudentClasses = studentClasses.reduce(
+      (acc, item) => acc + (item.student_class ? item.student_class.length : 0),
+      0
+    );
+
+    return { data: totalStudentClasses, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get student class count.',
+    };
+  }
+};
+
+
 export const getStudentOfClasse = async (classe_id: number) => {
   console.log(classe_id);
   const res = await db.user.findMany({

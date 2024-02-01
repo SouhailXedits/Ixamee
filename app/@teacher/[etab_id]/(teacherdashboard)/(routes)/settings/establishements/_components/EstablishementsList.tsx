@@ -56,7 +56,7 @@ interface estabProps {
 interface estabListProps {
   data: estabProps[];
   isPending: boolean;
-  onPageChange: (n:number) => void;
+  onPageChange: (n: number) => void;
   currentpage: number;
   totalCount: number;
 }
@@ -66,7 +66,7 @@ const ActionModal = ({ row }: any) => {
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-8 h-8 p-0">
+          <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="w-4 h-4" />
           </Button>
@@ -150,15 +150,18 @@ export const columns: ColumnDef<estabProps>[] = [
   },
 ];
 
-
-
-export function EstablishementsList({ data, isPending, onPageChange , currentpage, totalCount}: estabListProps) {
-  console.log(data)
+export function EstablishementsList({
+  data,
+  isPending,
+  onPageChange,
+  currentpage,
+  totalCount,
+}: estabListProps) {
+  console.log(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-
 
   const table = useReactTable({
     data,
@@ -183,7 +186,7 @@ export function EstablishementsList({ data, isPending, onPageChange , currentpag
     return Array.from({ length: 5 }, (_, index) => (
       <Skeleton key={index} className="w-70 h-10 mt-5" />
     ));
-  const totalPageCount = Math.floor(totalCount / 10) + 1
+  const totalPageCount = Math.floor(totalCount / 10) + 1;
 
   function handleNextPage() {
     console.log(currentpage + 1);
@@ -192,8 +195,7 @@ export function EstablishementsList({ data, isPending, onPageChange , currentpag
   }
   function handlePreviousPage() {
     // const cur = table.getPageCount();
-    if(currentpage === 0) 
-    console.log(currentpage - 1);
+    if (currentpage === 0) console.log(currentpage - 1);
     onPageChange(currentpage - 1);
     table.previousPage();
   }
@@ -260,7 +262,7 @@ export function EstablishementsList({ data, isPending, onPageChange , currentpag
             variant="outline"
             size="sm"
             onClick={() => handleNextPage()}
-            disabled={(currentpage + 1) > totalPageCount}
+            disabled={currentpage + 1 > totalPageCount}
           >
             Next
           </Button>

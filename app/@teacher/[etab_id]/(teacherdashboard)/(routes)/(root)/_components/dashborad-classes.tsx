@@ -2,7 +2,7 @@ import Image from 'next/image';
 import DashboardClassesCard from './dashborad-classes-card';
 import Link from 'next/link';
 
-const DashboradClasses = ({ classe, isPending, etabId }: any) => {
+const DashboradClasses = ({ classe, classeCount, isPending, etabId }: any) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex w-full justify-between">
@@ -16,7 +16,7 @@ const DashboradClasses = ({ classe, isPending, etabId }: any) => {
       underline cursor-pointer"
         >
           <Link href={`/${etabId}/classes`}>
-            Voir plus ({isPending ? 0 : classe.length > 3 ? classe.length - 3 : 0})
+            Voir plus ({isPending ? 0 : classeCount > 3 ? classeCount - 3 : 0})
           </Link>
         </span>
       </div>

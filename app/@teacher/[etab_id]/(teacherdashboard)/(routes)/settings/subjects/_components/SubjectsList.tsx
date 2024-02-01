@@ -130,7 +130,7 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
         <div className="flex items-center gap-4 " style={{ width: '50px' }}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="w-8 h-8 p-0">
+              <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
                 <span className="sr-only">Open menu</span>
                 <MoreHorizontal className="w-4 h-4" />
               </Button>

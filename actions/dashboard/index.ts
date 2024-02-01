@@ -122,6 +122,7 @@ export const getCountOfStudentSubjects = async (userId: string) => {
       is_archived: false,
     },
   });
+  console.log("🚀 ~ getCountOfStudentSubjects ~ subjectCount:", subjectCount)
   return subjectCount;
 };
 

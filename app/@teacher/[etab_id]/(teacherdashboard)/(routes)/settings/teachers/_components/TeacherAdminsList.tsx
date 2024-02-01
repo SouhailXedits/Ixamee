@@ -38,19 +38,16 @@ import { TeachersInfos } from './TeacherInofs';
 import { DeleteAdminModal } from './DeleteAdminModal';
 import { useQueryClient } from '@tanstack/react-query';
 
-
-
-
 function ActionsModal({ rowData }: any) {
-  const queryClient = useQueryClient()
-  const currentLoggedUser = queryClient.getQueryData(['user']) as any
-  console.log(currentLoggedUser)
-  const isCurrentUser = currentLoggedUser.id === rowData.id
+  const queryClient = useQueryClient();
+  const currentLoggedUser = queryClient.getQueryData(['user']) as any;
+  console.log(currentLoggedUser);
+  const isCurrentUser = currentLoggedUser.id === rowData.id;
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-8 h-8 p-0">
+          <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="w-4 h-4" />
           </Button>
@@ -70,12 +67,13 @@ function ActionsModal({ rowData }: any) {
             </p>
             {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
           </TeachersInfos>
-          {!isCurrentUser && 
-          <DeleteAdminModal id={rowData.id}>
-            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-              Supprimer l&apos;admin
-            </p>
-          </DeleteAdminModal> }
+          {!isCurrentUser && (
+            <DeleteAdminModal id={rowData.id}>
+              <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
+                Supprimer l&apos;admin
+              </p>
+            </DeleteAdminModal>
+          )}
 
           {/* <DropdownMenuItem>Supprimer</DropdownMenuItem> */}
         </DropdownMenuContent>
@@ -83,10 +81,6 @@ function ActionsModal({ rowData }: any) {
     </div>
   );
 }
-
-
-
-
 
 export const columns: ColumnDef<teacherAminOutput>[] = [
   {
