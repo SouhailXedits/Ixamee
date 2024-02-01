@@ -249,6 +249,7 @@ export const getStudentOfClasse = async (classe_id: number) => {
 };
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
   console.log(class_id, data, exam_id);
+  console.log(exam_id);
   const res = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -263,8 +264,12 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
         in: data.map((el: any) => el.id),
       },
     },
+    select: {
+      status: true,
+      user_id: true,
+    },
   });
-  console.log(res);
+  return res;
 
   // const res = await db.examCorrection.findMany({
   //   // relationLoadStrategy: 'join',

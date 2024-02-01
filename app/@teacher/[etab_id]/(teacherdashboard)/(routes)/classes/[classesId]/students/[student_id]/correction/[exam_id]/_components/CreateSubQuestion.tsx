@@ -264,8 +264,8 @@ export const CreateSubQuestion = ({
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
   console.log(realExamContetn);
   const updateSubQuestion = (e: any, data: any) => {
-    const mark  = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
-    if (+e.target.value > +mark ) {
+    const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
+    if (+e.target.value > +mark) {
       toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
     }
@@ -331,7 +331,7 @@ export const CreateSubQuestion = ({
       });
     });
   };
-  console.log(allData);
+
   return (
     <>
       <div
@@ -352,24 +352,29 @@ export const CreateSubQuestion = ({
             />
           </div>
           <div className="flex gap-3 item-center">
-            <Input
-              className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
-              placeholder="--.--"
+            {data.children && data.children.length > 0 ? (
+              <div className="w-[160px] bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
+                <span>{data.mark.length === 1 ? `0${data.mark}.00` : `${data.mark}.00`}</span>
+                <span>/</span>
+                <span>0{getMarkOfExerciceWithId(realExamContetn, data.id)}.00</span>
+              </div>
+            ) : (
+                  <Input
+              className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen flex items-center justify-center p-3 border border-[#1B8392]"
+              placeholder={`00/0${getMarkOfExerciceWithId(realExamContetn, data.id)}`}
               type="number"
               defaultValue={data.mark}
               maxLength={5}
               disabled={data.children && data.children.length > 0}
-              // value={
-              //   exercise.children && exercise.children.length > 0
-              //     ? calculateSumOfMarks(exercise).toFixed(2)
-              //     : exercise.mark
-              // }
-              // value={data.mark !== 0 && data.mark}
-              value={0}
+              value={data.mark}
               onChange={(e: any) => {
                 updateSubQuestion(e, data);
               }}
-            />
+              />
+            )
+              
+            }
+          
           </div>
         </div>
       </div>

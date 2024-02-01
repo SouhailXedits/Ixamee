@@ -3,13 +3,13 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import CreateExam from './_components/create-exam';
 import { useQuery } from '@tanstack/react-query';
-import { getExamContent, getOneExamById } from '@/actions/examens';
+import { getExamContent, getOneExamById, getOneExamByIdForCorrection } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
 // import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
-import { calcAllMark } from './_components/calculateChildrenMarks';
+import { calcAllMark, transferAllMarkToNull } from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 import { getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
@@ -26,8 +26,9 @@ export default function Page({
   const { student_id } = params;
   const { data, isPending } = useQuery<any>({
     queryKey: ['examenByIdd'],
-    queryFn: async () => await getOneExamById({ id: exam_id }),
+    queryFn: async () => await getOneExamByIdForCorrection({ id: exam_id }),
   });
+
   const { data: examContent, isPending: isPendingExamContent } = useQuery<any>({
     queryKey: ['exameContent'],
     queryFn: async () => await getExamContent({ id: exam_id }),
@@ -41,6 +42,7 @@ export default function Page({
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
+  console.log(fakeData);
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
@@ -58,17 +60,37 @@ export default function Page({
   function handleCancel() {
     router.back();
   }
+  const hasNullMark = (content: any) => {
+    for (const item of content) {
+      if (item.mark === null) {
+        return true;
+      }
+      if (item.children && hasNullMark(item.children)) {
+        return true;
+      }
+    }
+    return false;
+  };
   const arabic = data?.language === 'ar' ? true : false;
   // const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
-
+  const statusOf = (data: any) => {
+    const hasPending = hasNullMark(data);
+    const status = hasPending ? 'pending' : 'done';
+    return status;
+  };
   const handleSaveData = async () => {
     try {
+      const stataus = statusOf(fakeData);
+
+      console.log(stataus);
+
       // Assuming you have the necessary data
       const dataToSave = {
         exam_id: parseInt(exam_id),
         mark_obtained: sum, // or any other value you want to use
         user_id: student_id,
         correction_exam_content: fakeData,
+        status: stataus,
       };
       console.log(dataToSave);
 
@@ -83,6 +105,8 @@ export default function Page({
   };
 
   const examContentt = examContent?.content;
+  console.log(examContentt);
+  if (!examContent) return <Loading />;
 
   return (
     <div className="flex flex-col gap-6 p-10">

@@ -33,16 +33,16 @@ interface classe {
   exam_classe: [];
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
+  const queryClient = useQueryClient();
+  const { classesId } = params;
   const [exam, setExam] = useState<any>(0);
   console.log(exam);
 
-  const { classesId } = params;
-  const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
-  const handleImportedData = (jsonData: any) => {
-    // Handle the imported data in the external page
-    console.log(jsonData);
-  };
+  // const handleImportedData = (jsonData: any) => {
+  //   // Handle the imported data in the external page
+  //   console.log(jsonData);
+  // };
   const { data, isPending } = useQuery({
     queryKey: ['userOfClasses'],
     queryFn: async () => await getStudentOfClasse(+classesId),
@@ -51,6 +51,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryKey: ['classe'],
     queryFn: async () => await getClasseById(+classesId),
   });
+
   useEffect(() => {
     setExam(classe?.exam_classe[0]?.id + '');
   }, [classe]);
@@ -58,23 +59,28 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   console.log(exam);
   console.log(data);
 
+  // if (isPendingClasse) return <Loading />;
+
+  console.log(data);
+
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
-    queryKey: ['userCorrection'],
+    queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     staleTime: 0,
   });
   console.log(userCorrection);
 
-  if (isPendingClasse) return <Loading />;
-
-  console.log(data);
   const newData = data?.map((item: any) => {
     return {
       ...item,
       exam: exam, // Add your new field here
       classe: classe,
+      status:
+        userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
     };
   });
+  if (isPendingClasse) return <Loading />;
+  if (!classe) return null;
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">

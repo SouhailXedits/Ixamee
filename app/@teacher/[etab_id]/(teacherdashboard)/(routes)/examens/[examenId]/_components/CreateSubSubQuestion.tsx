@@ -216,11 +216,9 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
           </div>
           <div className="flex gap-3 item-center">
             <Input
-              className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
+              className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 text-center border border-[#1B8392]"
               placeholder="--.--"
-              type="number"
               defaultValue={data.mark}
-              maxLength={5}
               // value={
               //   exercise.children && exercise.children.length > 0
               //     ? calculateSumOfMarks(exercise).toFixed(2)

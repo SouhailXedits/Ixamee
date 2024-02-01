@@ -2,6 +2,7 @@
 'use server';
 
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
+import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/students/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 interface ExamEstablishment {
@@ -84,9 +85,9 @@ export const createExamCorrection = async (
   exam_id: number,
   mark_obtained: number,
   user_id: string,
-  correction_exam_content: any
+  correction_exam_content: any,
+  status: any
 ) => {
-  console.log(exam_id, mark_obtained, user_id, correction_exam_content);
 
   // Check if there is an existing examCorrection for the given exam_id and user_id
   const existingExamCorrection = await db.examCorrection.findMany({
@@ -112,6 +113,7 @@ export const createExamCorrection = async (
             id: exam_id,
           },
         },
+        status: status,
         mark_obtained: +mark_obtained,
         correction_exam_content: correction_exam_content,
         user: {
@@ -131,6 +133,7 @@ export const createExamCorrection = async (
         user_id: user_id,
       },
       data: {
+        status: status,
         exam_id: exam_id,
         mark_obtained: mark_obtained,
         correction_exam_content: correction_exam_content,
@@ -269,6 +272,21 @@ export const getOneExamById = async ({ id }: { id: string }) => {
       exam_classess: true,
     },
   });
+
+  return exam;
+};
+export const getOneExamByIdForCorrection = async ({ id }: { id: string }) => {
+  const exam = await db.exam.findUnique({
+    where: { id: +id },
+    include: {
+      exam_classess: true,
+    },
+  });
+  const newData = exam?.content;
+
+  transferAllMarkToNull(newData);
+  
+
   return exam;
 };
 export const getExamContent = async ({ id }: { id: string }) => {
@@ -340,7 +358,6 @@ export async function createExamm(data: any, user_id: string) {
       status: 'notCorrected',
     })),
   });
-  
 
   return examm;
 }

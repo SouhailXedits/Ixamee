@@ -6,7 +6,8 @@ interface CreateExamCorrectionParams {
   exam_id: number;
   mark_obtained: number;
   user_id: string;
-  correction_exam_content:any
+  correction_exam_content: any;
+  status: any;
 }
 
 export function useCreateExamCorrection() {
@@ -17,8 +18,9 @@ export function useCreateExamCorrection() {
       mark_obtained,
       user_id,
       correction_exam_content,
+      status,
     }: CreateExamCorrectionParams) =>
-      createExamCorrectionApi(exam_id, mark_obtained, user_id, correction_exam_content),
+      createExamCorrectionApi(exam_id, mark_obtained, user_id, correction_exam_content, status),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['examCorrections'] });
       toast.success('Exam correction added successfully.');

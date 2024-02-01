@@ -16,7 +16,7 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
       const newData = {
         id: Math.random().toString(36).substring(7),
         name: getNextChar(data.children.length),
-        mark: 0,
+        mark: "00.00",
         content: '',
         children: [],
       };

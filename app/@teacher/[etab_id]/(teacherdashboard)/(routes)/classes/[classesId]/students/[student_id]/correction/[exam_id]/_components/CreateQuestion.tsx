@@ -6,7 +6,14 @@ import { cn } from '@/lib/utils';
 import { getMarkOfExerciceWithId } from './calculateChildrenMarks';
 import toast from 'react-hot-toast';
 
-export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, isArabic, fakeData }: any) => {
+export const CreateQuestion = ({
+  allData,
+  data,
+  setFakeData,
+  realExamContetn,
+  isArabic,
+  fakeData,
+}: any) => {
   //  this the content of the Editor 🙄
   const onChange = (content: string) => {
     updateContetn(content, data);
@@ -17,7 +24,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, is
     const newSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
-      mark: 0,
+      mark: '00.00',
       children: [],
     };
 
@@ -153,7 +160,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, is
           // Checking if the current child's id matches the provided data's id
           if (state.id === data.id) {
             // Updating the mark of the matching child with the new value (+e)
-            state.mark = +e;
+            state.mark = e;
           }
         });
         // Returning the updated item
@@ -163,6 +170,9 @@ export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, is
       return updatedData;
     });
   };
+  console.log(data.mark);
+  console.log(data.content);
+  console.log(realExamContetn);
 
   return (
     <>
@@ -183,20 +193,34 @@ export const CreateQuestion = ({ allData, data, setFakeData, realExamContetn, is
             />
           </div>
           <div className="flex gap-3 item-center">
-            <Input
-              className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
-              placeholder="--.--"
-              type="number"
-              // value={data.mark}
-              maxLength={5}
-              disabled={data.children && data.children.length > 0}
-              // defaultValue={calculerQuestionMark(data)}
-              value={data.children && data.children.length > 0 ? calculateMark(data) : data.mark}
-              // max={10}
-              onChange={(e) => {
-                updateQuestion(e.target.value, data);
-              }}
-            />
+            {data.children && data.children.length > 0 ? (
+              <div className="w-[160px] bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
+                <span>
+                  {calculateMark(data).length === 1
+                    ? `0${calculateMark(data)}.00`
+                    : `${calculateMark(data)}.00`}
+                </span>
+                <span>/</span>
+                <span>0{getMarkOfExerciceWithId(realExamContetn, data.id)}.00</span>
+              </div>
+            ) : (
+              <Input
+                className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
+                placeholder={`
+                ${realExamContetn ? getMarkOfExerciceWithId(realExamContetn, data.id) : data.mark}`}
+                // value={data.mark}
+                disabled={data.children && data.children.length > 0}
+                value={
+                  data.children && data.children.length > 0
+                    ? Number(calculateMark(data))
+                    : Number(data.mark)
+                }
+                // max={10}
+                onChange={(e) => {
+                  updateQuestion(e.target.value, data);
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
