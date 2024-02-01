@@ -5,40 +5,8 @@ import { getAllArchivedExams } from '@/actions/archive';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useParams } from 'next/navigation';
 
-const FakeExamData = [
-  {
-    id: 9,
-    name: 'DC1',
-    archived_at: '12/03/2023',
-    class: '2ème info 3',
-  },
-  {
-    id: 1,
-    name: 'DC2',
-    archived_at: '12/03/2023',
-    class: '2ème info 2',
-  },
-  {
-    id: 2,
-    name: 'DC3',
-    archived_at: '12/03/2023',
-    class: '3ème info 2',
-  },
-  {
-    id: 3,
-    name: 'DS1',
-    archived_at: '12/03/2023',
-    class: '4ème info 2',
-  },
-  {
-    id: 4,
-    name: 'DC4',
-    archived_at: '12/03/2023',
-    class: '4ème info 2',
-  },
-];
 
-function ExamsLayout() {
+function ExamsLayout({filters} : any) {
     const queryClient = useQueryClient();
     const user = queryClient.getQueryData<any>(['user']);
     const params = useParams();
