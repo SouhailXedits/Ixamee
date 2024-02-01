@@ -17,7 +17,8 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
                     id: filters.classe_id
                 }
             }
-        }
+        },
+        status: 'done'
       },
       select: {
         id: true,
@@ -41,7 +42,8 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
                 name: true,
                 image: true,
             }
-        }
+        }, 
+        
       }
     });
 
