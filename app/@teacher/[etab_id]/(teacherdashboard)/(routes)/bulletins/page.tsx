@@ -29,7 +29,41 @@ const Student = () => {
     queryKey: ['classe'],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
-  
+
+  const data = [
+    {
+      id: 'm5gr84i9',
+      rang: 1,
+      name: 'Souhail Brahmi',
+      email: 'ken99@yahoo.com',
+      dc1: '19.3',
+      dc2: '12.3',
+      ds1: '16.5',
+      average: 8,
+    },
+    {
+      id: 'derv1ws0',
+      rang: 3,
+
+      name: 'Firas Latrach',
+      email: 'Monserrat44@gmail.com',
+      dc1: '13.2',
+      dc2: '12.3',
+      ds1: '18',
+      average: 10.0,
+    },
+    {
+      id: 'derdv1ws0',
+      rang: 2,
+
+      name: 'ahmad ahmad',
+      email: 'Monsse44@gmail.com',
+      dc1: '13.2',
+      dc2: '12.3',
+      ds1: '19',
+      average: 16,
+    },
+  ];
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
 
   const [filters, setFilters] = useState({
@@ -39,17 +73,67 @@ const Student = () => {
 
   useEffect(() => {
     setFilters({ ...filters, classe_id: classes?.data[0].id });
-  },[classes])
-  console.log(filters)
- 
-  
+  }, [classes]);
+  console.log(filters);
 
-  const {data:markSheets, error} = useQuery({
-    queryKey: ["mark-sheets", filters.classe_id, filters.term],
-    queryFn: async() => await getMarkSheets(filters)
-  })
+  const { data: markSheets, error } = useQuery({
+    queryKey: ['mark-sheets', filters.classe_id, filters.term],
+    queryFn: async () => await getMarkSheets(filters),
+  });
 
   console.log(markSheets);
+
+  const groupedData = markSheets?.data.reduce((acc:any, item:any) => {
+    const userId = item.user.id;
+
+    // Create a new array for the user if not exists
+    if (!acc[userId]) {
+      acc[userId] = [];
+    }
+
+    // Push the item into the user's array
+    acc[userId].push(item);
+
+    return acc;
+  }, {});
+
+  console.log(groupedData);
+  if(!groupedData) return null
+
+  const resultArray = Object?.keys(groupedData).map((userId) => {
+    const userData = groupedData[userId];
+
+    // Calculate average for each user
+    const examsInfo = userData.map((examData: any) => {
+      const { id, exam } = examData;
+
+      // Calculate average for each exam
+      const average = (examData.mark_obtained * exam.coefficient) / exam.total_mark;
+
+      return {
+        name: exam.name,
+        marksObtained: examData.mark_obtained,
+        totalMarks: exam.total_mark,
+        coefficient: exam.coefficient,
+        average,
+      };
+    });
+
+    // Calculate overall average for the user
+    const totalCoefficient = examsInfo.reduce((acc: any, exam:any) => acc + exam.coefficient, 0);
+    const overallAverage =
+      examsInfo.reduce((acc: any, exam: any): any => acc + exam.average * exam.coefficient, 0) /
+      totalCoefficient;
+
+    return {
+      id: userId,
+      name: userData[0].user.name,
+      exams: examsInfo,
+      average: overallAverage,
+    };
+  });
+
+  console.log(resultArray);
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -166,7 +250,7 @@ const Student = () => {
       </nav>
 
       <div>
-        <MarkSheetStudentList />
+        <MarkSheetStudentList data={resultArray} />
       </div>
     </main>
   );

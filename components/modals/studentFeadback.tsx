@@ -19,7 +19,7 @@ interface studentFeadback {
 }
 export const StudentFeadback = ({ children }: studentFeadback) => {
   const [feedback, setFeedback] = useState<string[]>([]);
-  const [feedbackMessage, setFeedbackMessage] = useState();
+  const [feedbackMessage, setFeedbackMessage] = useState<any>();
 
   console.log(feedback);
   const [listFeedback, setListFeedback] = useState([
