@@ -27,7 +27,7 @@ const Student = () => {
 
   const { data: classes } = useQuery({
     queryKey: ['classe'],
-    queryFn: async () => await getAllClassesNameAndId({ user_id: user?.id, etab_id }),
+    queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
 
   const data = [
