@@ -15,6 +15,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { useNavigate } from 'react-router-dom';
 import UserExam from '../../../../../../../components/shared-components/UserExam';
 import TermCard from '@/components/shared-components/TermCard';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
 
 const trimesters = [
   {
@@ -83,10 +85,53 @@ const trimesters = [
 const Student = () => {
   const params = useParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const currentId = params.bulletin_id;
   function handleGoBack() {
     router.back();
   }
+
+  const classeId = queryClient.getQueryData(['classe-filters']) as number;
+  console.log(classeId);
+
+  const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
+    queryKey: ['marksheet', currentId],
+    queryFn: async () => getMarksheetByUserId(classeId, currentId + ''),
+  });
+
+  console.log(marksheet);
+
+  const examsData = marksheet?.data || [];
+
+  const groupedExams = examsData.reduce((result, exam) => {
+    const term = exam.exam.term;
+    if (!result[term]) {
+      result[term] = [];
+    }
+    result[term].push({
+      id: exam.id,
+      name: exam.exam.name,
+      date: exam.exam.create_at.toISOString().split('T')[0],
+      marksObtained: exam.mark_obtained,
+      totalScore: exam.exam.total_mark,
+      rang: 0, // You can modify this based on your data structure
+    });
+    return result;
+  }, {});
+
+  // Create array of objects with trimesters and exams
+  const terms =['trimestre_1', 'trimestre_2', 'trimestre_3'];
+
+  const trimesters = terms.map((term) => ({
+    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
+    exams: groupedExams[term] || [], // Check and add empty array if term has no exams
+  }));
+
+  console.log(trimesters);
+
+  // Modify trimesters to integrate the fetched data
+  
+
   return (
     <main className="flex flex-col gap-12 p-10">
       <nav className="flex justify-between w-full ">
