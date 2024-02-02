@@ -15,7 +15,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
     const newSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
-      mark: '00.00',
+      mark: 0,
       children: [],
     };
 
@@ -108,10 +108,10 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
     }, 0);
 
     // Format the mark to have two decimal places
-    const formattedMark = data.mark.toFixed(2);
+    // const formattedMark = data?.mark?.toFixed(2);
 
     // Return the formatted mark
-    return formattedMark;
+    return data.mark;
   };
 
   const updateContetn = (contetn: string, data: any) => {

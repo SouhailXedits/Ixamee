@@ -597,6 +597,7 @@ export const updateInvitationUser = async (studentEmail: string, teacherEmail: s
     }
   });
 };
+
 // export const getStudentOfClasse = async (classe_id: number, exma_id: number) => {
 //   console.log(classe_id, exma_id);
 //   const res = await db.examCorrection.findMany({
@@ -635,4 +636,19 @@ export const getStatusById = async (id: any) => {
   });
   console.log(data);
   return data;
+};
+
+export const getCorigeExameContent = async (exam_id: number, student_id: string) => {
+  console.log(exam_id, student_id);
+  const data = await db.examCorrection.findMany({
+    where: {
+      exam_id: +exam_id,
+      user_id: student_id,
+    },
+    select: {
+      correction_exam_content: true,
+    },
+  });
+  console.log(data[0]?.correction_exam_content);
+  return data[0]?.correction_exam_content;
 };

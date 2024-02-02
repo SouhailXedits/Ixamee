@@ -331,7 +331,7 @@ export const CreateSubQuestion = ({
       });
     });
   };
-
+  console.log(data.mark);
   return (
     <>
       <div
@@ -354,27 +354,30 @@ export const CreateSubQuestion = ({
           <div className="flex gap-3 item-center">
             {data.children && data.children.length > 0 ? (
               <div className="w-[160px] bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
-                <span>{data.mark.length === 1 ? `0${data.mark}.00` : `${data.mark}.00`}</span>
+                <span>
+                  {data.mark === null
+                    ? 0
+                    : data.mark.toString().length === 1
+                    ? `0${data.mark}.00`
+                    : `${data.mark}.00`}
+                </span>
                 <span>/</span>
                 <span>0{getMarkOfExerciceWithId(realExamContetn, data.id)}.00</span>
               </div>
             ) : (
-                  <Input
-              className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen flex items-center justify-center p-3 border border-[#1B8392]"
-              placeholder={`00/0${getMarkOfExerciceWithId(realExamContetn, data.id)}`}
-              type="number"
-              defaultValue={data.mark}
-              maxLength={5}
-              disabled={data.children && data.children.length > 0}
-              value={data.mark}
-              onChange={(e: any) => {
-                updateSubQuestion(e, data);
-              }}
+              <Input
+                className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen flex items-center justify-center p-3 border border-[#1B8392]"
+                placeholder={`00/0${getMarkOfExerciceWithId(realExamContetn, data.id)}`}
+                type="number"
+                defaultValue={data.mark}
+                maxLength={5}
+                disabled={data.children && data.children.length > 0}
+                value={data.mark}
+                onChange={(e: any) => {
+                  updateSubQuestion(e, data);
+                }}
               />
-            )
-              
-            }
-          
+            )}
           </div>
         </div>
       </div>

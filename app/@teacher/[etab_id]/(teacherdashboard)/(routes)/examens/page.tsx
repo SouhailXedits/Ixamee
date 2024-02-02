@@ -10,7 +10,7 @@ export default function Examens() {
   const user = queryClient.getQueryData(['user']) as any;
 
   const { data, isPending } = useQuery({
-    queryKey: ['examens'],
+    queryKey: ['examens', etab_id],
     queryFn: async () => await getAllExam({ user_id: user?.id, etab_id }),
   });
   return (

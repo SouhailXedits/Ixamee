@@ -20,11 +20,11 @@ export function useCreateClasse() {
       queryClient.invalidateQueries({ queryKey: ['dashClasses'] });
       queryClient.invalidateQueries({ queryKey: ['dashClasseCount'] });
       queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
-      toast.success('Class added successfully.');
+      toast.success('Classe ajoutée avec succès.');
     },
     onError: (err) => {
-      console.error('Error creating class:', err);
-      toast.error('There was an error creating the class');
+      console.error('Erreur lors de la création de la classe.:', err);
+      toast.error('Il y a eu une erreur lors de la création de la classe.');
     },
     retry: false,
   });

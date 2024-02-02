@@ -19,7 +19,7 @@ export default function Page({ params }: { params: { examenId: string } }) {
   const { examenId } = params;
 
   const { data, isPending } = useQuery<any>({
-    queryKey: ['examenById'],
+    queryKey: ['examenById', examenId],
     queryFn: async () => await getOneExamById({ id: examenId }),
   });
   console.log(data);

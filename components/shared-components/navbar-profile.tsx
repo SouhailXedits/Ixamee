@@ -36,6 +36,7 @@ const NavbarProfile = () => {
   const params = useParams();
   const queryClient = useQueryClient();
   // const user = queryClient.getQueryData(['user']) as any;
+
   const { data: user, isPending: estabPending } = useQuery<any>({
     queryKey: ['user'],
     queryFn: async () => await getMe(),
@@ -46,14 +47,14 @@ const NavbarProfile = () => {
   }
 
   return (
-    <div className="flex items-center gap-5 justify-center">
+    <div className="flex items-center justify-center gap-5">
       <div className="rounded-full">
         <Image
           alt="picture Student"
           src={user?.image || '/studenttestpicture.svg'}
           width={35}
           height={35}
-          className="rounded-full object-fill"
+          className="object-fill rounded-full"
         />
       </div>
 
@@ -101,7 +102,7 @@ const NavbarProfile = () => {
                 router.push(`/${params.etab_id}/student-profile`);
               }
             }}
-            className=" cursor-pointer"
+            className="cursor-pointer "
           >
             Mon profil
           </DropdownMenuItem>
@@ -109,7 +110,7 @@ const NavbarProfile = () => {
             onClick={async () => {
               await logout();
             }}
-            className=" cursor-pointer"
+            className="cursor-pointer "
           >
             Se déconnecter
           </DropdownMenuItem>

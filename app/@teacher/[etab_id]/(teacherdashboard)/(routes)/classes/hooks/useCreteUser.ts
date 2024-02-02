@@ -24,10 +24,10 @@ export function useCreateUserInClasse() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
       queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
-      toast.success('Student added successfully.');
+      toast.success('Étudiant ajouté avec succès.');
     },
     onError: (err) => {
-      console.error('Error creating Student:', err);
+      // console.error("Erreur lors de la création de l'étudiant.", err);
       toast.error("Une erreur s'est produite lors de la création de l'étudiant");
     },
     retry: false,

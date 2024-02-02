@@ -37,6 +37,12 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const { classesId } = params;
   const [exam, setExam] = useState<any>(0);
   console.log(exam);
+  const { data: userCorrection, isPending: isPendingUser } = useQuery({
+    queryKey: ['userCorrection', exam, classesId],
+    queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
+    retry: 0,
+  });
+  // if (isPendingUser) return <Loading />;
 
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   // const handleImportedData = (jsonData: any) => {
@@ -52,22 +58,18 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getClasseById(+classesId),
   });
 
-  useEffect(() => {
-    setExam(classe?.exam_classe[0]?.id + '');
-  }, [classe]);
-
   console.log(exam);
   console.log(data);
 
-  // if (isPendingClasse) return <Loading />;
+  useEffect(() => {
+    if (Array.isArray(classe?.exam_classe)) {
+      setExam(classe?.exam_classe[0]?.id + '');
+    }
+  }, [classe]);
 
+  if (isPendingClasse) return <Loading />;
   console.log(data);
 
-  const { data: userCorrection, isPending: isPendingUser } = useQuery({
-    queryKey: ['userCorrection', exam, classesId],
-    queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
-    staleTime: 0,
-  });
   console.log(userCorrection);
 
   const newData = data?.map((item: any) => {
@@ -102,7 +104,11 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           <div>
             <Select
               onValueChange={(value) => setExam(value)}
-              defaultValue={classe?.exam_classe[0]?.id + ''}
+              defaultValue={
+                !classe?.exam_classe || classe?.exam_classe.length === 0
+                  ? '0'
+                  : classe?.exam_classe[0]?.id + ''
+              }
             >
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
                 <SelectValue

@@ -24,7 +24,7 @@ export const CreateQuestion = ({
     const newSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
-      mark: '00.00',
+      mark: 0,
       children: [],
     };
 
@@ -160,7 +160,7 @@ export const CreateQuestion = ({
           // Checking if the current child's id matches the provided data's id
           if (state.id === data.id) {
             // Updating the mark of the matching child with the new value (+e)
-            state.mark = e;
+            state.mark = +e;
           }
         });
         // Returning the updated item
@@ -205,15 +205,15 @@ export const CreateQuestion = ({
               </div>
             ) : (
               <Input
-                className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
-                placeholder={`
-                ${realExamContetn ? getMarkOfExerciceWithId(realExamContetn, data.id) : data.mark}`}
+                className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen text-center p-3 border border-[#1B8392]"
+                type="number"
+                placeholder={'--.--'}
                 // value={data.mark}
                 disabled={data.children && data.children.length > 0}
                 value={
                   data.children && data.children.length > 0
                     ? Number(calculateMark(data))
-                    : Number(data.mark)
+                    : data.mark
                 }
                 // max={10}
                 onChange={(e) => {

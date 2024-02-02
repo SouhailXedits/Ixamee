@@ -152,7 +152,7 @@ const Action = ({ row }: any) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
+          <Button variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal className="w-4 h-4" />
           </Button>
@@ -369,8 +369,8 @@ export function StudentList({ data, isPending }: any) {
           </div>
           <div className="flex items-center justify-end py-4 space-x-2">
             <div className="flex-1 text-sm text-muted-foreground">
-              {table.getFilteredSelectedRowModel().rows.length} of{' '}
-              {table.getFilteredRowModel().rows.length} row(s) selected.
+              {table.getFilteredSelectedRowModel().rows.length} de{' '}
+              {table.getFilteredRowModel().rows.length} ligne(s) sélectionnée(s) .
             </div>
             <div className="space-x-2">
               <Button
@@ -379,7 +379,7 @@ export function StudentList({ data, isPending }: any) {
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
-                Previous
+                Précédent
               </Button>
               <Button
                 variant="outline"
@@ -387,7 +387,7 @@ export function StudentList({ data, isPending }: any) {
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
-                Next
+                Suivant
               </Button>
             </div>
           </div>
