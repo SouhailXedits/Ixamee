@@ -4,7 +4,7 @@ import DashboradApercu from './_components/dashborad-apercu';
 import DashboradBulletinsDesEtudiants from './_components/dashborad-bulletins-des-etudiants';
 import DashboradClasses from './_components/dashborad-classes';
 import DashboradCorrectionsRecentes from './_components/dashborad-corrections-recentes';
-import DashboradStatistiques from './_components/dashborad-statistiques';
+// import DashboradStatistiques from './_components/dashborad-statistiques';
 
 import { useParams } from 'next/navigation';
 import { getAllSubjectsByClasseIdByPage, getAllSubjectsCount } from '@/actions/subjects';
@@ -41,7 +41,7 @@ export default function Home() {
             examCount={examCount}
             marksheetCount={marksheetCount}
           />
-          <DashboradStatistiques />
+          {/* <DashboradStatistiques /> */}
           <DashboradClasses
             classId={classId}
             subjects={subjects}

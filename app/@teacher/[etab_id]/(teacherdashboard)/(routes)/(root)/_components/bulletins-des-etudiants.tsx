@@ -9,6 +9,7 @@ import BulletinsStudentList from './bulletins-student-list';
 import Rien from '@/app/@student/[etab_id]/(studentdashboard)/(routes)/(root)/_components/Rien';
 
 const BulletinsDesEtudiants = ({ data, etabId }: any) => {
+  data=["hd"]
   return (
     <>
       {!data ? (
@@ -28,8 +29,8 @@ const BulletinsDesEtudiants = ({ data, etabId }: any) => {
                 <SelectValue className="text-sm" placeholder="les plus récents" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">les plus récents</SelectItem>
-                <SelectItem value="light">les plus elevée</SelectItem>
+                <SelectItem value="recent">les plus récents</SelectItem>
+                <SelectItem value="elevé">les plus elevée</SelectItem>
               </SelectContent>
             </Select>
           </div>

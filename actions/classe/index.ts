@@ -41,6 +41,32 @@ export const getClasseById = async (id: number) => {
       exam_classe: true,
     },
   });
+  console.log('🚀 ~ getClasseById ~ classe:', classe);
+  return classe;
+};
+export const getClasseByClassId = async (id: number) => {
+  const classe = await db.classe.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      exam_classe: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+      student_class: {
+        where: {
+          role: 'STUDENT',
+        },
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+  console.log('🚀 ~ getClasseById ~ classe:', classe);
   return classe;
 };
 export const updateClasse = async (name: string, classe_id: number, matiere: any) => {
@@ -229,7 +255,7 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
     };
   }
 };
-export const getAllClasseName = async ({
+export const getAllClassesNameAndId = async ({
   user_id,
   etab_id,
 }: {
@@ -256,21 +282,21 @@ export const getAllClasseName = async ({
           },
         },
       },
-      include: {
-        subject: {
-          select: {
-            name: true, // Include only the 'name' field from the 'subject'
-          },
-        },
+      select: {
+        id: true,
+        name: true,
         student_class: {
           where: {
             role: 'STUDENT',
           },
+          select: {
+            id: true,
+          },
         },
       },
     });
+    console.log('🚀 ~ classes:', classes);
 
-    console.log(classes);
     return { data: classes, error: undefined };
   } catch (error: any) {
     return {
@@ -418,7 +444,7 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
         },
       },
       user_id: {
-        in: data.map((el: any) => el.id),
+        in: data?.map((el: any) => el.id),
       },
     },
     select: {
@@ -426,6 +452,7 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
       user_id: true,
     },
   });
+  console.log("🚀 ~ getCorrectionOfUser ~ res:", res)
   return res;
 
   // const res = await db.examCorrection.findMany({
