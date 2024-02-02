@@ -88,7 +88,6 @@ export const createExamCorrection = async (
   correction_exam_content: any,
   status: any
 ) => {
-
   // Check if there is an existing examCorrection for the given exam_id and user_id
   const existingExamCorrection = await db.examCorrection.findMany({
     where: {
@@ -285,7 +284,6 @@ export const getOneExamByIdForCorrection = async ({ id }: { id: string }) => {
   const newData = exam?.content;
 
   transferAllMarkToNull(newData);
-  
 
   return exam;
 };
@@ -458,6 +456,54 @@ export const updateExamContent = async (examId: string, content: any) => {
   } catch (error) {
     console.error('Error updating exam:', error);
     throw error;
+  }
+};
+
+export const createNoteExamCorrectio = async ({
+  exam_id,
+  mark_obtained,
+  user_id,
+}: {
+  user_id: string;
+  mark_obtained: string;
+  exam_id: string;
+}) => {
+  const existingExamCorrection = await db.examCorrection.findMany({
+    where: {
+      exam_id: +exam_id,
+      user_id: user_id,
+    },
+  });
+
+  console.log(existingExamCorrection);
+
+  if (existingExamCorrection.length === 0) {
+    console.log(exam_id, mark_obtained, user_id);
+
+    const examCorrection = await db.examCorrection.create({
+      data: {
+        exam: {
+          connect: {
+            id: +exam_id,
+          },
+        },
+        mark_obtained: +mark_obtained,
+      },
+    });
+
+    return examCorrection;
+  } else {
+    // Update the existing examCorrection if it already exists
+    const examCorrection = await db.examCorrection.updateMany({
+      where: {
+        exam_id:+ exam_id,
+        user_id: user_id,
+      },
+      data: {
+        mark_obtained: +mark_obtained,
+      },
+    });
+    return examCorrection;
   }
 };
 

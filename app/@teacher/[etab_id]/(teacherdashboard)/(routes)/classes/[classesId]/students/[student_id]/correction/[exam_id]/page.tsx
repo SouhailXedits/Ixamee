@@ -40,7 +40,7 @@ export default function Page({
   });
 
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent', +exam_id, student_id],
+    queryKey: ['CorigeExameContent'],
     queryFn: async () => await getCorigeExameContent(+exam_id, student_id),
   });
 

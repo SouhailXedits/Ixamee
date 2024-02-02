@@ -217,6 +217,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
           <div className="flex gap-3 item-center">
             <Input
               className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 text-center border border-[#1B8392]"
+              type="number"
               placeholder="--.--"
               defaultValue={data.mark}
               // value={

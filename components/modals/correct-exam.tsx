@@ -20,6 +20,7 @@ import Loading from '@/app/loading';
 import Image from 'next/image';
 import { Label } from '../ui/label';
 import toast from 'react-hot-toast';
+import { useCreateExamCorrection } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamCorrection';
 
 interface CorrectExamProps {
   children: React.ReactNode;
@@ -35,7 +36,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
   const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
   const new_total_mark = examan[0]?.total_mark;
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent', +examan[0]?.id, data?.id],
+    queryKey: ['CorigeExameContent'],
     queryFn: async () => await getCorigeExameContent(+examan[0]?.id, data?.id),
   });
 
@@ -60,10 +61,14 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
     }
     setNote(+e.target.value);
   };
+  const { } = useCreateExamCorrection
   const handelSubmit = () => {
     console.log(note);
     console.log(item);
     if (!item) {
+      
+      
+
       console.log(note);
     } else {
       console.log(item);

@@ -17,13 +17,14 @@ import Hydration from './providers/hydration';
 export const metadata: Metadata = {
   title: 'Ixamee',
   description: 'Une seule plateforme pour tous vos examens',
-  icons:'https://jmp.sh/s/a0YrGJSvoHNaKuLij4cj'
+  icons: 'https://jmp.sh/s/a0YrGJSvoHNaKuLij4cj',
 };
 
 export default async function RootLayout({
   student,
   teacher,
   auth,
+  
 }: {
   student: React.ReactNode;
   teacher: React.ReactNode;
@@ -36,7 +37,7 @@ export default async function RootLayout({
       <body className={`font-normal ${poppins.className}`}>
         <QueryClientProviderWrapper>
           <Suspense>
-            <Hydration>
+            <Hydration >
               <ToastProvider />
               {/* {teacher} */}
               {session?.user?.role === 'STUDENT'
