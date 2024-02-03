@@ -1,109 +1,108 @@
 'use client';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import Image from 'next/image';
-import Link from 'next/link';
 
+import Image from 'next/image';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useParams, useRouter } from 'next/navigation';
-import { useNavigate } from 'react-router-dom';
-import UserExam from '../../../../../../../components/shared-components/UserExam';
+import UserExam from '../../../../../../../../../../../../components/shared-components/UserExam';
 import TermCard from '@/components/shared-components/TermCard';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
+import { getUserById } from '@/data/user';
+import Loading from '@/app/loading';
+import { getNameClasseByClasseId } from '@/actions/classe';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const trimesters = [
-  {
-    name: 'Trimester 1',
-    exams: [
-      {
-        id: 1,
-        name: 'Devoir de Controle N°1 Maths',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-      },
-      {
-        id: 2,
-        name: 'Devoir de Controle physique',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-      },
-      {
-        id: 3,
-        name: 'Devoir de Controle N°1 Maths',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-      },
-      {
-        id: 4,
-        name: 'Devoir de Controle physique',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-      },
-    ],
-  },
-  {
-    name: 'Trimester 2',
-    exams: [],
-  },
-  {
-    name: 'Trimester 3',
-    exams: [
-      {
-        id: 1,
-        name: 'Devoir de Controle N°1 Maths',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-      },
-      {
-        id: 2,
-        name: 'Devoir de Controle physique',
-        date: '22/03/2023',
-        marksObtained: 15.5,
-        totalScore: 20,
-        rang: 8,
-      },
-    ],
-  },
-];
+// const trimesters = [
+//   {
+//     name: 'Trimester 1',
+//     exams: [
+//       {
+//         id: 1,
+//         name: 'Devoir de Controle N°1 Maths',
+//         date: '22/03/2023',
+//         marksObtained: 15.5,
+//         totalScore: 20,
+//         rang: 8,
+//       },
+//       {
+//         id: 2,
+//         name: 'Devoir de Controle physique',
+//         date: '22/03/2023',
+//         marksObtained: 15.5,
+//         totalScore: 20,
+//         rang: 8,
+//       },
+//       {
+//         id: 3,
+//         name: 'Devoir de Controle N°1 Maths',
+//         date: '22/03/2023',
+//         marksObtained: 15.5,
+//         totalScore: 20,
+//         rang: 8,
+//       },
+//       {
+//         id: 4,
+//         name: 'Devoir de Controle physique',
+//         date: '22/03/2023',
+//         marksObtained: 15.5,
+//         totalScore: 20,
+//         rang: 8,
+//       },
+//     ],
+//   },
+//   {
+//     name: 'Trimester 2',
+//     exams: [],
+//   },
+//   {
+//     name: 'Trimester 3',
+//     exams: [
+//       {
+//         id: 1,
+//         name: 'Devoir de Controle N°1 Maths',
+//         date: '22/03/2023',
+//         marksObtained: 15.5,
+//         totalScore: 20,
+//         rang: 8,
+//       },
+//       {
+//         id: 2,
+//         name: 'Devoir de Controle physique',
+//         date: '22/03/2023',
+//         marksObtained: 15.5,
+//         totalScore: 20,
+//         rang: 8,
+//       },
+//     ],
+//   },
+// ];
 const Student = () => {
   const params = useParams();
   const router = useRouter();
-  const queryClient = useQueryClient();
-  const currentId = params.bulletin_id;
+  // const currentId = params.bulletin_id;
   function handleGoBack() {
     router.back();
   }
+  const classeId = params.classe_id;
+  const subjectId = params.subject_id;
+  const currentId = params.student_id;
 
-  const classeId = queryClient.getQueryData(['classe-filters']) as number;
-  console.log(classeId);
+  const {data: user, isPending} = useQuery({queryKey: ['user-marksheet', currentId], queryFn: async() => await getUserById( currentId + '' )})
+  console.log(user);
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
     queryKey: ['marksheet', currentId],
-    queryFn: async () => getMarksheetByUserId(classeId, currentId + ''),
+    queryFn: async () => getMarksheetByUserId(+classeId, currentId + '', +subjectId ),
   });
 
-  console.log(marksheet);
+  const {data: classeName, isPending: classeNamePending} = useQuery({queryKey: ['classeName', classeId], queryFn: async() => await getNameClasseByClasseId(+classeId)})
+  console.log(classeName)
+
 
   const examsData = marksheet?.data || [];
 
-  const groupedExams = examsData.reduce((result, exam) => {
+  const groupedExams = examsData.reduce((result:any, exam:any) => {
     const term = exam.exam.term;
     if (!result[term]) {
       result[term] = [];
@@ -114,23 +113,20 @@ const Student = () => {
       date: exam.exam.create_at.toISOString().split('T')[0],
       marksObtained: exam.mark_obtained,
       totalScore: exam.exam.total_mark,
-      rang: 0, // You can modify this based on your data structure
+      rang: 0, 
     });
     return result;
   }, {});
+  console.log(groupedExams)
 
-  // Create array of objects with trimesters and exams
-  const terms =['trimestre_1', 'trimestre_2', 'trimestre_3'];
+  const terms =  ['trimestre_1', 'trimestre_2', 'trimestre_3'];
 
   const trimesters = terms.map((term) => ({
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
     exams: groupedExams[term] || [], // Check and add empty array if term has no exams
   }));
-
-  console.log(trimesters);
-
-  // Modify trimesters to integrate the fetched data
-  
+  console.log(trimesters)
+  if(isPending || isPendingmMarksheet) return <Loading />
 
   return (
     <main className="flex flex-col gap-12 p-10">
@@ -145,7 +141,7 @@ const Student = () => {
             </button>
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
-            <span className="cursor-pointer">Firas Latrach</span>
+            <span className="cursor-pointer">{user?.name}</span>
           </div>
         </div>
 
@@ -159,7 +155,7 @@ const Student = () => {
               </div>
             </div>
           </ImportUneClasse> */}
-          <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
+          {/* <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
             <input
@@ -167,22 +163,20 @@ const Student = () => {
               placeholder="Recherche un étudiant"
               className=" w-40 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
-          </div>
-
-          {/* <AjouterUnEtudiant>
-            <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Ajouter un étudiant
-              </div>
-            </div>
-          </AjouterUnEtudiant> */}
+          </div> */}
         </div>
       </nav>
       <div className=" flex gap-3 items-center ml-5">
-        <Image src="/userAvatar/user1.svg" alt=" user avatar" height={50} width={50} />
+        <Image
+          src={user?.image || '/userAvatar/user1.svg'}
+          alt=" user avatar"
+          height={50}
+          width={50}
+        />
         <div>
-          <p className=" text-mainGreen text-xl">Firas Latrach</p>
-          <p className=" text-gray">Bac math 2</p>
+          <p className=" text-mainGreen text-xl">{user?.name}</p>
+          {classeNamePending && <Skeleton className=' h-5 w-20'/>}
+          <p className=" text-gray">{classeName?.data[0].name}</p>
         </div>
       </div>
 

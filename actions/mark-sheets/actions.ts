@@ -3,14 +3,16 @@
 import { db } from "@/lib/db";
 
 
-export const getMarkSheets = async (filters: {term: string, classe_id: number | undefined}) => {
-    console.log(filters)
+export const getMarkSheets = async (filters: {term: string, classe_id: number | undefined, subject_id: number | undefined}) => {
     if(!filters.term || !filters.classe_id) return
   try {
     const markSheets = await db.examCorrection.findMany({
       where: {
         exam: {
-          term: filters.term
+          term: filters.term,
+          subject: {
+            id: filters.subject_id
+          }
         },
         user: {
             classe: {
@@ -64,11 +66,16 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
 
 // getMarksheetByUserId()
 
-export const getMarksheetByUserId = async (classeId: number, userId: string) => {
+export const getMarksheetByUserId = async (classeId: number, userId: string, subject_id: number) => {
   if (!classeId) return;
   try {
     const markSheets = await db.examCorrection.findMany({
       where: {
+        exam: {
+          subject: {
+            id: subject_id
+          }
+        },
         user: {
           id: userId,
           classe: {

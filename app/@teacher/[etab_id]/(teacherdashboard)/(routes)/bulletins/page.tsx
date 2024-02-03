@@ -31,21 +31,25 @@ const Student = () => {
   });
 
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
+  const subjects = queryClient.getQueryData(['teacherSubject']) as any;
+
+  const defaultSubject = subjects[0]?.id;
+
 
   const [filters, setFilters] = useState({
     term: defaultTerm,
-    classe_id: classes?.data[0].id,
+    classe_id: classes?.data[0]?.id,
+    subject_id: subjects[0]?.id,
   });
   queryClient.setQueryData(['classe-filters'], filters.classe_id);
 
   useEffect(() => {
-    setFilters({ ...filters, classe_id: classes?.data[0].id });
+    setFilters({ ...filters, classe_id: classes?.data[0]?.id });
   }, [classes?.data]);
-  
-  console.log(filters);
+
 
   const { data: markSheets, error } = useQuery({
-    queryKey: ['mark-sheets', filters.classe_id, filters.term],
+    queryKey: ['mark-sheets', filters.classe_id, filters.term, filters.subject_id],
     queryFn: async () => await getMarkSheets(filters),
   });
 
@@ -63,14 +67,14 @@ const Student = () => {
 
   if (!groupedData) return <Loading />;
 
-  console.log(groupedData);
+
   let maxCoefficient = 0;
 
   // Iterate through each user's data
   for (const userId in groupedData) {
     const userMarks = groupedData[userId];
 
-    const weightedCoef = userMarks.reduce((sum, entry): any => {
+    const weightedCoef = userMarks.reduce((sum:any, entry:any) => {
       const weightedMark = entry.exam.coefficient;
       return sum + weightedMark;
     }, 0);
@@ -80,8 +84,10 @@ const Student = () => {
       maxCoefficient = weightedCoef;
     }
   }
+  console.log(maxCoefficient);
 
-  console.log( maxCoefficient);
+
+
 
   const resultArray = Object?.keys(groupedData).map((userId) => {
     const userData = groupedData[userId];
@@ -90,7 +96,8 @@ const Student = () => {
       const { id, exam } = examData;
 
       const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
-      const overTwentyAvg = (20 / maxCoefficient) * average;
+      const overTwentyAvg = (20 / exam.total_mark) * average;
+      console.log(overTwentyAvg)
       
 
       return {
@@ -103,8 +110,9 @@ const Student = () => {
         overTwentyAvg: overTwentyAvg,
       };
     });
+     console.log(examsInfo);
+   
 
-    console.log(examsInfo)
 
     // const totalMarksObtained = examsInfo.reduce(
     //   (acc: any, exam: any) => acc + exam.marksObtained,
@@ -126,8 +134,11 @@ const Student = () => {
     };
   });
 
+   console.log(resultArray);
+
   const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
+  console.log(rankedData)
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -193,6 +204,34 @@ const Student = () => {
               )}
             </SelectContent>
           </Select>
+          <Select
+            defaultValue={defaultSubject}
+            onValueChange={(value) => {
+              setFilters({ ...filters, subject_id: value });
+            }}
+            value={filters.subject_id}
+          >
+            <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
+              {/* {user.term === 'TRIMESTRE' && <SelectItem value="tremester1">Trimester 1</SelectItem>}
+              {user.term === 'SEMESTRE' && <SelectItem value="semester1">Semestre 1</SelectItem>} */}
+              <SelectValue
+                placeholder={
+                  <div className="flex items-center">
+                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
+                    <span className="ml-2 text-[#1B8392] text-base  ">Period</span>
+                  </div>
+                }
+              />
+            </SelectTrigger>
+
+            <SelectContent>
+              {subjects?.map((subject: any) => (
+                <SelectItem value={subject.id} key={subject.id}>
+                  {subject.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           {classes?.data ? (
             <Select
@@ -229,7 +268,7 @@ const Student = () => {
       </nav>
 
       <div>
-        <MarkSheetStudentList data={rankedData} />
+        <MarkSheetStudentList data={rankedData} filters = {filters} />
       </div>
     </main>
   );

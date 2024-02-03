@@ -109,7 +109,7 @@ export const CorrectionTag = ({
   </div>
 );
 
-export default function MarkSheetStudentList({ data: realData }: any) {
+export default function MarkSheetStudentList({ data: realData, filters }: any) {
   console.log(realData);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -119,16 +119,11 @@ export default function MarkSheetStudentList({ data: realData }: any) {
   const path = usePathname();
 
   const maxLength = Math.max(...realData.map((student: any) => student.exams.length));
-  const examsArray = realData.find((student:any) => student.exams.length === maxLength)?.exams || [];
-
-  // const examsArray = Object.values(uniqueExams);
-
-  console.log(examsArray);
+  const examsArray =
+    realData.find((student: any) => student.exams.length === maxLength)?.exams || [];
 
   const sortedData = [...realData].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
-  console.log(rankedData)
-
 
   const columns: ColumnDef<any>[] = [
     {
@@ -185,12 +180,13 @@ export default function MarkSheetStudentList({ data: realData }: any) {
       },
       cell: ({ row }: any) => (
         console.log(exam),
-        <div className="text-[#727272]">
-          {row.original.exams.find((e: any) => e.name.toLowerCase() === exam.name.toLowerCase())
-            ?.average || '--'}{' '}
-          /{' '}
-          {exam.totalMarks}
-        </div>
+        (
+          <div className="text-[#727272]">
+            {row.original.exams.find((e: any) => e.name.toLowerCase() === exam.name.toLowerCase())
+              ?.average || '--'}{' '}
+            / {exam.totalMarks}
+          </div>
+        )
       ),
     })),
     {
@@ -209,7 +205,6 @@ export default function MarkSheetStudentList({ data: realData }: any) {
       },
       cell: ({ row }) => {
         const average = row.original.average as number;
-
 
         return (
           <div className={cn('flex justify-center items-center')}>
@@ -242,8 +237,6 @@ export default function MarkSheetStudentList({ data: realData }: any) {
     },
     // ...
   ];
-  
-
 
   const table = useReactTable({
     data: realData,
@@ -266,83 +259,87 @@ export default function MarkSheetStudentList({ data: realData }: any) {
 
   function handleStudentClick(id: string) {
     const currPath = path;
-    router.push(`${currPath}/${id}`);
+    router.push(
+      `${currPath}/classe/${filters.classe_id}/subject/${filters.subject_id}/student/${id}`
+    );
   }
+
+  console.log(filters);
 
   console.log(table.getHeaderGroups(), 'table');
 
   if (realData.length === 0) return <p>Pas de bulletins à afficher.</p>;
-    return (
-      <div className="w-full">
-        <div className=" rounded-md ">
-          <Table>
-            <TableHeader className="bg-[#F0F6F8] text-[#1B8392] rounded ">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="rounded">
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} className=" text-center p-0 border">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(header.column.columnDef.header, header.getContext())}
-                      </TableHead>
-                    );
-                  })}
+  return (
+    <div className="w-full">
+      <div className=" rounded-md ">
+        <Table>
+          <TableHeader className="bg-[#F0F6F8] text-[#1B8392] rounded ">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="rounded">
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id} className=" text-center p-0 border">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className=" text-center">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleStudentClick(row.original.id)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className=" text-center">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
-                    onClick={() => handleStudentClick(row.original.id)}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-lg text-center bg-transparent"
-                  >
-                    Pas d&apos;étudiants maintemnant
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-lg text-center bg-transparent"
+                >
+                  Pas d&apos;étudiants maintemnant
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-end py-4 space-x-2">
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex items-center justify-end py-4 space-x-2">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
         </div>
       </div>
-    );
+    </div>
+  );
 }
