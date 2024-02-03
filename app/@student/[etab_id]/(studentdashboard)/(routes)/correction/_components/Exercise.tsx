@@ -7,7 +7,7 @@ import {
   calculerExerciceMark,
 } from '../../../../../../_utils/calculateChildrenMarks';
 
-export const Exercise = ({ allData, data, setFakeData, isArabic }: any) => {
+export const Exercise = ({ data, isArabic }: any) => {
   if (!data) return;
 
   return (
@@ -55,10 +55,7 @@ export const Exercise = ({ allData, data, setFakeData, isArabic }: any) => {
           {data.children.map((item: any) => (
             <Question
               data={item}
-              allData={data}
-              fakeData={allData}
               isArabic={isArabic}
-              setFakeData={setFakeData}
             />
           ))}
         </div>

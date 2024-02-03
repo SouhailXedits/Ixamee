@@ -9,9 +9,7 @@ function Exam({ fakeData, isArabic, setFakeData }: any) {
       <div className="flex flex-col gap-4">
         {fakeData?.map((item: any, index: number) => (
           <Exercise
-            allData={fakeData}
             data={item}
-            setFakeData={setFakeData}
             key={index}
             isArabic={isArabic}
           />

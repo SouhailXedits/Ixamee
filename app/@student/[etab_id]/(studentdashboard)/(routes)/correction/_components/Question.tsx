@@ -4,7 +4,7 @@ import { SubQuestion } from './SubQuestion';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-export const Question = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
+export const Question = ({ data, isArabic }: any) => {
 
   const calculateMark = (data: any) => {
     const children = data?.children || [];
@@ -47,11 +47,8 @@ export const Question = ({ allData, data, setFakeData, isArabic, fakeData }: any
       </div>
       {data.children.map((item: any) => (
         <SubQuestion
-          allData={allData}
           data={item}
-          setFakeData={setFakeData}
           isArabic={isArabic}
-          fakeData={fakeData}
         />
       ))}
     </>

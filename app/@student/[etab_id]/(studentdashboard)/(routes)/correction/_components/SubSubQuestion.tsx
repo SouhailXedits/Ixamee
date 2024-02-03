@@ -29,11 +29,6 @@ export const SubSubQuestion = ({ data, isArabic }: any) => {
               type="number"
               placeholder="--.--"
               defaultValue={data.mark}
-              // value={
-              //   exercise.children && exercise.children.length > 0
-              //     ? calculateSumOfMarks(exercise).toFixed(2)
-              //     : exercise.mark
-              // }
               disabled
             />
           </div>

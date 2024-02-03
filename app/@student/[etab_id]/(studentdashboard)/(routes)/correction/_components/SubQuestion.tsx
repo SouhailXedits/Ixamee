@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import Editor from '@/components/shared-components/toolbar-editor';
 import { cn } from '@/lib/utils';
 
-export const SubQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
+export const SubQuestion = ({ data, isArabic }: any) => {
 
   return (
     <>

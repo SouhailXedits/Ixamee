@@ -159,34 +159,14 @@ export default function Page({ params }: { params: { correction_id: string; etab
               <span className=" text-3xl pb-4 -&mr-3">{sum}</span> / {data?.total_mark}
             </div>
           </div>
-          {/* <div className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer border-[#F04438] text-[#F04438] hover:opacity-80 ">
-            <button
-              onClick={() => handleCancel()}
-              className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
-            >
-              <Image src="/redcloseicon2.svg" alt="icons" width={10} height={10} />
-              Annuler
-            </button>
-          </div> */}
-
-          {/* <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-            <div
-              className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
-              onClick={handleSaveData}
-            >
-              <Image src={'/enregistreIcon.svg'} alt="icons" width={20} height={20} className="" />
-              Enregister
-            </div>
-          </div> */}
+   
         </div>
       </nav>
-      {/* <CreateExam examId={examenId} /> */}
-      {/* <EmailSend /> */}
+
 
       <Exam
         // data={data}
         isArabic={arabic}
-        setFakeData={setFakeData}
         fakeData={fakeData}
         realExamContetn={examContentt}
       />
