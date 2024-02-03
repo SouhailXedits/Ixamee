@@ -653,3 +653,20 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
 
   return data;
 };
+
+
+export const getNameClasseByClasseId = async (classe_id: number) => {
+  console.log(classe_id, );
+  const data = await db.classe.findMany({
+    where: {
+      id: classe_id,
+
+    },
+    select: {
+      name: true,
+    },
+  });
+
+  return data;
+};
+

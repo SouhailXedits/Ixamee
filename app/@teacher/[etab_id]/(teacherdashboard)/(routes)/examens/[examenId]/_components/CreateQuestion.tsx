@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { CreateSubQuestion } from './CreateSubQuestion';
 import { Input } from '@/components/ui/input';
-import Editor from './toolbar-editor';
+import Editor from '../../../../../../../../components/shared-components/toolbar-editor';
 import { cn } from '@/lib/utils';
 
 export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {

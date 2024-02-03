@@ -10,7 +10,9 @@ function UserExam({ exam }: any) {
   console.log(exam);
 
   function handleRedirect() {
-    router.push(`/${params.etab_id}/classe/${params.classe_id}/student/${params.student_id}/correction/${exam.id}`);
+    router.push(
+      `/${params.etab_id}/correction/${exam.exam_id}`
+    );
   }
 
   //1/acelsss / 16 / students / cls33eyik000040q9bm7811vv / correction / 64;
@@ -28,7 +30,7 @@ function UserExam({ exam }: any) {
       </div>
       <div className=" flex items-center flex-col gap-1 opacity-50 text-mainGreen">
         <p>rang </p>
-        <p>{exam.rang}</p>
+        <p>{exam.range}</p>
       </div>
       <div>
         <Button
