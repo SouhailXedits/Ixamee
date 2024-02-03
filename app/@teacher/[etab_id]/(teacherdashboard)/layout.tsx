@@ -50,7 +50,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
           className={cn(
             !collapsed
               ? 'md:pl-[260px] transition-all duration-500'
-              : 'pl-[63px] transition-all duration-500', 'pl-0'
+              : 'pl-[63px] transition-all duration-500',
+            'pl-[63px]'
           )}
         >
           {children}
