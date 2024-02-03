@@ -67,7 +67,7 @@ const DashboradApercu = ({
       </div>
 
       <div className="flex gap-2 max-2xl:flex-wrap">
-        {items.map((item) => (
+        {items.map((item :any) => (
           <ApercuItem
             key={item.itemColor}
             color={item.itemColor}

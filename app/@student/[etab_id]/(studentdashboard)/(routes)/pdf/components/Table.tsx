@@ -21,7 +21,7 @@ const Table = () => (
       border: '1px solid #ccc',
     }}
   >
-    {fakeData.map((studentData, index) => (
+    {fakeData.map((studentData :any, index:number) => (
       <div
         key={index}
         style={{
@@ -60,7 +60,7 @@ const Table = () => (
             {studentData.student}
           </div>
         </div>
-        {studentData.grades.map((grade, gradeIndex) => (
+        {studentData.grades.map((grade :any, gradeIndex :any) => (
           <div
             key={gradeIndex}
             style={{

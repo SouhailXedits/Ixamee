@@ -49,7 +49,7 @@ const ExamCorrectionList = () => {
     <div className="p-3">
       <Table>
         <TableBody>
-          {examCorrectionData.map((item) => (
+          {examCorrectionData.map((item :any) => (
             <TableRow key={item.id} className="w-full">
               <TableCell className="flex items-center justify-start gap-4 text-lg font-medium">
                 <div className="w-[65px] h-[65px] p-2 ">

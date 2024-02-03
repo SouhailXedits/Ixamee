@@ -21,8 +21,8 @@ export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterS
   }
 
   try {
-    const establishmentIds = values.etablissement.map((estab) => estab.id);
-    const subjectIds = values.subject.map((subj) => subj.id);
+    const establishmentIds = values.etablissement.map((estab :any) => estab.id);
+    const subjectIds = values.subject.map((subj : any) => subj.id);
     enum UserTerm {
       TRIMESTRE = 'TRIMESTRE',
       SEMESTRE = 'SEMESTRE',
@@ -52,10 +52,10 @@ export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterS
         term: mappedTerm,
         role: mappedRole,
         user_establishment: {
-          connect: establishmentIds.map((id) => ({ id })),
+          connect: establishmentIds.map((id :any) => ({ id })),
         },
         subjects: {
-          connect: subjectIds.map((id) => ({ id })),
+          connect: subjectIds.map((id :any) => ({ id })),
         },
       },
     });

@@ -28,7 +28,8 @@ interface CorrectExamProps {
 }
 
 export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
-  const [note, setNote] = useState<number>(0);
+  console.log(data);
+  const [note, setNote] = useState<string>('0');
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -36,13 +37,13 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
   const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
   const new_total_mark = examan[0]?.total_mark;
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent'],
+    queryKey: ['CorigeExameContent', +examan[0]?.id, data?.id],
     queryFn: async () => await getCorigeExameContent(+examan[0]?.id, data?.id),
   });
 
   useEffect(() => {
     if (!isPendingCorrige && getCorrigeExamOfUser) {
-      const initialNote = +getCorrigeExamOfUser[0]?.mark || 0;
+      const initialNote = getCorrigeExamOfUser[0]?.mark_obtained || 0;
       setNote(initialNote);
     }
   }, [isPendingCorrige, getCorrigeExamOfUser]);
@@ -50,7 +51,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
   const handelCorrectExam = () => {
     const examanId = examan[0].id;
     const user_id = data?.id;
-    router.push(pathname + `/students/${user_id}/correction/${examanId}`);
+    router.push(pathname + `/student/${user_id}/correction/${examanId}`);
   };
 
   const handelSubmitCorrectionExam = (e: any) => {
@@ -59,15 +60,20 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
       toast.error('la note ne doit pas depasser le total de la classe');
       return;
     }
-    setNote(+e.target.value);
+    setNote(e.target.value);
   };
-  const { } = useCreateExamCorrection
+  const { createExamCorrectionn, isPending } = useCreateExamCorrection();
   const handelSubmit = () => {
     console.log(note);
     console.log(item);
     if (!item) {
-      
-      
+      const obj = {
+        exam_id: examan[0].id,
+        mark_obtained: note,
+        user_id: data?.id,
+      };
+      console.log(examan[0].id, note, data?.id);
+      createExamCorrectionn(obj);
 
       console.log(note);
     } else {

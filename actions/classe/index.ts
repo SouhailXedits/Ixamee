@@ -373,7 +373,7 @@ export const getStudentClassCount = async ({
     });
 
     const totalStudentClasses = studentClasses.reduce(
-      (acc, item) => acc + (item.student_class ? item.student_class.length : 0),
+      (acc: any, item: any) => acc + (item.student_class ? item.student_class.length : 0),
       0
     );
 
@@ -620,8 +620,9 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
     },
     select: {
       correction_exam_content: true,
+      mark_obtained: true,
     },
   });
-  console.log(data[0]?.correction_exam_content);
-  return data[0]?.correction_exam_content;
+
+  return data;
 };

@@ -25,6 +25,7 @@ import { MoreHorizontal } from 'lucide-react';
 import { any } from 'zod';
 import { useEffect, useState } from 'react';
 import Loading from '@/app/loading';
+import { useSendExamMark } from '../hooks/useSendResult';
 interface classe {
   id: number;
   name: string;
@@ -33,6 +34,8 @@ interface classe {
   exam_classe: [];
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
+  const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
+
   const queryClient = useQueryClient();
   const { classesId } = params;
   const [exam, setExam] = useState<any>(0);
@@ -81,8 +84,65 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
     };
   });
+
+  const handleSendResults = () => {
+    if (data?.length === userCorrection?.length) {
+      const examContent = queryClient.getQueryData([
+        'CorigeExameContent',
+        50,
+        'cls1wdk350006v1r61jt7luj9',
+      ]);
+      console.log(examContent);
+      console.log(exam);
+
+      const ExamMarkData = userCorrection?.map((user: any) => {
+        const userExamContent = queryClient.getQueryData([
+          'CorigeExameContent',
+          +exam,
+          user?.user_id,
+        ]) as any;
+        console.log(userExamContent);
+        return {
+          user_id: user?.user_id,
+          exam_id: exam,
+          rank: 0,
+          mark: userExamContent[0]?.mark_obtained,
+        };
+      });
+
+      // Sort ExamMarkData array in descending order based on exam_content
+      ExamMarkData?.sort((a, b) => b.mark - a.mark);
+
+      // Assign ranks to users
+      // Assign ranks to users
+      let rank = 1 as any;
+      let prevMark = null as any;
+
+      ExamMarkData?.forEach((mark) => {
+        if (prevMark !== null && mark.mark < prevMark) {
+          rank++;
+        }
+        mark.rank = rank;
+        prevMark = mark.mark;
+      });
+       const marksDataToSend = ExamMarkData?.map(({ user_id, mark, rank }) => ({
+         user_id,
+         exam_id: exam,
+         mark,
+         rank,
+       }));
+      
+      
+      sendExamMark({ exam_id: exam, marks: marksDataToSend });
+
+      console.log(ExamMarkData);
+
+      console.log(userCorrection);
+    }
+  };
   if (isPendingClasse) return <Loading />;
   if (!classe) return null;
+
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -155,6 +215,16 @@ const Student = ({ params }: { params: { classesId: string } }) => {
               </SelectContent>
             </Select>
           )}
+          <Button
+            className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
+            disabled={!data || !userCorrection ? true : data?.length !== userCorrection?.length}
+            onClick={() => handleSendResults()}
+          >
+            <Image src="/sendIcon.svg" alt="icons" width={20} height={20} />
+            <span className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
+              Envoyer résultats
+            </span>
+          </Button>
 
           {/* {data?.length === 0 && ( */}
           <ImportUneClasse data={data} class_id={classesId} etab_id={etab_id}>

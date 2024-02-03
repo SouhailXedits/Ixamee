@@ -2,7 +2,7 @@
 'use server';
 
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
-import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/students/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
+import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 interface ExamEstablishment {
@@ -344,12 +344,16 @@ export async function createExamm(data: any, user_id: string) {
   });
 
   const flattenedUsers = Array.from(
-    new Set(allUsers.flatMap((user) => user.student_class.map((student) => ({ id: student.id }))))
+    new Set(
+      allUsers.flatMap((user: any) =>
+        user.student_class.map((student: any) => ({ id: student.id }))
+      )
+    )
   );
 
   console.log(flattenedUsers);
   const allData = await db.examCorrection.createMany({
-    data: flattenedUsers.map((user) => ({
+    data: flattenedUsers.map((user: any) => ({
       exam_id: examm.id,
       user_id: user.id,
       mark_obtained: 0,
@@ -468,42 +472,83 @@ export const createNoteExamCorrectio = async ({
   mark_obtained: string;
   exam_id: string;
 }) => {
-  const existingExamCorrection = await db.examCorrection.findMany({
-    where: {
-      exam_id: +exam_id,
-      user_id: user_id,
-    },
-  });
-
-  console.log(existingExamCorrection);
-
-  if (existingExamCorrection.length === 0) {
-    console.log(exam_id, mark_obtained, user_id);
-
-    const examCorrection = await db.examCorrection.create({
-      data: {
-        exam: {
-          connect: {
-            id: +exam_id,
-          },
-        },
-        mark_obtained: +mark_obtained,
-      },
-    });
-
-    return examCorrection;
-  } else {
-    // Update the existing examCorrection if it already exists
-    const examCorrection = await db.examCorrection.updateMany({
+  console.log(exam_id, mark_obtained, user_id);
+  try {
+    const existingExamCorrection = await db.examCorrection.findMany({
       where: {
-        exam_id:+ exam_id,
+        exam_id: +exam_id,
         user_id: user_id,
       },
-      data: {
-        mark_obtained: +mark_obtained,
-      },
     });
-    return examCorrection;
+
+    console.log(existingExamCorrection);
+
+    if (existingExamCorrection.length === 0) {
+      console.log(exam_id, mark_obtained, user_id);
+
+      const examCorrection = await db.examCorrection.create({
+        data: {
+          exam: {
+            connect: {
+              id: +exam_id,
+            },
+          },
+          user: {
+            connect: {
+              id: user_id,
+            },
+          },
+          mark_obtained: +mark_obtained,
+          status: 'done',
+        },
+      });
+      console.log(examCorrection);
+      return examCorrection;
+    } else {
+      // Update the existing examCorrection if it already exists
+      const updatedExamCorrection = await db.examCorrection.updateMany({
+        where: {
+          exam_id: +exam_id,
+          user_id: user_id,
+        },
+        data: {
+          user_id: user_id,
+          mark_obtained: +mark_obtained,
+          status: 'done',
+        },
+      });
+
+      return updatedExamCorrection;
+    }
+  } catch (error) {
+    console.error('Error in createNoteExamCorrectio:', error);
+    throw new Error('An error occurred while creating/updating exam correction.');
+  }
+};
+
+export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any }) => {
+  try {
+    const updatedExamCorrectionBatch = await Promise.all(
+      marks.map(async ({ user_id, rank }: { user_id: string; rank: string }) => {
+        return db.examCorrection.updateMany({
+          where: {
+            exam_id: +exam_id,
+            user_id: user_id,
+          },
+          data: {
+            user_id: user_id,
+            rank: +rank,
+            is_published: true,
+            published_at: new Date(),
+          },
+        });
+      })
+    );
+
+    return updatedExamCorrectionBatch;
+  } catch (error) {
+    console.error('Error in createNoteExamCorrectio:', error);
+    throw new Error('An error occurred while creating/updating exam correction.');
   }
 };
 

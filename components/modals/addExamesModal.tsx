@@ -143,7 +143,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       label: item.name,
     };
   });
-  const classoption = classe?.map((item) => ({
+  const classoption = classe?.map((item: any) => ({
     value: item.id,
     label: item.name,
   }));

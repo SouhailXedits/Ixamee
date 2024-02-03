@@ -1,9 +1,7 @@
 // index.ts
 'use server';
 import { db } from '@/lib/db';
-import { Subject } from '@prisma/client';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
-
 export const createSubject = async (data: SubjectInputProps) => {
   console.log(data);
   try {
@@ -18,7 +16,6 @@ export const createSubject = async (data: SubjectInputProps) => {
     };
   }
 };
-
 export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') => {
   try {
     const skip = (page - 1) * pageSize;
@@ -294,5 +291,3 @@ export const getAllSubjectsCount = async (classeId: number) => {
     };
   }
 };
-
-

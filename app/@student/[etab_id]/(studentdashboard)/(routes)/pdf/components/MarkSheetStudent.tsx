@@ -52,7 +52,7 @@ export const MarkSheetStudent = () => {
               <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
               <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td>
             </tr>
-            {data.map((student, i) => (
+            {data.map((student :any, i :number) => (
               <StudentRow data={student} key={i} />
             ))}
           </tbody>

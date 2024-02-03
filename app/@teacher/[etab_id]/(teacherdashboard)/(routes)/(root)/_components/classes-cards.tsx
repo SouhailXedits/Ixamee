@@ -1,4 +1,4 @@
-import { Skeleton } from 'antd';
+import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
 function translateDateFormat(dateString: string): string {
@@ -10,7 +10,7 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
   return (
     <div className="flex gap-10 max-2xl:overflow-auto max-2xl:gap-4">
       {isPending &&
-        Array.from({ length: 3 }).map((_, index) => (
+        Array.from({ length: 3 }).map((_, index: any) => (
           <Skeleton key={index} className="w-[250px] h-[270px] rounded-xl pt-10" />
         ))}
       {classes &&
@@ -45,7 +45,7 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                       />
                     ))
                 ) : (
-                  <div className="h-2/5 py-2 w-full items-center justify-center text-center text-sm text-10 opacity-70">
+                  <div className="items-center justify-center w-full py-2 text-sm text-center h-2/5 text-10 opacity-70">
                     Pas d’étudiants dans cette classe.{' '}
                     <span className="text-[#1B8392] cursor-pointer">Ajoutez</span> maintenant.
                   </div>
@@ -59,10 +59,10 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                 )}
               </div>
 
-              <div className="items-center justify-center text-center text-10 opacity-70 pb-2">
+              <div className="items-center justify-center pb-2 text-center text-10 opacity-70">
                 Créé le {translateDateFormat(classe.createdAt)}
               </div>
-              <div className="p-2 flex justify-center items-center w-full">
+              <div className="flex items-center justify-center w-full p-2">
                 <Link
                   href={`${etabId}/classes/${classe.id}`}
                   key={classe.id}

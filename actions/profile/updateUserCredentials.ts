@@ -18,8 +18,8 @@ export const updateTeacherCredentials = async (values: z.infer<typeof UpdateTeac
   }
 
   try {
-    const establishmentIds = values.etablissement.map((estab) => estab.id);
-    const subjectIds = values.subject.map((subj) => subj.id);
+    const establishmentIds = values.etablissement.map((estab :any) => estab.id);
+    const subjectIds = values.subject.map((subj :any) => subj.id);
 
     await db.user.update({
       where: { id: existingUser?.id },
@@ -30,10 +30,10 @@ export const updateTeacherCredentials = async (values: z.infer<typeof UpdateTeac
         government:values.government,
         image: values.image,
         user_establishment: {
-          set: establishmentIds.map((id) => ({ id })),
+          set: establishmentIds.map((id :any) => ({ id })),
         },
         subjects: {
-          set: subjectIds.map((id) => ({ id })),
+          set: subjectIds.map((id :any) => ({ id })),
         },
       },
     });

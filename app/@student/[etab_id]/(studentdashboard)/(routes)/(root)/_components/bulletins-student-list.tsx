@@ -94,12 +94,12 @@ const BulletinsStudentList = () => {
               className="cursor-pointer"
               onClick={handleSortClick}
             />
-            <span className="text-right  text-2">Rang</span>
+            <span className="text-right text-2">Rang</span>
           </TableHead>
         </TableRow>
       </TableHeader> */}
       <TableBody>
-        {sortData().map((student) => (
+        {sortData().map((student :any) => (
           <TableRow key={student.id} className="">
             <TableCell className="flex items-center justify-start gap-3 font-medium">
               <Image src={student.avatarSrc} alt="user" width={38} height={38} className="h-full" />

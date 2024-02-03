@@ -33,6 +33,7 @@ export default function Page({
     queryKey: ['exameContent', exam_id],
     queryFn: async () => await getExamContent({ id: exam_id }),
   });
+  console.log(examContent);
 
   const { data: userData, isPending: isPendingUser } = useQuery<any>({
     queryKey: ['userName', student_id],
@@ -43,6 +44,7 @@ export default function Page({
     queryKey: ['CorigeExameContent'],
     queryFn: async () => await getCorigeExameContent(+exam_id, student_id),
   });
+  console.log(getCorrigeExamOfUser);
 
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
@@ -53,8 +55,8 @@ export default function Page({
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
-      if (getCorrigeExamOfUser != undefined) {
-        setFakeData(getCorrigeExamOfUser);
+      if (getCorrigeExamOfUser?.length > 0) {
+        setFakeData(getCorrigeExamOfUser[0]?.correction_exam_content);
       } else {
         setFakeData(data?.content);
       }

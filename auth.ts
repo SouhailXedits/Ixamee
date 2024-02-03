@@ -3,7 +3,6 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from '@/lib/db';
 import authConfig from '@/auth.config';
 import { getUserById } from './data/user';
-import { Role } from '@prisma/client';
 
 export const {
   handlers: { GET, POST },
@@ -46,11 +45,11 @@ export const {
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role as Role;
+        session.user.role = token.role ;
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role as Role;
+        session.user.role = token.role ;
       }
       return session;
     },

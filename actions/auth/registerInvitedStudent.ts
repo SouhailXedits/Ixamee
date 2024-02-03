@@ -22,11 +22,11 @@ export const RegisterInvitedStudent = async (values: z.infer<typeof InvitSchema>
           password: hashedPassword,
         },
       })
-      .then(async (data) => {
+      .then(async (data :any) => {
         await sendVerificationEmail(email, code);
       });
     return { success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.' };
-  } catch (error) {
+  } catch (error ) {
     throw error;
   }
 };

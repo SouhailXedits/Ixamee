@@ -42,9 +42,9 @@ const StatistiquesItems = () => {
         numberOfStudent={0}
       />
       {/* PieChartItem */}
-      <div className="flex  ">
-        {items.map((item) => (
-          <div key={item.color} className="flex  gap-2 pl-6">
+      <div className="flex ">
+        {items.map((item :any) => (
+          <div key={item.color} className="flex gap-2 pl-6">
             <div
               className="w-[5.08px]  rounded-[126.89px]"
               style={{ backgroundColor: item.color }}

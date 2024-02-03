@@ -161,6 +161,9 @@ model ExamCorrection {
   feedback      Json?
   correction_exam_content Json?
   status        Status?
+  is_published  Boolean? @default(false)
+  published_at  DateTime?
+  rank          Int?
 }
 
 

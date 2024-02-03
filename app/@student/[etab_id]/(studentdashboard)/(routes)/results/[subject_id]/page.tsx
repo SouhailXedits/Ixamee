@@ -104,12 +104,12 @@ function SubjectLayout() {
       </nav>
 
       <div className="flex overflow-auto gap-9 p-7">
-        {trimesters.map(trimester => <TermCard term={trimester} /> )}
+        {trimesters.map(trimester  => <TermCard term={trimester} /> )}
   
       </div>
-      <div className=" flex w-full justify-end gap-2 text-white">
-        <p className=" p-2 bg-orangeColor rounded">Rang: 4</p>
-        <p className=" p-2 bg-mainGreen rounded">Moyenne génerale: 15/40</p>
+      <div className="flex justify-end w-full gap-2 text-white ">
+        <p className="p-2 rounded bg-orangeColor">Rang: 4</p>
+        <p className="p-2 rounded bg-mainGreen">Moyenne génerale: 15/40</p>
       </div>
     </main>
   );
