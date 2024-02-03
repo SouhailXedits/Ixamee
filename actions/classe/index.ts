@@ -648,6 +648,7 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
     select: {
       correction_exam_content: true,
       mark_obtained: true,
+      feedback: true
     },
   });
 

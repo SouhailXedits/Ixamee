@@ -1,26 +1,23 @@
 "use client"
-
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getExamContent, getOneExamById, getOneExamByIdForCorrection } from '@/actions/examens';
+import { getExamContent, getOneExamByIdForCorrection } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
 import Loading from '@/app/loading';
-
 import { cn } from '@/lib/utils';
-import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions/classe';
-import { StudentFeadback } from '@/components/modals/studentFeadback';
-import { useCreateExamCorrection } from "@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamCorrection";
+import { getCorigeExameContent } from '@/actions/classe';
 import Exam from "../_components/Exam";
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
+import { StudentFeedback } from '../_components/StudentFeedback';
+
+
+
+
 export default function Page({ params }: { params: { correction_id: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
   const queryClient = useQueryClient()
-  console.log(params);
-  const router = useRouter();
   const { correction_id } = params;   
-  const { etab_id } = params;   
   const user = queryClient.getQueryData(['user']) as any;
   const student_id = user?.id;
   const { data, isPending } = useQuery<any>({
@@ -28,32 +25,22 @@ export default function Page({ params }: { params: { correction_id: string; etab
     queryFn: async () => await getOneExamByIdForCorrection({ id: correction_id }),
   });
 
-  const { data: examContent, isPending: isPendingExamContent } = useQuery<any>({
+  const { data: examContent } = useQuery<any>({
     queryKey: ['exameContent', correction_id],
     queryFn: async () => await getExamContent({ id: correction_id }),
   });
-  console.log(examContent);
 
-  const { data: userData, isPending: isPendingUser } = useQuery<any>({
-    queryKey: ['userName', student_id],
-    queryFn: async () => await getNameOfuserById(student_id),
-  });
 
-  const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
+  const { data: getCorrigeExamOfUser } = useQuery<any>({
     queryKey: ['CorigeExameContent'],
     queryFn: async () => await getCorigeExameContent(+correction_id, student_id),
   });
-  console.log(getCorrigeExamOfUser);
 
-  // const { editExam, isPending: isPendingEdit } = useEditExamContent();
-  const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
 
-  console.log(fakeData);
 
   useEffect(() => {
     if (!isPending && data && data.content) {
-      // const fakeData = data.content;
       if (getCorrigeExamOfUser?.length > 0) {
         setFakeData(getCorrigeExamOfUser[0]?.correction_exam_content);
       } else {
@@ -69,9 +56,6 @@ export default function Page({ params }: { params: { correction_id: string; etab
 
   if (isPending) return <Loading />;
 
-//   function handleCancel() {
-//     router.back();
-//   }
   const hasNullMark = (content: any) => {
     for (const item of content) {
       if (item.mark === null) {
@@ -84,31 +68,8 @@ export default function Page({ params }: { params: { correction_id: string; etab
     return false;
   };
   const arabic = data?.language === 'ar' ? true : false;
-  // const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
-  const statusOf = (data: any) => {
-    const hasPending = hasNullMark(data);
-    const status = hasPending ? 'pending' : 'done';
-    return status;
-  };
-  const handleSaveData = async () => {
-    try {
-      const stataus = statusOf(fakeData);
-
-      console.log(stataus);
-
-      // Assuming you have the necessary data
-      
-
-      // Additional logic after creating the exam correction, if needed
-
-      console.log('Exam correction created successfully');
-    } catch (error) {
-      console.error('Error creating exam correction:', error);
-    }
-  };
 
   const examContentt = examContent?.content;
-  console.log(examContentt);
   if (!examContent) return <Loading />;
 
   return (
@@ -121,9 +82,6 @@ export default function Page({ params }: { params: { correction_id: string; etab
             <div className="text-[#1B8392] text-2xl font-semibold ">{data?.name} </div>
           )}
           <div className="flex items-center text-[#727272]">
-            <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
-            <span className="cursor-pointer">Examens</span>
-            <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
             {isPending ? (
               <span className="flex items-center gap-3 cursor-pointer">
                 <Skeleton className="w-[80px] h-[20px]" />
@@ -135,9 +93,6 @@ export default function Page({ params }: { params: { correction_id: string; etab
                 <span className="cursor-pointer">
                   {data?.exam_classess.map((item: any) => item.name).join(', ')}
                 </span>
-                <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
-
-                <span className="cursor-pointer"> {userData?.name}</span>
               </>
             )}
           </div>
@@ -159,10 +114,8 @@ export default function Page({ params }: { params: { correction_id: string; etab
               <span className=" text-3xl pb-4 -&mr-3">{sum}</span> / {data?.total_mark}
             </div>
           </div>
-   
         </div>
       </nav>
-
 
       <Exam
         // data={data}
@@ -172,7 +125,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
       />
 
       <div className="fixed right-4 bottom-4">
-        <StudentFeadback>
+        <StudentFeedback content={getCorrigeExamOfUser?.length && getCorrigeExamOfUser[0].feedback }>
           <Image
             src="/bigEditNote.svg"
             width={100}
@@ -180,7 +133,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
             alt="editicon"
             className="cursor-pointer"
           />
-        </StudentFeadback>
+        </StudentFeedback>
       </div>
     </div>
   );
