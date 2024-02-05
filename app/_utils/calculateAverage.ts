@@ -44,6 +44,6 @@ export function calculateOverallAverage(data:any) {
 
   const averageMark = calculateAverageMark(trimesters);
   console.log(averageMark);
-  return averageMark.toString();
+  return averageMark;
 }
 

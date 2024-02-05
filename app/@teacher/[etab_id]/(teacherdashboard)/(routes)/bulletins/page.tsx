@@ -97,8 +97,7 @@ const Student = () => {
 
       const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
       const overTwentyAvg = (20 / exam.total_mark) * average;
-      console.log(overTwentyAvg)
-      
+      console.log(overTwentyAvg);
 
       return {
         id: exam.id,
@@ -110,9 +109,7 @@ const Student = () => {
         overTwentyAvg: overTwentyAvg,
       };
     });
-     console.log(examsInfo);
-   
-
+    console.log(examsInfo);
 
     // const totalMarksObtained = examsInfo.reduce(
     //   (acc: any, exam: any) => acc + exam.marksObtained,
@@ -125,10 +122,11 @@ const Student = () => {
         (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
         0
       ) / maxCoefficient;
-
+        // console.log(userData[0]);
     return {
       id: userId,
       name: userData[0].user.name,
+      image: userData[0].user.image,
       exams: examsInfo,
       average: overallAverage,
     };

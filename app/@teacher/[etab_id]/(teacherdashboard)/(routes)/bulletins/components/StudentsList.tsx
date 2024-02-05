@@ -124,31 +124,32 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
 
   const sortedData = [...realData].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
+  console.log(sortedData)
 
   const columns: ColumnDef<any>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-          className="bg-white"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+    // {
+    //   id: 'select',
+    //   header: ({ table }) => (
+    //     <Checkbox
+    //       checked={
+    //         table.getIsAllPageRowsSelected() ||
+    //         (table.getIsSomePageRowsSelected() && 'indeterminate')
+    //       }
+    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+    //       aria-label="Select all"
+    //       className="bg-white"
+    //     />
+    //   ),
+    //   cell: ({ row }) => (
+    //     <Checkbox
+    //       checked={row.getIsSelected()}
+    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+    //       aria-label="Select row"
+    //     />
+    //   ),
+    //   enableSorting: false,
+    //   enableHiding: false,
+    // },
     {
       accessorKey: 'name',
       header: () => {
@@ -157,7 +158,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
       cell: ({ row }) => (
         <div className="flex items-center gap-2 capitalize">
           <Image
-            src="/defaultUserAvatr.svg"
+            src={row.original.image || "/defaultUserAvatr.svg"}
             alt=""
             width={42}
             height={42}

@@ -607,15 +607,13 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
       console.log(avg);
 
       try {
-        const infos = await db.userClasseInfos.findMany({
-          where: {
+        const infos = await db.userClasseInfos.create({
+          data: {
             user_id: item.user_id,
             classe_id: item.classesId,
             subject_id: subject[0].id,
-          },
-          select: {
-            id: true,
-          },
+            average: +avg,
+          }
         });
         console.log(infos);
       } catch (error) {
