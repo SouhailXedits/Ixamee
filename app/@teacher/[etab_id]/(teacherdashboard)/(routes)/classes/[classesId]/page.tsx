@@ -12,7 +12,13 @@ import { StudentList } from './_components/student-list';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getClasseById, getCorrectionOfUser, getStudentOfClasse } from '@/actions/classe';
+import {
+  getClasseById,
+  getCorigeExameContent,
+  getCorigeExameContentOfAllUser,
+  getCorrectionOfUser,
+  getStudentOfClasse,
+} from '@/actions/classe';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +32,8 @@ import { any } from 'zod';
 import { useEffect, useState } from 'react';
 import Loading from '@/app/loading';
 import { useSendExamMark } from '../hooks/useSendResult';
+import PDFExport from '@/app/_utils/ExportAsPdf';
+import { AllStudentList } from './_components/allStudent';
 interface classe {
   id: number;
   name: string;
@@ -46,12 +54,15 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
-  // if (isPendingUser) return <Loading />;
 
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
+  const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
+  console.log(teacherEstab);
   const data = queryClient.getQueryData(['userOfClasses']) as any;
   const classe = queryClient.getQueryData(['classe']) as any;
-
+  const teacherEstabName = teacherEstab.filter((item: any) => item.id === +etab_id)[0]?.name;
+  console.log(teacherEstabName);
+  const classeName = classe?.name;
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
   //   console.log(jsonData);
@@ -69,11 +80,15 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     setExam(classe?.exam_classe[0]?.id + '');
     // }
   }, [classe]);
-
+  const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
+    queryKey: ['CorigeExameContent', exam],
+    queryFn: async () => await getCorigeExameContentOfAllUser(exam, data),
+  });
   const newData = data
     ?.map((item: any) => {
       return {
         ...item,
+        correctionExamOfUser: getCorrigeExamOfUser,
         exam: exam, // Add your new field here
         classe: classe,
         status:
@@ -98,7 +113,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       }
       return false;
     });
-
+  console.log(newData);
   const handleSendResults = () => {
     if (data?.length === userCorrection?.length) {
       const ExamMarkData = userCorrection?.map((user: any) => {
@@ -142,7 +157,12 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       sendExamMark({ exam_id: exam, marks: marksDataToSend });
     }
   };
-  if (!classe) return null;
+  if (isPendingUser) return <Loading />;
+  if (isPendingCorrige) return <Loading />;
+  const handleDownload = () => {
+    console.log('object');
+    console.log(newData);
+  };
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -236,8 +256,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
               </div>
             </div>
           </ImportUneClasse>
-
-          <DropdownMenu>
+          <PDFExport pdfName="Etudiants">
+            <AllStudentList
+              data={newData}
+              classeName={classeName}
+              teacherEstabName={teacherEstabName}
+            />
+          </PDFExport>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
                 <Image src="/telechargeIcon.svg" alt="icons" width={20} height={20} />
@@ -247,16 +273,18 @@ const Student = ({ params }: { params: { classesId: string } }) => {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer ">Fichier PDF</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer ">
+                
+              </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer ">Fichier CSV</DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
 
           {/* )} */}
           {/* importer */}
 
           <AjouterUnEtudiant data={data} class_id={classesId} etab_id={etab_id}>
-            <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
+            <div className="flex items-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
                 Ajouter un étudiant
               </div>

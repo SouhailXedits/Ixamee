@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -7,17 +7,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Loading from '@/app/loading';
 import { cn } from '@/lib/utils';
 import { getCorigeExameContent } from '@/actions/classe';
-import Exam from "../_components/Exam";
+import Exam from '../_components/Exam';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 import { StudentFeedback } from '../_components/StudentFeedback';
 
-
-
-
 export default function Page({ params }: { params: { correction_id: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
-  const queryClient = useQueryClient()
-  const { correction_id } = params;   
+  const queryClient = useQueryClient();
+  const { correction_id } = params;
   const user = queryClient.getQueryData(['user']) as any;
   const student_id = user?.id;
   const { data, isPending } = useQuery<any>({
@@ -30,14 +27,11 @@ export default function Page({ params }: { params: { correction_id: string; etab
     queryFn: async () => await getExamContent({ id: correction_id }),
   });
 
-
   const { data: getCorrigeExamOfUser } = useQuery<any>({
     queryKey: ['CorigeExameContent', student_id, correction_id],
     queryFn: async () => await getCorigeExameContent(+correction_id, student_id),
   });
-
   const [fakeData, setFakeData] = useState<any>([]);
-
 
   useEffect(() => {
     if (!isPending && data && data.content) {
@@ -125,7 +119,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
       />
 
       <div className="fixed right-4 bottom-4">
-        <StudentFeedback content={getCorrigeExamOfUser?.length && getCorrigeExamOfUser[0].feedback }>
+        <StudentFeedback content={getCorrigeExamOfUser?.length && getCorrigeExamOfUser[0].feedback}>
           <Image
             src="/bigEditNote.svg"
             width={100}

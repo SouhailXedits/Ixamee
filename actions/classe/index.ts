@@ -93,7 +93,6 @@ export const updateClasse = async (name: string, classe_id: number, matiere: any
 export const createUserInClasse = async (
   image: string,
   name: string,
-  range: number,
   email: string,
   class_id: string,
   establishmentId: number
@@ -115,7 +114,6 @@ export const createUserInClasse = async (
       data: {
         name: name,
         image: image,
-        range: range,
         email: email,
         role: 'STUDENT',
         classe: {
@@ -650,7 +648,31 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
 
   return data;
 };
-
+export const getCorigeExameContentOfAllUser = async (exam_id: number, userData: any) => {
+  console.log(userData);
+  const data = await db.examCorrection.findMany({
+    where: {
+      exam_id: +exam_id,
+      user_id: {
+        in: userData.map((user: any) => user.id),
+      },
+    },
+    select: {
+      user_id: true,
+      mark_obtained: true,
+      exam: {
+        select: {
+          total_mark: true,
+        },
+      },
+      feedback: true,
+      exam_id: true,
+      correction_exam_content: true,
+    },
+  });
+  console.log(data);
+  return data;
+};
 export const getNameClasseByClasseId = async (classe_id: number) => {
   console.log(classe_id);
   const data = await db.classe.findMany({

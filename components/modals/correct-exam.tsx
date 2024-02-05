@@ -22,36 +22,42 @@ import { Label } from '../ui/label';
 import toast from 'react-hot-toast';
 import { useCreateExamCorrection } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamCorrection';
 import { useEditeExamStatus } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamStatus';
+import { set } from 'date-fns';
 
 interface CorrectExamProps {
   children: React.ReactNode;
   data: any;
+  user_id: string;
 }
 
-export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
+export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_id }) => {
   console.log(data);
-  const [note, setNote] = useState<string>('0');
+  if (!data) return null;
+  let userData = data.filter((item: any) => item?.user_id == user_id);
+  userData = userData[0];
+  console.log(userData);
+  const [note, setNote] = useState<string>(userData?.mark_obtained || 0);
+  console.log(note);
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const new_total_mark = userData?.exam.total_mark || 0;
+  console.log(new_total_mark);
 
-  const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
-  const new_total_mark = examan[0]?.total_mark;
-  const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent', +examan[0]?.id, data?.id],
-    queryFn: async () => await getCorigeExameContent(+examan[0]?.id, data?.id),
-  });
+  // const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
+  // const new_total_mark = examan[0]?.total_mark;
+  // const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
+  //   queryKey: ['CorigeExameContent', +examan[0]?.id, data?.id],
+  //   queryFn: async () => await getCorigeExameContent(+examan[0]?.id, data?.id),
+  // });
 
   useEffect(() => {
-    if (!isPendingCorrige && getCorrigeExamOfUser) {
-      const initialNote = getCorrigeExamOfUser[0]?.mark_obtained || 0;
-      setNote(initialNote);
-    }
-  }, [isPendingCorrige, getCorrigeExamOfUser]);
+    const initialNote = userData?.mark_obtained || 0;
+    setNote(initialNote);
+  }, [data]);
 
   const handelCorrectExam = () => {
-    const examanId = examan[0].id;
-    const user_id = data?.id;
+    const examanId = userData?.exam_id;
     router.push(pathname + `/student/${user_id}/correction/${examanId}`);
   };
 
@@ -69,29 +75,26 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
   const handelSubmit = () => {
     if (!item) {
       const obj = {
-        exam_id: examan[0].id,
+        exam_id: userData.exam_id,
         mark_obtained: note,
-        user_id: data?.id,
+        user_id: user_id,
       };
-      console.log(examan[0].id, note, data?.id);
       createExamCorrectionn(obj);
 
       console.log(note);
     } else {
       const obj = {
-        exam_id: examan[0].id,
-        user_id: data?.id,
+        exam_id: userData.exam_id,
+
+        user_id: user_id,
         status: item as 'notClassified' | 'absent',
       };
-    
+
       console.log(obj);
       editeStatus(obj);
     }
   };
 
-  if (isPendingCorrige || !getCorrigeExamOfUser) {
-    return <Loading />;
-  }
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -110,7 +113,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
                 <Input
                   placeholder="--"
                   className="p-0 text-xl text-right bg-transparent border-none "
-                  maxLength={new_total_mark?.toString().length}
+                  maxLength={new_total_mark.length}
                   // defaultValue={+getCorrigeExamOfUser[0]?.mark || 0}
                   value={note}
                   onChange={(e) => handelSubmitCorrectionExam(e)}

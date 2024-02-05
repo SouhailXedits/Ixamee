@@ -55,7 +55,10 @@ export default function Page({
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
-      if (getCorrigeExamOfUser?.length > 0) {
+      if (
+        getCorrigeExamOfUser?.length > 0 &&
+        getCorrigeExamOfUser[0].correction_exam_content !== null
+      ) {
         setFakeData(getCorrigeExamOfUser[0]?.correction_exam_content);
       } else {
         setFakeData(data?.content);
@@ -202,7 +205,7 @@ export default function Page({
       />
 
       <div className="fixed right-4 bottom-4">
-        <StudentFeadback>
+        <StudentFeadback params={params}>
           <Image
             src="/bigEditNote.svg"
             width={100}

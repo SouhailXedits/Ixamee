@@ -13,11 +13,14 @@ import {
 import Image from 'next/image';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
+import { useEditeExamFeedback } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamRemarque';
 
 interface studentFeadback {
   children: React.ReactNode;
+  params: any;
 }
-export const StudentFeadback = ({ children }: studentFeadback) => {
+export const StudentFeadback = ({ children, params }: studentFeadback) => {
+  console.log(params);
   const [feedback, setFeedback] = useState<string[]>([]);
   const [feedbackMessage, setFeedbackMessage] = useState<any>();
 
@@ -28,6 +31,7 @@ export const StudentFeadback = ({ children }: studentFeadback) => {
     'Assez bien! Vous pouvez mieux faire la prochaine fois!',
     'Travail insuffisant!',
   ]);
+  const { editeFeedback, isPending } = useEditeExamFeedback();
   const handelSubmitFeedback = () => {
     console.log(feedback);
     console.log(feedbackMessage);
@@ -35,6 +39,7 @@ export const StudentFeadback = ({ children }: studentFeadback) => {
       feedback,
       description: feedbackMessage,
     };
+    editeFeedback(params.exam_id, params.student_id, newfedback);
     console.log(newfedback);
   };
   return (

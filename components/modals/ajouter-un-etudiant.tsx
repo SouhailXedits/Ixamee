@@ -38,14 +38,11 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
   const minrange = data?.length;
   const formatDataSchema = z.object({
     name: z.string().min(3, 'Veuillez renseigner le nom'),
-    rang: z.string().refine((value) => parseInt(value, 10) > minrange, {
-      message: `Veuillez renseigner un rang supérieur à ${minrange}`,
-    }),
+
     email: z.string().email("L'email n'est pas valide"),
   });
   const [formatData, setFormatData] = useState({
     name: '',
-    rang: '',
     email: '',
   });
   const handelUpdateSetFormatData = (key: string, value: string | number) => {
@@ -143,7 +140,6 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
     if (validationResult.success) {
       createUserInClass({
         name: formatData.name,
-        range: +formatData.rang,
         email: formatData.email.toLowerCase(),
         image:
           selectedFileUrl ||
@@ -209,7 +205,7 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
             />
             {renderFieldError('name')}
           </div>
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <Label className="text-[#959595]">
               Rang dans la classe<span className="text-red">*</span>
             </Label>
@@ -222,7 +218,7 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
               className="placeholder:text-[#727272]"
             />
             {renderFieldError('rang')}
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2">
             <Label className="text-[#959595]">
               E-mail <span className="text-red">*</span>
@@ -239,12 +235,25 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
         </div>
 
         <DialogFooter>
+          {/* {isPending } */}
+
           <Button
             onClick={handelSubmit}
             type="submit"
+            disabled={isPending}
             className="w-full bg-[#1B8392] hover:opacity-80 "
           >
-            {isFirstModalOpen ? 'Ajouter un autre étudiant' : 'Ajouter'}
+            {isPending ? (
+              <div
+                className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
+                role="status"
+                aria-label="loading"
+              ></div>
+            ) : isFirstModalOpen ? (
+              'Ajouter un autre étudiant'
+            ) : (
+              'Ajouter'
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

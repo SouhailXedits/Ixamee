@@ -115,16 +115,18 @@ const Status = ({ row }: any) => {
 const Action = ({ row }: any) => {
   const router = useRouter();
   const pathname = usePathname();
-
+  console.log(row);
+  const correctionExamOfUser = row?.original?.correctionExamOfUser;
+  console.log(correctionExamOfUser);
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <ModifierUnEtudiant data={row.original}>
         <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
       </ModifierUnEtudiant>
       {row?.original?.exam !== 0 && (
-        <CorrectExam data={row?.original}>
-          <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
-        </CorrectExam>
+        <CorrectExam data={correctionExamOfUser} user_id={row.original.id}>
+        <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
+         </CorrectExam>
       )}
 
       {!row.original.emailVerified ? (
@@ -290,6 +292,7 @@ export const columns = [
 
 export function StudentList({ data, isPending }: any) {
   // let newData = [data, exam];
+  console.log(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});

@@ -649,7 +649,63 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
     throw new Error('An error occurred while updating exam correction.'); // Simplify the error message
   }
 };
+export const editeExamFeedback = async ({
+  exam_id,
+  user_id,
+  Feedback,
+}: {
+  user_id: string;
+  exam_id: string;
+  Feedback: any;
+}) => {
+  console.log(exam_id, user_id);
+  try {
+    const existingExamCorrection = await db.examCorrection.findMany({
+      where: {
+        exam_id: +exam_id,
+        user_id: user_id,
+      },
+    });
 
+    console.log(existingExamCorrection);
+
+    if (existingExamCorrection.length === 0) {
+      const examCorrection = await db.examCorrection.create({
+        data: {
+          exam: {
+            connect: {
+              id: +exam_id,
+            },
+          },
+          user: {
+            connect: {
+              id: user_id,
+            },
+          },
+          feedback:Feedback,
+        },
+      });
+      console.log(examCorrection);
+      return examCorrection;
+    } else {
+      // Update the existing examCorrection if it already exists
+      const updatedExamCorrection = await db.examCorrection.updateMany({
+        where: {
+          exam_id: +exam_id,
+          user_id: user_id,
+        },
+        data: {
+          feedback: Feedback,
+        },
+      });
+      console.log(updateExam);
+      return updatedExamCorrection;
+    }
+  } catch (error) {
+    console.error('Error in createNoteExamCorrectio:', error);
+    throw new Error('An error occurred while creating/updating exam correction.');
+  }
+};
 export const editeExamStatus = async ({
   exam_id,
   user_id,

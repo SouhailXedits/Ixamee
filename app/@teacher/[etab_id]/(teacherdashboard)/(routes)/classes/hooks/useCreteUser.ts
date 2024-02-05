@@ -7,7 +7,6 @@ interface CreateClasseParams {
   image: string;
   name: string;
   establishmentId: number;
-  range: number;
   email: string;
   class_id: string;
 }
@@ -19,8 +18,8 @@ export function useCreateUserInClasse() {
     isPending,
     error,
   } = useMutation({
-    mutationFn: ({ image, name, range, email, class_id, establishmentId }: CreateClasseParams) =>
-      createUserInClasseApi(image, name, range, email, class_id, establishmentId),
+    mutationFn: ({ image, name, email, class_id, establishmentId }: CreateClasseParams) =>
+      createUserInClasseApi(image, name, email, class_id, establishmentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
       queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
