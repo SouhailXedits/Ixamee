@@ -103,10 +103,9 @@ const Student = () => {
     queryKey: ['classeName', classeId],
     queryFn: async () => await getNameClasseByClasseId(+classeId),
   });
-  console.log(classeName);
+
 
   const examsData = marksheet?.data || [];
-  console.log(examsData);
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
     console.log(exam);
