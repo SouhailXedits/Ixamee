@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
 
 
   const { data: getCorrigeExamOfUser } = useQuery<any>({
-    queryKey: ['CorigeExameContent'],
+    queryKey: ['CorigeExameContent', student_id, correction_id],
     queryFn: async () => await getCorigeExameContent(+correction_id, student_id),
   });
 

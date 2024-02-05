@@ -328,6 +328,8 @@ export async function createExamm(data: any, user_id: string) {
     },
   });
 
+  console.log(examm);
+
   const allUsers = await db.classe.findMany({
     where: {
       id: {
