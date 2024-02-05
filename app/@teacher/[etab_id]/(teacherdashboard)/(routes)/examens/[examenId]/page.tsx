@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import CreateExam from './_components/create-exam';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getOneExamById } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
@@ -18,26 +18,27 @@ export default function Page({ params }: { params: { examenId: string } }) {
   const router = useRouter();
   const { examenId } = params;
 
-  const { data, isPending } = useQuery<any>({
-    queryKey: ['examenById', examenId],
-    queryFn: async () => await getOneExamById({ id: examenId }),
-  });
-  console.log(data);
+  // const { data, isPending } = useQuery<any>({
+  //   queryKey: ['examenById', examenId],
+  //   queryFn: async () => await getOneExamById({ id: examenId }),
+  // });
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData(['examenById', examenId]) as any;
   const { editExam, isPending: isPendingEdit } = useEditExamContent();
 
   const [fakeData, setFakeData] = useState<any>([]);
   useEffect(() => {
-    if (!isPending && data && data.content) {
-      setFakeData(data.content);
-      setSum(calcAllMark(fakeData));
-    }
-  }, [isPending, data]);
+    // if (!isPending && data && data.content) {
+    setFakeData(data.content);
+    setSum(calcAllMark(fakeData));
+    // }
+  }, [data]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
 
-  if (isPending) return <Loading />;
+  // if (isPending) return <Loading />;
 
   function handleCancel() {
     router.back();
@@ -64,26 +65,26 @@ export default function Page({ params }: { params: { examenId: string } }) {
     <div className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
         <div className="flex flex-col gap-4">
-          {isPending ? (
+          {/* {isPending ? (
             <Skeleton className="w-[300px] h-[40px]" />
-          ) : (
-            <div className="text-[#1B8392] text-2xl font-semibold ">{data?.name} </div>
-          )}
+          ) : ( */}
+          <div className="text-[#1B8392] text-2xl font-semibold ">{data?.name} </div>
+          {/* )} */}
           <div className="flex items-center text-[#727272]">
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
             <span className="cursor-pointer">Examens</span>
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
-            {isPending ? (
+            {/* {isPending ? (
               <span className="flex items-center gap-3 cursor-pointer">
                 <Skeleton className="w-[80px] h-[20px]" />
                 <Skeleton className="w-[80px] h-[20px]" />
                 <Skeleton className="w-[80px] h-[20px]" />
               </span>
-            ) : (
-              <span className="cursor-pointer">
-                {data?.exam_classess.map((item: any) => item.name).join(', ')}
-              </span>
-            )}
+            ) : ( */}
+            <span className="cursor-pointer">
+              {data?.exam_classess.map((item: any) => item.name).join(', ')}
+            </span>
+            {/* )} */}
           </div>
         </div>
 

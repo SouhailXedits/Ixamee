@@ -53,12 +53,9 @@ interface EstablishmentData {
 export const AddExameModal = ({ children }: AjouterUneClasse) => {
   const queryClient = useQueryClient();
   const user: any = queryClient.getQueryData(['user']);
-  const user_id = user?.id;
+  const teacherEstab: any = queryClient.getQueryData(['teacherEstab']);
 
-  const { data: teacherEstab, isPending: isPendingTeacherEstab } = useQuery({
-    queryKey: ['teacherEstab'],
-    queryFn: async () => await getEstablishmentOfUser(user_id),
-  });
+  const user_id = user?.id;
 
   const userEstablishment = teacherEstab;
 
@@ -112,7 +109,6 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
-  console.log(formData);
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({
@@ -124,7 +120,6 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     queryKey: ['teacherClasse', formData?.establishment],
     queryFn: async () => await getClasseOfUser(user_id, formData?.establishment),
   });
-
   const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
     queryKey: ['teachersubject', formData?.classes],
     queryFn: async () => await getSubjectOfUser(user_id, formData?.classes),
@@ -147,7 +142,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     value: item.id,
     label: item.name,
   }));
-  const { creatExam, isPending  } = useCreateExam();
+  const { creatExam, isPending } = useCreateExam();
   const verfierSchema = () => {
     let ok = false;
     try {
@@ -160,8 +155,8 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     try {
       // Validate the form data
       examSchema.parse(formData);
-      creatExam({ data: formData, user_id })
-      
+      creatExam({ data: formData, user_id });
+
       // Clear form errors
       setFormErrors(null);
     } catch (error: any) {
@@ -205,40 +200,37 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
             <Label className="text-[#959595]">
               établissement <span className="text-red">*</span>{' '}
             </Label>
-            {isPendingTeacherEstab ? (
-              <Skeleton className="w-full h-[40px]" />
-            ) : (
-              <Select
-                isMulti
-                name="estab"
-                options={userEstablishmentoptions}
-                onChange={(selectedOptions) => handleInputChange('establishment', selectedOptions)}
-                placeholder="Sélectionner votre classe"
-                styles={{
-                  option: (baseStyles, state) => ({
-                    ...baseStyles,
-                    fontSize: '14px',
-                    borderRadius: 12,
-                  }),
-                  control: (baseStyles, state) => ({
-                    ...baseStyles,
-                    border: '1/4px solid #727272',
-                    fontSize: '14px',
-                    outline: '#727272',
-                    minWidth: '220px',
-                  }),
-                }}
-                theme={(theme) => ({
-                  ...theme,
-                  borderRadius: 8,
 
-                  colors: {
-                    ...theme.colors,
-                    primary: 'none',
-                  },
-                })}
-              />
-            )}
+            <Select
+              isMulti
+              name="estab"
+              options={userEstablishmentoptions}
+              onChange={(selectedOptions) => handleInputChange('establishment', selectedOptions)}
+              placeholder="Sélectionner votre classe"
+              styles={{
+                option: (baseStyles, state) => ({
+                  ...baseStyles,
+                  fontSize: '14px',
+                  borderRadius: 12,
+                }),
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  border: '1/4px solid #727272',
+                  fontSize: '14px',
+                  outline: '#727272',
+                  minWidth: '220px',
+                }),
+              }}
+              theme={(theme) => ({
+                ...theme,
+                borderRadius: 8,
+
+                colors: {
+                  ...theme.colors,
+                  primary: 'none',
+                },
+              })}
+            />
             {renderFieldError('establishment')}
           </div>
           <div className="flex flex-col gap-2">

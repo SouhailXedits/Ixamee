@@ -21,6 +21,7 @@ import Image from 'next/image';
 import { Label } from '../ui/label';
 import toast from 'react-hot-toast';
 import { useCreateExamCorrection } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamCorrection';
+import { useEditeExamStatus } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamStatus';
 
 interface CorrectExamProps {
   children: React.ReactNode;
@@ -63,9 +64,9 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
     setNote(e.target.value);
   };
   const { createExamCorrectionn, isPending } = useCreateExamCorrection();
+  const { editeStatus, isPending: isPendingStatus } = useEditeExamStatus();
+
   const handelSubmit = () => {
-    console.log(note);
-    console.log(item);
     if (!item) {
       const obj = {
         exam_id: examan[0].id,
@@ -77,7 +78,14 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
 
       console.log(note);
     } else {
-      console.log(item);
+      const obj = {
+        exam_id: examan[0].id,
+        user_id: data?.id,
+        status: item as 'notClassified' | 'absent',
+      };
+    
+      console.log(obj);
+      editeStatus(obj);
     }
   };
 
@@ -158,13 +166,13 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data }) => {
 
             <div
               className="flex items-center space-x-2 border border-[#1B8392] p-1 text-[#1B8392] rounded-xl"
-              style={item === 'non-classe' ? { backgroundColor: '#F0F6F8' } : {}}
+              style={item === 'notClassified' ? { backgroundColor: '#F0F6F8' } : {}}
             >
               <RadioGroupItem
                 className=" bg-white text-[#1B8392] border-[#1B8392] scale-[0.6]"
-                value="non-classe"
+                value="notClassified"
                 id="r2"
-                style={item === 'non-classe' ? { backgroundColor: '#1B8392' } : {}}
+                style={item === 'notClassified' ? { backgroundColor: '#1B8392' } : {}}
               />
               <Label htmlFor="r1" className="text-xs">
                 Non classé

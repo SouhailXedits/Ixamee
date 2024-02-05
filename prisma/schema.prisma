@@ -155,7 +155,7 @@ model ExamCorrection {
   id            Int   @id @default(autoincrement())
   exam          Exam? @relation(fields: [exam_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   exam_id       Int
-  mark_obtained Float
+  mark_obtained Float?
   user         User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id       String?
   feedback      Json?

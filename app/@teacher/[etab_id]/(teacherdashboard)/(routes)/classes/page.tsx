@@ -9,11 +9,7 @@ export default function Classes() {
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
-
-  const { data, isPending } = useQuery({
-    queryKey: ['classe', etab_id],
-    queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
-  });
+  const data = queryClient.getQueryData(['classe', etab_id]) as any;
 
   // to DO Scelton
 
@@ -50,7 +46,7 @@ export default function Classes() {
       </nav>
 
       <div>
-        <ClasseCardContainer data={data} isPending={isPending} />
+        <ClasseCardContainer data={data} isPending={false} />
       </div>
     </main>
   );

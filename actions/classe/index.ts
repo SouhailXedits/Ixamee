@@ -452,7 +452,7 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
       user_id: true,
     },
   });
-  console.log("🚀 ~ getCorrectionOfUser ~ res:", res)
+  console.log('🚀 ~ getCorrectionOfUser ~ res:', res);
   return res;
 
   // const res = await db.examCorrection.findMany({
@@ -639,7 +639,6 @@ export const getStatusById = async (id: any) => {
 };
 
 export const getCorigeExameContent = async (exam_id: number, student_id: string) => {
-  console.log(exam_id, student_id);
   const data = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,

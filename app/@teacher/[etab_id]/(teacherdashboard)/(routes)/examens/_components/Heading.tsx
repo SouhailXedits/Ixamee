@@ -8,7 +8,10 @@ import {
 } from '@/components/ui/select';
 import { AddExameModal } from '@/components/modals/addExamesModal';
 
-function Heading() {
+function Heading({ data, setData }: { data: string; setData: any }) {
+  const handelRecherche = (e: any) => {
+    setData(e.target.value);
+  };
   return (
     <nav className="flex justify-between w-full ">
       <div className="flex flex-col gap-4">
@@ -26,10 +29,11 @@ function Heading() {
           <input
             type="text"
             placeholder="Recherche"
-            className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#1B8392]"
+            className=" w-24 bg-transparent outline-none border-none  text-sm  leading-tight placeholder-[#1B8392]"
+            onChange={(e) => handelRecherche(e)}
           />
         </div>
-        <Select>
+        {/* <Select>
           <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
             <SelectValue
               placeholder={
@@ -49,7 +53,7 @@ function Heading() {
             <SelectItem value="non-classé">Non classé</SelectItem>
             <SelectItem value="absent">Absent</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
 
         <AddExameModal>
           <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">

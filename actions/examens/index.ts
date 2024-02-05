@@ -527,6 +527,9 @@ export const createNoteExamCorrectio = async ({
 };
 
 export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any }) => {
+  console.log(marks);
+  
+  
   try {
     const updatedExamCorrectionBatch = await Promise.all(
       marks.map(async ({ user_id, rank }: { user_id: string; rank: string }) => {
@@ -544,8 +547,66 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
         });
       })
     );
-
+    console.log(updatedExamCorrectionBatch);
     return updatedExamCorrectionBatch;
+  } catch (error) {
+    console.error('Error in createNoteExamCorrectio:', error);
+    throw new Error('An error occurred while creating/updating exam correction.');
+  }
+};
+
+export const editeExamStatus = async ({
+  exam_id,
+  user_id,
+  status,
+}: {
+  user_id: string;
+  exam_id: string;
+  status: 'notClassified' | 'absent';
+}) => {
+  console.log(exam_id, user_id);
+  try {
+    const existingExamCorrection = await db.examCorrection.findMany({
+      where: {
+        exam_id: +exam_id,
+        user_id: user_id,
+      },
+    });
+
+    console.log(existingExamCorrection);
+
+    if (existingExamCorrection.length === 0) {
+      const examCorrection = await db.examCorrection.create({
+        data: {
+          exam: {
+            connect: {
+              id: +exam_id,
+            },
+          },
+          user: {
+            connect: {
+              id: user_id,
+            },
+          },
+          status: status,
+        },
+      });
+      console.log(examCorrection);
+      return examCorrection;
+    } else {
+      // Update the existing examCorrection if it already exists
+      const updatedExamCorrection = await db.examCorrection.updateMany({
+        where: {
+          exam_id: +exam_id,
+          user_id: user_id,
+        },
+        data: {
+          status: status,
+        },
+      });
+      console.log(updateExam);
+      return updatedExamCorrection;
+    }
   } catch (error) {
     console.error('Error in createNoteExamCorrectio:', error);
     throw new Error('An error occurred while creating/updating exam correction.');

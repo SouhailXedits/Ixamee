@@ -39,7 +39,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const queryClient = useQueryClient();
   const { classesId } = params;
   const [exam, setExam] = useState<any>(0);
-  console.log(exam);
+  const [filter, setFilter] = useState<any>('');
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
@@ -48,53 +48,58 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // if (isPendingUser) return <Loading />;
 
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
+  const data = queryClient.getQueryData(['userOfClasses']) as any;
+  const classe = queryClient.getQueryData(['classe']) as any;
+
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
   //   console.log(jsonData);
   // };
-  const { data, isPending } = useQuery({
-    queryKey: ['userOfClasses'],
-    queryFn: async () => await getStudentOfClasse(+classesId),
-  });
-  const { data: classe, isPending: isPendingClasse } = useQuery({
-    queryKey: ['classe'],
-    queryFn: async () => await getClasseById(+classesId),
-  });
-
-  console.log(exam);
-  console.log(data);
-
+  // const { data, isPending } = useQuery({
+  //   queryKey: ['userOfClasses'],
+  //   queryFn: async () => await getStudentOfClasse(+classesId),
+  // });
+  // const { data: classe, isPending: isPendingClasse } = useQuery({
+  //   queryKey: ['classe'],
+  //   queryFn: async () => await getClasseById(+classesId),
+  // });
   useEffect(() => {
-    if (Array.isArray(classe?.exam_classe)) {
-      setExam(classe?.exam_classe[0]?.id + '');
-    }
+    // if (Array.isArray(classe?.exam_classe)) {
+    setExam(classe?.exam_classe[0]?.id + '');
+    // }
   }, [classe]);
 
-  if (isPendingClasse) return <Loading />;
-  console.log(data);
-
-  console.log(userCorrection);
-
-  const newData = data?.map((item: any) => {
-    return {
-      ...item,
-      exam: exam, // Add your new field here
-      classe: classe,
-      status:
-        userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
-    };
-  });
+  const newData = data
+    ?.map((item: any) => {
+      return {
+        ...item,
+        exam: exam, // Add your new field here
+        classe: classe,
+        status:
+          userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
+      };
+    })
+    ?.filter((item: any) => {
+      // Apply your filter condition here based on the 'filter' state and item.status
+      if (filter === 'corrige' && item.status === 'done') {
+        return true;
+      } else if (filter === 'en-cours' && item.status === 'pending') {
+        return true;
+      } else if (filter === 'non-corrigé' && item.status === 'notCorrected') {
+        return true;
+      } else if (filter === 'non-classé' && item.status === 'notClassified') {
+        return true;
+      } else if (filter === 'absent' && item.status === 'absent') {
+        return true;
+      } else if (filter === '') {
+        // If filter is empty, include all items
+        return true;
+      }
+      return false;
+    });
 
   const handleSendResults = () => {
     if (data?.length === userCorrection?.length) {
-      const examContent = queryClient.getQueryData([
-        'CorigeExameContent',
-        50,
-        'cls1wdk350006v1r61jt7luj9',
-      ]);
-      console.log(examContent);
-      console.log(exam);
-
       const ExamMarkData = userCorrection?.map((user: any) => {
         const userExamContent = queryClient.getQueryData([
           'CorigeExameContent',
@@ -125,22 +130,16 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         mark.rank = rank;
         prevMark = mark.mark;
       });
-       const marksDataToSend = ExamMarkData?.map(({ user_id, mark, rank }) => ({
-         user_id,
-         exam_id: exam,
-         mark,
-         rank,
-       }));
-      
-      
+      const marksDataToSend = ExamMarkData?.map(({ user_id, mark, rank }) => ({
+        user_id,
+        exam_id: exam,
+        mark,
+        rank,
+      }));
+      console.log(marksDataToSend);
       sendExamMark({ exam_id: exam, marks: marksDataToSend });
-
-      console.log(ExamMarkData);
-
-      console.log(userCorrection);
     }
   };
-  if (isPendingClasse) return <Loading />;
   if (!classe) return null;
 
   return (
@@ -193,7 +192,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           </div>
 
           {exam !== 0 && (
-            <Select>
+            <Select onValueChange={(value) => setFilter(value)}>
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
                 <SelectValue
                   placeholder={
@@ -265,7 +264,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       </nav>
 
       <div>
-        <StudentList data={newData} isPending={isPending} />
+        <StudentList data={newData} isPending={false} />
       </div>
     </main>
   );

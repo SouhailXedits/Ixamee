@@ -24,20 +24,21 @@ export default async function RootLayout({
   student,
   teacher,
   auth,
-  
+  params,
 }: {
   student: React.ReactNode;
   teacher: React.ReactNode;
   auth: React.ReactNode;
+  params: string;
 }) {
-  const session = await authentification();
 
+  const session = await authentification();
   return (
     <html lang="en">
       <body className={`font-normal ${poppins.className}`}>
         <QueryClientProviderWrapper>
           <Suspense>
-            <Hydration >
+            <Hydration>
               <ToastProvider />
               {/* {teacher} */}
               {session?.user?.role === 'STUDENT'
