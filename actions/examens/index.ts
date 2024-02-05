@@ -526,10 +526,77 @@ export const createNoteExamCorrectio = async ({
   }
 };
 
-export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any }) => {
+export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any[] }) => {
   console.log(marks);
-  
-  
+  const allMarksheets = await Promise.all(
+    marks.map(async (item: any) => {
+      console.log(item);
+      const markSheets = await db.examCorrection.findMany({
+        where: {
+          exam: {
+            id: +item.exam_id,
+          },
+          user: {
+            id: item.user_id,
+            classe: {
+              some: {
+                id: +item.classesId,
+              },
+            },
+          },
+          status: 'done',
+          is_published: true,
+        },
+        select: {
+          id: true,
+          mark_obtained: true,
+          exam: {
+            select: {
+              id: true,
+              name: true,
+              total_mark: true,
+              coefficient: true,
+              term: true,
+            },
+            where: {
+              is_archived: false,
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          rank: true,
+        },
+      });
+      return markSheets;
+    })
+  );
+  console.log(allMarksheets);
+  function calculateAverageMark(item: any) {
+    console.log(item);
+    let totalMarks = 0;
+    let totalCoefficients = 0;
+
+    item.forEach((trimestre: any) => {
+      trimestre.exams.forEach((exam: any) => {
+        totalMarks += exam.total_mark * exam.coefficient;
+        totalCoefficients += exam.coefficient;
+      });
+    });
+
+    return totalCoefficients !== 0 ? (totalMarks / totalCoefficients).toFixed(2) : 0;
+  }
+  allMarksheets.map((item) => {
+    const data = calculateAverageMark(item);
+    console.log(data);
+  });
+
+  console.log(allMarksheets);
+
   try {
     const updatedExamCorrectionBatch = await Promise.all(
       marks.map(async ({ user_id, rank }: { user_id: string; rank: string }) => {
@@ -550,8 +617,8 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
     console.log(updatedExamCorrectionBatch);
     return updatedExamCorrectionBatch;
   } catch (error) {
-    console.error('Error in createNoteExamCorrectio:', error);
-    throw new Error('An error occurred while creating/updating exam correction.');
+    console.error('Error in sendRankOfUserExam:', error); // Fix typo in the error message
+    throw new Error('An error occurred while updating exam correction.'); // Simplify the error message
   }
 };
 

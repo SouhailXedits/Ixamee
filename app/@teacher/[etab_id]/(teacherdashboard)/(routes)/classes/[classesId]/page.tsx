@@ -106,11 +106,11 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           +exam,
           user?.user_id,
         ]) as any;
-        console.log(userExamContent);
         return {
           user_id: user?.user_id,
           exam_id: exam,
           rank: 0,
+          classesId: classesId,
           mark: userExamContent[0]?.mark_obtained,
         };
       });
@@ -130,10 +130,11 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         mark.rank = rank;
         prevMark = mark.mark;
       });
-      const marksDataToSend = ExamMarkData?.map(({ user_id, mark, rank }) => ({
+      const marksDataToSend = ExamMarkData?.map(({ user_id, mark, classesId, rank }) => ({
         user_id,
         exam_id: exam,
         mark,
+        classesId: classesId,
         rank,
       }));
       console.log(marksDataToSend);
