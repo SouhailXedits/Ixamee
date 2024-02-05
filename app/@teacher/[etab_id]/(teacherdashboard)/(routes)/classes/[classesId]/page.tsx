@@ -69,6 +69,8 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     // }
   }, [classe]);
 
+
+
   const newData = data
     ?.map((item: any) => {
       return {

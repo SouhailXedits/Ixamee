@@ -531,6 +531,26 @@ export const createNoteExamCorrectio = async ({
 
 export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any[] }) => {
   console.log(marks);
+  const subject = await db.subject.findMany({
+    // where: {
+    //   exams: {
+    //     some: {
+    //       id: +exam_id
+    //     }
+    //   },
+    // },
+    select: {
+      id: true,
+    },
+    where: {
+      exams: {
+        some: {
+          id: +exam_id,
+        },
+      },
+    },
+  });
+  console.log(subject);
   const allMarksheets = await Promise.all(
     marks.map(async (item: any) => {
       console.log(item);
@@ -538,6 +558,9 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
         where: {
           exam: {
             id: +item.exam_id,
+            subject: {
+              id: subject[0].id,
+            },
           },
           user: {
             id: item.user_id,
@@ -547,6 +570,10 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
               },
             },
           },
+
+          // subject: {
+          //   id: subject[0].id
+          // },
           status: 'done',
           is_published: true,
         },
@@ -576,31 +603,27 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
         },
       });
       console.log(markSheets);
-      calculateOverallAverage(markSheets);
+      const avg = calculateOverallAverage(markSheets);
+      console.log(avg);
+
+      try {
+        const infos = await db.userClasseInfos.findMany({
+          where: {
+            user_id: item.user_id,
+            classe_id: item.classesId,
+            subject_id: subject[0].id,
+          },
+          select: {
+            id: true,
+          },
+        });
+        console.log(infos);
+      } catch (error) {
+        console.log(error);
+      }
       return markSheets;
     })
   );
-
-  // function calculateAverageMark(item: any) {
-  //   console.log(item);
-  //   let totalMarks = 0;
-  //   let totalCoefficients = 0;
-
-  //   item.forEach((trimestre: any) => {
-  //     trimestre.exams.forEach((exam: any) => {
-  //       totalMarks += exam.total_mark * exam.coefficient;
-  //       totalCoefficients += exam.coefficient;
-  //     });
-  //   });
-
-  //   return totalCoefficients !== 0 ? (totalMarks / totalCoefficients).toFixed(2) : 0;
-  // }
-
-  // allMarksheets.map((item) => {
-  //   const data = calculateAverageMark(item);
-  //   console.log(data);
-  // });
-  // console.log(allMarksheets);
 
   try {
     const updatedExamCorrectionBatch = await Promise.all(

@@ -103,6 +103,7 @@ model Establishment {
   id            Int @id @default(autoincrement())
   user_id      String?
   classe_id    Int?
+  subject_id   Int?
   average      Float?
   rankInClasse Int?
   
