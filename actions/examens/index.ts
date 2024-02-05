@@ -3,6 +3,7 @@
 
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
 import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
+import { calculateAverageMark, calculateOverallAverage } from '@/app/_utils/calculateAverage';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 interface ExamEstablishment {
@@ -574,30 +575,32 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           rank: true,
         },
       });
+      console.log(markSheets);
+      calculateOverallAverage(markSheets);
       return markSheets;
     })
   );
-  console.log(allMarksheets);
-  function calculateAverageMark(item: any) {
-    console.log(item);
-    let totalMarks = 0;
-    let totalCoefficients = 0;
 
-    item.forEach((trimestre: any) => {
-      trimestre.exams.forEach((exam: any) => {
-        totalMarks += exam.total_mark * exam.coefficient;
-        totalCoefficients += exam.coefficient;
-      });
-    });
+  // function calculateAverageMark(item: any) {
+  //   console.log(item);
+  //   let totalMarks = 0;
+  //   let totalCoefficients = 0;
 
-    return totalCoefficients !== 0 ? (totalMarks / totalCoefficients).toFixed(2) : 0;
-  }
-  allMarksheets.map((item) => {
-    const data = calculateAverageMark(item);
-    console.log(data);
-  });
+  //   item.forEach((trimestre: any) => {
+  //     trimestre.exams.forEach((exam: any) => {
+  //       totalMarks += exam.total_mark * exam.coefficient;
+  //       totalCoefficients += exam.coefficient;
+  //     });
+  //   });
 
-  console.log(allMarksheets);
+  //   return totalCoefficients !== 0 ? (totalMarks / totalCoefficients).toFixed(2) : 0;
+  // }
+
+  // allMarksheets.map((item) => {
+  //   const data = calculateAverageMark(item);
+  //   console.log(data);
+  // });
+  // console.log(allMarksheets);
 
   try {
     const updatedExamCorrectionBatch = await Promise.all(
