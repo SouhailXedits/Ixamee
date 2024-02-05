@@ -508,7 +508,6 @@ export const createNoteExamCorrectio = async ({
       console.log(examCorrection);
       return examCorrection;
     } else {
-      // Update the existing examCorrection if it already exists
       const updatedExamCorrection = await db.examCorrection.updateMany({
         where: {
           exam_id: +exam_id,
@@ -551,79 +550,6 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
     },
   });
   console.log(subject);
-  const allMarksheets = await Promise.all(
-    marks.map(async (item: any) => {
-      console.log(item);
-      const markSheets = await db.examCorrection.findMany({
-        where: {
-          exam: {
-            id: +item.exam_id,
-            subject: {
-              id: subject[0].id,
-            },
-          },
-          user: {
-            id: item.user_id,
-            classe: {
-              some: {
-                id: +item.classesId,
-              },
-            },
-          },
-
-          // subject: {
-          //   id: subject[0].id
-          // },
-          status: 'done',
-          is_published: true,
-        },
-        select: {
-          id: true,
-          mark_obtained: true,
-          exam: {
-            select: {
-              id: true,
-              name: true,
-              total_mark: true,
-              coefficient: true,
-              term: true,
-            },
-            where: {
-              is_archived: false,
-            },
-          },
-          user: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-            },
-          },
-          rank: true,
-        },
-      });
-      console.log(markSheets);
-      const avg = calculateOverallAverage(markSheets);
-      console.log(avg);
-
-      try {
-        const infos = await db.userClasseInfos.findMany({
-          where: {
-            user_id: item.user_id,
-            classe_id: item.classesId,
-            subject_id: subject[0].id,
-          },
-          select: {
-            id: true,
-          },
-        });
-        console.log(infos);
-      } catch (error) {
-        console.log(error);
-      }
-      return markSheets;
-    })
-  );
 
   try {
     const updatedExamCorrectionBatch = await Promise.all(
@@ -643,6 +569,157 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
       })
     );
     console.log(updatedExamCorrectionBatch);
+    await Promise.all(
+      marks.map(async (item: any) => {
+        console.log(item);
+        const markSheets = await db.examCorrection.findMany({
+          where: {
+            exam: {
+              subject: {
+                id: subject[0].id,
+              },
+            },
+            user: {
+              id: item.user_id,
+              classe: {
+                some: {
+                  id: +item.classesId,
+                },
+              },
+            },
+            status: 'done',
+            is_published: true,
+          },
+          select: {
+            id: true,
+            mark_obtained: true,
+            exam: {
+              select: {
+                id: true,
+                name: true,
+                total_mark: true,
+                coefficient: true,
+                term: true,
+                create_at: true,
+              },
+              where: {
+                is_archived: false,
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+            rank: true,
+          },
+        });
+        const groupedExams = markSheets.reduce((result: any, exam: any) => {
+          console.log(exam);
+          const term = exam.exam.term;
+          if (!result[term]) {
+            result[term] = [];
+          }
+          result[term].push({
+            id: exam.id,
+            exam_id: exam.exam.id,
+            name: exam.exam.name,
+            date: exam.exam.create_at.toISOString().split('T')[0],
+            marksObtained: exam.mark_obtained,
+            coefficient: exam.exam.coefficient,
+            totalScore: exam.exam.total_mark,
+            overTwnetyMark: exam.mark_obtained * (20 / exam.exam.total_mark),
+            range: exam.rank,
+          });
+          return result;
+        }, {});
+
+       const isTrimester = Object.keys(groupedExams).some((key) =>
+         key.toLowerCase().includes('trimestre')
+       );
+
+       const terms = isTrimester
+         ? ['trimestre_1', 'trimestre_2', 'trimestre_3']
+         : ['semestre_1', 'semestre_2'];
+
+        const trimesters = terms.map((term) => ({
+          name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
+          exams: groupedExams[term] || [], // Check and add empty array if term has no exams
+        }));
+
+        const averageMark = calculateAverageMark(trimesters);
+
+        const infos = await db.userClasseInfos.findMany({
+          where: {
+            user_id: item.user_id,
+            classe_id: +item.classesId,
+            subject_id: +subject[0].id,
+          },
+          select: {
+            id: true,
+          },
+        });
+        const allClasseInfos = (await db.userClasseInfos.findMany({
+          where: {
+            classe_id: +item.classesId,
+            subject_id: +subject[0].id,
+          },
+        })) as any;
+
+        const sorted = allClasseInfos.sort((a: any, b: any) => b.average - a.average);
+        const ranked = sorted.map((el: any, index: any, array: any) => {
+          const sameAverageAsPrevious = index > 0 && el.average === array[index - 1].average;
+          const rank = sameAverageAsPrevious ? array[index - 1].rank : index + 1;
+          console.log(rank);
+          if (el.user_id === item.user_id) {
+            return {
+              ...el,
+              rankInClasse: rank,
+              average: averageMark,
+            };
+          }
+          return {
+            ...el,
+            rankInClasse: rank,
+          };
+        });
+        console.log(ranked);
+        console.log(infos);
+        const existingInfo = infos.length! == 0;
+
+        for (const item of ranked) {
+          const { user_id, average, classe_id, rankInClasse, subject_id } = item;
+          if (existingInfo) {
+            await db.userClasseInfos.create({
+              data: {
+                user_id,
+                classe_id: classe_id,
+                subject_id: subject_id,
+                average: +average,
+                rankInClasse,
+              },
+            });
+          } else {
+            console.log(user_id, classe_id, subject_id);
+            await db.userClasseInfos.updateMany({
+              where: {
+                user_id,
+                classe_id: classe_id,
+                subject_id: subject_id,
+              },
+              data: {
+                average: +average,
+                rankInClasse,
+              },
+            });
+          }
+        }
+
+        return markSheets;
+      })
+    );
     return updatedExamCorrectionBatch;
   } catch (error) {
     console.error('Error in sendRankOfUserExam:', error); // Fix typo in the error message
@@ -806,3 +883,26 @@ export const editeExamStatus = async ({
 // };
 
 // getRecursiveExamQuestion();
+
+export const getUserClasseInfos = async ({
+  userId,
+  classeId,
+  subjectId,
+}: {
+  userId: string;
+  classeId: number;
+  subjectId: number;
+}) => {
+  const data = await db.userClasseInfos.findMany({
+    where: {
+      user_id: userId,
+      classe_id: classeId,
+      subject_id: subjectId
+    },
+    select: {
+      rankInClasse: true,
+      average: true,
+    },
+  });
+  return data;
+};

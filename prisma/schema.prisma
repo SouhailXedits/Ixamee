@@ -106,8 +106,6 @@ model UserClasseInfos{
   subject_id   Int?
   average      Float?
   rankInClasse Int?
-  
-  
 }
 // Classe Table
 model Classe {

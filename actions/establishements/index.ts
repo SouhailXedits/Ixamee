@@ -20,16 +20,15 @@ export const createEstablishement = async (name: string) => {
 
 export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
   try {
-
     const skip = (page - 1) * pageSize;
-    console.log(skip)
+    console.log(skip);
 
     const estabs = await db.establishment.findMany({
       where: {
         name: {
           contains: name,
           mode: 'insensitive',
-        }
+        },
       },
       skip,
       take: pageSize,
@@ -37,7 +36,7 @@ export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
 
     const totalCount = await db.establishment.count();
 
-    return { data: {estabs, totalCount}, error: undefined };
+    return { data: { estabs, totalCount }, error: undefined };
   } catch (error: any) {
     return {
       data: undefined as any,

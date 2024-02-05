@@ -35,7 +35,13 @@ export function calculateOverallAverage(data:any) {
   }, {});
   console.log(groupedExams);
 
-  const terms = ['trimestre_1', 'trimestre_2', 'trimestre_3'];
+  const isTrimester = Object.keys(groupedExams).some((key) =>
+    key.toLowerCase().includes('trimestre')
+  );
+
+  const terms = isTrimester
+    ? ['trimestre_1', 'trimestre_2', 'trimestre_3']
+    : ['semestre_1', 'semestre_2'];
 
   const trimesters = terms.map((term) => ({
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
@@ -44,6 +50,6 @@ export function calculateOverallAverage(data:any) {
 
   const averageMark = calculateAverageMark(trimesters);
   console.log(averageMark);
-  return averageMark.toString();
+  return averageMark;
 }
 

@@ -33,22 +33,22 @@ const Student = () => {
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
   const subjects = queryClient.getQueryData(['teacherSubject']) as any;
 
-  const defaultSubject = subjects[0]?.id;
+  const defaultSubject = subjects.length && subjects[0]?.id;
 
 
   const [filters, setFilters] = useState({
     term: defaultTerm,
-    classe_id: classes?.data[0]?.id,
-    subject_id: subjects[0]?.id,
+    classe_id: classes?.data?.length && classes?.data[0]?.id,
+    subject_id: subjects?.length && subjects[0]?.id,
   });
   queryClient.setQueryData(['classe-filters'], filters.classe_id);
 
   useEffect(() => {
-    setFilters({ ...filters, classe_id: classes?.data[0]?.id });
+    classes?.data?.length && setFilters({ ...filters, classe_id: classes?.data[0]?.id });
   }, [classes?.data]);
 
 
-  const { data: markSheets, error } = useQuery({
+  const { data: markSheets } = useQuery({
     queryKey: ['mark-sheets', filters.classe_id, filters.term, filters.subject_id],
     queryFn: async () => await getMarkSheets(filters),
   });
@@ -97,8 +97,7 @@ const Student = () => {
 
       const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
       const overTwentyAvg = (20 / exam.total_mark) * average;
-      console.log(overTwentyAvg)
-      
+      console.log(overTwentyAvg);
 
       return {
         id: exam.id,
@@ -110,9 +109,7 @@ const Student = () => {
         overTwentyAvg: overTwentyAvg,
       };
     });
-     console.log(examsInfo);
-   
-
+    console.log(examsInfo);
 
     // const totalMarksObtained = examsInfo.reduce(
     //   (acc: any, exam: any) => acc + exam.marksObtained,
@@ -125,10 +122,11 @@ const Student = () => {
         (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
         0
       ) / maxCoefficient;
-
+        // console.log(userData[0]);
     return {
       id: userId,
       name: userData[0].user.name,
+      image: userData[0].user.image,
       exams: examsInfo,
       average: overallAverage,
     };
