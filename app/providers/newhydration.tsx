@@ -5,7 +5,15 @@ import {
   getCountOfStudentSubjects,
   getStudentMarksheet,
 } from '@/actions/dashboard';
-import { getAllExam, getClasseOfUser, getEstablishmentOfUser, getMe, getSubjectOfUser, getSubjectOfUserById, getTermOfUser } from '@/actions/examens';
+import {
+  getAllExam,
+  getClasseOfUser,
+  getEstablishmentOfUser,
+  getMe,
+  getSubjectOfUser,
+  getSubjectOfUserById,
+  getTermOfUser,
+} from '@/actions/examens';
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 export default async function NewHydration({
@@ -15,7 +23,7 @@ export default async function NewHydration({
 }: {
   children: React.ReactNode;
   etab_id: any;
-  user_id: string;
+  user_id: any;
 }) {
   console.log(etab_id);
   const queryClient = new QueryClient();
@@ -29,15 +37,13 @@ export default async function NewHydration({
     queryFn: async () => await getEstablishmentOfUser(user_id),
   });
 
-
-
-    await queryClient.prefetchQuery({
-      queryKey: ['teacherTerm', user_id, etab_id],
-      queryFn: async () => await getTermOfUser(user_id),
-    });
-      await queryClient.prefetchQuery({
-          queryKey: ['classe', etab_id],
-          queryFn: async () => await getAllClasse({ user_id, etab_id }),
+  await queryClient.prefetchQuery({
+    queryKey: ['teacherTerm', user_id, etab_id],
+    queryFn: async () => await getTermOfUser(user_id),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['classe', etab_id],
+    queryFn: async () => await getAllClasse({ user_id, etab_id }),
   });
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;

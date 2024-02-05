@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
-import { calcAllMark } from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
+import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Page({ params }: { params: { examenId: string } }) {
   const [sum, setSum] = useState(0);

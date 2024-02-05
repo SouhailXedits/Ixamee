@@ -45,7 +45,7 @@ enum Role {
   TEACHER
   ADMIN
 }
- 
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -99,7 +99,15 @@ model Establishment {
   user_establishment User[]   @relation("UserEstablishmentToUser")
   classes            Classe[] @relation("EstablishmentToClasse")
 }
- 
+ model UserClasseInfos{
+  id            Int @id @default(autoincrement())
+  user_id      String?
+  classe_id    Int?
+  average      Float?
+  rankInClasse Int?
+  
+  
+}
 // Classe Table
 model Classe {
   id            Int             @id @default(autoincrement())

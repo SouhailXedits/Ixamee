@@ -116,21 +116,21 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       });
 
       // Sort ExamMarkData array in descending order based on exam_content
-      ExamMarkData?.sort((a, b) => b.mark - a.mark);
+      ExamMarkData?.sort((a: any, b: any) => b.mark - a.mark);
 
       // Assign ranks to users
       // Assign ranks to users
       let rank = 1 as any;
       let prevMark = null as any;
 
-      ExamMarkData?.forEach((mark) => {
+      ExamMarkData?.forEach((mark: any) => {
         if (prevMark !== null && mark.mark < prevMark) {
           rank++;
         }
         mark.rank = rank;
         prevMark = mark.mark;
       });
-      const marksDataToSend = ExamMarkData?.map(({ user_id, mark, classesId, rank }) => ({
+      const marksDataToSend = ExamMarkData?.map(({ user_id, mark, classesId, rank }: any) => ({
         user_id,
         exam_id: exam,
         mark,

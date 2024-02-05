@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Editor from '../../../../../../../../components/shared-components/toolbar-editor';
 import { Input } from '@/components/ui/input';
-import { calculerExerciceMark } from './calculateChildrenMarks';
 import { cn } from '@/lib/utils';
+import { calculerExerciceMark } from '@/app/_utils/calculateChildrenMarks';
 
 export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: any) => {
   const onChange = (content: string) => {
