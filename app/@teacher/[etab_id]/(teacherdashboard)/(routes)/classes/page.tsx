@@ -10,6 +10,7 @@ export default function Classes() {
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
   const data = queryClient.getQueryData(['classe', etab_id]) as any;
+  console.log('dsd');
 
   // to DO Scelton
 

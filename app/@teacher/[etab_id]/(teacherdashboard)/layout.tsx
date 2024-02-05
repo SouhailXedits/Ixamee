@@ -31,7 +31,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   // });
 
   const { collapsed } = useSidebar((state) => state);
-  
+  console.log(params);
   return (
     <div className="h-full">
       <>

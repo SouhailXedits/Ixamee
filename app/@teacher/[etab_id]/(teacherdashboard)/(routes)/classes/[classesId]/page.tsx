@@ -34,6 +34,7 @@ interface classe {
   exam_classe: [];
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
+  console.log(params);
   const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
 
   const queryClient = useQueryClient();
@@ -68,8 +69,6 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     setExam(classe?.exam_classe[0]?.id + '');
     // }
   }, [classe]);
-
-
 
   const newData = data
     ?.map((item: any) => {

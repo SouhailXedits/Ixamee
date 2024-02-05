@@ -26,6 +26,8 @@ export default async function NewHydration({
   user_id: any;
 }) {
   console.log(etab_id);
+  console.log(user_id);
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
