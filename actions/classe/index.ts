@@ -413,7 +413,6 @@ export const getStudentClassCount = async ({
 };
 
 export const getStudentOfClasse = async (classe_id: number) => {
-  console.log(classe_id);
   const res = await db.user.findMany({
     where: {
       role: 'STUDENT',
@@ -427,7 +426,6 @@ export const getStudentOfClasse = async (classe_id: number) => {
       name: 'asc',
     },
   });
-  console.log(res);
   return res;
 };
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
@@ -452,7 +450,6 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
       user_id: true,
     },
   });
-  console.log('🚀 ~ getCorrectionOfUser ~ res:', res);
   return res;
 
   // const res = await db.examCorrection.findMany({
@@ -647,20 +644,18 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
     select: {
       correction_exam_content: true,
       mark_obtained: true,
-      feedback: true
+      feedback: true,
     },
   });
 
   return data;
 };
 
-
 export const getNameClasseByClasseId = async (classe_id: number) => {
-  console.log(classe_id, );
+  console.log(classe_id);
   const data = await db.classe.findMany({
     where: {
       id: classe_id,
-
     },
     select: {
       name: true,
@@ -669,4 +664,3 @@ export const getNameClasseByClasseId = async (classe_id: number) => {
 
   return data;
 };
-

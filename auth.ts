@@ -45,11 +45,11 @@ export const {
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role ;
+        session.user.role = token.role;
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role ;
+        session.user.role = token.role;
       }
       return session;
     },
@@ -68,5 +68,7 @@ export const {
   },
   adapter: PrismaAdapter(db),
   session: { strategy: 'jwt' },
+  // TODO
+  trustHost: true,
   ...authConfig,
 });

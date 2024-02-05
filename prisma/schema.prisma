@@ -45,7 +45,7 @@ enum Role {
   TEACHER
   ADMIN
 }
-
+ 
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -99,10 +99,11 @@ model Establishment {
   user_establishment User[]   @relation("UserEstablishmentToUser")
   classes            Classe[] @relation("EstablishmentToClasse")
 }
- model UserClasseInfos{
+model UserClasseInfos{
   id            Int @id @default(autoincrement())
   user_id      String?
   classe_id    Int?
+  subject_id   Int?
   average      Float?
   rankInClasse Int?
   
@@ -173,9 +174,9 @@ model ExamCorrection {
   published_at  DateTime?
   rank          Int?
 }
-
-
-
+ 
+ 
+ 
 enum Status {
   pending
   done
@@ -183,3 +184,4 @@ enum Status {
   notClassified
   notCorrected
 }
+ 
