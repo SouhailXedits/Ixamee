@@ -109,7 +109,7 @@ export const CorrectionTag = ({
   </div>
 );
 
-export default function MarkSheetStudentList({ data: realData }: any) {
+export default function MarkSheetStudentList({ data: realData, filters }: any) {
   console.log(realData);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -118,11 +118,12 @@ export default function MarkSheetStudentList({ data: realData }: any) {
   const router = useRouter();
   const path = usePathname();
 
-  const uniqueExams = realData[0].exams.map((exam: any, i: number) => ({ id: i, name: exam.name }));
+  const maxLength = Math.max(...realData.map((student: any) => student.exams.length));
+  const examsArray =
+    realData.find((student: any) => student.exams.length === maxLength)?.exams || [];
 
-  const examsArray = Object.values(uniqueExams);
-
-  console.log(examsArray);
+  const sortedData = [...realData].sort((a, b) => b.average - a.average);
+  const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
 
   const columns: ColumnDef<any>[] = [
     {
@@ -162,70 +163,32 @@ export default function MarkSheetStudentList({ data: realData }: any) {
             height={42}
             className="rounded-full"
           />
-          {row.getValue('name')}
+          {row.original.name}
         </div>
       ),
     },
     ...examsArray.map((exam: any) => ({
-      accessorKey: exam.name.toLowerCase(), // Use exam name as accessorKey
+      accessorKey: `exams.${exam.name.toLowerCase()}.average`, // Updated accessorKey
       header: () => {
-        return <span className="text-[#1B8392]">{exam.name}</span>;
+        return (
+          <p className=" flex flex-col">
+            {' '}
+            <span className="text-[#1B8392]">{exam.name}</span>
+            <span className="text-[#1B8392]/80 text-xs">coefficient : {exam.coefficient}</span>
+          </p>
+        );
       },
       cell: ({ row }: any) => (
-        <div className="text-[#727272]">{row.getValue(exam.name.toLowerCase())}</div>
+        console.log(exam),
+        (
+          <div className="text-[#727272]">
+            {row.original.exams.find((e: any) => e.name.toLowerCase() === exam.name.toLowerCase())
+              ?.average || '--'}{' '}
+            / {exam.totalMarks}
+          </div>
+        )
       ),
     })),
-
-    //  {
-    //    accessorKey: 'dc1',
-    //    header: () => {
-    //      return <span className="text-[#1B8392]">DC1</span>;
-    //    },
-    //    cell: ({ row }) => <div className="text-[#727272]">{row.getValue('dc1')}</div>,
-    //  },
-    //  {
-    //    accessorKey: 'dc2',
-    //    header: () => {
-    //      return <span className="text-[#1B8392]">DC2</span>;
-    //    },
-    //    cell: ({ row }) => <div className="text-[#727272]">{row.getValue('dc2')}</div>,
-    //  },
-    //  {
-    //    accessorKey: 'ds1',
-    //    header: () => {
-    //      return (
-    //        <span className="text-[#1B8392] bg-mainGreen/30 h-full w-full flex items-center justify-center ">
-    //          DS1
-    //        </span>
-    //      );
-    //    },
-    //    cell: ({ row }) => <div className="text-[#727272]">{row.getValue('ds1')}</div>,
-    //  },
-    //   {
-    //   accessorKey: 'average',
-    //   header: ({ column }) => (
-    //     <Button
-    //       className="text-[#1B8392]  hover:text-[#1B8392]"
-    //       variant="ghost"
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       Average
-    //       <ArrowUpDown className="w-4 h-4 ml-2" />
-    //     </Button>
-    //   ),
-    //   cell: ({ row }) => {
-    //     const dc1 = parseFloat(row.getValue('dc1'));
-    //     const dc2 = parseFloat(row.getValue('dc2'));
-    //     const ds1 = parseFloat(row.getValue('ds1'));
-
-    //     const average = (dc1 * coefficient + dc2 * coefficient + ds1 * coefficient).toFixed(2);
-    //     const avg = average + '';
-    //     console.log(avg, '🇹🇳')
-
-    //     return <div className="text-[#727272]">{average + ''}</div>;
-    //   },
-    //   enableSorting: true,
-    // },
     {
       accessorKey: 'average',
       header: ({ column }) => {
@@ -240,15 +203,9 @@ export default function MarkSheetStudentList({ data: realData }: any) {
           </Button>
         );
       },
-      // cell: ({ row }) => <div className="lowercase text-[#727272]">{row.getValue('email')}</div>,
       cell: ({ row }) => {
-        //   const dc1 = parseFloat(row.getValue('dc1'));
-        //   const dc2 = parseFloat(row.getValue('dc2'));
-        //   const ds1 = parseFloat(row.getValue('ds1'));
+        const average = row.original.average as number;
 
-        //   const average = ((dc1 * coefficient + dc2 * coefficient + ds1 * coefficient)/3).toFixed(2);
-        // console.log(average)
-        const average = row.getValue('average') as number;
         return (
           <div className={cn('flex justify-center items-center')}>
             <p
@@ -259,29 +216,30 @@ export default function MarkSheetStudentList({ data: realData }: any) {
                 average < 10 && 'text-[#F04438]  bg-[#F04438]/30'
               )}
             >
-              {average.toFixed(2)}/20
+              {average.toFixed(2)} / 20
             </p>
           </div>
         );
       },
     },
     {
-      accessorKey: 'rang',
+      accessorKey: 'rank',
       header: () => {
         return <span className="text-[#1B8392]">Rang</span>;
       },
       cell: ({ row }) => (
         <div className="w-10 h-[21px] p-2.5 rounded-[10px]  flex-col justify-center items-center gap-2.5 inline-flex">
           <div className="text-center text-[#1B8392] text-sm font-semibold ">
-            {row.getValue('rang')}
+            {row.original.rank}
           </div>
         </div>
       ),
     },
+    // ...
   ];
 
   const table = useReactTable({
-    data,
+    data: realData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -300,12 +258,17 @@ export default function MarkSheetStudentList({ data: realData }: any) {
   });
 
   function handleStudentClick(id: string) {
-    console.log(id);
-    console.log(path);
     const currPath = path;
-    router.push(`${currPath}/${id}`);
+    router.push(
+      `${currPath}/classe/${filters.classe_id}/subject/${filters.subject_id}/student/${id}`
+    );
   }
 
+  console.log(filters);
+
+  console.log(table.getHeaderGroups(), 'table');
+
+  if (realData.length === 0) return <p>Pas de bulletins à afficher.</p>;
   return (
     <div className="w-full">
       <div className=" rounded-md ">

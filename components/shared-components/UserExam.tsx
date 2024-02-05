@@ -1,8 +1,21 @@
+"use client"
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
 
 function UserExam({ exam }: any) {
+  const params = useParams();
+  const router = useRouter();
+  console.log(params)
   console.log(exam);
+
+  function handleRedirect() {
+    router.push(
+      `/${params.etab_id}/correction/${exam.exam_id}`
+    );
+  }
+
+  //1/acelsss / 16 / students / cls33eyik000040q9bm7811vv / correction / 64;
   return (
     <div className="border-l-2 border-orangeColor/80 flex gap-14 p-2 rounded justify-between">
       <div className=" basis-[50%]">
@@ -17,10 +30,14 @@ function UserExam({ exam }: any) {
       </div>
       <div className=" flex items-center flex-col gap-1 opacity-50 text-mainGreen">
         <p>rang </p>
-        <p>{exam.rang}</p>
+        <p>{exam.range}</p>
       </div>
       <div>
-        <Button name="bnt" className=" bg-mainGreen p-7 py-1 flex gap-2 items-center">
+        <Button
+          onClick={handleRedirect}
+          name="bnt"
+          className=" bg-mainGreen p-7 py-1 flex gap-2 items-center"
+        >
           Examen <Image src="/expand-icon-white.svg" alt="expand icon" height={20} width={20} />
         </Button>
       </div>

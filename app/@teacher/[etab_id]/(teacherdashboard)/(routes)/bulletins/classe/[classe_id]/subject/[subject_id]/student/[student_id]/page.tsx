@@ -1,14 +1,18 @@
 'use client';
-import { getNameClasseByClasseId } from '@/actions/classe';
-import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
-import { calculateAverageMark } from '@/app/_utils/calculateAverage';
-import Loading from '@/app/loading';
-import TermCard from '@/components/shared-components/TermCard';
-import { Skeleton } from '@/components/ui/skeleton';
-import { getUserById } from '@/data/user';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+
 import Image from 'next/image';
+import { ImportUneClasse } from '@/components/modals/importer-une-classe';
+import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useParams, useRouter } from 'next/navigation';
+import UserExam from '../../../../../../../../../../../../components/shared-components/UserExam';
+import TermCard from '@/components/shared-components/TermCard';
+import { useQuery } from '@tanstack/react-query';
+import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
+import { getUserById } from '@/data/user';
+import Loading from '@/app/loading';
+import { getNameClasseByClasseId } from '@/actions/classe';
+import { Skeleton } from '@/components/ui/skeleton';
+import { calculateAverageMark } from '../../../../../../../../../../../_utils/calculateAverage';
 
 // const trimesters = [
 //   {
@@ -77,20 +81,18 @@ import { useParams, useRouter } from 'next/navigation';
 const Student = () => {
   const params = useParams();
   const router = useRouter();
-  const queryClient = useQueryClient()
   // const currentId = params.bulletin_id;
   function handleGoBack() {
     router.back();
   }
-  const classeId = params.etab_id;
-  console.log(classeId)
+  const classeId = params.classe_id;
   const subjectId = params.subject_id;
-  console.log(subjectId)
-  const user = queryClient.getQueryData(["user"]) as any;
+  const currentId = params.student_id;
 
-  const currentId = user?.id;
-
-
+  const { data: user, isPending } = useQuery({
+    queryKey: ['user-marksheet', currentId],
+    queryFn: async () => await getUserById(currentId + ''),
+  });
   console.log(user);
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
@@ -140,7 +142,7 @@ const Student = () => {
 
   console.log('Average Mark:', averageMark);
   console.log(trimesters);
-  if (isPendingmMarksheet) return <Loading />;
+  if (isPending || isPendingmMarksheet) return <Loading />;
 
   return (
     <main className="flex flex-col gap-12 p-10">

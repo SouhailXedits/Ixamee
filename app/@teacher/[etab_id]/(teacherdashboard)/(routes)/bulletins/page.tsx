@@ -15,6 +15,7 @@ import { useParams } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
 import { getMarkSheets } from '@/actions/mark-sheets/actions';
+import Loading from '@/app/loading';
 
 const Student = () => {
   const params = useParams();
@@ -23,107 +24,107 @@ const Student = () => {
   const user = queryClient.getQueryData(['user']) as any;
 
   const etab_id = Number(params.etab_id);
-  console.log(etab_id);
 
   const { data: classes } = useQuery({
     queryKey: ['classe'],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
 
-  const data = [
-    {
-      id: 'm5gr84i9',
-      rang: 1,
-      name: 'Souhail Brahmi',
-      email: 'ken99@yahoo.com',
-      dc1: '19.3',
-      dc2: '12.3',
-      ds1: '16.5',
-      average: 8,
-    },
-    {
-      id: 'derv1ws0',
-      rang: 3,
-
-      name: 'Firas Latrach',
-      email: 'Monserrat44@gmail.com',
-      dc1: '13.2',
-      dc2: '12.3',
-      ds1: '18',
-      average: 10.0,
-    },
-    {
-      id: 'derdv1ws0',
-      rang: 2,
-
-      name: 'ahmad ahmad',
-      email: 'Monsse44@gmail.com',
-      dc1: '13.2',
-      dc2: '12.3',
-      ds1: '19',
-      average: 16,
-    },
-  ];
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
+  const subjects = queryClient.getQueryData(['teacherSubject']) as any;
+
+  const defaultSubject = subjects[0]?.id;
+
 
   const [filters, setFilters] = useState({
     term: defaultTerm,
-    classe_id: classes?.data[0].id,
+    classe_id: classes?.data[0]?.id,
+    subject_id: subjects[0]?.id,
   });
+  queryClient.setQueryData(['classe-filters'], filters.classe_id);
 
   useEffect(() => {
-    setFilters({ ...filters, classe_id: classes?.data[0].id });
-  }, [classes]);
-  console.log(filters);
+    setFilters({ ...filters, classe_id: classes?.data[0]?.id });
+  }, [classes?.data]);
+
 
   const { data: markSheets, error } = useQuery({
-    queryKey: ['mark-sheets', filters.classe_id, filters.term],
+    queryKey: ['mark-sheets', filters.classe_id, filters.term, filters.subject_id],
     queryFn: async () => await getMarkSheets(filters),
   });
 
   console.log(markSheets);
 
-  const groupedData = markSheets?.data.reduce((acc:any, item:any) => {
+  const groupedData = markSheets?.data.reduce((acc: any, item: any) => {
     const userId = item.user.id;
-
-    // Create a new array for the user if not exists
     if (!acc[userId]) {
       acc[userId] = [];
     }
-
-    // Push the item into the user's array
     acc[userId].push(item);
 
     return acc;
   }, {});
 
-  console.log(groupedData);
-  if(!groupedData) return null
+  if (!groupedData) return <Loading />;
+
+
+  let maxCoefficient = 0;
+
+  // Iterate through each user's data
+  for (const userId in groupedData) {
+    const userMarks = groupedData[userId];
+
+    const weightedCoef = userMarks.reduce((sum:any, entry:any) => {
+      const weightedMark = entry.exam.coefficient;
+      return sum + weightedMark;
+    }, 0);
+
+    // Update maxWeightedTotalMarkSum if the current sum is higher
+    if (weightedCoef > maxCoefficient) {
+      maxCoefficient = weightedCoef;
+    }
+  }
+  console.log(maxCoefficient);
+
+
+
 
   const resultArray = Object?.keys(groupedData).map((userId) => {
     const userData = groupedData[userId];
 
-    // Calculate average for each user
     const examsInfo = userData.map((examData: any) => {
       const { id, exam } = examData;
 
-      // Calculate average for each exam
-      const average = (examData.mark_obtained * exam.coefficient) / exam.total_mark;
+      const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
+      const overTwentyAvg = (20 / exam.total_mark) * average;
+      console.log(overTwentyAvg)
+      
 
       return {
+        id: exam.id,
         name: exam.name,
         marksObtained: examData.mark_obtained,
         totalMarks: exam.total_mark,
         coefficient: exam.coefficient,
-        average,
+        average: average,
+        overTwentyAvg: overTwentyAvg,
       };
     });
+     console.log(examsInfo);
+   
 
-    // Calculate overall average for the user
-    const totalCoefficient = examsInfo.reduce((acc: any, exam:any) => acc + exam.coefficient, 0);
-    const overallAverage =
-      examsInfo.reduce((acc: any, exam: any): any => acc + exam.average * exam.coefficient, 0) /
-      totalCoefficient;
+
+    // const totalMarksObtained = examsInfo.reduce(
+    //   (acc: any, exam: any) => acc + exam.marksObtained,
+    //   0
+    // );
+    // const totalCoefficient = examsInfo.reduce((acc: any, exam: any) => acc + exam.coefficient, 0);
+    // console.log(totalCoefficient);
+    let overallAverage =
+      examsInfo.reduce(
+        (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
+        0
+      ) / maxCoefficient;
 
     return {
       id: userId,
@@ -133,7 +134,11 @@ const Student = () => {
     };
   });
 
-  console.log(resultArray);
+   console.log(resultArray);
+
+  const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
+  const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
+  console.log(rankedData)
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -153,15 +158,6 @@ const Student = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          {/* importer */}
-          {/* <ImportUneClasse >
-            <div className=" justify-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
-              <Image src="/download-icon.svg" alt="download icon" width={20} height={20} />
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Télécharger en pdf
-              </div>
-            </div>
-          </ImportUneClasse> */}
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
@@ -172,19 +168,12 @@ const Student = () => {
             />
           </div>
 
-          {/* <AjouterUnEtudiant>
-            <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Ajouter un étudiant
-              </div>
-            </div>
-          </AjouterUnEtudiant> */}
-
           <Select
             defaultValue={defaultTerm}
             onValueChange={(value) => {
               setFilters({ ...filters, term: value });
             }}
+            value={filters.term}
           >
             <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
               {/* {user.term === 'TRIMESTRE' && <SelectItem value="tremester1">Trimester 1</SelectItem>}
@@ -215,6 +204,34 @@ const Student = () => {
               )}
             </SelectContent>
           </Select>
+          <Select
+            defaultValue={defaultSubject}
+            onValueChange={(value) => {
+              setFilters({ ...filters, subject_id: value });
+            }}
+            value={filters.subject_id}
+          >
+            <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
+              {/* {user.term === 'TRIMESTRE' && <SelectItem value="tremester1">Trimester 1</SelectItem>}
+              {user.term === 'SEMESTRE' && <SelectItem value="semester1">Semestre 1</SelectItem>} */}
+              <SelectValue
+                placeholder={
+                  <div className="flex items-center">
+                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
+                    <span className="ml-2 text-[#1B8392] text-base  ">Period</span>
+                  </div>
+                }
+              />
+            </SelectTrigger>
+
+            <SelectContent>
+              {subjects?.map((subject: any) => (
+                <SelectItem value={subject.id} key={subject.id}>
+                  {subject.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           {classes?.data ? (
             <Select
@@ -222,6 +239,7 @@ const Student = () => {
               onValueChange={(value) => {
                 setFilters({ ...filters, classe_id: value });
               }}
+              value={filters.classe_id}
             >
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
                 <SelectValue
@@ -250,7 +268,7 @@ const Student = () => {
       </nav>
 
       <div>
-        <MarkSheetStudentList data={resultArray} />
+        <MarkSheetStudentList data={rankedData} filters = {filters} />
       </div>
     </main>
   );

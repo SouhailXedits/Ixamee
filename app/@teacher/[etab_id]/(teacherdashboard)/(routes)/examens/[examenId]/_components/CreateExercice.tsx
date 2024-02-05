@@ -2,7 +2,7 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { CreateQuestion } from './CreateQuestion';
 import { cn } from '@/lib/utils';
-import { calculateChildrenMarks, calculerExerciceMark } from './calculateChildrenMarks';
+import { calculerExerciceMark } from '@/app/_utils/calculateChildrenMarks';
 
 export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) => {
   if (!data) return;
