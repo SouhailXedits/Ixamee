@@ -13,6 +13,7 @@ import Loading from '@/app/loading';
 import { getNameClasseByClasseId } from '@/actions/classe';
 import { Skeleton } from '@/components/ui/skeleton';
 import { calculateAverageMark } from '../../../../../../../../../../../_utils/calculateAverage';
+import { getUserClasseInfos } from '@/actions/examens';
 
 // const trimesters = [
 //   {
@@ -85,30 +86,37 @@ const Student = () => {
   function handleGoBack() {
     router.back();
   }
-  const classeId = params.classe_id;
-  const subjectId = params.subject_id;
-  const currentId = params.student_id;
+  const classeId = Number(params.classe_id);
+  const subjectId = Number(params.subject_id);
+  const currentId = params.student_id.toString();
 
   const { data: user, isPending } = useQuery({
     queryKey: ['user-marksheet', currentId],
     queryFn: async () => await getUserById(currentId + ''),
   });
-  console.log(user);
+  // console.log(user);
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
     queryKey: ['marksheet', currentId],
     queryFn: async () => getMarksheetByUserId(+classeId, currentId + '', +subjectId),
   });
-  console.log(marksheet);
+  // console.log(marksheet);
 
   const { data: classeName, isPending: classeNamePending } = useQuery<any>({
     queryKey: ['classeName', classeId],
     queryFn: async () => await getNameClasseByClasseId(+classeId),
   });
-  console.log(classeName);
+
+  const { data: userClasseInfos, isPending: userClasseInfosPending } = useQuery<any>({
+    queryKey: ['userClasseInfos', currentId],
+
+    queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
+  });
+  console.log(userClasseInfos);
+  // console.log(classeName);
 
   const examsData = marksheet?.data || [];
-  console.log(examsData);
+  // console.log(examsData);
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
     console.log(exam);
@@ -130,8 +138,13 @@ const Student = () => {
     return result;
   }, {});
   console.log(groupedExams);
+  const isTrimester = Object.keys(groupedExams).some((key) =>
+    key.toLowerCase().includes('trimestre')
+  );
 
-  const terms = ['trimestre_1', 'trimestre_2', 'trimestre_3'];
+  const terms = isTrimester
+    ? ['trimestre_1', 'trimestre_2', 'trimestre_3']
+    : ['semestre_1', 'semestre_2'];
 
   const trimesters = terms.map((term) => ({
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
@@ -139,9 +152,6 @@ const Student = () => {
   }));
 
   const averageMark = calculateAverageMark(trimesters);
-
-  console.log('Average Mark:', averageMark);
-  console.log(trimesters);
   if (isPending || isPendingmMarksheet) return <Loading />;
 
   return (
@@ -202,8 +212,19 @@ const Student = () => {
         ))}
       </div>
       <div className=" flex w-full justify-end gap-2 text-white">
-        <p className=" p-2 bg-orangeColor rounded">Rang: -</p>
-        <p className=" p-2 bg-mainGreen rounded">Moyenne génerale: {averageMark}/20</p>
+        {userClasseInfosPending ? (
+          <Skeleton className="" />
+        ) : (
+          <>
+            {' '}
+            <p className=" p-2 bg-orangeColor rounded">
+              Rang: {userClasseInfos[0]?.rankInClasse || '-'}
+            </p>{' '}
+            <p className=" p-2 bg-mainGreen rounded">
+              Moyenne génerale: {userClasseInfos[0]?.average}/20
+            </p>
+          </>
+        )}
       </div>
     </main>
   );

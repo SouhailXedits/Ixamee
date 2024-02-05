@@ -1,5 +1,6 @@
 'use client';
 import { getNameClasseByClasseId } from '@/actions/classe';
+import { getUserClasseInfos } from '@/actions/examens';
 import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
 import { calculateAverageMark } from '@/app/_utils/calculateAverage';
 import Loading from '@/app/loading';
@@ -82,22 +83,29 @@ const Student = () => {
   function handleGoBack() {
     router.back();
   }
-  const classeId = params.etab_id;
+  const classeId = Number(params.etab_id);
   console.log(classeId)
-  const subjectId = params.subject_id;
+  const subjectId = Number(params.subject_id);
   console.log(subjectId)
   const user = queryClient.getQueryData(["user"]) as any;
 
   const currentId = user?.id;
 
 
-  console.log(user);
+  // console.log(user);
+
+  const { data: userClasseInfos, isPending: userClasseInfosPending } = useQuery<any>({
+    queryKey: ['userClasseInfos', currentId],
+
+    queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
+  });
+  // console.log(userClasseInfos);
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
     queryKey: ['marksheet', currentId],
     queryFn: async () => getMarksheetByUserId(+classeId, currentId + '', +subjectId),
   });
-  console.log(marksheet);
+  // console.log(marksheet);
 
   const { data: classeName, isPending: classeNamePending } = useQuery<any>({
     queryKey: ['classeName', classeId],
@@ -128,7 +136,14 @@ const Student = () => {
   }, {});
   console.log(groupedExams);
 
-  const terms = ['trimestre_1', 'trimestre_2', 'trimestre_3'];
+  // console.log(groupedExams)
+  const isTrimester = Object.keys(groupedExams).some((key) =>
+    key.toLowerCase().includes('trimestre')
+  );
+
+  const terms = isTrimester
+    ? ['trimestre_1', 'trimestre_2', 'trimestre_3']
+    : ['semestre_1', 'semestre_2'];
 
   const trimesters = terms.map((term) => ({
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
@@ -199,8 +214,19 @@ const Student = () => {
         ))}
       </div>
       <div className=" flex w-full justify-end gap-2 text-white">
-        <p className=" p-2 bg-orangeColor rounded">Rang: -</p>
-        <p className=" p-2 bg-mainGreen rounded">Moyenne génerale: {averageMark}/20</p>
+        {userClasseInfosPending ? (
+          <Skeleton className="" />
+        ) : (
+          <>
+            {' '}
+            <p className=" p-2 bg-orangeColor rounded">
+              Rang: {userClasseInfos[0]?.rankInClasse || '-'}
+            </p>{' '}
+            <p className=" p-2 bg-mainGreen rounded">
+              Moyenne génerale: {userClasseInfos[0]?.average}/20
+            </p>
+          </>
+        )}
       </div>
     </main>
   );
