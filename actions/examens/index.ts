@@ -636,13 +636,13 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           return result;
         }, {});
 
-       const isTrimester = Object.keys(groupedExams).some((key) =>
-         key.toLowerCase().includes('trimestre')
-       );
+        const isTrimester = Object.keys(groupedExams).some((key) =>
+          key.toLowerCase().includes('trimestre')
+        );
 
-       const terms = isTrimester
-         ? ['trimestre_1', 'trimestre_2', 'trimestre_3']
-         : ['semestre_1', 'semestre_2'];
+        const terms = isTrimester
+          ? ['trimestre_1', 'trimestre_2', 'trimestre_3']
+          : ['semestre_1', 'semestre_2'];
 
         const trimesters = terms.map((term) => ({
           name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
@@ -728,19 +728,19 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
 };
 export const editeExamFeedback = async ({
   exam_id,
-  user_id,
-  Feedback,
+  student_id,
+  newFeedback,
 }: {
-  user_id: string;
+  student_id: string;
   exam_id: string;
-  Feedback: any;
+  newFeedback: any;
 }) => {
-  console.log(exam_id, user_id);
+  console.log(exam_id, student_id, newFeedback);
   try {
     const existingExamCorrection = await db.examCorrection.findMany({
       where: {
         exam_id: +exam_id,
-        user_id: user_id,
+        user_id: student_id,
       },
     });
 
@@ -756,10 +756,10 @@ export const editeExamFeedback = async ({
           },
           user: {
             connect: {
-              id: user_id,
+              id: student_id,
             },
           },
-          feedback:Feedback,
+          feedback: newFeedback,
         },
       });
       console.log(examCorrection);
@@ -769,13 +769,12 @@ export const editeExamFeedback = async ({
       const updatedExamCorrection = await db.examCorrection.updateMany({
         where: {
           exam_id: +exam_id,
-          user_id: user_id,
+          user_id: student_id,
         },
         data: {
-          feedback: Feedback,
+          feedback: newFeedback,
         },
       });
-      console.log(updateExam);
       return updatedExamCorrection;
     }
   } catch (error) {
@@ -897,7 +896,7 @@ export const getUserClasseInfos = async ({
     where: {
       user_id: userId,
       classe_id: classeId,
-      subject_id: subjectId
+      subject_id: subjectId,
     },
     select: {
       rankInClasse: true,

@@ -39,7 +39,12 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
       feedback,
       description: feedbackMessage,
     };
-    editeFeedback(params.exam_id, params.student_id, newfedback);
+    const obj = {
+      exam_id: params.exam_id,
+      student_id: params.student_id,
+      newFeedback : newfedback,
+    };
+    editeFeedback(obj);
     console.log(newfedback);
   };
   return (
