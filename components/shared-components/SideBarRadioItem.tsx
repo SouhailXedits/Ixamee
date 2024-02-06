@@ -26,7 +26,7 @@ const FormSchema = z.object({
   }),
 });
 interface SideBarRadioItemProps {
-  data: { name: string | null; id: number }[] | undefined;
+  data: { name: string; id: number }[] | undefined;
 }
 
 export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
@@ -88,7 +88,7 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
                       <FormItem // Add a unique key for each item
                         key={lyce.id}
                         className={cn(
-                          'flex items-center space-x-3',
+                          'flex items-end gap-4 ',
                           collapsed && 'flex-col items-center w-full'
                         )}
                       >
@@ -101,8 +101,12 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
                             defaultChecked={+lyce?.id === etabId}
                           />
                         </FormControl>
-                        <FormLabel className="w-full h-10 font-normal">
-                          {collapsed ? shorting(lyce?.name) : lyce?.name}
+                        <FormLabel className="w-full h-4 font-normal">
+                          {collapsed
+                            ? shorting(lyce?.name)
+                            : lyce?.name?.length > 20
+                            ? lyce?.name?.slice(0, 15) + '...'
+                            : lyce?.name}
                         </FormLabel>
                       </FormItem>
                     ))}
