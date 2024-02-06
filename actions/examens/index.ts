@@ -1,6 +1,5 @@
 // index.ts
 'use server';
-
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
 import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { calculateAverageMark, calculateOverallAverage } from '@/app/_utils/calculateAverage';
@@ -387,51 +386,18 @@ export async function updateExam(examId: number, data: any, user_id: string) {
       where: {
         id: examId,
       },
-      // include: {
-      //   examEstablishment: true,
-      // },
       data: {
         name: data.name,
         total_mark: +data.totalMarks,
         coefficient: +data.coefficient,
-        subject: data.subject.map((subjectId: any) => ({ id: +subjectId.value })),
-
-        term: data.term,
-
-        // ExamClassess: {
-        //   updateMany: data.classes
-        //     ? data.classes.map((classId: any) => ({
-        //         where: {
-        //           exam_id: examId,
-        //         },
-        //         data: {
-        //           assignedBy: 'some_updated_value',
-        //         },
-        //       }))
-        //     : undefined,
-        // },
-        //TO DO : update the assignedBy field with the current user id
-        // examEstablishment: {
-        //   updateMany: data.establishment
-        //     ? data.establishment.map((establishmentId: any) => ({
-        //         where: {
-        //           exam_id: examId,
-        //           establishement_id: +establishmentId.value,
-        //         },
-        //         data: {
-        //           assignedBy: 'some_updddsdsdssdsdsdsated_value',
-        //         },
-        //       }))
-        //     : undefined,
-        // },
+        subject: {
+          connect: data.subject.map((subjectId: any) => ({ id: +subjectId.value })),
+        },
+        exam_classess: {
+          connect: data.classes.map((class_id: any) => ({ id: +class_id.value })),
+        },
       },
     });
-
-    // data.establishment
-    // ? data.establishment.map((establishmentId: any) => ({
-    //     id: +establishmentId.value,
-    //   }))
-    // : undefined,
     return updatedExam;
   } catch (error) {
     console.error('Error updating exam:', error);

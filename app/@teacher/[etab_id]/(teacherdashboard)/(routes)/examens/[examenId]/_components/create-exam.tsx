@@ -31,9 +31,10 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
   // console.log('Total Mark:', totalMark);
 
   const createExercice = (fakeData: any) => {
+    console.log(fakeData);
     const newExercise = {
       id: Math.random().toString(36).substring(7),
-      name: isArabic ? ` تمرين ${fakeData.length + 1}` : `Exercice ${fakeData.length + 1}`,
+      name: isArabic ? ` تمرين ${fakeData.length + 1}` : `Exercice ${fakeData?.length + 1}`,
       mark: 0,
       children: [],
     };

@@ -524,8 +524,6 @@ interface EstablishmentData {
 }
 
 export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
-  console.log(exam.term);
-  console.log(exam.term.indexOf('trimestre'));
   const queryClient = useQueryClient();
   const user: any = queryClient.getQueryData(['user']);
   const teacherEstab: any = queryClient.getQueryData(['teacherEstab']);
@@ -593,7 +591,6 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
-  console.log(formData);
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({

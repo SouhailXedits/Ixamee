@@ -46,22 +46,22 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
   const queryClient = useQueryClient();
   const { classesId } = params;
-  const [exam, setExam] = useState<any>(0);
   const [filter, setFilter] = useState<any>('');
+  const etab_id = queryClient.getQueryData(['etab_id']) as number;
+  const classe = queryClient.getQueryData(['classe', etab_id]) as any;
+  const [exam, setExam] = useState<any>(classe.data[0].exam_classe[0]?.id);
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
 
-  const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   const data = queryClient.getQueryData(['userOfClasses']) as any;
-  const classe = queryClient.getQueryData(['classe', etab_id]) as any;
 
-  console.log(classe);
-  const teacherEstabName = teacherEstab.filter((item: any) => item.id === +etab_id)[0]?.name;
-  const classeName = classe?.name;
+  const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
+  const classeName = classe?.data[0]?.name;
+
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
   //   console.log(jsonData);
@@ -76,9 +76,11 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // });
   useEffect(() => {
     // if (Array.isArray(classe?.exam_classe)) {
-    setExam(classe?.exam_classe[0]?.id + '');
+    const note = classe.data[0].exam_classe[0]?.id;
+    setExam(note + '');
     // }
   }, [classe]);
+  // console.log(exam);
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
     queryFn: async () => await getCorigeExameContentOfAllUser(exam, data),
@@ -166,12 +168,20 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     console.log('object');
     console.log(newData);
   };
-
+  console.log(data);
+  console.log(userCorrection);
+  function notCorrected(userCorrection: any) {
+    return userCorrection?.filter(
+      (user: any) => user?.status === 'notCorrected' || user?.status === 'pending'
+    );
+  }
+  const userNotCorrected = notCorrected(userCorrection);
+  console.log(userNotCorrected);
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
         <div className="flex flex-col gap-4">
-          <div className="text-[#1B8392] text-2xl font-semibold ">{classe?.name}</div>
+          <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div>
           <div className="flex items-center text-[#727272]">
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
@@ -188,11 +198,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           <div>
             <Select
               onValueChange={(value) => setExam(value)}
-              defaultValue={
-                !classe?.exam_classe || classe?.exam_classe.length === 0
-                  ? '0'
-                  : classe?.exam_classe[0]?.id + ''
-              }
+              defaultValue={classe?.data[0]?.exam_classe[0]?.id + ''}
             >
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
                 <SelectValue
@@ -207,7 +213,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
               </SelectTrigger>
 
               <SelectContent>
-                {classe?.exam_classe?.map((exam: any) => (
+                {classe?.data[0].exam_classe?.map((exam: any) => (
                   <SelectItem value={exam.id + ''} className="">
                     {exam.name}
                   </SelectItem>
@@ -241,7 +247,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           )}
           <Button
             className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
-            disabled={!data || !userCorrection ? true : data?.length !== userCorrection?.length}
+            disabled={userNotCorrected.length !== 0}
             onClick={() => handleSendResults()}
           >
             <Image src="/sendIcon.svg" alt="icons" width={20} height={20} />

@@ -233,6 +233,12 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
 
       include: {
         subject: true,
+        exam_classe: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
         student_class: {
           where: {
             role: 'STUDENT',
