@@ -166,7 +166,7 @@ export const getClasseOfUser = async (user_id: string, userEstablishments: any) 
         },
         establishment: {
           some: {
-            id: establishmentId,
+            id: +establishmentId,
           },
         },
         is_archived: false,

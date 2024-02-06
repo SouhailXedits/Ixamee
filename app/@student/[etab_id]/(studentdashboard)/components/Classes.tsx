@@ -17,7 +17,7 @@ const Etablissement = () => {
   const { data: userClasses, isPending: isPendingTeacherEstab } = useQuery({
     queryKey: ['user-classes'],
     queryFn: async () => await getClassesOfUser(user?.id),
-  });
+  }) as any;
   console.log(userClasses);
 
   return (
