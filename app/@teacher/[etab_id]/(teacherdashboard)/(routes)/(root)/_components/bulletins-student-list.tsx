@@ -10,39 +10,52 @@ import {
 } from '@/components/ui/table';
 import Image from 'next/image';
 
-const BulletinsStudentList = () => {
+const BulletinsStudentList = ({data, nameClasse}:any) => {
+  console.log(data);
   const [sortByRank, setSortByRank] = useState(true); // true for descending order
 
-  const studentData = useMemo(
-    () => [
-      {
-        id: 1,
-        name: 'Firas Latrach',
-        avatarSrc: '/userAvatar/user1.svg',
-        className: 'Bac Maths_2',
-        grade: 17,
-        rank: 1,
-      },
-      {
-        id: 2,
-        name: 'Lina Laadhari',
-        avatarSrc: '/userAvatar/user2.svg',
-        className: 'Bac Maths_2',
-        grade: 10,
-        rank: 2,
-      },
-      {
-        id: 3,
-        name: 'Jawher Souguir',
-        avatarSrc: '/userAvatar/user3.svg',
-        className: 'Bac Info_1',
-        grade: 8,
-        rank: 3,
-      },
-      // Add more student data as needed
-    ],
-    []
-  );
+  const studentData = data.map((item: any, index: number) => ({
+    id: item.user.id, // Assuming user id is unique and can be used as student id
+    name: item.user.name.trim(), // Trim the name to remove extra spaces
+    avatarSrc: item.user.image || '/defaultUserAvatr.svg', // Use a default avatar if image is not provided
+    className: nameClasse, // Assuming class name is constant for all students
+    grade: item.mark_obtained,
+    totalMarks: item.exam.total_mark,
+    rank: item.rank,
+  }));
+
+  console.log(studentData);
+
+  // const studentData = useMemo(
+  //   () => [
+  //     {
+  //       id: 1,
+  //       name: 'Firas Latrach',
+  //       avatarSrc: '/userAvatar/user1.svg',
+  //       className: 'Bac Maths_2',
+  //       grade: 17,
+  //       rank: 1,
+  //     },
+  //     {
+  //       id: 2,
+  //       name: 'Lina Laadhari',
+  //       avatarSrc: '/userAvatar/user2.svg',
+  //       className: 'Bac Maths_2',
+  //       grade: 10,
+  //       rank: 2,
+  //     },
+  //     {
+  //       id: 3,
+  //       name: 'Jawher Souguir',
+  //       avatarSrc: '/userAvatar/user3.svg',
+  //       className: 'Bac Info_1',
+  //       grade: 8,
+  //       rank: 3,
+  //     },
+  //     // Add more student data as needed
+  //   ],
+  //   []
+  // );
 
   const sortData = useCallback(() => {
     const sortedData = [...studentData];
@@ -92,10 +105,17 @@ const BulletinsStudentList = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortData().map((student :any) => (
+        {sortData().map((student: any) => (
+          
           <TableRow key={student.id} className="">
             <TableCell className="flex items-center justify-start gap-3 font-medium">
-              <Image src={student.avatarSrc} alt="user" width={38} height={38} className="h-full" />
+              <Image
+                src={student.avatarSrc}
+                alt="user"
+                width={38}
+                height={38}
+                className="h-full"
+              />
               <div className="text-gray-900 text-xs font-medium  leading-[25px]">
                 {student.name}
               </div>
@@ -112,7 +132,7 @@ const BulletinsStudentList = () => {
                     : { color: '#F04438' }
                 }
               >
-                {student.grade + '/20'}
+                {student.grade + '/' + student.totalMarks}
               </div>
             </TableCell>
             <TableCell className="  text-left justify-start 	 text-[#1B8392]">

@@ -76,7 +76,7 @@ export default function Home() {
 
         <div className="w-[40%] h-full p-2 flex flex-col gap-6 max-2xl:w-[100%]">
           <DashboradCorrectionsRecentes etabId={etab_id} />
-          <DashboradBulletinsDesEtudiants etabId={etab_id} />
+          <DashboradBulletinsDesEtudiants etabId={etab_id} classes={classe?.data}  />
         </div>
       </div>
     </div>
