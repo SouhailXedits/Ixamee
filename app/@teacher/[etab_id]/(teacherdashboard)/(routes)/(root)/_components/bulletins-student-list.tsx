@@ -14,13 +14,13 @@ const BulletinsStudentList = ({data, nameClasse}:any) => {
   console.log(data);
   const [sortByRank, setSortByRank] = useState(true); // true for descending order
 
-  const studentData = data.map((item: any, index:number) => ({
+  const studentData = data.map((item: any, index: number) => ({
     id: item.user.id, // Assuming user id is unique and can be used as student id
     name: item.user.name.trim(), // Trim the name to remove extra spaces
-    avatarSrc: item.user.image || '/defaultAvatar.svg', // Use a default avatar if image is not provided
+    avatarSrc: item.user.image || '/defaultUserAvatr.svg', // Use a default avatar if image is not provided
     className: nameClasse, // Assuming class name is constant for all students
     grade: item.mark_obtained,
-    // totalMarks : item.classe.total_mark,
+    totalMarks: item.exam.total_mark,
     rank: item.rank,
   }));
 
@@ -110,7 +110,7 @@ const BulletinsStudentList = ({data, nameClasse}:any) => {
           <TableRow key={student.id} className="">
             <TableCell className="flex items-center justify-start gap-3 font-medium">
               <Image
-                src={student.avatarSrc || '/defaultUserAvatr.svg'}
+                src={student.avatarSrc}
                 alt="user"
                 width={38}
                 height={38}
@@ -132,7 +132,7 @@ const BulletinsStudentList = ({data, nameClasse}:any) => {
                     : { color: '#F04438' }
                 }
               >
-                {student.grade + '/20'}
+                {student.grade + '/' + student.totalMarks}
               </div>
             </TableCell>
             <TableCell className="  text-left justify-start 	 text-[#1B8392]">
