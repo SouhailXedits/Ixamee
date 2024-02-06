@@ -33,7 +33,7 @@ const Student = () => {
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
   const subjects = queryClient.getQueryData(['teacherSubject']) as any;
 
-  const defaultSubject = subjects.length && subjects[0]?.id;
+  const defaultSubject = subjects?.length && subjects[0]?.id;
 
 
   const [filters, setFilters] = useState({

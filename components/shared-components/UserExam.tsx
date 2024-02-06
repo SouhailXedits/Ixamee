@@ -1,18 +1,21 @@
-"use client"
+'use client';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 
 function UserExam({ exam }: any) {
   const params = useParams();
+
   const router = useRouter();
-  console.log(params)
+  console.log(params);
   console.log(exam);
 
   function handleRedirect() {
-    router.push(
-      `/${params.etab_id}/correction/${exam.exam_id}`
-    );
+    if (params.student_id)
+      router.push(
+        `/${params.etab_id}/classes/${params.classe_id}/student/${params.student_id}/correction/${exam.exam_id}`
+      );
+    else router.push(`/${params.etab_id}/correction/${exam.exam_id}`);
   }
 
   //1/acelsss / 16 / students / cls33eyik000040q9bm7811vv / correction / 64;
