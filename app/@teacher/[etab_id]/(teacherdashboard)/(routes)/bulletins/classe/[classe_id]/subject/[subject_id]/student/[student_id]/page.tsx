@@ -14,6 +14,11 @@ import { getNameClasseByClasseId } from '@/actions/classe';
 import { Skeleton } from '@/components/ui/skeleton';
 import { calculateAverageMark } from '../../../../../../../../../../../_utils/calculateAverage';
 import { getUserClasseInfos } from '@/actions/examens';
+import { getNameEstabByClasseId } from '@/actions/establishements';
+import { getAllSubjectNameById } from '@/actions/subjects';
+import { getTeacherName } from '@/actions/teachers';
+import PDFExport from '@/app/_utils/ExportAsPdf';
+import { MarkSheetStudent } from '@/components/shared-components/MarkSheetStudent';
 
 // const trimesters = [
 //   {
@@ -106,6 +111,19 @@ const Student = () => {
     queryKey: ['classeName', classeId],
     queryFn: async () => await getNameClasseByClasseId(+classeId),
   });
+  const { data: estabName, isPending: estabNamePending } = useQuery<any>({
+    queryKey: ['estabName', classeId],
+    queryFn: async () => await getNameEstabByClasseId(+classeId),
+  });
+  const { data: subjectName, isPending: subjectNamePending } = useQuery<any>({
+    queryKey: ['subjectName', subjectId],
+    queryFn: async () => await getAllSubjectNameById(+subjectId),
+  });
+  const { data: TeacherName, isPending: TeacherNamePending } = useQuery<any>({
+    queryKey: ['TeacherName', subjectId],
+    queryFn: async () => await getTeacherName(+subjectId, +classeId),
+  });
+  console.log(TeacherName);
 
   const { data: userClasseInfos, isPending: userClasseInfosPending } = useQuery<any>({
     queryKey: ['userClasseInfos', currentId],
@@ -173,14 +191,21 @@ const Student = () => {
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
           {/* importer */}
-          {/* <ImportUneClasse>
-            <div className=" justify-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
-              <Image src="/download-icon.svg" alt="download icon" width={20} height={20} />
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Télécharger en pdf
-              </div>
-            </div>
-          </ImportUneClasse> */}
+          <PDFExport pdfName="bulletin">
+            <MarkSheetStudent
+              data={trimesters}
+              meta={{
+                estab: estabName?.name,
+                subject: subjectName?.name,
+                classe: classeNamePending || classeName[0]?.name,
+                fullName: user?.name,
+                average: userClasseInfos.length && userClasseInfos[0].average,
+                range: userClasseInfos.length && userClasseInfos[0].rankInClasse,
+                teacherName: TeacherName?.name,
+                userClasseInfos,
+              }}
+            />
+          </PDFExport>
           {/* <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 

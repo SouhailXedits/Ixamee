@@ -4,6 +4,7 @@ interface PdfHeaderProps {
 }
 
 function PdfHeader({ type, meta }: PdfHeaderProps) {
+  console.log(meta, type)
   return (
     <div
       style={{
@@ -19,7 +20,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
           backgroundColor: '#ffffff',
           height: '250px',
           position: 'relative',
-          width: '595px',
+          width: '800px',
         }}
       >
         <div
@@ -75,7 +76,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             left: '52px',
             position: 'absolute',
             top: '155px',
-            width: '492px',
+            width: '1000px',
           }}
         >
           <div
@@ -318,9 +319,9 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             gap: '5px',
             height: '50px',
             justifyContent: 'center',
-            left: '215px',
+            left: '350px',
             position: 'absolute',
-            top: '96px',
+            top: '130px',
           }}
         >
           <div
@@ -353,7 +354,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
               position: 'relative',
             }}
           >
-            <span style={{ fontWeight: '500' }}>{meta.term.type} : </span>
+            <span style={{ fontWeight: '500' }}>Matiere : </span>
             <span
               style={{
                 color: '#102528',
@@ -364,7 +365,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                 lineHeight: '20px',
               }}
             >
-              {meta.term.number}
+              {meta.subject}
             </span>
           </p>
         </div>
@@ -374,7 +375,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             display: 'inline-flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            left: '464px',
+            left: '650px',
             position: 'absolute',
             top: '30px',
           }}
@@ -413,11 +414,11 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
         </div>
         <img
           style={{
-            height: '25px',
-            left: '246px',
+            height: '60px',
+            left: '325px',
             position: 'absolute',
-            top: '40px',
-            width: '103px',
+            top: '35px',
+            width: '200px',
           }}
           alt="Layer"
           src="/logo.svg"

@@ -1,9 +1,14 @@
 'use client';
 import { getNameClasseByClasseId } from '@/actions/classe';
+import { getNameEstabByClasseId } from '@/actions/establishements';
 import { getUserClasseInfos } from '@/actions/examens';
 import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
+import { getAllSubjectNameById } from '@/actions/subjects';
+import { getTeacherName } from '@/actions/teachers';
+import PDFExport from '@/app/_utils/ExportAsPdf';
 import { calculateAverageMark } from '@/app/_utils/calculateAverage';
 import Loading from '@/app/loading';
+import { MarkSheetStudent } from '@/components/shared-components/MarkSheetStudent';
 import TermCard from '@/components/shared-components/TermCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getUserById } from '@/data/user';
@@ -111,6 +116,19 @@ const Student = () => {
     queryKey: ['classeName', classeId],
     queryFn: async () => await getNameClasseByClasseId(+classeId),
   });
+  const { data: estabName, isPending: estabNamePending } = useQuery<any>({
+    queryKey: ['estabName', classeId],
+    queryFn: async () => await getNameEstabByClasseId(+classeId),
+  });
+  const { data: subjectName, isPending: subjectNamePending } = useQuery<any>({
+    queryKey: ['subjectName', subjectId],
+    queryFn: async () => await getAllSubjectNameById(+subjectId),
+  });
+  const { data: TeacherName, isPending: TeacherNamePending } = useQuery<any>({
+    queryKey: ['TeacherName', subjectId],
+    queryFn: async () => await getTeacherName(+subjectId, +classeId),
+  });
+  console.log(TeacherName);
 
 
   const examsData = marksheet?.data || [];
@@ -150,12 +168,14 @@ const Student = () => {
     exams: groupedExams[term] || [], // Check and add empty array if term has no exams
   }));
 
+  
+
   const averageMark = calculateAverageMark(trimesters);
 
   console.log('Average Mark:', averageMark);
   console.log(trimesters);
   if (isPendingmMarksheet) return <Loading />;
-
+  console.log(classeName);
   return (
     <main className="flex flex-col gap-12 p-10">
       <nav className="flex justify-between w-full ">
@@ -174,24 +194,21 @@ const Student = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          {/* importer */}
-          {/* <ImportUneClasse>
-            <div className=" justify-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
-              <Image src="/download-icon.svg" alt="download icon" width={20} height={20} />
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Télécharger en pdf
-              </div>
-            </div>
-          </ImportUneClasse> */}
-          {/* <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
-            <Image src="/scoop.svg" alt="icons" width={20} height={20} />
-
-            <input
-              type="text"
-              placeholder="Recherche un étudiant"
-              className=" w-40 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
+          <PDFExport pdfName="bulletin">
+            <MarkSheetStudent
+              data={trimesters}
+              meta={{
+                estab: estabName?.name,
+                subject: subjectName?.name,
+                classe: classeNamePending || classeName[0]?.name,
+                fullName: user?.name,
+                average: userClasseInfos.length && userClasseInfos[0].average,
+                range: userClasseInfos.length && userClasseInfos[0].rankInClasse,
+                teacherName: TeacherName?.name,
+                userClasseInfos
+              }}
             />
-          </div> */}
+          </PDFExport>
         </div>
       </nav>
       <div className=" flex gap-3 items-center ml-5">
