@@ -1,3 +1,4 @@
+'use client'
 import {
   Select,
   SelectContent,
@@ -9,8 +10,13 @@ import Image from 'next/image';
 import ExamCorrectionList from './exam-correction-list';
 import BulletinsStudentList from './bulletins-student-list';
 import Rien from './Rien';
+import { useQueryClient } from '@tanstack/react-query';
 
 const BulletinsDesEtudiants = ({ data }: any) => {
+
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(['user']) as any;
+
   return (
     <>
       {!data ? (
