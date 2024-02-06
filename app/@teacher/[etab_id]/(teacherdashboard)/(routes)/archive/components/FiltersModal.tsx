@@ -45,7 +45,7 @@ function FiltersModal() {
   //     ...filters,
   //     dateRange: newDateRange,
   //   });
-  //   console.log(filters)
+
   // };
   const pathname = usePathname();
   const currRoute = pathname.split('/')[3];
@@ -54,7 +54,6 @@ function FiltersModal() {
     // Your other filter properties
     dateRange: undefined,
   });
-  console.log(filters);
 
   // useEffect(() => {
   // }, [filters]);
@@ -64,7 +63,7 @@ function FiltersModal() {
   }
   return (
     <Dialog>
-      <DialogTrigger className=" bg-transparent border-mainGreen/60 flex gap-3 items-center border text-mainGreen rounded p-2">
+      <DialogTrigger className="flex items-center gap-3 p-2 bg-transparent border rounded  border-mainGreen/60 text-mainGreen">
         <Image src="/filterIcon.svg" alt=" filter icon" height={20} width={20} />
         Filtre
         <Image src="/arrowdown.svg" alt=" arrow down icon" height={20} width={20} />
@@ -86,12 +85,12 @@ function FiltersModal() {
               <div>
                 <DialogDescription>Classe : </DialogDescription>
                 <Select>
-                  <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer  gap-3 hover:opacity-80  ">
+                  <SelectTrigger className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer hover:opacity-80 ">
                     <SelectValue
                       placeholder={
                         <div className="flex items-center">
                           {/* <Image src={'/filterIcon.svg'} className=' grayscale-50' alt="filtericon" width={20} height={20} /> */}
-                          <span className="ml-2  text-base text-black/60  ">Classe</span>
+                          <span className="ml-2 text-base text-black/60 ">Classe</span>
                         </div>
                       }
                     />
@@ -105,12 +104,12 @@ function FiltersModal() {
               <div>
                 <DialogDescription>Correction : </DialogDescription>
                 <Select>
-                  <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer  gap-3 hover:opacity-80  ">
+                  <SelectTrigger className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer hover:opacity-80 ">
                     <SelectValue
                       placeholder={
                         <div className="flex items-center">
                           {/* <Image src={'/filterIcon.svg'} className=' grayscale-50' alt="filtericon" width={20} height={20} /> */}
-                          <span className="ml-2  text-base text-black/60  ">correction</span>
+                          <span className="ml-2 text-base text-black/60 ">correction</span>
                         </div>
                       }
                     />

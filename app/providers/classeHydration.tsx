@@ -23,7 +23,7 @@ export default async function ClassHydration({
   children: React.ReactNode;
   params: { etab_id: string; classesId: string };
 }) {
-  console.log(params);
+
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ['userOfClasses'],

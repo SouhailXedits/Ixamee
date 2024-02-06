@@ -31,18 +31,18 @@ interface CorrectExamProps {
 }
 
 export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_id }) => {
-  console.log(data);
+
   if (!data) return null;
   let userData = data.filter((item: any) => item?.user_id == user_id);
   userData = userData[0];
-  console.log(userData);
+
   const [note, setNote] = useState<string>(userData?.mark_obtained || 0);
-  console.log(note);
+
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const new_total_mark = userData?.exam.total_mark || 0;
-  console.log(new_total_mark);
+
 
   // const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
   // const new_total_mark = examan[0]?.total_mark;
@@ -81,7 +81,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
       };
       createExamCorrectionn(obj);
 
-      console.log(note);
+
     } else {
       const obj = {
         exam_id: userData.exam_id,
@@ -90,7 +90,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
         status: item as 'notClassified' | 'absent',
       };
 
-      console.log(obj);
+
       editeStatus(obj);
     }
   };
@@ -104,7 +104,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
             Noter cet étudiant
           </DialogTitle>
         </DialogHeader>
-
         <div className="flex items-center justify-between">
           <div>
             <span className="text-[#959595] text-[15px]">Accorder une note</span>
@@ -148,7 +147,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
           </div>
         </div>
         <hr className="bg-[#F0F6F8] mb-4" />
-
         <div className="flex items-center gap-4">
           <span className="text-[#959595]">Marquer comme</span>
           <RadioGroup onValueChange={(value) => setItem(value)} className="flex">
@@ -182,8 +180,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
               </Label>
             </div>
           </RadioGroup>
-        </div>
-
+        </div>{' '}
         <DialogFooter className="mt-4">
           <DialogClose asChild>
             <Button
@@ -194,13 +191,23 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
               Annuler
             </Button>
           </DialogClose>
-          <Button
-            type="submit"
-            className="w-full text-white bg-[#177C9A] hover:opacity-80"
-            onClick={handelSubmit}
-          >
-            Enregistrer
-          </Button>
+          {isPending ? (
+            <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
+              <div
+                className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
+                role="status"
+                aria-label="loading"
+              ></div>
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className="w-full text-white bg-[#177C9A] hover:opacity-80"
+              onClick={handelSubmit}
+            >
+              Enregistrer
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

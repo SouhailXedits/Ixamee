@@ -30,7 +30,7 @@ export const Question = ({ data, isArabic }: any) => {
             <Editor
               editable={false}
               initialContent={data.content}
-              onChange={()=>console.log('changed')}
+
             />
           </div>
           <div className="flex gap-3 item-center">

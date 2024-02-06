@@ -14,7 +14,7 @@ interface studentFeadback {
   content: string
 }
 export const StudentFeedback = ({ children, content }: studentFeadback) => {
-  console.log(content)
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>

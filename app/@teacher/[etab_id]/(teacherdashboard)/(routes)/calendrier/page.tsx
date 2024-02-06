@@ -54,7 +54,7 @@ const App: React.FC = () => {
   };
 
   const dateCellRender = (value: Dayjs) => {
-    console.log(value)
+
     const listData = getListData(value);
     return (
       <ul className="events">

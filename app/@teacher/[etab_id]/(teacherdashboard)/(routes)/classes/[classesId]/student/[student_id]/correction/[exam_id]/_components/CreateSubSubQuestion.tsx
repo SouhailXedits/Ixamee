@@ -13,11 +13,9 @@ export const CreateSubSubQuestion = ({
   allData,
 }: any) => {
   const onChange = (content: string) => {
-    console.log(data);
-    console.log(content);
     updateContentSubSubQuestion(content, data);
   };
-  console.log(allData);
+
   const updateContentSubSubQuestion = (content: any, data: any) => {
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
@@ -28,7 +26,6 @@ export const CreateSubSubQuestion = ({
               return {
                 ...subItem,
                 children: subItem.children.map((subSubItem: any, index: number) => {
-                  console.log(subSubItem.mark, '🐳');
                   return {
                     ...subSubItem,
                     children: subSubItem.children.map((subSubSubItem: any) => {
@@ -137,7 +134,6 @@ export const CreateSubSubQuestion = ({
               return {
                 ...subItem,
                 children: subItem.children.map((subSubItem: any, index: number) => {
-                  console.log(subSubItem.mark, '🐳');
                   return {
                     ...subSubItem,
                     children: subSubItem.children.map((subSubSubItem: any) => {
@@ -165,7 +161,6 @@ export const CreateSubSubQuestion = ({
                 ...subItem,
 
                 children: subItem.children.map((subSubItem: any, index: number) => {
-                  console.log(subSubItem.mark, '🐳');
                   return {
                     ...subSubItem,
                     mark: calcSumOfMarks(subSubItem),
@@ -181,7 +176,6 @@ export const CreateSubSubQuestion = ({
       });
     });
     setFakeData((prevData: any) => {
-      console.log(prevData);
       return prevData.map((item: any) => {
         // Checking if the current item's id matches the id of the parent question and it has children
         if (item.id === allData.id && item.children.length > 0) {
@@ -208,8 +202,7 @@ export const CreateSubSubQuestion = ({
         return item;
       });
     });
-    console.log('update');
-    console.log(allData);
+
     calculerExerciceMark(allData);
   };
   return (

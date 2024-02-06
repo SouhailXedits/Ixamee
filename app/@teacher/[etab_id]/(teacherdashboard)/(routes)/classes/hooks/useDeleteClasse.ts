@@ -16,7 +16,6 @@ export function useDeleteClasse() {
       toast.success('Classe supprimé avec succès.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error("Une erreur est survenue lors de la suppression de l'classe.");
     },
     retry: false,

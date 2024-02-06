@@ -69,7 +69,6 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
       },
     },
   });
-  // console.log(exams);
   return exams;
 };
 export const getAllExamsNameAndId = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
@@ -96,7 +95,6 @@ export const getAllExamsNameAndId = async ({ user_id, etab_id }: { user_id: stri
       name: true,
     }
   });
-  console.log(exams);
   return exams;
 };
 export const getUserSubject = async (user_id: string) => {
@@ -109,7 +107,7 @@ export const getUserSubject = async (user_id: string) => {
       },
     },
   });
-  console.log(subject);
+
   return subject;
 };
 export const createExamCorrection = async (
@@ -127,14 +125,13 @@ export const createExamCorrection = async (
     },
   });
 
-  console.log(existingExamCorrection);
+
 
   // let examCorrection;
 
   if (existingExamCorrection.length === 0) {
     // Create a new examCorrection if it doesn't exist
-    console.log(exam_id, mark_obtained, user_id, correction_exam_content);
-    console.log(correction_exam_content);
+
 
     const examCorrection = await db.examCorrection.create({
       data: {
@@ -202,7 +199,7 @@ export const getClasseOfUser = async (user_id: string, userEstablishments: any) 
         name: true,
       },
     });
-    console.log(classe);
+
     return classe;
   };
 
@@ -214,7 +211,7 @@ export const getClasseOfUser = async (user_id: string, userEstablishments: any) 
   );
 
   const intersectionResult = getIntersectionOfArrays(result);
-  console.log(intersectionResult);
+
   return intersectionResult;
 };
 
@@ -275,7 +272,7 @@ export const getSubjectOfUserById = async (user_id: string) => {
       },
     },
   });
-  console.log(subject);
+
   return subject;
 };
 
@@ -300,7 +297,7 @@ export const getEstablishmentOfUser = async (user_id: string) => {
       },
     },
   });
-  console.log('🚀 ~ getEstablishmentOfUser ~ data:', data);
+
 
   return data;
 };
@@ -339,7 +336,7 @@ export const getExamContent = async ({ id }: { id: string }) => {
 };
 
 export async function createExamm(data: any, user_id: string) {
-  console.log(data, user_id);
+
   const examm = await db.exam.create({
     data: {
       name: data.name,
@@ -369,7 +366,7 @@ export async function createExamm(data: any, user_id: string) {
     },
   });
 
-  console.log(examm);
+
 
   const allUsers = await db.classe.findMany({
     where: {
@@ -394,7 +391,7 @@ export async function createExamm(data: any, user_id: string) {
     )
   );
 
-  console.log(flattenedUsers);
+
   const allData = await db.examCorrection.createMany({
     data: flattenedUsers.map((user: any) => ({
       exam_id: examm.id,
@@ -407,7 +404,7 @@ export async function createExamm(data: any, user_id: string) {
   return examm;
 }
 export async function updateExam(examId: number, data: any, user_id: string) {
-  console.log(data);
+
   try {
     const updatedExam = await db.exam.update({
       where: {
@@ -440,16 +437,16 @@ export const deleteExame = async (id: number) => {
       },
     });
 
-    console.log('Exam deleted succecfully ! ');
+
   } catch (error: any) {
-    console.log(error);
+
     return {
       error: 'Failed to delete Exam.',
     };
   }
 };
 export const updateExamContent = async (examId: string, content: any) => {
-  console.log(examId, content);
+
   try {
     const updatedExam = await db.exam.update({
       where: {
@@ -477,7 +474,7 @@ export const createNoteExamCorrectio = async ({
   mark_obtained: string;
   exam_id: string;
 }) => {
-  console.log(exam_id, mark_obtained, user_id);
+
   try {
     const existingExamCorrection = await db.examCorrection.findMany({
       where: {
@@ -486,10 +483,10 @@ export const createNoteExamCorrectio = async ({
       },
     });
 
-    console.log(existingExamCorrection);
+
 
     if (existingExamCorrection.length === 0) {
-      console.log(exam_id, mark_obtained, user_id);
+
 
       const examCorrection = await db.examCorrection.create({
         data: {
@@ -507,7 +504,7 @@ export const createNoteExamCorrectio = async ({
           status: 'done',
         },
       });
-      console.log(examCorrection);
+
       return examCorrection;
     } else {
       const updatedExamCorrection = await db.examCorrection.updateMany({
@@ -531,7 +528,7 @@ export const createNoteExamCorrectio = async ({
 };
 
 export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any[] }) => {
-  console.log(marks);
+
   const subject = await db.subject.findMany({
     // where: {
     //   exams: {
@@ -551,7 +548,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
       },
     },
   });
-  console.log(subject);
+
 
   try {
     const updatedExamCorrectionBatch = await Promise.all(
@@ -570,10 +567,10 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
         });
       })
     );
-    console.log(updatedExamCorrectionBatch);
+
     await Promise.all(
       marks.map(async (item: any) => {
-        console.log(item);
+
         const markSheets = await db.examCorrection.findMany({
           where: {
             exam: {
@@ -619,7 +616,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           },
         });
         const groupedExams = markSheets.reduce((result: any, exam: any) => {
-          console.log(exam);
+
           const term = exam.exam.term;
           if (!result[term]) {
             result[term] = [];
@@ -674,7 +671,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
         const ranked = sorted.map((el: any, index: any, array: any) => {
           const sameAverageAsPrevious = index > 0 && el.average === array[index - 1].average;
           const rank = sameAverageAsPrevious ? array[index - 1].rank : index + 1;
-          console.log(rank);
+
           if (el.user_id === item.user_id) {
             return {
               ...el,
@@ -687,8 +684,8 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
             rankInClasse: rank,
           };
         });
-        console.log(ranked);
-        console.log(infos);
+
+
         const existingInfo = infos.length! == 0;
 
         for (const item of ranked) {
@@ -704,7 +701,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
               },
             });
           } else {
-            console.log(user_id, classe_id, subject_id);
+
             await db.userClasseInfos.updateMany({
               where: {
                 user_id,
@@ -737,7 +734,7 @@ export const editeExamFeedback = async ({
   exam_id: string;
   newFeedback: any;
 }) => {
-  console.log(exam_id, student_id, newFeedback);
+
   try {
     const existingExamCorrection = await db.examCorrection.findMany({
       where: {
@@ -746,7 +743,7 @@ export const editeExamFeedback = async ({
       },
     });
 
-    console.log(existingExamCorrection);
+
 
     if (existingExamCorrection.length === 0) {
       const examCorrection = await db.examCorrection.create({
@@ -764,7 +761,7 @@ export const editeExamFeedback = async ({
           feedback: newFeedback,
         },
       });
-      console.log(examCorrection);
+
       return examCorrection;
     } else {
       // Update the existing examCorrection if it already exists
@@ -793,7 +790,7 @@ export const editeExamStatus = async ({
   exam_id: string;
   status: 'notClassified' | 'absent';
 }) => {
-  console.log(exam_id, user_id);
+
   try {
     const existingExamCorrection = await db.examCorrection.findMany({
       where: {
@@ -802,7 +799,7 @@ export const editeExamStatus = async ({
       },
     });
 
-    console.log(existingExamCorrection);
+
 
     if (existingExamCorrection.length === 0) {
       const examCorrection = await db.examCorrection.create({
@@ -820,7 +817,7 @@ export const editeExamStatus = async ({
           status: status,
         },
       });
-      console.log(examCorrection);
+
       return examCorrection;
     } else {
       // Update the existing examCorrection if it already exists
@@ -833,7 +830,7 @@ export const editeExamStatus = async ({
           status: status,
         },
       });
-      console.log(updateExam);
+
       return updatedExamCorrection;
     }
   } catch (error) {
@@ -849,9 +846,9 @@ export const editeExamStatus = async ({
 //     includeRecursive: { children: { maxDepth: 10 } },
 //   });
 
-//   console.log(exercises);
+
 //   const questionsId = exercises[0]?.question?.id;
-//   console.log(questionsId);
+
 // };
 // const getRecursiveExamQuestion = async () => {
 //   const exam_id = 19;

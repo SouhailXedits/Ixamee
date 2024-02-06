@@ -44,7 +44,7 @@ const DashboradStatistiques = ({
             Statistiques Examens
           </span>
         </div>
-        <div className="flex gap-3 w-full items-end justify-end">
+        <div className="flex items-end justify-end w-full gap-3">
           {/* Classe */}
 
           <Select
@@ -77,7 +77,7 @@ const DashboradStatistiques = ({
                 classe?.student_class,
                 value
               )) as any;
-              console.log(userCorrec);
+
 
               setUserCorrection(userCorrec);
             }}

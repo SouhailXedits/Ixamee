@@ -12,8 +12,7 @@ export function useCreateSubject() {
       toast.success('Matière creé avec succès.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
-      toast.error("Une erreur est survenue lors de la création de la matière.");
+      toast.error('Une erreur est survenue lors de la création de la matière.');
     },
     retry: false,
   });

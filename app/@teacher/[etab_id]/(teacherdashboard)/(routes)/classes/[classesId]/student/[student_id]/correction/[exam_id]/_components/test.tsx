@@ -306,8 +306,5 @@ try {
       format: 'A4',
       printBackground: true,
     });
-    console.log(pdfBuffer);
   };
-} catch (err) {
-  console.log(err);
-}
+} catch (err) {}

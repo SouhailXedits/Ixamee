@@ -32,7 +32,6 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
     });
   };
   const deleteExercice = (data: any) => {
-    console.log(data);
     const newData = allData.filter((item: any) => item.id !== data.id);
     setFakeData(newData);
   };

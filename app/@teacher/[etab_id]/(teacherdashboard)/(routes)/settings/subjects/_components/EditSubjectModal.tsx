@@ -36,8 +36,6 @@ interface AjouterUneClasse {
 // }
 
 export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse) => {
-  console.log(currentSubject);
-
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
@@ -69,10 +67,9 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
     },
     // validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       //createSubject(values);
       editSubject({ id: currId, data: values });
-      console.log('end');
+
       //alert(JSON.stringify(values, null, 2));
     },
   });

@@ -9,10 +9,9 @@ export function useCreateEstab() {
     mutationFn: (name: string) => createEstablishementApi(name),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['estabs'] });
-      toast.success('Établissement creé avec succeé ! ')
+      toast.success('Établissement creé avec succeé ! ');
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error('There was an error creating the esatblishement');
     },
     retry: false,

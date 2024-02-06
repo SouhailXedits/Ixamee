@@ -4,12 +4,11 @@ import data from './fakeMarkSheetsData';
 import PdfHeader from '@/components/shared-components/PdfHeader';
 import { calculateAverageMark } from '@/app/_utils/calculateAverage';
 
-export const MarkSheetStudent = ({data, meta}: any) => {
+export const MarkSheetStudent = ({ data, meta }: any) => {
   // const data = {
   //   terms = [{trimester1: [exams= {}}]
   // }
-  console.log(data)
-  console.log(meta)
+
   return (
     <div>
       <PdfHeader

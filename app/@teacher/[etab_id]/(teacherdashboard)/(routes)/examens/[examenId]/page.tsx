@@ -25,9 +25,9 @@ export default function Page({ params }: { params: { examenId: string } }) {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData(['examenById', examenId]) as any;
   const { editExam, isPending: isPendingEdit } = useEditExamContent();
-  console.log(data);
+
   const [fakeData, setFakeData] = useState<any>([]);
-  console.log(fakeData);
+
   useEffect(() => {
     if (data && data.content) {
       setFakeData(data.content);

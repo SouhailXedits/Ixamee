@@ -24,7 +24,6 @@ import StudentDetails from './_components/studentDetails';
 
 export default function page() {
   const params = useParams();
-  console.log(params);
 
   const { data: classe, isPending: isPendingClasse } = useQuery({
     queryKey: ['classe'],
@@ -35,7 +34,6 @@ export default function page() {
     queryKey: ['student'],
     queryFn: async () => await getUserById(params?.user_id as string),
   });
-  console.log(student);
 
   return (
     <main className="flex flex-col gap-6 p-10">

@@ -181,7 +181,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
   //   //   queryKey: ['teacherClasse'],
   //   //   queryFn: async () => await getClasseOfUser(user_id, formData.establishment),
   //   // });
-  //   console.log(formData.establishment);
+  //
   //   // queryClient.invalidateQueries({ queryKey: ['teacherClasse'] });
   // };
 

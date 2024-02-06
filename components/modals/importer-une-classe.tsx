@@ -57,7 +57,6 @@ export const ImportUneClasse = ({ children, data, class_id, etab_id }: ImportUne
         try {
           const csvData = event.target?.result as string;
           const jsonData = await csvtojson().fromString(csvData);
-          console.log(jsonData);
 
           resolve(jsonData);
         } catch (error) {

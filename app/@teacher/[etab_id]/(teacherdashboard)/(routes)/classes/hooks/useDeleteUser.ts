@@ -13,7 +13,6 @@ export function useDeleteUserInClasse() {
       toast.success('etudiant supprimé avec succès.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error("Une erreur est survenue lors de la suppression de l'etudiant.");
     },
     retry: false,

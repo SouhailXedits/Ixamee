@@ -99,13 +99,13 @@ const Student = () => {
     queryKey: ['user-marksheet', currentId],
     queryFn: async () => await getUserById(currentId + ''),
   });
-  // console.log(user);
+
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
     queryKey: ['marksheet', currentId],
     queryFn: async () => getMarksheetByUserId(+classeId, currentId + '', +subjectId),
   });
-  // console.log(marksheet);
+
 
   const { data: classeName, isPending: classeNamePending } = useQuery<any>({
     queryKey: ['classeName', classeId],
@@ -123,21 +123,21 @@ const Student = () => {
     queryKey: ['TeacherName', subjectId],
     queryFn: async () => await getTeacherName(+subjectId, +classeId),
   });
-  console.log(TeacherName);
+
 
   const { data: userClasseInfos, isPending: userClasseInfosPending } = useQuery<any>({
     queryKey: ['userClasseInfos', currentId],
 
     queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
   });
-  console.log(userClasseInfos);
-  // console.log(classeName);
+
+
 
   const examsData = marksheet?.data || [];
-  // console.log(examsData);
+
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
-    console.log(exam);
+
     const term = exam.exam.term;
     if (!result[term]) {
       result[term] = [];
@@ -155,7 +155,7 @@ const Student = () => {
     });
     return result;
   }, {});
-  console.log(groupedExams);
+
   const isTrimester = Object.keys(groupedExams).some((key) =>
     key.toLowerCase().includes('trimestre')
   );
@@ -170,7 +170,7 @@ const Student = () => {
   }));
 
   const averageMark = calculateAverageMark(trimesters);
-  console.log(userClasseInfos)
+
   if (isPending || isPendingmMarksheet) return <Loading />;
 
   return (
@@ -218,7 +218,7 @@ const Student = () => {
           </div> */}
         </div>
       </nav>
-      <div className=" flex gap-3 items-center ml-5">
+      <div className="flex items-center gap-3 ml-5 ">
         <Image
           src={user?.image || '/userAvatar/user1.svg'}
           alt=" user avatar"
@@ -226,8 +226,8 @@ const Student = () => {
           width={50}
         />
         <div>
-          <p className=" text-mainGreen text-xl">{user?.name}</p>
-          {classeNamePending && <Skeleton className=" h-5 w-20" />}
+          <p className="text-xl text-mainGreen">{user?.name}</p>
+          {classeNamePending && <Skeleton className="w-20 h-5 " />}
           {classeName?.length && <p className=" text-gray">{classeName[0]?.name}</p>}
         </div>
       </div>
@@ -237,16 +237,16 @@ const Student = () => {
           <TermCard term={trimester} />
         ))}
       </div>
-      <div className=" flex w-full justify-end gap-2 text-white">
+      <div className="flex justify-end w-full gap-2 text-white ">
         {userClasseInfosPending ? (
-          <Skeleton className=" h-7 w-16" />
+          <Skeleton className="w-16 h-7" />
         ) : (
           <>
             {' '}
-            <p className=" p-2 bg-orangeColor rounded">
+            <p className="p-2 rounded bg-orangeColor">
               Rang: {userClasseInfos[0]?.rankInClasse || '-'}
             </p>{' '}
-            <p className=" p-2 bg-mainGreen rounded">
+            <p className="p-2 rounded bg-mainGreen">
               Moyenne génerale: {userClasseInfos[0]?.average}/20
             </p>
           </>

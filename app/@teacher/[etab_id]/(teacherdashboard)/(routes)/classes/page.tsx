@@ -9,7 +9,7 @@ export default function Classes() {
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
-  console.log(user);
+
   // const data = queryClient.getQueryData(['classe', etab_id]) as any;
   const user_id = user.id;
   const { data, isPending } = useQuery({

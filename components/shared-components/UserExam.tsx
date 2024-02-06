@@ -7,8 +7,6 @@ function UserExam({ exam }: any) {
   const params = useParams();
 
   const router = useRouter();
-  console.log(params);
-  console.log(exam);
 
   function handleRedirect() {
     if (params.student_id)

@@ -16,7 +16,7 @@ interface SupprimerUneClasse {
   user_id: string;
 }
 export const SupprimerUserInClasse = ({ children, user_id }: SupprimerUneClasse) => {
-  console.log(user_id);
+
   const { deleteUser } = useDeleteUserInClasse();
   const handelDeleteExa = () => {
     deleteUser(user_id);
@@ -44,13 +44,15 @@ export const SupprimerUserInClasse = ({ children, user_id }: SupprimerUneClasse)
               Annuler
             </Button>
           </DialogClose>
-          <Button
-            type="submit"
-            className="w-full text-white bg-[#F04438] hover:opacity-80"
-            onClick={handelDeleteExa}
-          >
-            Supprimer
-          </Button>
+          <DialogClose asChild>
+            <Button
+              type="submit"
+              className="w-full text-white bg-[#F04438] hover:opacity-80"
+              onClick={handelDeleteExa}
+            >
+              Supprimer
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

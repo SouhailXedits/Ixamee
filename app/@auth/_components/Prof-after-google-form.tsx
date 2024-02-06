@@ -106,17 +106,13 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
 
   useEffect(() => {
     if (isRegistrationSuccessful) {
-      try {
-        router.push(`/${userEstab[0].id}`);
-        router.refresh();
-      } catch (error) {
-        console.log(error);
-      }
+      router.push(`/${userEstab[0].id}`);
+      router.refresh();
     }
   }, [isRegistrationSuccessful, router, userEstab]);
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
         <FormError message={error} />
         <FormSuccess message={success} />
         <div
@@ -149,7 +145,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-4">
+        <div className="flex flex-col w-full gap-4">
           <FormField
             control={form.control}
             name="etablissement"
@@ -167,8 +163,8 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
                       name="estab"
                       options={estabOptions}
                       placeholder={
-                        <div className="flex items-center text-muted-foreground text-sm ">
-                          <FaGraduationCap className="text-muted-foreground w-5 h-5 mr-2" />
+                        <div className="flex items-center text-sm text-muted-foreground ">
+                          <FaGraduationCap className="w-5 h-5 mr-2 text-muted-foreground" />
                           Choisissez vos/votre établissement(s)
                         </div>
                       }
@@ -219,8 +215,8 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
                       name="matiere"
                       options={subjectOptions}
                       placeholder={
-                        <div className="flex items-center text-muted-foreground text-sm ">
-                          <MdOutlineClass className="text-muted-foreground w-5 h-5 mr-2" />
+                        <div className="flex items-center text-sm text-muted-foreground ">
+                          <MdOutlineClass className="w-5 h-5 mr-2 text-muted-foreground" />
                           Choisissez vos/votre matière
                         </div>
                       }
@@ -272,7 +268,7 @@ export default function ProfAfterGoogleForm({ handleRole, session }: ProfFormPro
                       field={field}
                       placeholder={'Choisissez votre système pédagogique'}
                       options={systeme}
-                      icon={<MdOutlineTimer className="text-muted-foreground w-5 h-5" />}
+                      icon={<MdOutlineTimer className="w-5 h-5 text-muted-foreground" />}
                     />
                   )}
                 </FormControl>

@@ -20,11 +20,11 @@ interface studentFeadback {
   params: any;
 }
 export const StudentFeadback = ({ children, params }: studentFeadback) => {
-  console.log(params);
+
   const [feedback, setFeedback] = useState<string[]>([]);
   const [feedbackMessage, setFeedbackMessage] = useState<any>();
 
-  console.log(feedback);
+
   const [listFeedback, setListFeedback] = useState([
     'Excellent travail! Vous êtes sur la bonne voie!',
     'Bon travail! Continuez ainsi.',
@@ -33,8 +33,7 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
   ]);
   const { editeFeedback, isPending } = useEditeExamFeedback();
   const handelSubmitFeedback = () => {
-    console.log(feedback);
-    console.log(feedbackMessage);
+
     const newfedback = {
       feedback,
       description: feedbackMessage,
@@ -45,7 +44,7 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
       newFeedback : newfedback,
     };
     editeFeedback(obj);
-    console.log(newfedback);
+
   };
   return (
     <Dialog>

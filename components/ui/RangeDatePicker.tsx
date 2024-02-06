@@ -10,12 +10,16 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-export function DatePickerWithRange({ onChange, className }:{className?: React.HTMLAttributes<HTMLDivElement>, onChange: (date: any) => void}) {
+export function DatePickerWithRange({
+  onChange,
+  className,
+}: {
+  className?: React.HTMLAttributes<HTMLDivElement>;
+  onChange: (date: any) => void;
+}) {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
-  console.log(date)
 
   const handleDateChange = (newDates: any) => {
-    console.log(newDates)
     setDate(newDates);
 
     // Call the onChange prop with the updated date range

@@ -11,7 +11,6 @@ import { SearchModal } from '@/components/modals/SearchModal';
 const Establishement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1); // State to track the current page
-  console.log(currentPage);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -26,8 +25,6 @@ const Establishement = () => {
   });
   const data = estabs?.data.estabs || [];
   const totalCount = estabs?.data.totalCount;
-  console.log(totalCount);
-  console.log(data);
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -58,7 +55,10 @@ const Establishement = () => {
             />
           </div>
           <AddEstab>
-            <button name='btn' className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
+            <button
+              name="btn"
+              className="pl-2 pr-2 text-sm font-semibold leading-tight text-center flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 "
+            >
               Ajouter une établissements
             </button>
           </AddEstab>

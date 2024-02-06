@@ -13,11 +13,6 @@ function ClassesLayout() {
   const estabId = params.etab_id
 
   const filters = queryClient.getQueryData(['a-classes-filters']);
-  console.log(filters)
-
-  
-  
-  
   const {
     data: classes,
     error,
@@ -30,14 +25,13 @@ function ClassesLayout() {
 
   if (isPending)
     return (
-      <div className=" flex gap-3">
+      <div className="flex gap-3 ">
         <Skeleton className="w-[275px] h-[190px]" />
         <Skeleton className="w-[275px] h-[190px]" />
         <Skeleton className="w-[275px] h-[190px]" />
       </div>
     );
   const data = classes?.data || [];
-  console.log(data);
   const reformedData = data.map((classe:any) => {
     return {
       id: classe.id,
@@ -46,13 +40,12 @@ function ClassesLayout() {
       number_students: classe.student_class.length,
     };
   });
-  console.log(reformedData);
   if (reformedData.length === 0) return (
     <p>Pas de classes archivés pour le moment.<br/>N’oubliez pas d’archiver les classes non actifs.</p>
   );
 
   return (
-    <div className=" flex gap-7 flex-wrap">
+    <div className="flex flex-wrap gap-7">
       {reformedData.map((classe: any) => (
         <ArchiverCard data={classe} key={classe.id} />
       ))}

@@ -13,9 +13,9 @@ export default function Home() {
   const queryClient = useQueryClient();
 
   const examCount = queryClient.getQueryData(['examCount']) as any;
-  console.log('🚀 ~ Home ~ examCount:', examCount);
+
   const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
-  console.log('🚀 ~ Home ~ marksheetCount:', marksheetCount);
+
   // const allSubjects = queryClient.getQueryData(['teacherSubject']) as any;
   const params = useParams();
   const classId = params.etab_id;
@@ -24,7 +24,7 @@ export default function Home() {
     queryFn: async () => getAllSubjectsCount(+classId),
   });
 
-  console.log('🚀 ~ Home ~ allSubjects:', allSubjects);
+
   const { data: subjects, isPending } = useQuery({
     queryKey: ['user-subjects-dash', classId],
     queryFn: async () => getAllSubjectsByClasseIdByPage(2, +classId),
@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full h-full p-9">
-      <div className="text-2 text-2xl font-semibold pl-4 ">Tableau de bord</div>
+      <div className="pl-4 text-2xl font-semibold text-2 ">Tableau de bord</div>
       <div className="flex gap-6 pt-10 flex-nowrap max-2xl:flex-wrap">
         {/* first section 👺  */}
         <div className=" flex flex-col gap-9 w-[60%] max-2xl:w-[100%] ">

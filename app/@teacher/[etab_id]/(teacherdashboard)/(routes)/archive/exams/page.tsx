@@ -21,21 +21,21 @@ function ExamsLayout({filters} : any) {
     });
     if (isPending)
       return (
-        <div className=" flex gap-3">
+        <div className="flex gap-3 ">
           <Skeleton className="w-[275px] h-[190px]" />
           <Skeleton className="w-[275px] h-[190px]" />
           <Skeleton className="w-[275px] h-[190px]" />
         </div>
       );
     const data = exams?.data || [];
-    console.log(data);
+
     if(data.length === 0) return (
       <p>
         Pas d’examens archivés pour le moment.<br/>N’oubliez pas d’archiver les examens non actifs.
       </p>
     );
   return (
-    <div className=" flex gap-7 flex-wrap">
+    <div className="flex flex-wrap  gap-7">
       {data.map((exam: any) => (
         <ArchiverCard data={exam} key={exam.id} />
       ))}

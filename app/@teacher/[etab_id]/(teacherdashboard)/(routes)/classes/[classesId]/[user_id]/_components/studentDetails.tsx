@@ -11,8 +11,6 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 export default function StudentDetails({ student, classe }: any) {
-  console.log(student);
-  console.log(classe);
   if (!student) return;
   if (!classe) return;
   const [name, setName] = useState(student?.name);

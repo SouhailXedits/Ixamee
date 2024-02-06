@@ -11,7 +11,7 @@ import {
 import Image from 'next/image';
 
 const BulletinsStudentList = ({data, nameClasse}:any) => {
-  console.log(data);
+
   const [sortByRank, setSortByRank] = useState(true); // true for descending order
 
   const studentData = data.map((item: any, index: number) => ({
@@ -24,7 +24,7 @@ const BulletinsStudentList = ({data, nameClasse}:any) => {
     rank: item.rank,
   }));
 
-  console.log(studentData);
+
 
   // const studentData = useMemo(
   //   () => [

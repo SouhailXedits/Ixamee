@@ -14,7 +14,6 @@ export function useEditExamContent() {
       toast.success('Exame Enregistre avec succès.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error("Une erreur est survenue lors de l'édition de l'exame.");
     },
     retry: false,

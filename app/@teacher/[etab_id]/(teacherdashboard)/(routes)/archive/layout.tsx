@@ -21,7 +21,6 @@ import FiltersModal from './components/FiltersModal';
 import { getAllArchivedClasses } from '@/actions/archive';
 
 const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
-
   const params = useParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -30,12 +29,11 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   const [currentTab, setCurrentTab] = useState<string>(currPath);
   const currEtabId = params.etab_id;
 
- 
   // const [currentPage, setCurrentPage] = useState(1); // State to track the current page
-  // console.log(currentPage);
+  //
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
-  //   console.log(jsonData);
+  //
   // };
 
   function handleChangeTab(value: string) {
@@ -65,7 +63,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
           </div>
-          <FiltersModal  />
+          <FiltersModal />
 
           {/* <div>
             <Select>
@@ -102,9 +100,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
           Examens
         </button>
       </div>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </main>
   );
 };

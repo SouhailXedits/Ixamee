@@ -27,6 +27,7 @@ import { EtudiantAjouteAvecSucces } from './etudiant-ajoute-avec-succes';
 import { z } from 'zod';
 import { error } from 'console';
 import { useCreateUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteUser';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface AjouterUneClasse {
   children: React.ReactNode;
@@ -48,6 +49,8 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
   const handelUpdateSetFormatData = (key: string, value: string | number) => {
     setFormatData({ ...formatData, [key]: value });
   };
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(['user']) as any;
 
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [files, setFile] = useState<any>(null);
@@ -87,10 +90,11 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
   //         .then((data) => {
   //           setSelectedFileUrl(data.url);
   //         })
-  //         .catch((err) => console.log(err));
+  //         .catch((err) =>
   //     }
   //   }
   // };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
@@ -134,6 +138,7 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
   };
 
   const { createUserInClass, isPending, error } = useCreateUserInClasse();
+
   const handelSubmit = () => {
     const validationResult = formatDataSchema.safeParse(formatData);
 
@@ -141,6 +146,7 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
       createUserInClass({
         name: formatData.name,
         email: formatData.email.toLowerCase(),
+        term: user?.term,
         image:
           selectedFileUrl ||
           'https://res.cloudinary.com/dm5d9jmf4/image/upload/v1706173047/hhg5o35yn2emjs9ehlb6.svg',
@@ -148,9 +154,6 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
         establishmentId: etab_id,
       });
       if (!error) setIsFirstModalOpen(!isFirstModalOpen);
-      else {
-        console.log(error);
-      }
 
       // setIsFirstModalOpen(!isFirstModalOpen);
       setFormErrors(null); // Reset error state if submission is successful

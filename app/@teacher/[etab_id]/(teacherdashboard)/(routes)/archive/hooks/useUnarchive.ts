@@ -19,7 +19,7 @@ export function useUnarchive(table: string) {
       toast.success('Restaurer avec succeé.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
+
       toast.error('Une erreur est survenue lors de la restauration.');
     },
     retry: false,

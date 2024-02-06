@@ -38,7 +38,6 @@ export const EditEstab = ({ id, currentName, children }: editEstabProps) => {
   // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [name, setName] = useState('');
   const { editEstablishement, isPending } = useEditEstab();
-  console.log(name);
 
   // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files && e.target.files.length > 0) {
@@ -87,7 +86,7 @@ export const EditEstab = ({ id, currentName, children }: editEstabProps) => {
         </div>
 
         <DialogFooter>
-          <DialogClose className=' w-full'>
+          <DialogClose className=" w-full">
             <Button
               onClick={() => {
                 isFirstModalOpen ? returnToCreate() : handlEditEstab();

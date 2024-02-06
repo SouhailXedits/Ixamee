@@ -5,12 +5,11 @@ import { CreateExercice } from './CreateExercice';
 import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
 
 function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
-  console.log(realExamContetn);
   // function calculateTotalMark(data: any) {
   //   let totalMark = 0;
 
   //   function calculateMarkRecursive(item: any) {
-  //     console.log(item.mark);
+  //
   //     totalMark += parseInt(item.mark, 10) || 0; // Convert mark to integer and add to totalMark
 
   //     if (item.children) {
@@ -29,7 +28,7 @@ function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
 
   // // Call the function passing the fakeData array to get the total mark
   // const totalMark = calculateTotalMark(fakeData);
-  // console.log('Total Mark:', totalMark);
+  //
   // if (!data) return;
   return (
     <div dir={!isArabic ? 'ltr' : 'rtl'}>

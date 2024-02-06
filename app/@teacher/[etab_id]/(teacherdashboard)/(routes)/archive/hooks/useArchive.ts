@@ -20,7 +20,7 @@ export function useArchive(table: string) {
       toast.success('archivé avec succeé.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
+
       toast.error("Une erreur est survenue lors de l'archivation.");
     },
     retry: false,

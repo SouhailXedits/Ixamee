@@ -40,7 +40,6 @@ export const AllStudentList = ({
     return 0;
   });
 
-  console.log(sortedArray);
 
   const header = [
     { name: 'Rang' },

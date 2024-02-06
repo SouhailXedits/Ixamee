@@ -23,9 +23,9 @@ export const ConfirmUnarchiveModel = ({ id, children, isExam }: editEstabProps) 
   const { unarchiveField: unArchiveClasse, isPending: isUnarchiveingClass } =
     useUnarchive('classes');
   function handleClick() {
-    // console.log('restaurer');
+
     if (isExam) {
-      console.log('this is exam');
+
       const table = 'exam';
       unArchiveExam({ id, table });
     } else {
@@ -61,7 +61,7 @@ export const ConfirmUnarchiveModel = ({ id, children, isExam }: editEstabProps) 
         </div>
 
         <DialogFooter>
-          <DialogClose className=" w-full">
+          <DialogClose className="w-full ">
             <Button
               type="button"
               disabled={isPending}

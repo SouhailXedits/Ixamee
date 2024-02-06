@@ -73,9 +73,8 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
     },
     // validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       createSubject(values);
-      console.log('end');
+
       //alert(JSON.stringify(values, null, 2));
     },
   });

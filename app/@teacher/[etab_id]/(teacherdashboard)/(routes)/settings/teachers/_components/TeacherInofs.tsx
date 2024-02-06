@@ -20,13 +20,11 @@ interface editEstabProps {
   currentUser: teacherAminOutput;
 }
 export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
-  console.log(currentUser);
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
   function returnToCreate() {
     setIsFirstModalOpen(!isFirstModalOpen);
   }
-  console.log(currentUser.emailVerified);
 
   return (
     <Dialog>

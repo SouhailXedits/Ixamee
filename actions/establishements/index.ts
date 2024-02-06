@@ -4,13 +4,11 @@ import { db } from '@/lib/db';
 
 export const createEstablishement = async (name: string) => {
   try {
-    console.log('start');
     const exam = await db.establishment.create({
       data: {
         name: name,
       },
     });
-    console.log('estab created succecfully ! ');
   } catch (error: any) {
     return {
       error: 'Failed to create establishement.',
@@ -21,7 +19,6 @@ export const createEstablishement = async (name: string) => {
 export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
   try {
     const skip = (page - 1) * pageSize;
-    console.log(skip);
 
     const estabs = await db.establishment.findMany({
       where: {
@@ -47,7 +44,6 @@ export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
 
 export const editEstablishement = async (id: number, name: string) => {
   try {
-    console.log(id, name);
     await db.establishment.update({
       where: {
         id: id,
@@ -56,7 +52,6 @@ export const editEstablishement = async (id: number, name: string) => {
         name: name,
       },
     });
-    console.log('estab edited succecfully ! ');
   } catch (error: any) {
     return {
       error: 'Failed to edit establishement.',
@@ -65,14 +60,12 @@ export const editEstablishement = async (id: number, name: string) => {
 };
 
 export const deleteEstablishement = async (id: number) => {
-  console.log(id);
   try {
     const data = await db.establishment.delete({
       where: {
         id: id,
       },
     });
-    console.log('estab deleted succecfully ! ');
   } catch (error: any) {
     return {
       error: 'Failed to delete establishement.',

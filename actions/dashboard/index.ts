@@ -40,7 +40,6 @@ export const getCountOfExamenes = async (userId: string, etab_id: number) => {
       is_archived: false,
     },
   });
-  console.log("🚀 ~ getCountOfExamenes ~ examCount:", examCount)
   return examCount;
 };
 export const getCountMonArchive = async (userId: string, etab_id: number) => {
@@ -122,7 +121,6 @@ export const getCountOfStudentSubjects = async (userId: string) => {
       is_archived: false,
     },
   });
-  console.log("🚀 ~ getCountOfStudentSubjects ~ subjectCount:", subjectCount)
   return subjectCount;
 };
 

@@ -27,7 +27,7 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
   };
   //  const handleImportedData = (jsonData: any) => {
   //    // Handle the imported data in the external page
-  //    console.log(jsonData);
+  //
   //  };
   const {
     data: subjects,
@@ -39,11 +39,11 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
   });
   const data = subjects?.data?.estabs || [];
   const totalCount = subjects?.data?.totalCount;
-  console.log(data);
+
   // const { classesId } = params;
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
-  //   console.log(jsonData);
+  //
   // };
 
   return (

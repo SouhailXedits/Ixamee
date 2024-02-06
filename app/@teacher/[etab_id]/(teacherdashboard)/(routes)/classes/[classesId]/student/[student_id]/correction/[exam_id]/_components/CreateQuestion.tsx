@@ -61,7 +61,6 @@ export const CreateQuestion = ({
   const handelDeleteQuestion = () => {
     // 🚨 Logging the previous data for debugging purposes
     setFakeData((prevData: any) => {
-      console.log(prevData);
       // Mapping over the previous data to create a new updatedData array
       return prevData.map((item: any) => {
         // Checking if the current item's id matches the id of the question to be deleted
@@ -84,7 +83,6 @@ export const CreateQuestion = ({
   const handeRenderQuestion = () => {
     // 🚨 Logging the previous data for debugging purposes
     setFakeData((prevData: any) => {
-      console.log(prevData);
       // Mapping over the previous data to create a new updatedData array
       return prevData.map((item: any) => {
         // Function to get the next character in a sequence based on the index
@@ -170,9 +168,6 @@ export const CreateQuestion = ({
       return updatedData;
     });
   };
-  console.log(data.mark);
-  console.log(data.content);
-  console.log(realExamContetn);
 
   return (
     <>

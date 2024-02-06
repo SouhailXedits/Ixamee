@@ -34,13 +34,13 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
   const classesubject = data?.subject;
   const queryClient = useQueryClient();
   const { editeClass, isPending } = useEditeClasse();
-  console.log(data);
+
   // const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
   //   queryKey: ['teachersubject'],
   //   queryFn: async () => await getSubjectOfUserById(data?.teacher_id),
   // });
   const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
-  const subjectoptions = Teachersubject?.map((item:any) => {
+  const subjectoptions = Teachersubject?.map((item: any) => {
     return {
       value: item.id,
       label: item.name,
@@ -51,7 +51,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
     classe: data?.name,
     matiere: '',
   });
-  console.log(formatData);
+
   const handleInputChange = (field: string, value: any) => {
     setFormatData((prevFormData) => ({
       ...prevFormData,
@@ -67,7 +67,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
       //   establishmentId: estab,
       //   teacherId: user_id,
       // });
-      console.log(data?.id);
+
       editeClass({
         name: formatData.classe,
         classe_id: +data?.id,

@@ -22,10 +22,10 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
   })
   
   const queryClient = useQueryClient();
-  // console.log()
+
   const user = queryClient.getQueryData(['user']) as any
   const userId = user?.id 
-  console.log(userId, etabId)
+
   // const { data: userClasses } = useQuery({
   //   queryKey: ['user-classes'],
   //   queryFn: async () => await getAllClassesNameAndIdDash({ user_id: userId, etab_id: etabId }),
@@ -41,7 +41,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
     queryFn: async() => await getAllExamCorrections(filters, userId)
   });
 
-  console.log(tableData)
+
 
   
   return (
@@ -54,7 +54,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               value={filters.classe_id}
               onValueChange={(value) => setFilters({ ...filters, classe_id: value })}
             >
-              <SelectTrigger className=" w-1/4 rounded-xl  text-11">
+              <SelectTrigger className="w-1/4 rounded-xl text-11">
                 <SelectValue className="text-sm" placeholder="Classe" />
               </SelectTrigger>
               <SelectContent>
@@ -70,7 +70,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               value={filters.exam_id}
               onValueChange={(value) => setFilters({ ...filters, exam_id: value })}
             >
-              <SelectTrigger className=" w-1/4 rounded-xl  text-11">
+              <SelectTrigger className="w-1/4 rounded-xl text-11">
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>
@@ -83,10 +83,10 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               </SelectContent>
             </Select>
           </div>
-          <div className=" flex flex-col w-full border h-full rounded-xl items-center justify-center p-10">
+          <div className="flex flex-col items-center justify-center w-full h-full p-10 border rounded-xl">
             <Rien
               image="/dashboard/books.svg"
-              className="flex flex-col gap-6 justify-center"
+              className="flex flex-col justify-center gap-6"
               message="Pas de bulletins pour le moment"
             />
           </div>
@@ -99,7 +99,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               value={filters.classe_id}
               onValueChange={(value) => setFilters({ ...filters, classe_id: value })}
             >
-              <SelectTrigger className=" w-1/4 rounded-xl  text-11">
+              <SelectTrigger className="w-1/4 rounded-xl text-11">
                 <SelectValue className="text-sm" placeholder="Classe" />
               </SelectTrigger>
               <SelectContent>
@@ -115,7 +115,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               value={filters.exam_id}
               onValueChange={(value) => setFilters({ ...filters, exam_id: value })}
             >
-              <SelectTrigger className=" w-1/4 rounded-xl  text-11">
+              <SelectTrigger className="w-1/4 rounded-xl text-11">
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>
@@ -128,7 +128,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               </SelectContent>
             </Select>
           </div>
-          <div className="w-full border rounded-xl overflow-auto">
+          <div className="w-full overflow-auto border rounded-xl">
             <BulletinsStudentList data={tableData} nameClasse={userClasses.find((classe:any) => classe.id === filters.classe_id).name} />
           </div>
         </div>

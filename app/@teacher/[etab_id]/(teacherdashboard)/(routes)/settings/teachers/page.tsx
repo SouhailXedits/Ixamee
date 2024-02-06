@@ -8,7 +8,6 @@ import { useState } from 'react';
 
 const Teacher = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  console.log(searchQuery);
 
   const {
     data: teachers,
@@ -25,7 +24,7 @@ const Teacher = () => {
   //   queryKey: ['teachers-admins-seach'],
   //   queryFn: async () => await getAllSearchQuery(searchQuery, table),
   // });
-  console.log(teachers);
+
   const data = teachers?.data;
 
   return (

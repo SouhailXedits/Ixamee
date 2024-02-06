@@ -1,9 +1,9 @@
-export function calculateAverageMark(data:any) {
+export function calculateAverageMark(data: any) {
   let totalMarks = 0;
   let totalCoefficients = 0;
 
-  data.forEach((trimestre:any ) => {
-    trimestre.exams.forEach((exam:any) => {
+  data.forEach((trimestre: any) => {
+    trimestre.exams.forEach((exam: any) => {
       totalMarks += exam.overTwnetyMark * exam.coefficient;
       totalCoefficients += exam.coefficient;
     });
@@ -12,10 +12,8 @@ export function calculateAverageMark(data:any) {
   return totalCoefficients !== 0 ? (totalMarks / totalCoefficients).toFixed(2) : 0;
 }
 
-
-export function calculateOverallAverage(data:any) {
+export function calculateOverallAverage(data: any) {
   const groupedExams = data.reduce((result: any, exam: any) => {
-    console.log(exam);
     const term = exam.exam?.term;
     if (!result[term]) {
       result[term] = [];
@@ -33,7 +31,6 @@ export function calculateOverallAverage(data:any) {
     });
     return result;
   }, {});
-  console.log(groupedExams);
 
   const isTrimester = Object.keys(groupedExams).some((key) =>
     key.toLowerCase().includes('trimestre')
@@ -49,7 +46,6 @@ export function calculateOverallAverage(data:any) {
   }));
 
   const averageMark = calculateAverageMark(trimesters);
-  console.log(averageMark);
+
   return averageMark;
 }
-

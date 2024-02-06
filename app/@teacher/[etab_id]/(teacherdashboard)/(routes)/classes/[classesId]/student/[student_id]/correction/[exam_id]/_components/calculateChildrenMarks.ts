@@ -26,7 +26,6 @@ export const calcAllMark = (fakeData: any) => {
   return sum;
 };
 export const getMarkOfExerciceWithId = (content: any, id: string): number | null => {
-  console.log(content);
   for (const item of content) {
     if (item.id === id) {
       return item.mark;
@@ -43,7 +42,7 @@ export const getMarkOfExerciceWithId = (content: any, id: string): number | null
 
 export const transferAllMarkToNull = (content: any) => {
   for (const item of content) {
-      item.mark = null;
+    item.mark = null;
     if (item.children) {
       transferAllMarkToNull(item.children);
     }

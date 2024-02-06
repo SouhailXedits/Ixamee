@@ -21,7 +21,6 @@ export const ArchiveExame = ({ children, id }: ArchiveUneClasse) => {
   function handleArchive() {
     const table = 'exam';
     archiveField({ id, table });
-    console.log('clicked', id);
   }
   return (
     <Dialog>

@@ -111,13 +111,13 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
   // function handelDeletsubQuestion(data: any) {
   //   setFakeData((prevData: any) => {
   //     return prevData.map((item: any) => {
-  //       console.log(item);
+  //
   //       if (item.id === allData.id) {
   //         item.children.map((subItem: any) => {
-  //           console.log(subItem);
+  //
   //           subItem.children.map((subSubItem: any) => {
   //             if (subSubItem.id === data.id) {
-  //               console.log(subSubItem);
+  //
   //               return {
   //                 ...item,
   //                 children: item.children.filter((subItem: any) => subItem.id !== data.id),
@@ -220,9 +220,6 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
     const children = data.children;
 
     // Logging children, data, and allData for debugging purposes
-    console.log(children);
-    console.log(data);
-    console.log(allData);
 
     // Initializing the sum variable to 0
     let sum = 0;
@@ -237,7 +234,6 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
   // Function to calculate the sum of marks in a subquestion hierarchy
   const calcSumOfMarks = (data: any) => {
     // Logging the data for debugging purposes
-    console.log(data);
 
     // Initializing the sum variable to 0
     let sum = 0;
@@ -254,8 +250,6 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
 
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
   const updateSubQuestion = (e: any, data: any) => {
-    console.log(data);
-
     // Updating the mark of the specific subquestion
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
@@ -288,7 +282,6 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
 
     // Recalculating marks in the hierarchy
     setFakeData((prevData: any) => {
-      console.log(prevData);
       return prevData.map((item: any) => {
         // Checking if the current item's id matches the id of the parent question and it has children
         if (item.id === allData.id && item.children.length > 0) {
@@ -314,7 +307,6 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
     });
   };
 
-  console.log(allData);
   return (
     <>
       <div

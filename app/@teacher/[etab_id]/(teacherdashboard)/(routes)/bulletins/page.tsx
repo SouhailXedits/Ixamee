@@ -53,7 +53,7 @@ const Student = () => {
     queryFn: async () => await getMarkSheets(filters),
   });
 
-  console.log(markSheets);
+
 
   const groupedData = markSheets?.data.reduce((acc: any, item: any) => {
     const userId = item.user.id;
@@ -84,7 +84,7 @@ const Student = () => {
       maxCoefficient = weightedCoef;
     }
   }
-  console.log(maxCoefficient);
+
 
 
 
@@ -97,7 +97,7 @@ const Student = () => {
 
       const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
       const overTwentyAvg = (20 / exam.total_mark) * average;
-      console.log(overTwentyAvg);
+
 
       return {
         id: exam.id,
@@ -109,20 +109,20 @@ const Student = () => {
         overTwentyAvg: overTwentyAvg,
       };
     });
-    console.log(examsInfo);
+
 
     // const totalMarksObtained = examsInfo.reduce(
     //   (acc: any, exam: any) => acc + exam.marksObtained,
     //   0
     // );
     // const totalCoefficient = examsInfo.reduce((acc: any, exam: any) => acc + exam.coefficient, 0);
-    // console.log(totalCoefficient);
+
     let overallAverage =
       examsInfo.reduce(
         (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
         0
       ) / maxCoefficient;
-        // console.log(userData[0]);
+
     return {
       id: userId,
       name: userData[0].user.name,
@@ -132,11 +132,11 @@ const Student = () => {
     };
   });
 
-   console.log(resultArray);
+
 
   const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
-  console.log(rankedData)
+
 
   return (
     <main className="flex flex-col gap-6 p-10">

@@ -49,7 +49,7 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
     // Set a new timeout to perform the action after 500 milliseconds
     const timeoutId = setTimeout(async () => {
       const user = await getUserIdByEmail(value);
-      console.log(user);
+
       if (user === null || (user?.role !== 'TEACHER' && user?.role !== 'ADMIN')) {
         setShowError(true);
         setUserId(null);
@@ -61,10 +61,8 @@ export const AddTeacher = ({ children }: AjouterUneClasse) => {
   }
 
   function handleAddingAdmin() {
-    console.log('clicked', userId);
     if (userId) {
       updateUserToAdmin(userId);
-      console.log(userId);
     }
   }
 

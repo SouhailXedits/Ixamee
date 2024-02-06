@@ -47,11 +47,8 @@ function calculateDateDifference(date1: Date, date2: Date): number {
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
   return differenceInDays;
 }
-function handleUpdateUser(user_id: number) {
-  // console.log(user_id);
-}
+function handleUpdateUser(user_id: number) {}
 const Status = ({ row }: any) => {
-  console.log(row.original.status);
   switch (row.original.status) {
     case 'done':
       return <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />;
@@ -106,7 +103,7 @@ const Status = ({ row }: any) => {
   //     }
   //   })
   //   .catch((error) => {
-  //     console.log(error);
+  //
   //     // Handle the error if needed
   //     // return null;
   //   });
@@ -115,9 +112,9 @@ const Status = ({ row }: any) => {
 const Action = ({ row }: any) => {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(row);
+
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
-  console.log(correctionExamOfUser);
+
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <ModifierUnEtudiant data={row.original}>
@@ -125,8 +122,8 @@ const Action = ({ row }: any) => {
       </ModifierUnEtudiant>
       {row?.original?.exam !== 0 && (
         <CorrectExam data={correctionExamOfUser} user_id={row.original.id}>
-        <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
-         </CorrectExam>
+          <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
+        </CorrectExam>
       )}
 
       {!row.original.emailVerified ? (
@@ -151,8 +148,17 @@ const Action = ({ row }: any) => {
           </InviterUnEtudiant>
         )
       ) : null}
+      <SupprimerUserInClasse user_id={row?.original?.id}>
+        <Image
+          src={'/trashicon.svg'}
+          alt="trashicon.svg"
+          width={20}
+          height={20}
+          className="cursor-pointer "
+        />
+      </SupprimerUserInClasse>
 
-      <DropdownMenu>
+      {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
@@ -163,14 +169,14 @@ const Action = ({ row }: any) => {
           <SupprimerUserInClasse user_id={row?.original?.id}>
             <DropdownMenuLabel className="cursor-pointer">Supprimer</DropdownMenuLabel>
           </SupprimerUserInClasse>
-          <DropdownMenuLabel
+          {/* <DropdownMenuLabel
             onClick={() => router.push(`${pathname}/${row.original.id}`)}
             className="cursor-pointer"
           >
             Modifier
-          </DropdownMenuLabel>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </DropdownMenuLabel> */}
+      {/* </DropdownMenuContent> */}
+      {/* </DropdownMenu> */}
     </div>
   );
 };
@@ -227,9 +233,8 @@ export const columns = [
     cell: ({ row }: any) => (
       <div className="w-10 h-[21px] p-2.5 bg-[#D8ECF3] rounded-[10px] border border-[#1B8392] flex-col justify-center items-center gap-2.5 inline-flex">
         <div className="text-center text-[#1B8392] text-sm font-semibold ">
-          {/* {console.log(row.id)} */}
           {+row.id + 1}
-          {/* {row.getValue('range')} */}
+          {/* {row.getValue('range')}  */}
         </div>
       </div>
     ),
@@ -242,13 +247,12 @@ export const columns = [
     },
     cell: ({ row }: any) => (
       <div className="flex items-center gap-2 capitalize">
-        {console.log(row?.original?.image)}
         <Image
           src={row?.original?.image ? row?.original?.image : '/defaultUserAvatr.svg'}
           alt=""
           width={42}
           height={42}
-          className="rounded-full"
+          className="rounded-full h-[42px] w-[42px]"
         />
         {row.getValue('name')}
       </div>
@@ -281,7 +285,7 @@ export const columns = [
 
   {
     header: () => {
-      return <span className="text-[#1B8392] w-[205px] ">Actions</span>;
+      return <span className="text-[#1B8392] w-[235px] ">Actions</span>;
     },
     id: 'actions',
     enableHiding: false,
@@ -292,7 +296,7 @@ export const columns = [
 
 export function StudentList({ data, isPending }: any) {
   // let newData = [data, exam];
-  console.log(data);
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});

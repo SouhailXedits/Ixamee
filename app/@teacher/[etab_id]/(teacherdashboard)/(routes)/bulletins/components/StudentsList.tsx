@@ -110,7 +110,7 @@ export const CorrectionTag = ({
 );
 
 export default function MarkSheetStudentList({ data: realData, filters }: any) {
-  console.log(realData);
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -124,7 +124,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
 
   const sortedData = [...realData].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
-  console.log(sortedData)
+
 
   const columns: ColumnDef<any>[] = [
     // {
@@ -172,7 +172,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
       accessorKey: `exams.${exam.name.toLowerCase()}.average`, // Updated accessorKey
       header: () => {
         return (
-          <p className=" flex flex-col">
+          <p className="flex flex-col ">
             {' '}
             <span className="text-[#1B8392]">{exam.name}</span>
             <span className="text-[#1B8392]/80 text-xs">coefficient : {exam.coefficient}</span>
@@ -180,7 +180,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
         );
       },
       cell: ({ row }: any) => (
-        console.log(exam),
+
         (
           <div className="text-[#727272]">
             {row.original.exams.find((e: any) => e.name.toLowerCase() === exam.name.toLowerCase())
@@ -195,7 +195,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
       header: ({ column }) => {
         return (
           <Button
-            className=" text-white  hover:text-white hover:bg-mainGreen/85 w-full h-full bg-mainGreen rounded-none"
+            className="w-full h-full text-white rounded-none hover:text-white hover:bg-mainGreen/85 bg-mainGreen"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
@@ -265,21 +265,21 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
     );
   }
 
-  console.log(filters);
 
-  console.log(table.getHeaderGroups(), 'table');
+
+
 
   if (realData.length === 0) return <p>Pas de bulletins à afficher.</p>;
   return (
     <div className="w-full">
-      <div className=" rounded-md ">
+      <div className="rounded-md ">
         <Table>
           <TableHeader className="bg-[#F0F6F8] text-[#1B8392] rounded ">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="rounded">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className=" text-center p-0 border">
+                    <TableHead key={header.id} className="p-0 text-center border ">
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}
@@ -289,7 +289,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className=" text-center">
+          <TableBody className="text-center ">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow

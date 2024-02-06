@@ -83,34 +83,33 @@ import { useParams, useRouter } from 'next/navigation';
 const Student = () => {
   const params = useParams();
   const router = useRouter();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   // const currentId = params.bulletin_id;
   function handleGoBack() {
     router.back();
   }
   const classeId = Number(params.etab_id);
-  console.log(classeId)
+
   const subjectId = Number(params.subject_id);
-  console.log(subjectId)
-  const user = queryClient.getQueryData(["user"]) as any;
+
+  const user = queryClient.getQueryData(['user']) as any;
 
   const currentId = user?.id;
 
-
-  // console.log(user);
+  //
 
   const { data: userClasseInfos, isPending: userClasseInfosPending } = useQuery<any>({
     queryKey: ['userClasseInfos', currentId],
 
     queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
   });
-  // console.log(userClasseInfos);
+  //
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
     queryKey: ['marksheet', currentId],
     queryFn: async () => getMarksheetByUserId(+classeId, currentId + '', +subjectId),
   });
-  // console.log(marksheet);
+  //
 
   const { data: classeName, isPending: classeNamePending } = useQuery<any>({
     queryKey: ['classeName', classeId],
@@ -128,13 +127,10 @@ const Student = () => {
     queryKey: ['TeacherName', subjectId],
     queryFn: async () => await getTeacherName(+subjectId, +classeId),
   });
-  console.log(TeacherName);
-
 
   const examsData = marksheet?.data || [];
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
-    console.log(exam);
     const term = exam.exam.term;
     if (!result[term]) {
       result[term] = [];
@@ -152,9 +148,7 @@ const Student = () => {
     });
     return result;
   }, {});
-  console.log(groupedExams);
 
-  // console.log(groupedExams)
   const isTrimester = Object.keys(groupedExams).some((key) =>
     key.toLowerCase().includes('trimestre')
   );
@@ -168,14 +162,10 @@ const Student = () => {
     exams: groupedExams[term] || [], // Check and add empty array if term has no exams
   }));
 
-  
-
   const averageMark = calculateAverageMark(trimesters);
 
-  console.log('Average Mark:', averageMark);
-  console.log(trimesters);
   if (isPendingmMarksheet) return <Loading />;
-  console.log(classeName);
+
   return (
     <main className="flex flex-col gap-12 p-10">
       <nav className="flex justify-between w-full ">
@@ -205,13 +195,13 @@ const Student = () => {
                 average: userClasseInfos.length && userClasseInfos[0].average,
                 range: userClasseInfos.length && userClasseInfos[0].rankInClasse,
                 teacherName: TeacherName?.name,
-                userClasseInfos
+                userClasseInfos,
               }}
             />
           </PDFExport>
         </div>
       </nav>
-      <div className=" flex gap-3 items-center ml-5">
+      <div className="flex items-center gap-3 ml-5 ">
         <Image
           src={user?.image || '/userAvatar/user1.svg'}
           alt=" user avatar"
@@ -219,8 +209,8 @@ const Student = () => {
           width={50}
         />
         <div>
-          <p className=" text-mainGreen text-xl">{user?.name}</p>
-          {classeNamePending && <Skeleton className=" h-5 w-20" />}
+          <p className="text-xl text-mainGreen">{user?.name}</p>
+          {classeNamePending && <Skeleton className="w-20 h-5 " />}
           {classeName?.length && <p className=" text-gray">{classeName[0]?.name}</p>}
         </div>
       </div>
@@ -230,16 +220,16 @@ const Student = () => {
           <TermCard term={trimester} />
         ))}
       </div>
-      <div className=" flex w-full justify-end gap-2 text-white">
+      <div className="flex justify-end w-full gap-2 text-white ">
         {userClasseInfosPending ? (
           <Skeleton className="" />
         ) : (
           <>
             {' '}
-            <p className=" p-2 bg-orangeColor rounded">
+            <p className="p-2 rounded bg-orangeColor">
               Rang: {userClasseInfos[0]?.rankInClasse || '-'}
             </p>{' '}
-            <p className=" p-2 bg-mainGreen rounded">
+            <p className="p-2 rounded bg-mainGreen">
               Moyenne génerale: {userClasseInfos[0]?.average}/20
             </p>
           </>

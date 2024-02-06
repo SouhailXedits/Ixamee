@@ -2,7 +2,6 @@ import NoResultsFount from './NoResultsFount';
 import UserExam from './UserExam';
 
 function TermCard({ term }: any) {
-  console.log(term)
   return (
     <div className=" flex flex-col gap-5  min-w-fit min-h-[15rem] h-full ">
       <div className=" bg-4/50 p-2 rounded text-mainGreen font-semibold">{term.name}</div>

@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { sendInvitationEmail } from '@/lib/mail';
 import { generateInvitationToken } from '@/lib/tokens';
 import { Exo } from 'next/font/google';
+import { getMe } from '../examens';
 
 export const createClasse = async (
   name: string,
@@ -12,7 +13,6 @@ export const createClasse = async (
   teacherId: string
 ) => {
   try {
-    console.log(name, matiere, establishmentId, teacherId);
 
     const classe = await db.classe.create({
       data: {
@@ -41,7 +41,6 @@ export const getClasseById = async (id: number) => {
       exam_classe: true,
     },
   });
-  console.log('🚀 ~ getClasseById ~ classe:', classe);
   return classe;
 };
 export const getClasseByClassId = async (id: number) => {
@@ -66,12 +65,10 @@ export const getClasseByClassId = async (id: number) => {
       },
     },
   });
-  console.log('🚀 ~ getClasseById ~ classe:', classe);
   return classe;
 };
 export const updateClasse = async (name: string, classe_id: number, matiere: any) => {
   try {
-    console.log(name, classe_id, matiere);
 
     const classe = await db.classe.update({
       where: {
@@ -84,7 +81,6 @@ export const updateClasse = async (name: string, classe_id: number, matiere: any
         },
       },
     });
-    console.log(classe);
   } catch (error: any) {
     console.error(error); // Log the actual error for debugging purposes
   }
@@ -94,6 +90,7 @@ export const createUserInClasse = async (
   image: string,
   name: string,
   email: string,
+  term: any,
   class_id: string,
   establishmentId: number
 ) => {
@@ -116,6 +113,7 @@ export const createUserInClasse = async (
         image: image,
         email: email,
         role: 'STUDENT',
+        term: term,
         classe: {
           connect: { id: +class_id },
         },
@@ -131,6 +129,7 @@ export const createUserInClasse = async (
         email: email,
       },
       data: {
+        term: term,
         classe: {
           connect: {
             id: +class_id,
@@ -149,7 +148,6 @@ export const createUserWithImportInClasse = async (
   classe_id: number,
   establishmentId: number
 ) => {
-  console.log(name, classe_id, email, image);
   const user = await db.user.findUnique({
     where: {
       email: email,
@@ -162,7 +160,6 @@ export const createUserWithImportInClasse = async (
       },
     },
   });
-  console.log(user);
   if (!user) {
     const data = await db.user.create({
       data: {
@@ -181,7 +178,6 @@ export const createUserWithImportInClasse = async (
         },
       },
     });
-    console.log(data);
   } else {
     const data = await db.user.update({
       where: {
@@ -195,17 +191,14 @@ export const createUserWithImportInClasse = async (
         },
       },
     });
-    console.log(data);
   }
 };
 export const deleteClasse = async (id: number) => {
-  console.log(id);
   const data = await db.classe.delete({
     where: {
       id: id,
     },
   });
-  console.log('classe deleted succecfully ! ');
   return { data: data, error: undefined };
 };
 
@@ -250,7 +243,6 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
         },
       },
     });
-    console.log(classes);
     return { data: classes, error: undefined };
   } catch (error: any) {
     return {
@@ -299,7 +291,6 @@ export const getAllClassesNameAndId = async ({
         },
       },
     });
-    console.log('🚀 ~ classes:', classes);
 
     return { data: classes, error: undefined };
   } catch (error: any) {
@@ -341,7 +332,6 @@ export const getAllClassesNameAndIdDash = async ({
         name: true,
       },
     });
-    console.log('🚀 ~ classes:', classes);
 
     return { data: classes, error: undefined };
   } catch (error: any) {
@@ -394,7 +384,6 @@ export const getAllClasseByPage = async ({
       },
       take: 3,
     });
-    console.log(classes);
     return { data: classes, error: undefined };
   } catch (error: any) {
     return {
@@ -475,8 +464,6 @@ export const getStudentOfClasse = async (classe_id: number) => {
   return res;
 };
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
-  console.log(class_id, data, exam_id);
-  console.log(exam_id);
   const res = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -522,7 +509,6 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
 //     },
 
 //   });
-//   console.log(user);
 //   return user;
 // };
 
@@ -532,14 +518,11 @@ export const updateUserInClasse = async (
   email: string,
   image: string
 ) => {
-  console.log(id);
-  console.log(image);
   // const existingUser = await db.user.findUnique({
   //   where: {
   //     email: email,
   //   },
   // });
-  // console.log(existingUser);
   // if (existingUser && existingUser.id !== id) {
   //   console.error('Email already exists for another user');
   //   return;
@@ -556,17 +539,14 @@ export const updateUserInClasse = async (
     },
   });
 
-  console.log('User updated successfully');
 };
 
 export const deleteUserInClasse = async (id: string) => {
-  console.log(id);
   const data = await db.user.delete({
     where: {
       id: id,
     },
   });
-  console.log('user deleted succecfully ! ');
   return { data: data, error: undefined };
 };
 
@@ -617,7 +597,6 @@ export const getNameOfuserById = async (id: string) => {
   return user;
 };
 export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
-  console.log(studentEmail, teacherEmail);
 
   const invitationToken = await generateInvitationToken(studentEmail, teacherEmail);
   await sendInvitationEmail(
@@ -642,7 +621,6 @@ export const updateInvitationUser = async (studentEmail: string, teacherEmail: s
 };
 
 // export const getStudentOfClasse = async (classe_id: number, exma_id: number) => {
-//   console.log(classe_id, exma_id);
 //   const res = await db.examCorrection.findMany({
 //     where: {
 //       id: exma_id,
@@ -663,12 +641,10 @@ export const updateInvitationUser = async (studentEmail: string, teacherEmail: s
 //       },
 //     },
 //   });
-//   console.log(res);
 //   return res;
 // };
 
 export const getStatusById = async (id: any) => {
-  console.log(id);
   const data = await db.examCorrection.findMany({
     where: {
       id: id,
@@ -677,7 +653,6 @@ export const getStatusById = async (id: any) => {
       status: true,
     },
   });
-  console.log(data);
   return data;
 };
 
@@ -697,7 +672,6 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
   return data;
 };
 export const getCorigeExameContentOfAllUser = async (exam_id: number, userData: any) => {
-  console.log(userData);
   const data = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -718,11 +692,9 @@ export const getCorigeExameContentOfAllUser = async (exam_id: number, userData: 
       correction_exam_content: true,
     },
   });
-  console.log(data);
   return data;
 };
 export const getNameClasseByClasseId = async (classe_id: number) => {
-  console.log(classe_id);
   const data = await db.classe.findMany({
     where: {
       id: classe_id,

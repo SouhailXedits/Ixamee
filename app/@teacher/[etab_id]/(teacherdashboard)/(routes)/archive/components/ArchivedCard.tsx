@@ -18,7 +18,6 @@ const ArchiverCard = ({ data }: { data: itemProps }) => {
   const isExam = data.exam_classess !== undefined;
   const params = useParams();
   const estabId = params.etab_id;
-  console.log(params);
   const router = useRouter();
 
   return (

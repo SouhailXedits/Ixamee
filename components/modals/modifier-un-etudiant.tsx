@@ -23,7 +23,7 @@ interface ModifierUnEtudiant {
   data: any;
 }
 export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
-  console.log(data);
+  
   const minrange = data?.length;
   const formatDataSchema = z.object({
     name: z.string().min(3, 'Veuillez renseigner le nom'),
@@ -84,7 +84,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
       }
     }
   };
-  console.log(selectedFileUrl);
+
   const renderFieldError = (fieldName: string) => {
     if (formErrors) {
       const fieldError = formErrors?.errors?.find((error) => error.path[0] === fieldName);
@@ -119,7 +119,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
       });
       // if (!) setIsFirstModalOpen(!isFirstModalOpen);
       // else {
-      //   console.log(error);
+
       // }
 
       // setIsFirstModalOpen(!isFirstModalOpen);
@@ -153,7 +153,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
                   alt="upload"
                   width={55}
                   height={55}
-                  className="object-cover rounded-full"
+                  className="object-cover rounded-full w-[55px] h-[55px] "
                 />
               ) : (
                 <Image
@@ -161,7 +161,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
                   alt="upload"
                   width={55}
                   height={55}
-                  className="rounded-full"
+                  className="object-cover rounded-full w-[55px] h-[55px] "
                 />
               )}
               <div className="flex flex-col items-start justify-start text-[#727272] gap-2">
@@ -215,20 +215,33 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
         <DialogFooter>
           <DialogClose className="w-[50%]">
             <Button
-              onClick={handelSubmit}
-              type="submit"
+              type="reset"
               className="w-full bg-white hover:opacity-80 text-[#1B8392] border border-[#1B8392] "
             >
               Annuler
             </Button>
           </DialogClose>
-          <Button
-            onClick={handelSubmit}
-            type="submit"
-            className="w-[50%]  bg-[#1B8392] hover:opacity-80 "
-          >
-            Enregistrer
-          </Button>
+          {isPending ? (
+            <Button
+              onClick={handelSubmit}
+              type="submit"
+              className="w-[50%]  bg-[#1B8392] hover:opacity-80 "
+            >
+              <div
+                className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
+                role="status"
+                aria-label="loading"
+              ></div>
+            </Button>
+          ) : (
+            <Button
+              onClick={handelSubmit}
+              type="submit"
+              className="w-[50%]  bg-[#1B8392] hover:opacity-80 "
+            >
+              Enregistrer
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -179,7 +179,6 @@ export function SubjectsList({
   currentpage,
   totalCount,
 }: subjectListProps) {
-  console.log(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -210,17 +209,14 @@ export function SubjectsList({
     ));
 
   const totalPageCount = Math.floor(totalCount / 10) + 1;
-  console.log(totalCount);
 
   function handleNextPage() {
-    console.log(currentpage + 1);
     onPageChange(currentpage + 1);
     table.nextPage();
   }
   function handlePreviousPage() {
     // const cur = table.getPageCount();
-    if (currentpage === 0) console.log(currentpage - 1);
-    onPageChange(currentpage - 1);
+    if (currentpage === 0) onPageChange(currentpage - 1);
     table.previousPage();
   }
 

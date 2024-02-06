@@ -34,7 +34,7 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
       },
     });
 
-    console.log(exams);
+
 
     return { data: exams, error: undefined };
   } catch (error: any) {
@@ -50,7 +50,7 @@ export const getAllArchivedClasses = async (
   estabId: number,
   filters?: any
 ) => {
-  console.log(filters)
+
   try {
     const { dateRange } = filters || {};
 
@@ -91,7 +91,7 @@ export const getAllArchivedClasses = async (
 
     return { data: classe, error: undefined };
   } catch (error: any) {
-    console.log(error);
+
     return {
       data: undefined as any,
       error: 'Failed to get classes.',
@@ -108,9 +108,9 @@ export const unArchive = async (id: number, table: string) => {
         is_archived: false,
       },
     });
-    console.log('edited successfully ! ');
+
   } catch (error: any) {
-    console.log(error);
+
     return {
       error: 'Failed to edit.',
     };
@@ -128,9 +128,9 @@ export const archive = async (id: number, table: string) => {
         is_archived: true,
       },
     });
-    console.log('archived successfully ! ');
+
   } catch (error: any) {
-    console.log(error);
+
     return {
       error: 'Failed to archive.',
     };

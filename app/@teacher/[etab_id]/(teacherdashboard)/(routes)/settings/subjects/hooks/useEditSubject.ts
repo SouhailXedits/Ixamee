@@ -6,10 +6,9 @@ import { editEstablishement as editEstablishementApi } from '@/actions/establish
 import { editSubject as editSubjectApi } from '@/actions/subjects';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 
-
 interface paramsProps {
-  id: number,
-  data: SubjectInputProps 
+  id: number;
+  data: SubjectInputProps;
 }
 export function useEditSubject() {
   const queryClient = useQueryClient();
@@ -21,7 +20,6 @@ export function useEditSubject() {
       toast.success('Matière édité avec succès.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error("Une erreur est survenue lors de l'édition de la matière.");
     },
     retry: false,

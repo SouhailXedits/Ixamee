@@ -3,11 +3,10 @@ import data from './fakeMarkSheetsData';
 // import StudentRow from './StudentRow';
 import PdfHeader from '@/components/shared-components/PdfHeader';
 
-export const MarkSheetStudent = ({data}: any) => {
+export const MarkSheetStudent = ({ data }: any) => {
   // const data = {
   //   terms = [{trimester1: [exams= {}}]
   // }
-  console.log(data)
 
   return (
     <div>
@@ -24,7 +23,8 @@ export const MarkSheetStudent = ({data}: any) => {
           fullName: 'souhail brahmi',
           teacherName: 'firas latrach',
           range: 1,
-          average: 15.57 }}
+          average: 15.57,
+        }}
         type="MSStudent"
       />
       {/* {data.terms.map(term => ())} */}
@@ -54,7 +54,7 @@ export const MarkSheetStudent = ({data}: any) => {
               <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
               <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td>
             </tr>
-            
+
             {/* {data.map((student :any, i :number) => (
               <StudentRow data={student} key={i} />
             ))} */}

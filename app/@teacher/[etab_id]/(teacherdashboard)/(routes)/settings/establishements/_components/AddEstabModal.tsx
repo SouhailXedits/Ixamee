@@ -22,10 +22,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Image from 'next/image';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { useCreateEstab } from '../hooks/useCreateEstab';
-
-
 
 interface AjouterUneClasse {
   children: React.ReactNode;
@@ -34,10 +32,9 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   // const [file, setFile] = useState<File | null>(null);
   // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-  const [name, setName] = useState("")
+  const [name, setName] = useState('');
   const { createEstablishement } = useCreateEstab();
-  console.log(name)
-  
+
   // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files && e.target.files.length > 0) {
   //     const selectedFile = e.target.files[0];
@@ -50,12 +47,12 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
   //   }
   // };
   async function handleCreateEstab() {
-    createEstablishement(name)
+    createEstablishement(name);
     //setIsFirstModalOpen(!isFirstModalOpen)
   }
 
   function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen)
+    setIsFirstModalOpen(!isFirstModalOpen);
   }
 
   return (
@@ -100,16 +97,16 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
 
         <DialogFooter>
           <DialogClose>
-
-          
-          <Button
-            onClick={() => {isFirstModalOpen? returnToCreate() : handleCreateEstab()}}
-            type="submit"
-            className="w-full bg-[#1B8392] hover:opacity-80 "
+            <Button
+              onClick={() => {
+                isFirstModalOpen ? returnToCreate() : handleCreateEstab();
+              }}
+              type="submit"
+              className="w-full bg-[#1B8392] hover:opacity-80 "
             >
-            {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
-          </Button>
-            </DialogClose>
+              {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -23,13 +23,13 @@ import Image from 'next/image';
 function Results() {
   const params = useParams();
   const id = params.etab_id;
-  console.log(id);
+
   const { data, isPending, error } = useQuery({
     queryKey: ['user-subjects', id],
     queryFn: async () => getAllSubjectsByClasseId(+id),
   });
 
-  console.log(data);
+
   if (error) return;
   return (
     <div className="flex flex-col gap-6 p-10 ">

@@ -18,14 +18,12 @@ export function useCreateExam() {
       queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
       toast.success('Exam ajoute avec succès.');
       if (pathName.includes('/examens')) {
-        console.log('immm');
         router.push(pathName + '/' + data.id);
       } else {
         router.push(params.etab_id + '/examens/' + data.id);
       }
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error('There was an error creating the Exam');
     },
     retry: false,

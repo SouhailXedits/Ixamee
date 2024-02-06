@@ -58,7 +58,6 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
   };
   const handelSubmitInput = () => {
     try {
-      console.log(estab);
       schema.parse(formatData);
       createClass({
         name: formatData.classe,
@@ -153,7 +152,7 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
               Ajouter
             </Button>
           ) : (
-            <DialogClose className=' w-full'>
+            <DialogClose className=" w-full">
               <Button
                 type="submit"
                 className="w-full bg-[#1B8392] hover:opacity-80"

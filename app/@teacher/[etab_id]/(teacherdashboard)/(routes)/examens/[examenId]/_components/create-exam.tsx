@@ -9,7 +9,7 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
   //   let totalMark = 0;
 
   //   function calculateMarkRecursive(item: any) {
-  //     console.log(item.mark);
+  //
   //     totalMark += parseInt(item.mark, 10) || 0; // Convert mark to integer and add to totalMark
 
   //     if (item.children) {
@@ -28,10 +28,9 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
 
   // // Call the function passing the fakeData array to get the total mark
   // const totalMark = calculateTotalMark(fakeData);
-  // console.log('Total Mark:', totalMark);
+  //
 
   const createExercice = (fakeData: any) => {
-    console.log(fakeData);
     const newExercise = {
       id: Math.random().toString(36).substring(7),
       name: isArabic ? ` تمرين ${fakeData.length + 1}` : `Exercice ${fakeData?.length + 1}`,

@@ -41,7 +41,7 @@ import { useQueryClient } from '@tanstack/react-query';
 function ActionsModal({ rowData }: any) {
   const queryClient = useQueryClient();
   const currentLoggedUser = queryClient.getQueryData(['user']) as any;
-  console.log(currentLoggedUser);
+
   const isCurrentUser = currentLoggedUser.id === rowData.id;
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>

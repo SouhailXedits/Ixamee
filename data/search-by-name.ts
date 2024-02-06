@@ -2,19 +2,18 @@
 import { db } from '@/lib/db';
 
 // export const getDataByName = async (table: string, input: string) => {
-//   console.log(input);
+//
 //   try {
 //     const data = await db.user.findMany();
-//     console.log(data);
+//
 //     return data;
 //   } catch (error) {
-//     console.log(error);
+//
 
 //     return null;
 //   }
 // };
 export const getDataByName = async (table: string, input: string) => {
-  console.log(input);
   try {
     const data = await (db as any)[table].findMany({
       where: {
@@ -24,11 +23,9 @@ export const getDataByName = async (table: string, input: string) => {
         },
       },
     });
-    console.log(data);
+
     return data;
   } catch (error) {
-    console.log(error);
-
     return null;
   }
 };

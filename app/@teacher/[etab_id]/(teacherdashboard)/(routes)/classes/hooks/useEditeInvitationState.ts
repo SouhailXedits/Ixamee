@@ -13,7 +13,6 @@ export function useInviteUserInClasse() {
       toast.success('invitation envoyée avec succès.');
     },
     onError: (err) => {
-      console.log('ERROR', err);
       toast.error("Une erreur est survenue lors de l'invitation de l'etudiant.");
     },
     retry: false,

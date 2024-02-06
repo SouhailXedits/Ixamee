@@ -52,7 +52,7 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
       },
     });
 
-    console.log(markSheets);
+
 
     return { data: markSheets , error: undefined };
   } catch (error: any) {
@@ -68,7 +68,7 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
 // getMarksheetByUserId()
 
 export const getMarksheetByUserId = async (classeId: number, userId: string, subject_id: number) => {
-  console.log(classeId, userId, subject_id);
+
   if (!classeId) return;
   try {
     const markSheets = await db.examCorrection.findMany({
@@ -116,7 +116,7 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
       },
     });
 
-    console.log(markSheets);
+
 
     return { data: markSheets, error: undefined };
   } catch (error: any) {

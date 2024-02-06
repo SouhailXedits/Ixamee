@@ -4,7 +4,7 @@ import BulletinsDesEtudiants from './bulletins-des-etudiants';
 import Link from 'next/link';
 
 const DashboradBulletinsDesEtudiants = ({ etabId, classes }: any) => {
-  console.log(classes);
+
   
   return (
     <div className="flex flex-col gap-4">

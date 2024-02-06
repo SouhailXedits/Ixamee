@@ -48,14 +48,10 @@ function ParametersSidebar() {
   }
   const paramroutes = parametersRoutes;
 
-
-  const {data: user} = useQuery({
+  const { data: user } = useQuery({
     queryKey: ['user'],
-    queryFn: async() => getMe()
-  })
-
-
-  console.log(user)
+    queryFn: async () => getMe(),
+  });
 
   if (!user || user.role !== 'ADMIN') return null;
 

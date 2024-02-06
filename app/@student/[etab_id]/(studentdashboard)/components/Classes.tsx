@@ -18,7 +18,7 @@ const Etablissement = () => {
     queryKey: ['user-classes'],
     queryFn: async () => await getClassesOfUser(user?.id),
   }) as any;
-  console.log(userClasses);
+
 
   return (
     <div className="border-t border-[#99C6D3] max-h-50">

@@ -25,8 +25,7 @@ export default async function NewHydration({
   etab_id: any;
   user_id: any;
 }) {
-  console.log(etab_id);
-  console.log(user_id);
+
 
   const queryClient = new QueryClient();
 

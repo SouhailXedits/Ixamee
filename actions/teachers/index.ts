@@ -6,15 +6,15 @@ import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 // export const getAllTeachersByPage = async (page = 1, pageSize = 10) => {
 //   try {
 //     const skip = (page - 1) * pageSize;
-//     console.log(skip);
+//
 //     const estabs = await db.subject.findMany({
 //       skip,
 //       take: pageSize,
 //     });
 //     const totalCount = await db.subject.count();
-//     console.log(totalCount);
+//
 
-//     console.log(estabs);
+//
 
 //     return { data: { estabs, totalCount }, error: undefined };
 //   } catch (error: any) {
@@ -41,20 +41,20 @@ export const getUserIdByEmail = async (email: string) => {
     return null;
   }
 };
-export const getTeacherName = async (subjectId: number,classeId: number) => {
+export const getTeacherName = async (subjectId: number, classeId: number) => {
   try {
     const user = await db.user.findFirst({
       where: {
         classe_teacher: {
           some: {
             id: classeId,
-          }
+          },
         },
-        subjects : {
+        subjects: {
           some: {
-            id: subjectId
-          }
-        }
+            id: subjectId,
+          },
+        },
       },
       select: {
         name: true,
@@ -66,11 +66,7 @@ export const getTeacherName = async (subjectId: number,classeId: number) => {
   }
 };
 
-
-
 export const getAllAdminTeachers = async (name: string) => {
-  console.log(name)
-  
   try {
     const teachers = await db.user.findMany({
       where: {
@@ -92,8 +88,6 @@ export const getAllAdminTeachers = async (name: string) => {
       },
     });
 
-    console.log(teachers);
-
     return { data: teachers, error: undefined };
   } catch (error: any) {
     return {
@@ -105,16 +99,16 @@ export const getAllAdminTeachers = async (name: string) => {
 
 // export const editSubject = async (id: number, data: SubjectInputProps) => {
 //   try {
-//     console.log(id, data);
+//
 //     await db.subject.update({
 //       where: {
 //         id: id,
 //       },
 //       data: data
 //     });
-//     console.log('subject edited succecfully ! ');
+//
 //   } catch (error: any) {
-//     console.log(error)
+//
 //     return {
 //       error: 'Failed to edit subject.',
 //     };
@@ -131,7 +125,6 @@ export const updateUserToAdmin = async (id: string) => {
         role: 'ADMIN',
       },
     });
-    console.log('User updated succesfully ! ');
   } catch (error: any) {
     return {
       error: 'Failed to update user.',
@@ -149,7 +142,6 @@ export const updateAdminToUser = async (id: string) => {
         role: 'TEACHER',
       },
     });
-    console.log('User updated succesfully ! ');
   } catch (error: any) {
     return {
       error: 'Failed to update user.',

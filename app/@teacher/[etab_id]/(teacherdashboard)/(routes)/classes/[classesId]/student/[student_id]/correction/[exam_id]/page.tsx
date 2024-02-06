@@ -20,7 +20,7 @@ export default function Page({
   params: { exam_id: string; classesId: string; student_id: string };
 }) {
   const [sum, setSum] = useState(0);
-  console.log(params);
+
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
@@ -33,7 +33,6 @@ export default function Page({
     queryKey: ['exameContent', exam_id],
     queryFn: async () => await getExamContent({ id: exam_id }),
   });
-  console.log(examContent);
 
   const { data: userData, isPending: isPendingUser } = useQuery<any>({
     queryKey: ['userName', student_id],
@@ -44,13 +43,10 @@ export default function Page({
     queryKey: ['CorigeExameContent'],
     queryFn: async () => await getCorigeExameContent(+exam_id, student_id),
   });
-  console.log(getCorrigeExamOfUser);
 
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
-
-  console.log(fakeData);
 
   useEffect(() => {
     if (!isPending && data && data.content) {
@@ -98,8 +94,6 @@ export default function Page({
     try {
       const stataus = statusOf(fakeData);
 
-      console.log(stataus);
-
       // Assuming you have the necessary data
       const dataToSave = {
         exam_id: parseInt(exam_id),
@@ -108,20 +102,17 @@ export default function Page({
         correction_exam_content: fakeData,
         status: stataus,
       };
-      console.log(dataToSave);
 
       createExamCorrectionn(dataToSave);
 
       // Additional logic after creating the exam correction, if needed
-
-      console.log('Exam correction created successfully');
     } catch (error) {
       console.error('Error creating exam correction:', error);
     }
   };
 
   const examContentt = examContent?.content;
-  console.log(examContentt);
+
   if (!examContent) return <Loading />;
 
   return (
