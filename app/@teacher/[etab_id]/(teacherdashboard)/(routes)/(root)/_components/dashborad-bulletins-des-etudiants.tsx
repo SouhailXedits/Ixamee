@@ -3,7 +3,9 @@ import CorrectionsRecentes from './corrections-recentes-item';
 import BulletinsDesEtudiants from './bulletins-des-etudiants';
 import Link from 'next/link';
 
-const DashboradBulletinsDesEtudiants = ({ etabId }: any) => {
+const DashboradBulletinsDesEtudiants = ({ etabId, classes }: any) => {
+  console.log(classes);
+  
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between w-full">
@@ -16,7 +18,7 @@ const DashboradBulletinsDesEtudiants = ({ etabId }: any) => {
         </div>
       </div>
 
-      <BulletinsDesEtudiants etabId={etabId}/>
+      <BulletinsDesEtudiants etabId={etabId} classes={classes}/>
     </div>
   );
 };

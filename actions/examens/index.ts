@@ -73,6 +73,33 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
   // console.log(exams);
   return exams;
 };
+export const getAllExamsNameAndId = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
+  const exams = await db.exam.findMany({
+    where: {
+      teacher: {
+        some: {
+          id: user_id,
+        },
+      },
+      exam_classess: {
+        some: {
+          establishment: {
+            some: {
+              id: +etab_id,
+            },
+          },
+        },
+      },
+      is_archived: false,
+    },
+    select: {
+      id: true,
+      name: true,
+    }
+  });
+  console.log(exams);
+  return exams;
+};
 export const getUserSubject = async (user_id: string) => {
   const subject = await db.subject.findMany({
     where: {

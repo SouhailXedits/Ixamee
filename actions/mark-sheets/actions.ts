@@ -21,7 +21,7 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
             },
           },
         },
-        status: 'done',
+        status: 'done' || 'absent' || 'notClassified' || 'pending',
         is_published: true,
       },
       select: {
@@ -75,8 +75,8 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
       where: {
         exam: {
           subject: {
-            id: subject_id
-          }
+            id: subject_id,
+          },
         },
         user: {
           id: userId,
@@ -86,9 +86,8 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
             },
           },
         },
-        status: 'done',
+        status: 'done' || 'absent' || 'notClassified' || 'pending',
         is_published: true,
-        
       },
       select: {
         id: true,

@@ -303,6 +303,48 @@ export const getAllClassesNameAndId = async ({
     };
   }
 };
+export const getAllClassesNameAndIdDash = async ({
+  user_id,
+  etab_id,
+}: {
+  user_id: string;
+  etab_id: number;
+}) => {
+  try {
+    const classes = await db.classe.findMany({
+      where: {
+        teacher: {
+          some: {
+            id: user_id,
+          },
+        },
+        establishment: {
+          some: {
+            id: +etab_id,
+          },
+        },
+        is_archived: false,
+        subject: {
+          some: {
+            is_archived: false,
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    console.log('🚀 ~ classes:', classes);
+
+    return { data: classes, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get classes.',
+    };
+  }
+};
 
 export const getAllClasseByPage = async ({
   user_id,
