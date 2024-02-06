@@ -170,6 +170,7 @@ const Student = () => {
   }));
 
   const averageMark = calculateAverageMark(trimesters);
+  console.log(userClasseInfos)
   if (isPending || isPendingmMarksheet) return <Loading />;
 
   return (
@@ -199,8 +200,8 @@ const Student = () => {
                 subject: subjectName?.name,
                 classe: classeNamePending || classeName[0]?.name,
                 fullName: user?.name,
-                average: userClasseInfos.length && userClasseInfos[0].average,
-                range: userClasseInfos.length && userClasseInfos[0].rankInClasse,
+                average: userClasseInfos?.length && userClasseInfos[0].average,
+                range: userClasseInfos?.length && userClasseInfos[0].rankInClasse,
                 teacherName: TeacherName?.name,
                 userClasseInfos,
               }}
@@ -238,7 +239,7 @@ const Student = () => {
       </div>
       <div className=" flex w-full justify-end gap-2 text-white">
         {userClasseInfosPending ? (
-          <Skeleton className="" />
+          <Skeleton className=" h-7 w-16" />
         ) : (
           <>
             {' '}
