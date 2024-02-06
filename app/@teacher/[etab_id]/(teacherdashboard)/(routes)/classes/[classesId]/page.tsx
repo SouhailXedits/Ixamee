@@ -42,7 +42,6 @@ interface classe {
   exam_classe: [];
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
-  console.log(params);
   const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
 
   const queryClient = useQueryClient();
@@ -57,11 +56,9 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
-  console.log(teacherEstab);
   const data = queryClient.getQueryData(['userOfClasses']) as any;
   const classe = queryClient.getQueryData(['classe']) as any;
   const teacherEstabName = teacherEstab.filter((item: any) => item.id === +etab_id)[0]?.name;
-  console.log(teacherEstabName);
   const classeName = classe?.name;
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
@@ -117,17 +114,19 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const handleSendResults = () => {
     if (data?.length === userCorrection?.length) {
       const ExamMarkData = userCorrection?.map((user: any) => {
+        console.log(exam);
         const userExamContent = queryClient.getQueryData([
           'CorigeExameContent',
-          +exam,
-          user?.user_id,
+          exam,
+          // user?.user_id,
         ]) as any;
+        console.log(userExamContent);
         return {
           user_id: user?.user_id,
           exam_id: exam,
           rank: 0,
           classesId: classesId,
-          mark: userExamContent[0]?.mark_obtained,
+          mark: userExamContent.filter((item: any) => item.user_id === user?.user_id),
         };
       });
 
