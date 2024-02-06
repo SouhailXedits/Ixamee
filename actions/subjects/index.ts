@@ -291,3 +291,24 @@ export const getAllSubjectsCount = async (classeId: number) => {
     };
   }
 };
+
+
+export const getAllSubjectNameById = async (subject_id: number) => {
+  try {
+    const res = await db.subject.findFirst({
+      where: {
+        id: subject_id,
+        is_archived: false,
+      },
+      select: {
+        name: true,
+      }
+    });
+    return res;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get subject name.',
+    };
+  }
+};

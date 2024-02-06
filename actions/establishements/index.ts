@@ -79,3 +79,34 @@ export const deleteEstablishement = async (id: number) => {
     };
   }
 };
+
+
+export const getNameEstabByClasseId = async (classe_id: number) => {
+  try {
+
+
+    const data = await db.establishment.findFirst({
+      where: {
+        classes: {
+          some: {
+            id: classe_id
+          }
+        },
+      },
+      select: {
+        name: true
+      }
+    });
+
+
+
+    return data 
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get establishment.',
+    };
+  }
+};
+
+

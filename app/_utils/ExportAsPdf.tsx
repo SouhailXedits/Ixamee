@@ -20,7 +20,7 @@ const PDFExport = ({ children, pdfName }: any) => {
   return (
     <div>
       <div className="fixed -bottom-[999rem]">
-        {/* <div > */}
+      {/* <div> */}
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>

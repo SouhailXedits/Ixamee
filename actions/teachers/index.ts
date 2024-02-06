@@ -41,6 +41,32 @@ export const getUserIdByEmail = async (email: string) => {
     return null;
   }
 };
+export const getTeacherName = async (subjectId: number,classeId: number) => {
+  try {
+    const user = await db.user.findFirst({
+      where: {
+        classe_teacher: {
+          some: {
+            id: classeId,
+          }
+        },
+        subjects : {
+          some: {
+            id: subjectId
+          }
+        }
+      },
+      select: {
+        name: true,
+      },
+    });
+    return user;
+  } catch {
+    return null;
+  }
+};
+
+
 
 export const getAllAdminTeachers = async (name: string) => {
   console.log(name)
