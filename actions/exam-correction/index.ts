@@ -41,15 +41,6 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
         is_published: true
         
       },
-      // include: {
-      //   user: {
-      //     select: {
-      //       id: true,
-      //       name: true,
-      //       image: true,
-      //     }
-      //   },
-      // },
       
     });
     return res;
@@ -60,6 +51,65 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
     };
   }
 };
+
+export const getUserCorrectionBySubject = async (
+  user_id: string,
+  filters: {subject_id: string, term: string} 
+) => {
+  if (!filters.subject_id || !filters.term) return;
+  try {
+    const res = await db.examCorrection.findMany({
+      select: {
+        id: true,
+        mark_obtained: true,
+        rank: true,
+        exam: {
+          select: {
+            total_mark: true,
+            name: true,
+            subject: {
+              select: {
+                name: true,
+                icon: true,
+                coefficient: true,
+              }
+            },
+          },
+        },
+       
+      },
+      where: {
+        user_id: user_id,
+        exam: {
+          subject_id: +filters.subject_id,
+          term: filters.term
+        },
+        status: 'done' || 'absent' || 'notClassified' || 'pending',
+        is_published: true,
+      },
+      // include: {
+      //   user: {
+      //     select: {
+      //       id: true,
+      //       name: true,
+      //       image: true,
+      //     }
+      //   },
+      // },
+    });
+    return res;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get exam corrections.',
+    };
+  }
+};
+
+
+
+
+
 
 
 
