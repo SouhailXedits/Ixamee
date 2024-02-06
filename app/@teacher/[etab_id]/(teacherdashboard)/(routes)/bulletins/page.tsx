@@ -48,7 +48,7 @@ const Student = () => {
   }, [classes?.data]);
 
 
-  const { data: markSheets } = useQuery({
+  const { data: markSheets, isPending } = useQuery({
     queryKey: ['mark-sheets', filters.classe_id, filters.term, filters.subject_id],
     queryFn: async () => await getMarkSheets(filters),
   });
@@ -65,8 +65,8 @@ const Student = () => {
     return acc;
   }, {});
 
-  if (!groupedData) return <Loading />;
-
+  if (!groupedData && isPending) return <Loading />;
+  console.log(groupedData)
 
   let maxCoefficient = 0;
 
@@ -88,49 +88,50 @@ const Student = () => {
 
 
 
+  let resultArray = [] as any;
+  if(groupedData) {
+    resultArray = Object?.keys(groupedData).map((userId) => {
+      const userData = groupedData[userId];
 
-  const resultArray = Object?.keys(groupedData).map((userId) => {
-    const userData = groupedData[userId];
+      const examsInfo = userData.map((examData: any) => {
+        const { id, exam } = examData;
 
-    const examsInfo = userData.map((examData: any) => {
-      const { id, exam } = examData;
+        const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
+        const overTwentyAvg = (20 / exam.total_mark) * average;
 
-      const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
-      const overTwentyAvg = (20 / exam.total_mark) * average;
+        return {
+          id: exam.id,
+          name: exam.name,
+          marksObtained: examData.mark_obtained,
+          totalMarks: exam.total_mark,
+          coefficient: exam.coefficient,
+          average: average,
+          overTwentyAvg: overTwentyAvg,
+        };
+      });
 
+      // const totalMarksObtained = examsInfo.reduce(
+      //   (acc: any, exam: any) => acc + exam.marksObtained,
+      //   0
+      // );
+      // const totalCoefficient = examsInfo.reduce((acc: any, exam: any) => acc + exam.coefficient, 0);
+
+      let overallAverage =
+        examsInfo.reduce(
+          (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
+          0
+        ) / maxCoefficient;
 
       return {
-        id: exam.id,
-        name: exam.name,
-        marksObtained: examData.mark_obtained,
-        totalMarks: exam.total_mark,
-        coefficient: exam.coefficient,
-        average: average,
-        overTwentyAvg: overTwentyAvg,
+        id: userId,
+        name: userData[0].user.name,
+        image: userData[0].user.image,
+        exams: examsInfo,
+        average: overallAverage,
       };
     });
-
-
-    // const totalMarksObtained = examsInfo.reduce(
-    //   (acc: any, exam: any) => acc + exam.marksObtained,
-    //   0
-    // );
-    // const totalCoefficient = examsInfo.reduce((acc: any, exam: any) => acc + exam.coefficient, 0);
-
-    let overallAverage =
-      examsInfo.reduce(
-        (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
-        0
-      ) / maxCoefficient;
-
-    return {
-      id: userId,
-      name: userData[0].user.name,
-      image: userData[0].user.image,
-      exams: examsInfo,
-      average: overallAverage,
-    };
-  });
+  }
+  console.log(resultArray)
 
 
 
@@ -233,7 +234,7 @@ const Student = () => {
 
           {classes?.data ? (
             <Select
-              defaultValue={classes?.data[0].id}
+              defaultValue={classes?.data?.length && classes?.data[0].id}
               onValueChange={(value) => {
                 setFilters({ ...filters, classe_id: value });
               }}
@@ -266,7 +267,7 @@ const Student = () => {
       </nav>
 
       <div>
-        <MarkSheetStudentList data={rankedData} filters = {filters} />
+        <MarkSheetStudentList data={rankedData} filters={filters} />
       </div>
     </main>
   );
