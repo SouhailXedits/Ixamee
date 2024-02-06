@@ -27,7 +27,7 @@ export const UpdatePasswordSchema = z
 
 export const UpdateTeacherSchema = z.object({
   image: z.string(),
-  name: z.string().min(2, {
+  name: z.string().min(3, {
     message: 'le nom est requis (3 lettre au minimum)',
   }),
   email: z.string().email({
@@ -69,7 +69,7 @@ export const UpdateTeacherSchema = z.object({
 
 export const UpdateStudentSchema = z.object({
   image: z.string(),
-  name: z.string().min(2, {
+  name: z.string().min(3, {
     message: 'le nom est requis (3 lettre au minimum)',
   }),
   email: z.string().email({

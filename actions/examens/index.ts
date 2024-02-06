@@ -63,10 +63,14 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
     },
     include: {
       // teacher: true,
-      exam_classess: true,
+      exam_classess: {
+        include: {
+          establishment: true,
+        },
+      },
     },
   });
-  console.log(exams);
+  // console.log(exams);
   return exams;
 };
 export const getUserSubject = async (user_id: string) => {
@@ -150,34 +154,44 @@ export const getMe = async () => {
   });
   return user;
 };
-export const getClasseOfUser = async (user_id: string, userEstablishments: any) => {
-  console.log(userEstablishments);
-  console.log(user_id);
 
-  const classe = await db.classe.findMany({
-    where: {
-      teacher: {
-        some: {
-          id: user_id,
-        },
-      },
-      establishment: {
-        some: {
-          id: {
-            in: userEstablishments.map((establishment: any) => establishment.value),
+export const getClasseOfUser = async (user_id: string, userEstablishments: any) => {
+  const findOneClasse = async (user_id: string, establishmentId: string) => {
+    const classe = await db.classe.findMany({
+      where: {
+        teacher: {
+          some: {
+            id: user_id,
           },
         },
+        establishment: {
+          some: {
+            id: establishmentId,
+          },
+        },
+        is_archived: false,
       },
-      is_archived: false,
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-  });
-  console.log(classe);
-  return classe;
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    console.log(classe);
+    return classe;
+  };
+
+  const establishmentIds = userEstablishments.map((establishment: any) => establishment.value);
+  const result = await Promise.all(
+    establishmentIds.map(
+      async (establishmentId: string) => await findOneClasse(user_id, establishmentId)
+    )
+  );
+
+  const intersectionResult = getIntersectionOfArrays(result);
+  console.log(intersectionResult);
+  return intersectionResult;
 };
+
 const getIntersectionOfArrays = (arrays: any) => {
   if (arrays.length === 0) {
     return [];
@@ -380,13 +394,8 @@ export async function updateExam(examId: number, data: any, user_id: string) {
         name: data.name,
         total_mark: +data.totalMarks,
         coefficient: +data.coefficient,
-        subject: data.subject
-          ? {
-              connect: {
-                id: +data.subject.value,
-              },
-            }
-          : undefined,
+        subject: data.subject.map((subjectId: any) => ({ id: +subjectId.value })),
+
         term: data.term,
 
         // ExamClassess: {

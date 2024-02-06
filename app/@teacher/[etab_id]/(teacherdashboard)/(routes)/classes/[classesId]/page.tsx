@@ -57,7 +57,9 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   const data = queryClient.getQueryData(['userOfClasses']) as any;
-  const classe = queryClient.getQueryData(['classe']) as any;
+  const classe = queryClient.getQueryData(['classe', etab_id]) as any;
+
+  console.log(classe);
   const teacherEstabName = teacherEstab.filter((item: any) => item.id === +etab_id)[0]?.name;
   const classeName = classe?.name;
   // const handleImportedData = (jsonData: any) => {
@@ -120,13 +122,15 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           exam,
           // user?.user_id,
         ]) as any;
-        console.log(userExamContent);
+        const markObtin = userExamContent.filter((item: any) => item.user_id === user?.user_id)[0]
+          .mark_obtained;
+        console.log(markObtin);
         return {
           user_id: user?.user_id,
           exam_id: exam,
           rank: 0,
           classesId: classesId,
-          mark: userExamContent.filter((item: any) => item.user_id === user?.user_id),
+          mark: markObtin,
         };
       });
 

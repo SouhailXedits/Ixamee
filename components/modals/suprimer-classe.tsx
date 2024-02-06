@@ -44,13 +44,14 @@ export const SupprimerUneClasse = ({ children, classe_id }: SupprimerUneClasse) 
               Annuler
             </Button>
           </DialogClose>
-          <Button
-            type="submit"
-            className="w-full text-white bg-[#F04438] hover:opacity-80"
-            onClick={handelDeleteExa}
-          >
-            Supprimer
-          </Button>
+          <DialogClose>
+            <Button
+              className="w-full text-white bg-[#F04438] hover:opacity-80"
+              onClick={handelDeleteExa}
+            >
+              Supprimer
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

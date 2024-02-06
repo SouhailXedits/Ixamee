@@ -13,10 +13,10 @@ export const LoginSchema = z.object({
 export const RegisterEtudSchema = z
   .object({
     role: z.string().default('TEACHER'),
-    nom: z.string().min(2, {
+    nom: z.string().min(3, {
       message: 'le nom est requis (3 lettre au minimum)',
     }),
-    prenom: z.string().min(2, {
+    prenom: z.string().min(3, {
       message: 'le prenom est requis (3 lettre au minimum)',
     }),
     email: z.string().email({
@@ -65,10 +65,10 @@ export const RegisterEtudSchema = z
 
 export const RegisterProfSchema = z.object({
   role: z.string().default('TEACHER'),
-  nom: z.string().min(2, {
+  nom: z.string().min(3, {
     message: 'le nom est requis (3 lettre au minimum)',
   }),
-  prenom: z.string().min(2, {
+  prenom: z.string().min(3, {
     message: 'le prenom est requis (3 lettre au minimum)',
   }),
   email: z.string().email({
@@ -106,8 +106,7 @@ export const NewVerifSchema = z.object({
 });
 
 export const VerifSchema = z.object({
-  code: z
-    .string()
+  code: z.string(),
 });
 
 export const EtudiantAfterSchema = z.object({
