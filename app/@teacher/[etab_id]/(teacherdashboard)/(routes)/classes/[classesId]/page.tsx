@@ -48,8 +48,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const { classesId } = params;
   const [filter, setFilter] = useState<any>('');
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
-  const classe = queryClient.getQueryData(['classe', etab_id]) as any;
-  const [exam, setExam] = useState<any>(classe.data[0].exam_classe[0]?.id);
+  // const classe = queryClient.getQueryData(['classe', etab_id]) as any;
+  const { data: classe, isPending: isPendingClasse } = useQuery({
+    queryKey: ['classe'],
+    queryFn: async () => await getClasseById(+params.classesId),
+  });
+  console.log(classe);
+
+  const [exam, setExam] = useState<any>(classe?.exam_classe[0]?.id);
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
@@ -66,7 +72,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // queryFn: async () => await getStudentOfClasse(+params.classesId),
 
   const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
-  const classeName = classe?.data[0]?.name;
+  const classeName = classe?.name;
 
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
@@ -81,7 +87,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // });
   useEffect(() => {
     // if (Array.isArray(classe?.exam_classe)) {
-    const note = classe.data[0].exam_classe[0]?.id;
+    const note = classe?.exam_classe[0]?.id;
     setExam(note + '');
     // }
   }, [classe]);
@@ -193,7 +199,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           <div>
             <Select
               onValueChange={(value) => setExam(value)}
-              defaultValue={classe?.data[0]?.exam_classe[0]?.id + ''}
+              defaultValue={classe?.exam_classe[0]?.id + ''}
             >
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
                 <SelectValue
@@ -208,7 +214,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
               </SelectTrigger>
 
               <SelectContent>
-                {classe?.data[0].exam_classe?.map((exam: any) => (
+                {classe?.exam_classe?.map((exam: any) => (
                   <SelectItem value={exam.id + ''} className="">
                     {exam.name}
                   </SelectItem>
@@ -242,7 +248,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           )}
           <Button
             className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
-            disabled={userNotCorrected.length !== 0}
+            disabled={userNotCorrected?.length !== 0}
             onClick={() => handleSendResults()}
           >
             <Image src="/sendIcon.svg" alt="icons" width={20} height={20} />
