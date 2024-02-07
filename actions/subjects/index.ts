@@ -312,3 +312,22 @@ export const getAllSubjectNameById = async (subject_id: number) => {
     };
   }
 };
+
+// export const getUserSubjectsByClasseId = async (user_id: string, classe_id:number) => {
+//   const subject = await db.subject.findMany({
+//     where: {
+//       classe_subject: {
+//         some: {
+//           id: classe_id,
+//           student_class: {
+//             some: {
+//               id: user_id,
+//             },
+//           },
+//         },
+//       },
+//     },
+//   });
+//   console.log(subject);
+//   return subject;
+// };
