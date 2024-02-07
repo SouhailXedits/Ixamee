@@ -30,6 +30,7 @@ export const Question = ({ data, isArabic }: any) => {
             <Editor
               editable={false}
               initialContent={data.content}
+              onChange={() => console.log('')}
 
             />
           </div>

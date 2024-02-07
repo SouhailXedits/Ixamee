@@ -22,7 +22,8 @@ const DashboradCorrectionsRecentes = ({ data }: any) => {
         )}
       </div>
 
-      <CorrectionsRecentes data={data} />
+      <CorrectionsRecentes  />
+      {/* <CorrectionsRecentes data={data} /> */}
     </div>
   );
 };
