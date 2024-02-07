@@ -51,7 +51,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
             !collapsed
               ? 'md:pl-[260px] transition-all duration-500'
               : 'pl-[63px] transition-all duration-500',
-            'pl-[63px]'
+            'pl-[63px] pt-[60px]'
           )}
         >
           {children}

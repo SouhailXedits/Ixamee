@@ -95,3 +95,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #d3eff7;
 }
+
+
+.apexcharts-toolbar {
+    z-index: 0 !important;
+}
+
+
+.bn-block-content.bn-is-empty.bn-has-anchor .bn-inline-content:before {
+    /* content: "Enter text dssdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf type '/' for commands"; */
+    /* padding: 100px; */
+    color: white;
+}

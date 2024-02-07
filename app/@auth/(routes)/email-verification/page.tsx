@@ -1,4 +1,4 @@
-'use client';
+"use client"
 import React, { useEffect, useState } from 'react';
 
 import Logo from '../../../../components/modals/Logo';
@@ -13,6 +13,7 @@ export default function ResetPassword() {
   const [verificationData, setVerificationData] = useState<VerificationData>({});
   const [isExpired, setExpired] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(59);
+  console.log(verificationData)
 
   useEffect(() => {
     const updateTimer = () => {
@@ -34,6 +35,7 @@ export default function ResetPassword() {
       setVerificationData(storedData);
     }
   }, []);
+
   return (
     <div id="SignUpRoot" className=" bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* Left section */}
@@ -49,7 +51,7 @@ export default function ResetPassword() {
         </div>
         <div className="flex flex-col items-start w-3/5 gap-5">
           <div className="w-full">
-            <VerifCodeResetForm email={verificationData?.email} code={verificationData?.code} />
+            <VerifCodeResetForm email={verificationData?.email} code={verificationData?.code} setDuration={setDuration} />
           </div>
         </div>
       </div>

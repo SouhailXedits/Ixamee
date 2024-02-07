@@ -15,8 +15,9 @@ import FormSuccess from '@/components/ui/form-success';
 interface VerificationData {
   email?: string;
   code?: number;
+  setDuration: (duration: number) => void;
 }
-export default function VerificationCodeForm({ email, code }: VerificationData) {
+export default function VerificationCodeForm({ email, code, setDuration }: VerificationData) {
   const [codeValues, setCodeValues] = useState(['', '', '', '', '', '']);
   const currentTimestamp = new Date().getTime();
   const [isCodeValid, setIsCodeValid] = useState(false);
@@ -73,6 +74,7 @@ export default function VerificationCodeForm({ email, code }: VerificationData) 
   };
   const [renvoyerDisabled, setRenvoyerDisabled] = useState<boolean>(false);
   const handleResendVerificationEmail = async () => {
+    setDuration(59)
     setSuccess('');
     setError('');
     startTransition(async () => {

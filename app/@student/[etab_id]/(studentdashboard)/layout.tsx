@@ -53,11 +53,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
           <Navbar />
         </div>
         <main
-          className={cn(
-            !collapsed
-              ? 'pl-[225px] transition-all duration-500'
-              : 'pl-[63px] transition-all duration-500'
-          )}
+          className={
+            (cn(
+              !collapsed
+                ? 'pl-[225px] transition-all duration-500 pt-[60px]'
+                : 'pl-[63px] transition-all duration-500 pt-[60px]'
+            ))
+          }
         >
           {children}
         </main>

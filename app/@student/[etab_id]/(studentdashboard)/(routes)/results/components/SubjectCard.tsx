@@ -21,7 +21,7 @@ function SubjectCard({ subject, etab_id }: any) {
           height={80}
           width={80}
         />
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 z-0">
           <Image alt="MatierIcon" src={subject.icon} width={35} height={35} />
           <div className='whitespace-nowrap w-full truncate'>
             <span className="text-[#1B8392] text-lg  leading-[25px] font-semibold">
