@@ -16,7 +16,6 @@ interface SupprimerUneClasse {
   classe_id: string;
 }
 export const SupprimerUneClasse = ({ children, classe_id }: SupprimerUneClasse) => {
-
   const { deleteClasse } = useDeleteClasse();
   const handelDeleteExa = () => {
     deleteClasse(+classe_id);
@@ -34,19 +33,19 @@ export const SupprimerUneClasse = ({ children, classe_id }: SupprimerUneClasse) 
           Êtes-vous sûr de vouloir supprimer cette classe? Cette action ne peut être annulée.
         </DialogDescription>
 
-        <DialogFooter>
-          <DialogClose asChild>
+        <DialogFooter className="w-full ">
+          <DialogClose asChild className="w-full">
             <Button
               type="submit"
-              className="w-full bg-white
+              className=" bg-white w-full
           text-[#177C9A] border border-[#177C9A] hover:opacity-80"
             >
               Annuler
             </Button>
           </DialogClose>
-          <DialogClose>
+          <DialogClose className="w-full">
             <Button
-              className="w-full text-white bg-[#F04438] hover:opacity-80"
+              className=" w-full text-white bg-[#F04438] hover:opacity-80"
               onClick={handelDeleteExa}
             >
               Supprimer

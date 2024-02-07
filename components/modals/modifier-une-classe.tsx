@@ -4,6 +4,7 @@ import { useCreateClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(ro
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -47,9 +48,13 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
     };
   });
 
+  const defaults = subjectoptions?.filter((option: any) =>
+    data.subject.find((subject: any) => subject.id === option.value)
+  );
+
   const [formatData, setFormatData] = useState({
     classe: data?.name,
-    matiere: '',
+    matiere: defaults,
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -67,7 +72,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
       //   establishmentId: estab,
       //   teacherId: user_id,
       // });
-
+      console.log(formatData.matiere);
       editeClass({
         name: formatData.classe,
         classe_id: +data?.id,
@@ -137,13 +142,15 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
         {/* Choisir le rang de classe */}
 
         <DialogFooter>
-          <Button
-            type="submit"
-            className="w-full bg-[#1B8392] hover:opacity-80"
-            onClick={handelSubmitInput}
-          >
-            Enregistrer
-          </Button>
+          <DialogClose asChild>
+            <Button
+              type="submit"
+              className="w-full bg-[#1B8392] hover:opacity-80"
+              onClick={handelSubmitInput}
+            >
+              Enregistrer
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

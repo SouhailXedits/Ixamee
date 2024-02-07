@@ -165,8 +165,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   };
   if (isPendingUser) return <Loading />;
   if (isPendingCorrige) return <Loading />;
-  const handleDownload = () => {
-  };
+  const handleDownload = () => {};
   function notCorrected(userCorrection: any) {
     return userCorrection?.filter(
       (user: any) => user?.status === 'notCorrected' || user?.status === 'pending'
@@ -253,7 +252,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           </Button>
 
           {/* {data?.length === 0 && ( */}
-          <ImportUneClasse data={data} class_id={classesId} etab_id={etab_id}>
+          <ImportUneClasse class_id={classesId} etab_id={etab_id}>
             <div className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
               <Image src="/importerIcon.svg" alt="icons" width={20} height={20} />
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
@@ -288,7 +287,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           {/* )} */}
           {/* importer */}
 
-          <AjouterUnEtudiant data={data} class_id={classesId} etab_id={etab_id}>
+          <AjouterUnEtudiant class_id={classesId} etab_id={etab_id}>
             <div className="flex items-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
               <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
                 Ajouter un étudiant
@@ -299,7 +298,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       </nav>
 
       <div>
-        <StudentList data={newData} isPending={false} />
+        <StudentList data={newData} class_id={classesId} isPending={false} />
       </div>
     </main>
   );

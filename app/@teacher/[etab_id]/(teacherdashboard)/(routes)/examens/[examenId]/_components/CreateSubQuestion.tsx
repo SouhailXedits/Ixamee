@@ -3,6 +3,8 @@ import { CreateSubSubQuestion } from './CreateSubSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from '../../../../../../../../components/shared-components/toolbar-editor';
 import { cn } from '@/lib/utils';
+import toast from 'react-hot-toast';
+import { getMarkOfExerciceWithId } from '../../../classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 
 export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
   const onChange = (content: string) => {
@@ -250,6 +252,10 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
 
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
   const updateSubQuestion = (e: any, data: any) => {
+    if (+e.target.value < 0) {
+      toast.error('la note ne doit pas etre inferieur a 0');
+      return;
+    }
     // Updating the mark of the specific subquestion
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
@@ -340,6 +346,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
               className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 border text-center border-[#1B8392]"
               placeholder="--.--"
               type="number"
+              min={0}
               defaultValue={data.mark}
               maxLength={5}
               disabled={data.children && data.children.length > 0}

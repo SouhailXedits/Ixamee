@@ -31,12 +31,10 @@ import { useQueryClient } from '@tanstack/react-query';
 
 interface AjouterUneClasse {
   children: React.ReactNode;
-  data: any;
   class_id: string;
   etab_id: number;
 }
-export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: AjouterUneClasse) => {
-  const minrange = data?.length;
+export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneClasse) => {
   const formatDataSchema = z.object({
     name: z.string().min(3, 'Veuillez renseigner le nom'),
 
@@ -228,7 +226,7 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
             </Label>
             <Input
               type="email"
-              placeholder="Entrer l’e-amail de l’étudiant"
+              placeholder="Entrez l'email de l'étudiant."
               value={formatData.email}
               onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
               className="placeholder:text-[#727272]"
@@ -239,25 +237,26 @@ export const AjouterUnEtudiant = ({ children, data, class_id, etab_id }: Ajouter
 
         <DialogFooter>
           {/* {isPending } */}
-
-          <Button
-            onClick={handelSubmit}
-            type="submit"
-            disabled={isPending}
-            className="w-full bg-[#1B8392] hover:opacity-80 "
-          >
-            {isPending ? (
-              <div
-                className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
-                role="status"
-                aria-label="loading"
-              ></div>
-            ) : isFirstModalOpen ? (
-              'Ajouter un autre étudiant'
-            ) : (
-              'Ajouter'
-            )}
-          </Button>
+          <DialogClose className="w-full">
+            <Button
+              onClick={handelSubmit}
+              type="submit"
+              disabled={isPending}
+              className="w-full bg-[#1B8392] hover:opacity-80 "
+            >
+              {isPending ? (
+                <div
+                  className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
+                  role="status"
+                  aria-label="loading"
+                ></div>
+              ) : isFirstModalOpen ? (
+                'Ajouter un autre étudiant'
+              ) : (
+                'Ajouter'
+              )}
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

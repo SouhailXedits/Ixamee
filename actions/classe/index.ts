@@ -12,8 +12,25 @@ export const createClasse = async (
   establishmentId: number,
   teacherId: string
 ) => {
-  try {
-
+  // let newName = name.toLowerCase();
+  const findClasseName = await db.classe.findMany({
+    where: {
+      establishment: {
+        some: {
+          id: +establishmentId,
+        },
+      },
+      teacher: {
+        some: {
+          id: teacherId,
+        },
+      },
+      name: name,
+    },
+  });
+  if (findClasseName.length > 0) {
+    throw new Error('Classe already exists');
+  } else {
     const classe = await db.classe.create({
       data: {
         name: name,
@@ -28,8 +45,6 @@ export const createClasse = async (
         },
       },
     });
-  } catch (error: any) {
-    console.error(error); // Log the actual error for debugging purposes
   }
 };
 export const getClasseById = async (id: number) => {
@@ -69,7 +84,6 @@ export const getClasseByClassId = async (id: number) => {
 };
 export const updateClasse = async (name: string, classe_id: number, matiere: any) => {
   try {
-
     const classe = await db.classe.update({
       where: {
         id: +classe_id,
@@ -241,6 +255,9 @@ export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab
             image: true,
           },
         },
+      },
+      orderBy: {
+        name: 'asc',
       },
     });
     return { data: classes, error: undefined };
@@ -538,7 +555,6 @@ export const updateUserInClasse = async (
       image: image,
     },
   });
-
 };
 
 export const deleteUserInClasse = async (id: string) => {
@@ -597,7 +613,6 @@ export const getNameOfuserById = async (id: string) => {
   return user;
 };
 export const updateInvitationUser = async (studentEmail: string, teacherEmail: string) => {
-
   const invitationToken = await generateInvitationToken(studentEmail, teacherEmail);
   await sendInvitationEmail(
     invitationToken.recieverEmail,

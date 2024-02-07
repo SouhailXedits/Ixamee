@@ -32,6 +32,7 @@ import Select from 'react-select';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse) => {
+  console.log(user_id, estab);
   const queryClient = useQueryClient();
 
   const { createClass, isPending } = useCreateClasse();
@@ -50,6 +51,12 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
     classe: '',
     matiere: '',
   });
+  const resetFormatData = () => {
+    setFormatData({
+      classe: '',
+      matiere: '',
+    });
+  };
   const handleInputChange = (field: string, value: any) => {
     setFormatData((prevFormData) => ({
       ...prevFormData,
@@ -65,6 +72,7 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
         establishmentId: estab,
         teacherId: user_id,
       });
+      resetFormatData();
     } catch (error: any) {
       console.error(error); // Log the actual error for debugging purposes
     }
@@ -152,7 +160,7 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
               Ajouter
             </Button>
           ) : (
-            <DialogClose className=" w-full">
+            <DialogClose className="w-full ">
               <Button
                 type="submit"
                 className="w-full bg-[#1B8392] hover:opacity-80"

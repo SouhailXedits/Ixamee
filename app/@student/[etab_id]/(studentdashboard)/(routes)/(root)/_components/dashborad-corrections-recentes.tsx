@@ -2,7 +2,6 @@ import Image from 'next/image';
 import CorrectionsRecentes from './corrections-recentes-item';
 
 const DashboradCorrectionsRecentes = ({ data }: any) => {
-  data = { amie: 123 };
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between w-full">
@@ -17,17 +16,14 @@ const DashboradCorrectionsRecentes = ({ data }: any) => {
         </div>
         {data && (
           <div className="text-[#1B8392] cursor-pointer text-lg font-medium  underline">
-            Voir plus 
+            Voir plus
           </div>
         )}
       </div>
 
-      <CorrectionsRecentes data={data} />
+      <CorrectionsRecentes />
     </div>
   );
 };
 
 export default DashboradCorrectionsRecentes;
-
-
-

@@ -3,6 +3,7 @@ import { CreateSubQuestion } from './CreateSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from '../../../../../../../../components/shared-components/toolbar-editor';
 import { cn } from '@/lib/utils';
+import toast from 'react-hot-toast';
 
 export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
   //  this the content of the Editor 🙄
@@ -135,6 +136,10 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
 
   // Function to update a question's mark in the fake data
   const updateQuestion = (e: any, data: any) => {
+    if (+e < 0) {
+      toast.error('la note ne doit pas etre inferieur a 0');
+      return;
+    }
     // Using setFakeData to update the state based on previous data
     setFakeData((prevData: any) => {
       // Mapping over the previous data to create a new updatedData array
@@ -188,6 +193,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
               className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 border text-center border-[#1B8392]"
               placeholder="--.--"
               type="number"
+              min={0}
               // value={data.mark}
               disabled={data.children && data.children.length > 0}
               // defaultValue={calculerQuestionMark(data)}

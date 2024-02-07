@@ -3,6 +3,7 @@ import Editor from '../../../../../../../../components/shared-components/toolbar
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { calculerExerciceMark } from '@/app/_utils/calculateChildrenMarks';
+import toast from 'react-hot-toast';
 
 export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: any) => {
   const onChange = (content: string) => {
@@ -211,6 +212,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
             <Input
               className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 text-center border border-[#1B8392]"
               type="number"
+              min={0}
               placeholder="--.--"
               defaultValue={data.mark}
               // value={
@@ -219,7 +221,12 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
               //     : exercise.mark
               // }
               onChange={(e) => {
-                updateSubSubQuestion(e, data);
+                if (+e.target.value < 0) {
+                  toast.error('la note ne doit pas etre inferieur a 0');
+                  return;
+                } else {
+                  updateSubSubQuestion(e, data);
+                }
               }}
             />
             <Image

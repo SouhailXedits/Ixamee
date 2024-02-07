@@ -392,7 +392,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 type="number"
                 onChange={(e) => handleInputChange('totalMarks', e.target.value)}
                 value={formData.totalMarks}
-                min={0}
+                min={1}
                 placeholder="Saisir la note totale"
                 className="placeholder:text-[#727272]"
               />
@@ -404,7 +404,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
               </Label>
               <Input
                 type="number"
-                min={0}
+                min={1}
                 placeholder="Saisir le coefficient"
                 onChange={(e) => handleInputChange('coefficient', e.target.value)}
                 value={formData.coefficient}

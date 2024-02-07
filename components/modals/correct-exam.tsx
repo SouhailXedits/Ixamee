@@ -31,7 +31,6 @@ interface CorrectExamProps {
 }
 
 export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_id }) => {
-
   if (!data) return null;
   let userData = data.filter((item: any) => item?.user_id == user_id);
   userData = userData[0];
@@ -42,7 +41,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
   const router = useRouter();
   const pathname = usePathname();
   const new_total_mark = userData?.exam.total_mark || 0;
-
 
   // const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
   // const new_total_mark = examan[0]?.total_mark;
@@ -80,8 +78,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
         user_id: user_id,
       };
       createExamCorrectionn(obj);
-
-
     } else {
       const obj = {
         exam_id: userData.exam_id,
@@ -89,7 +85,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
         user_id: user_id,
         status: item as 'notClassified' | 'absent',
       };
-
 
       editeStatus(obj);
     }
@@ -110,9 +105,11 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
             <div className="flex items-center gap-2">
               <div className=" relative w-[170px]  h-[54px] pr-10 rounded-lg bg-[#F0F6F8] text-2 flex items-center justify-center ">
                 <Input
+                  type="number"
                   placeholder="--"
-                  className="p-0 text-xl text-right bg-transparent border-none "
+                  className="p-0 text-xl text-right bg-transparent border-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   maxLength={new_total_mark.length}
+                  min={0}
                   // defaultValue={+getCorrigeExamOfUser[0]?.mark || 0}
                   value={note}
                   onChange={(e) => handelSubmitCorrectionExam(e)}

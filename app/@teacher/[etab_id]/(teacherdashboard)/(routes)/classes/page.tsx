@@ -12,7 +12,6 @@ export default function Classes() {
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
 
-  console.log(value);
   // const data = queryClient.getQueryData(['classe', etab_id]) as any;
   const user_id = user.id;
   const { data, isPending } = useQuery({
@@ -40,7 +39,7 @@ export default function Classes() {
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+        <div className="flex gap-3 pt-4 pr-9 h-14 cursor-pointe">
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
@@ -63,7 +62,13 @@ export default function Classes() {
       </nav>
 
       <div>
-        <ClasseCardContainer data={filteredData} isPending={false} />
+        <ClasseCardContainer
+          data={filteredData}
+          user_id={user?.id}
+          estab={etab_id}
+          // class_id ={}
+          isPending={false}
+        />
       </div>
     </main>
   );

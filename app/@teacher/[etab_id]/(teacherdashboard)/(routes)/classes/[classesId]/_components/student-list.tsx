@@ -42,6 +42,9 @@ import { InviterUnEtudiant } from '@/components/modals/inviter-un-etudiant';
 import { SupprimerUserInClasse } from '@/components/modals/suprimer-user-in-classe';
 import { usePathname, useRouter } from 'next/navigation';
 import { getStatusById } from '@/actions/classe';
+import { useQueryClient } from '@tanstack/react-query';
+import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
+import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 function calculateDateDifference(date1: Date, date2: Date): number {
   const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
@@ -294,8 +297,12 @@ export const columns = [
   },
 ];
 
-export function StudentList({ data, isPending }: any) {
+export function StudentList({ data, class_id, isPending }: any) {
+  console.log(data);
   // let newData = [data, exam];
+  const queryClient = useQueryClient();
+  const etab_id = queryClient.getQueryData(['etab_id']) as number;
+  console.log(etab_id);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -366,8 +373,14 @@ export function StudentList({ data, isPending }: any) {
                       className="h-24 text-lg text-center bg-transparent"
                     >
                       Pas d’étudiants ajoutés à cette classe.
-                      <span className="text-[#1B8392]">Ajoutez</span> vos étudiants ou{' '}
-                      <span className="text-[#1B8392]">importez</span> une liste.
+                      <AjouterUnEtudiant class_id={class_id} etab_id={etab_id}>
+                        <span className="text-[#1B8392] cursor-pointer">Ajoutez</span>
+                      </AjouterUnEtudiant>
+                      vos étudiants ou
+                      <ImportUneClasse class_id={class_id} etab_id={etab_id}>
+                        <span className="text-[#1B8392] cursor-pointer">importez</span>
+                      </ImportUneClasse>
+                      une liste.
                     </TableCell>
                   </TableRow>
                 )}

@@ -18,12 +18,11 @@ import { createManyUserInClass } from '@/app/@teacher/[etab_id]/(teacherdashboar
 
 interface ImportUneClasseProps {
   children: React.ReactNode;
-  data: any;
   class_id: string;
   etab_id: number;
 }
 
-export const ImportUneClasse = ({ children, data, class_id, etab_id }: ImportUneClasseProps) => {
+export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasseProps) => {
   const [file, setFile] = useState<File | null>(null);
   const { createManyUser, isPending, error } = createManyUserInClass();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +34,16 @@ export const ImportUneClasse = ({ children, data, class_id, etab_id }: ImportUne
   const handleImport = async () => {
     if (file) {
       const jsonData = await convertCsvToJson(file);
-      // Handle the JSON data as needed
+      // const newData = jsonData.map((item: { name: string; email: string }) => ({
+      //   image: '',
+      //   name: item.name,
+      //   range: 1,
+      //   email: item.email,
+      //   class_id: class_id,
+      //   establishmentId: +etab_id,
+      // }));
+      // console.log(newData);
+
       jsonData.map((item: { name: string; email: string }) => {
         createManyUser({
           image: '',
