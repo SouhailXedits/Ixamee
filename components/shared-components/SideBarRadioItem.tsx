@@ -101,7 +101,7 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
                             defaultChecked={+lyce?.id === etabId}
                           />
                         </FormControl>
-                        <FormLabel className="w-full h-4 font-normal">
+                        <FormLabel className={cn("w-full h-4 font-normal", collapsed && "w-[38px] overflow-hidden text-center")}>
                           {collapsed
                             ? shorting(lyce?.name)
                             : lyce?.name?.length > 20

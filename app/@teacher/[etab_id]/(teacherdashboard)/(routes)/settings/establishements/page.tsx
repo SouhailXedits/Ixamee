@@ -1,12 +1,11 @@
 'use client';
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from 'next/image';;
 import { EstablishementsList } from './_components/EstablishementsList';
 import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
 import { getAllEstabs } from '@/actions/establishements';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { SearchModal } from '@/components/modals/SearchModal';
+
 
 const Establishement = () => {
   const [searchQuery, setSearchQuery] = useState('');

@@ -47,7 +47,7 @@ const NavbarProfile = () => {
   }
 
   return (
-    <div className="flex items-center justify-center gap-5">
+    <div className="flex items-center justify-center gap-2">
       <div className="rounded-full">
         <Image
           alt="picture Student"
@@ -58,7 +58,7 @@ const NavbarProfile = () => {
         />
       </div>
 
-      <div className="flex flex-col items-start pr-10">
+      <div className="flex flex-col items-start">
         <span className="w-[120px] text-[#1B8392] text-sm font-semibold whitespace-nowrap ">
           {user?.name}{' '}
         </span>

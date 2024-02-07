@@ -10,9 +10,10 @@ interface EditorProps {
   onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
+  placeholder?: string;
 }
 
-const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
+const Editor = ({ onChange, initialContent, editable, placeholder }: EditorProps) => {
   const { resolvedTheme } = useTheme();
   
 
@@ -23,11 +24,23 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
     onEditorContentChange: (editor) => {
       onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
     },
+    
+    // styleSpecs: {
+    //   'p': {
+    //     margin: '0',
+    //   },
+    // },
+    // placeholder: placeholder || 'Ecrivez quelque chose...',
+  
   });
 
   return (
-    <div className="w-full ">
-      <BlockNoteView editor={editor} theme={resolvedTheme === 'dark' ? 'dark' : 'light'} />
+    <div className="w-full">
+      <BlockNoteView
+        editor={editor}
+        theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
+
+      />
     </div>
   );
 };
