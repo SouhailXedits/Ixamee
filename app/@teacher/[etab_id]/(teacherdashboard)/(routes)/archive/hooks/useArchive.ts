@@ -15,6 +15,8 @@ export function useArchive(table: string) {
     mutationFn: (params: paramsProps) => archiveApi(params.id, params.table),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`archived_${table}`] });
+      queryClient.invalidateQueries({ queryKey: [`classe`] });
+
       queryClient.invalidateQueries({ queryKey: [`examens`] });
       queryClient.invalidateQueries({ queryKey: [`dashArchiveCount`] });
       toast.success('archivé avec succeé.');

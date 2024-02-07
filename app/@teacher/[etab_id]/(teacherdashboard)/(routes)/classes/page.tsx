@@ -4,20 +4,29 @@ import ClasseCardContainer from './_components/classe-card-container';
 import { AjouterUneClasse } from '@/components/modals/ajouter-une-classe';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllClasse } from '@/actions/classe';
+import { useState } from 'react';
 
 export default function Classes() {
+  const [value, setValue] = useState('');
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
 
+  console.log(value);
   // const data = queryClient.getQueryData(['classe', etab_id]) as any;
   const user_id = user.id;
   const { data, isPending } = useQuery({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id, etab_id }),
   });
-
+  console.log(data);
   // to DO Scelton
+  const filteredData = data?.data?.filter((classe: any) => {
+    const classes = classe.name.toLowerCase();
+    console.log(classes);
+    return classes.includes(value.toLowerCase());
+  });
+  console.log(filteredData);
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -38,7 +47,9 @@ export default function Classes() {
             <input
               type="text"
               placeholder="Recherche"
-              className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
+              className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight text-11 placeholder-[#99C6D3]"
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
             />
           </div>
           <AjouterUneClasse user_id={user?.id} estab={etab_id}>
@@ -52,7 +63,7 @@ export default function Classes() {
       </nav>
 
       <div>
-        <ClasseCardContainer data={data} isPending={false} />
+        <ClasseCardContainer data={filteredData} isPending={false} />
       </div>
     </main>
   );

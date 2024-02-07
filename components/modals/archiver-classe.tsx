@@ -1,4 +1,5 @@
 'use client';
+import { useArchive } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/archive/hooks/useArchive';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,8 +14,17 @@ import {
 
 interface ArchiveUneClasse {
   children: React.ReactNode;
+  classe_id: string;
 }
-export const ArchiveUneClasse = ({ children }: ArchiveUneClasse) => {
+export const ArchiveUneClasse = ({ children, classe_id }: ArchiveUneClasse) => {
+  const { archiveField, isPending } = useArchive('classe');
+
+  const handleArchive = (classe_id: string) => {
+    const table = 'classe';
+    const id = +classe_id;
+
+    archiveField({ id, table });
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -38,13 +48,15 @@ export const ArchiveUneClasse = ({ children }: ArchiveUneClasse) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button
-            name="bnt"
-            type="submit"
-            className="w-full text-white bg-[#177C9A] hover:opacity-80"
-          >
-            Archiver
-          </Button>
+          <DialogClose asChild>
+            <Button
+              type="submit"
+              onClick={() => handleArchive(classe_id)}
+              className="w-full text-white bg-[#177C9A] hover:opacity-80"
+            >
+              Archiver
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

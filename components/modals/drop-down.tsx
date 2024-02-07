@@ -22,18 +22,18 @@ export const DropdownMenuItemSelect = ({ children, data }: DropdownMenuItemSelec
         <DropdownMenuGroup>
           <ModifierUneClasse data={data}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-              <span >Modifier</span>
+              <span>Modifier</span>
             </DropdownMenuLabel>
           </ModifierUneClasse>
 
           <SupprimerUneClasse classe_id={data.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-              <span >Supprimer</span>
+              <span>Supprimer</span>
             </DropdownMenuLabel>
           </SupprimerUneClasse>
-          <ArchiveUneClasse>
+          <ArchiveUneClasse classe_id={data.id}>
             <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
-              <span >Archiver</span>
+              <span>Archiver</span>
             </DropdownMenuLabel>
           </ArchiveUneClasse>
         </DropdownMenuGroup>
