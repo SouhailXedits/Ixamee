@@ -1,4 +1,3 @@
-
 // export default EditeExame
 'use client';
 import { Button } from '@/components/ui/button';
@@ -470,7 +469,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
                   width={20}
                   height={20}
                 />
-                <span>Français</span>
+                <span className={cn(formData.style != 'fr' && 'text-[#a7a3a3]')}>Français</span>
               </div>
               <div
                 className={cn(
@@ -479,13 +478,9 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
                 )}
                 onClick={() => handleInputChange('style', 'ar')}
               >
-                <span>Arabe</span>
-                <Image
-                  src={formData?.style === 'ar' ? '/examStyle.svg' : '/examStyleNoClicked.svg'}
-                  alt="examStyle"
-                  width={20}
-                  height={20}
-                />
+                <span className={cn(formData.style === 'fr' && 'text-[#a7a3a3]')}>Arabe</span>
+
+                <Image src={'/arabicStyle.svg'} alt="examStyle" width={20} height={20} />
               </div>
             </div>
           </div>

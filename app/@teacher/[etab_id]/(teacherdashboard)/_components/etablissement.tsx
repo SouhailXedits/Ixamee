@@ -17,7 +17,7 @@ const Etablissement = () => {
     <div className="border-t border-[#99C6D3] max-h-50">
       <div className="flex items-center gap-3 p-4">
         <Image src="/bankicon.svg" alt="bankicon" width={18} height={18} />
-        <span className={cn('text-[#99C6D3]', collapsed && 'hidden')}>Établissement</span>
+        <span className={cn('text-[#99C6D3]', collapsed && 'hidden')}>Établissements</span>
       </div>
       {!teacherEstab ? (
         <div className="flex flex-col gap-4 overflow-x-auto overflow-y-hidden max-h-52">

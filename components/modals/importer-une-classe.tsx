@@ -11,10 +11,11 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { Label } from '../ui/label';
 import csvtojson from 'csvtojson';
 import { createManyUserInClass } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteManyUser';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ImportUneClasseProps {
   children: React.ReactNode;
@@ -25,6 +26,11 @@ interface ImportUneClasseProps {
 export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasseProps) => {
   const [file, setFile] = useState<File | null>(null);
   const { createManyUser, isPending, error } = createManyUserInClass();
+  const queryClient = useQueryClient();
+
+  const user = queryClient.getQueryData(['user']) as any;
+  console.log(user);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
@@ -34,26 +40,19 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
   const handleImport = async () => {
     if (file) {
       const jsonData = await convertCsvToJson(file);
-      // const newData = jsonData.map((item: { name: string; email: string }) => ({
-      //   image: '',
-      //   name: item.name,
-      //   range: 1,
-      //   email: item.email,
-      //   class_id: class_id,
-      //   establishmentId: +etab_id,
-      // }));
-      // console.log(newData);
+      const newData = jsonData.map((item: { name: string; email: string }) => ({
+        image: '',
+        name: item.name,
+        range: 1,
+        email: item.email,
+        class_id: class_id,
+        term: user?.term,
+        establishmentId: +etab_id,
+      }));
 
-      jsonData.map((item: { name: string; email: string }) => {
-        createManyUser({
-          image: '',
-          name: item.name,
-          range: 1,
-          email: item.email,
-          class_id: class_id,
-          establishmentId: +etab_id,
-        });
-      });
+      // jsonData.map((item: { name: string; email: string }) => {
+      createManyUser(newData);
+      // });
     }
   };
 
@@ -64,8 +63,11 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
       reader.onload = async (event) => {
         try {
           const csvData = event.target?.result as string;
-          const jsonData = await csvtojson().fromString(csvData);
-
+          const lines = csvData.trim().split('\n'); // Trim and split the CSV data into lines
+          const jsonData = lines.map((line) => {
+            const [name, email] = line.split(';'); // Split each line into name and email
+            return { name, email };
+          });
           resolve(jsonData);
         } catch (error) {
           reject(error);
@@ -138,13 +140,15 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
               Annuler
             </Button>
           </DialogClose>
-          <Button
-            type="button"
-            onClick={handleImport}
-            className="w-full text-white bg-[#1B8392] hover:opacity-80"
-          >
-            Importer
-          </Button>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              onClick={handleImport}
+              className="w-full text-white bg-[#1B8392] hover:opacity-80"
+            >
+              Importer
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

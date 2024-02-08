@@ -4,12 +4,7 @@ import { toast } from 'react-hot-toast';
 import { createUserWithImportInClasse as createUserWithImportInClasseAPi } from '@/actions/classe';
 
 interface CreateClasseParams {
-  image: string;
-  name: string;
-  establishmentId: number;
-  range: number;
-  email: string;
-  class_id: string;
+  data: any;
 }
 
 export function createManyUserInClass() {
@@ -19,8 +14,7 @@ export function createManyUserInClass() {
     isPending,
     error,
   } = useMutation({
-    mutationFn: ({ image, name, range, email, class_id, establishmentId }: CreateClasseParams) =>
-      createUserWithImportInClasseAPi(image, name, range, email, +class_id, establishmentId),
+    mutationFn: (data: CreateClasseParams) => createUserWithImportInClasseAPi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
       toast.success('Étudiants ajoutés avec succès.');

@@ -154,58 +154,70 @@ export const createUserInClasse = async (
     return user;
   }
 };
-export const createUserWithImportInClasse = async (
-  image: string,
-  name: string,
-  range: number,
-  email: string,
-  classe_id: number,
-  establishmentId: number
-) => {
-  const user = await db.user.findUnique({
-    where: {
-      email: email,
-      NOT: {
-        classe: {
-          some: {
-            id: +classe_id,
-          },
-        },
-      },
-    },
-  });
-  if (!user) {
-    const data = await db.user.create({
-      data: {
-        name: name,
-        email: email,
-        image: image,
-        classe: {
-          connect: {
-            id: +classe_id,
-          },
-        },
-        user_establishment: {
-          connect: {
-            id: establishmentId,
-          },
-        },
-      },
-    });
-  } else {
-    const data = await db.user.update({
+export const createUserWithImportInClasse = async (data: any) => {
+  data.map(async (user: any) => {
+    console.log(user);
+    const res = await db.user.findMany({
       where: {
-        email: email,
+        email: user.email.trim(),
+        role: 'STUDENT',
+        // NOT: {
+        //   classe: {
+        //     some: {
+        //       id: {
+        //         equals: +user?.class_id,
+        //       },
+        //     },
+        //   },
+        // },
       },
-      data: {
-        classe: {
-          connect: {
-            id: +classe_id,
+      // select: {
+      //   classe: {
+      //     select: {
+      //       id: true,
+      //     },
+      //   },
+      // },
+    });
+
+    console.log(res);
+    if (res.length === 0) {
+      const data = await db.user.create({
+        data: {
+          name: user.name,
+          email: user.email.trim(),
+          role: 'STUDENT',
+
+          term: user.term,
+          classe: {
+            connect: {
+              id: +user?.class_id,
+            },
+          },
+          user_establishment: {
+            connect: {
+              id: +user.establishmentId,
+            },
           },
         },
-      },
-    });
-  }
+      });
+      console.log(data);
+    } else {
+      const data = await db.user.update({
+        where: {
+          email: user.email.trim(),
+        },
+        data: {
+          classe: {
+            connect: {
+              id: +user?.class_id,
+            },
+          },
+        },
+      });
+      console.log(data);
+    }
+  });
 };
 export const deleteClasse = async (id: number) => {
   const data = await db.classe.delete({
@@ -474,13 +486,24 @@ export const getStudentOfClasse = async (classe_id: number) => {
         },
       },
     },
+    // select: {
+    //   name: true,
+    //   email: true,
+    //   id: true,
+    //   image: true,
+    //   createdAt: true,
+
+    // },
+
     orderBy: {
       name: 'asc',
     },
   });
+  console.log(res);
   return res;
 };
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
+  if (exam_id === 'undefined') return null;
   const res = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -686,7 +709,11 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
 
   return data;
 };
-export const getCorigeExameContentOfAllUser = async (exam_id: number, userData: any) => {
+export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
+  console.log(exam_id);
+  console.log(userData);
+
+  // if (exam_id === 'undefined') return null;
   const data = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -707,6 +734,7 @@ export const getCorigeExameContentOfAllUser = async (exam_id: number, userData: 
       correction_exam_content: true,
     },
   });
+  console.log(data);
   return data;
 };
 export const getNameClasseByClasseId = async (classe_id: number) => {

@@ -26,11 +26,11 @@ export const SupprimerUserInClasse = ({ children, user_id }: SupprimerUneClasse)
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Supprimer votre classe
+            Supprimer cet étudiant
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className=" text-neutral-400 text-[15px] font-normal ">
-          Êtes-vous sûr de vouloir supprimer cette classe? Cette action ne peut être annulée.
+          Êtes-vous sûr de vouloir supprimer cet étudiant? Cette action ne peut être annulée.
         </DialogDescription>
 
         <DialogFooter>

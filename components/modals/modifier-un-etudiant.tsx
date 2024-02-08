@@ -23,7 +23,6 @@ interface ModifierUnEtudiant {
   data: any;
 }
 export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
-  
   const minrange = data?.length;
   const formatDataSchema = z.object({
     name: z.string().min(3, 'Veuillez renseigner le nom'),
@@ -234,13 +233,15 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
               ></div>
             </Button>
           ) : (
-            <Button
-              onClick={handelSubmit}
-              type="submit"
-              className="w-[50%]  bg-[#1B8392] hover:opacity-80 "
-            >
-              Enregistrer
-            </Button>
+            <DialogClose asChild>
+              <Button
+                onClick={handelSubmit}
+                type="submit"
+                className="w-[50%]  bg-[#1B8392] hover:opacity-80 "
+              >
+                Enregistrer
+              </Button>
+            </DialogClose>
           )}
         </DialogFooter>
       </DialogContent>

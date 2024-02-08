@@ -50,6 +50,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
     },
   });
   const [isTransPending, startTransition] = useTransition();
+  console.log(form);
   const onSubmit = async (values: z.infer<typeof UpdatePasswordSchema>) => {
     setError('');
     setSuccess('');
@@ -70,7 +71,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
             <DialogHeader>
               <DialogTitle className="text-[#1B8392] text-xl font-medium mb-2 ">
                 Modifier mot de passe
@@ -80,7 +81,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
             <FormSuccess message={success} />
             {!isFirstModalOpen ? (
               <div className="flex flex-col gap-6 placeholder:text-[#727272] items-center">
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col w-full gap-2">
                   <FormField
                     control={form.control}
                     name="actualPassord"
@@ -95,9 +96,9 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             type={showPassword ? 'text' : 'password'}
                             name="actualPassord"
                             placeholder="Entrez votre mot de passe actuel"
-                            className=" max-w-full"
+                            className="max-w-full "
                             disabled={isTransPending}
-                            icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
+                            icon={<IoKeyOutline className="w-5 h-5 text-muted-foreground" />}
                           />
                         </FormControl>
                         <FormMessage />
@@ -105,7 +106,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                     )}
                   />
                 </div>
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col w-full gap-2">
                   <FormField
                     control={form.control}
                     name="newPassword"
@@ -120,9 +121,9 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             type={showPassword ? 'text' : 'password'}
                             name="newPassword"
                             placeholder="Entrez votre nouveau mot de passe"
-                            className=" max-w-full"
+                            className="max-w-full "
                             disabled={isTransPending}
-                            icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
+                            icon={<IoKeyOutline className="w-5 h-5 text-muted-foreground" />}
                           />
                         </FormControl>
                         <FormMessage />
@@ -130,7 +131,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                     )}
                   />
                 </div>
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col w-full gap-2">
                   <FormField
                     control={form.control}
                     name="confirmNewPassword"
@@ -142,11 +143,11 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                         <FormControl>
                           <Input
                             {...field}
-                            icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
+                            icon={<IoKeyOutline className="w-5 h-5 text-muted-foreground" />}
                             type={showPassword ? 'text' : 'password'}
                             name="name"
                             placeholder="Confirmez votre nouveau mot de passe"
-                            className=" max-w-full"
+                            className="max-w-full "
                             disabled={isTransPending}
                           />
                         </FormControl>
@@ -172,8 +173,8 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
               </div>
             )}
             {!isFirstModalOpen ? (
-              <DialogFooter className=" mt-3">
-                <DialogClose className="flex gap-4 w-full">
+              <DialogFooter className="mt-3 ">
+                <DialogClose className="flex w-full gap-4">
                   <Button
                     disabled={isTransPending}
                     type="reset"
@@ -191,7 +192,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                 </Button>
               </DialogFooter>
             ) : (
-              <DialogClose className="flex gap-4 w-full">
+              <DialogClose className="flex w-full gap-4">
                 <Button
                   type="reset"
                   className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "

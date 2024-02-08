@@ -55,7 +55,9 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
   }, [data]);
 
   const handelCorrectExam = () => {
+    console.log(userData);
     const examanId = userData?.exam_id;
+    console.log(examanId);
     router.push(pathname + `/student/${user_id}/correction/${examanId}`);
   };
 
@@ -80,11 +82,12 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
       createExamCorrectionn(obj);
     } else {
       const obj = {
-        exam_id: userData.exam_id,
+        exam_id: userData?.exam_id,
 
         user_id: user_id,
         status: item as 'notClassified' | 'absent',
       };
+      console.log(obj);
 
       editeStatus(obj);
     }

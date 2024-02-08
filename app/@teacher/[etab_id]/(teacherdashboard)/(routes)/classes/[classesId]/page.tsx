@@ -54,8 +54,19 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getClasseById(+params.classesId),
   });
   console.log(classe);
-
+  console.log(classe?.exam_classe[0]?.id);
   const [exam, setExam] = useState<any>(classe?.exam_classe[0]?.id);
+  console.log(exam);
+  useEffect(() => {
+    // if (Array.isArray(classe?.exam_classe)) {
+    const note = classe?.exam_classe[0]?.id;
+    setExam(note + '');
+    // }
+  }, [classe, isPendingClasse]);
+  console.log(exam);
+  if (isPendingClasse) {
+    return <Loading />;
+  }
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
@@ -72,7 +83,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // queryFn: async () => await getStudentOfClasse(+params.classesId),
 
   const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
-  const classeName = classe?.name;
+  const classeName = classe?.name as string;
 
   // const handleImportedData = (jsonData: any) => {
   //   // Handle the imported data in the external page
@@ -85,17 +96,15 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   //   queryKey: ['classe'],
   //   queryFn: async () => await getClasseById(+classesId),
   // });
-  useEffect(() => {
-    // if (Array.isArray(classe?.exam_classe)) {
-    const note = classe?.exam_classe[0]?.id;
-    setExam(note + '');
-    // }
-  }, [classe]);
 
+  // if (exam !== 'undefined') {
+  console.log(exam);
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
     queryFn: async () => await getCorigeExameContentOfAllUser(exam, data),
   });
+  console.log(getCorrigeExamOfUser);
+  // }
   const newData = data
     ?.map((item: any) => {
       return {
@@ -118,6 +127,9 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       } else if (filter === 'non-classé' && item.status === 'notClassified') {
         return true;
       } else if (filter === 'absent' && item.status === 'absent') {
+        return true;
+      } else if (filter === 'allExam') {
+        // If filter is empty, include all items
         return true;
       } else if (filter === '') {
         // If filter is empty, include all items
@@ -178,6 +190,9 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     );
   }
   const userNotCorrected = notCorrected(userCorrection);
+  console.log(exam);
+  console.log(newData);
+
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -197,33 +212,34 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
           <div>
-            <Select
-              onValueChange={(value) => setExam(value)}
-              defaultValue={classe?.exam_classe[0]?.id + ''}
-            >
-              <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
-                <SelectValue
-                  placeholder={
-                    <div className="flex items-center">
-                      <span className="ml-2 text-[#1B8392] text-base  ">
-                        Sélectionner un examen
-                      </span>
-                    </div>
-                  }
-                />
-              </SelectTrigger>
+            {exam !== 'undefined' && (
+              <Select
+                onValueChange={(value) => setExam(value)}
+                defaultValue={classe?.exam_classe[0]?.id + ''}
+              >
+                <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
+                  <SelectValue
+                    placeholder={
+                      <div className="flex items-center">
+                        <span className="ml-2 text-[#1B8392] text-base  ">
+                          Sélectionner un examen
+                        </span>
+                      </div>
+                    }
+                  />
+                </SelectTrigger>
 
-              <SelectContent>
-                {classe?.exam_classe?.map((exam: any) => (
-                  <SelectItem value={exam.id + ''} className="">
-                    {exam.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <SelectContent>
+                  {classe?.exam_classe?.map((exam: any) => (
+                    <SelectItem value={exam.id + ''} className="">
+                      {exam.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
-
-          {exam !== 0 && (
+          {exam !== 'undefined' && (
             <Select onValueChange={(value) => setFilter(value)}>
               <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
                 <SelectValue
@@ -236,6 +252,9 @@ const Student = ({ params }: { params: { classesId: string } }) => {
                 />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="allExam" className="">
+                  Filter
+                </SelectItem>
                 <SelectItem value="corrige" className="">
                   Corrigé
                 </SelectItem>
@@ -248,7 +267,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           )}
           <Button
             className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
-            disabled={userNotCorrected?.length !== 0}
+            disabled={userNotCorrected?.length !== 0 || userCorrection?.length === 0}
             onClick={() => handleSendResults()}
           >
             <Image src="/sendIcon.svg" alt="icons" width={20} height={20} />

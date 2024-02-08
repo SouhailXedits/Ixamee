@@ -22,7 +22,6 @@ export default function Classes() {
   // to DO Scelton
   const filteredData = data?.data?.filter((classe: any) => {
     const classes = classe.name.toLowerCase();
-    console.log(classes);
     return classes.includes(value.toLowerCase());
   });
   console.log(filteredData);

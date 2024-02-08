@@ -117,13 +117,14 @@ const Action = ({ row }: any) => {
   const pathname = usePathname();
 
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
+  console.log(correctionExamOfUser);
 
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <ModifierUnEtudiant data={row.original}>
         <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
       </ModifierUnEtudiant>
-      {row?.original?.exam !== 0 && (
+      {row?.original?.exam !== undefined && (
         <CorrectExam data={correctionExamOfUser} user_id={row.original.id}>
           <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
         </CorrectExam>
@@ -255,7 +256,7 @@ export const columns = [
           alt=""
           width={42}
           height={42}
-          className="rounded-full h-[42px] w-[42px]"
+          className="rounded-full object-cover  h-[42px] w-[42px]"
         />
         {row.getValue('name')}
       </div>
@@ -302,7 +303,6 @@ export function StudentList({ data, class_id, isPending }: any) {
   // let newData = [data, exam];
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
-  console.log(etab_id);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -374,11 +374,16 @@ export function StudentList({ data, class_id, isPending }: any) {
                     >
                       Pas d’étudiants ajoutés à cette classe.
                       <AjouterUnEtudiant class_id={class_id} etab_id={etab_id}>
-                        <span className="text-[#1B8392] cursor-pointer">Ajoutez</span>
+                        <span className="text-[#1B8392] cursor-pointer">
+                          {' '}
+                          &thinsp;{`Ajoutez `}&thinsp;
+                        </span>
                       </AjouterUnEtudiant>
-                      vos étudiants ou
+                      vos étudiants ou{' '}
                       <ImportUneClasse class_id={class_id} etab_id={etab_id}>
-                        <span className="text-[#1B8392] cursor-pointer">importez</span>
+                        <span className="text-[#1B8392] cursor-pointer">
+                          &thinsp; importez &thinsp;
+                        </span>
                       </ImportUneClasse>
                       une liste.
                     </TableCell>

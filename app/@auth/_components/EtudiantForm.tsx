@@ -136,7 +136,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 w-full transition-all duration-300 ease-in-out"
+        className="w-full space-y-6 transition-all duration-300 ease-in-out"
       >
         <FormError message={error} />
         <FormSuccess message={success} />
@@ -186,9 +186,9 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre nom"
                       type="text"
-                      icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
+                      icon={<LucidePencil className="w-5 h-5 text-muted-foreground" />}
                       disabled={isTransPending}
-                      className=" max-w-full"
+                      className="max-w-full "
                     />
                   </FormControl>
                   <FormMessage />
@@ -210,9 +210,9 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       type="text"
                       placeholder="Entrez votre prénom"
-                      icon={<LucidePencil className="text-muted-foreground w-5 h-5" />}
+                      icon={<LucidePencil className="w-5 h-5 text-muted-foreground" />}
                       disabled={isTransPending}
-                      className=" max-w-full"
+                      className="max-w-full "
                     />
                   </FormControl>
                   <FormMessage />
@@ -221,7 +221,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
             />
           </div>
         </div>
-        <div className="w-full flex flex-row gap-4 max-sm:flex-col">
+        <div className="flex flex-row w-full gap-4 max-sm:flex-col">
           <div className="w-full">
             <FormField
               control={form.control}
@@ -236,9 +236,9 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre e-mail"
                       type="email"
-                      icon={<MdOutlineEmail className="text-muted-foreground w-5 h-5" />}
+                      icon={<MdOutlineEmail className="w-5 h-5 text-muted-foreground" />}
                       disabled={isTransPending}
-                      className=" max-w-full"
+                      className="max-w-full "
                     />
                   </FormControl>
                   <FormMessage />
@@ -261,7 +261,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       field={field}
                       placeholder={'Choisissez votre gouvernorat'}
                       options={govOptions}
-                      icon={<RiGovernmentLine className="text-muted-foreground w-5 h-5" />}
+                      icon={<RiGovernmentLine className="w-5 h-5 text-muted-foreground" />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -270,7 +270,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
             />
           </div>
         </div>
-        <div className="w-full flex flex-row gap-4 max-sm:flex-col">
+        <div className="flex flex-row w-full gap-4 max-sm:flex-col">
           <div className="w-full">
             <FormField
               control={form.control}
@@ -286,8 +286,8 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       isDisabled={isTransPending || estabPending}
                       onChange={(selectedOption: any) => handleEtablissementChange(selectedOption)}
                       placeholder={
-                        <div className="flex items-center text-gray text-sm ">
-                          <FaGraduationCap className="text-gray w-5 h-5 mr-2" />
+                        <div className="flex items-center text-sm text-gray ">
+                          <FaGraduationCap className="w-5 h-5 mr-2 text-gray" />
                           Choisissez votre établissement
                         </div>
                       }
@@ -335,8 +335,8 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       options={estabClassesOptions}
                       isDisabled={formData.etablissement.length == 0 || isTransPending}
                       placeholder={
-                        <div className="flex items-center text-gray text-sm ">
-                          <MdOutlineClass className="text-gray w-5 h-5 mr-2" />
+                        <div className="flex items-center text-sm text-gray ">
+                          <MdOutlineClass className="w-5 h-5 mr-2 text-gray" />
                           Sélectionnez votre classe
                         </div>
                       }
@@ -371,7 +371,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
             />
           </div>
         </div>
-        <div className="w-full flex flex-row gap-4 max-sm:flex-col">
+        <div className="flex flex-row w-full gap-4 max-sm:flex-col">
           <div className="w-full">
             <FormField
               control={form.control}
@@ -386,9 +386,9 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Entrez votre mot de passe"
                       type={showPassword ? 'text' : 'password'}
-                      icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
+                      icon={<IoKeyOutline className="w-5 h-5 text-muted-foreground" />}
                       disabled={isTransPending}
-                      className=" max-w-full"
+                      className="max-w-full "
                     />
                   </FormControl>
                   <FormMessage />
@@ -410,9 +410,9 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                       {...field}
                       placeholder="Vérifiez le mot de passe"
                       type={showPassword ? 'text' : 'password'}
-                      icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
+                      icon={<IoKeyOutline className="w-5 h-5 text-muted-foreground" />}
                       disabled={isTransPending}
-                      className=" max-w-full"
+                      className="max-w-full "
                     />
                   </FormControl>
                   <FormMessage />

@@ -92,8 +92,8 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       .refine((value) => value.value !== 0, {
         message: 'Matière is required',
       }),
-    totalMarks: z.string().min(1, { message: 'Total Marks is required' }),
-    coefficient: z.string().min(1, { message: 'Coefficient is required' }),
+    // totalMarks: z.number().min(1, { message: 'Total Marks is required' }),
+    // coefficient: z.string().min(1, { message: 'Coefficient is required' }),
     style: z.string(),
   });
 
@@ -109,6 +109,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
+  console.log(formData);
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({
@@ -148,7 +149,9 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     try {
       examSchema.parse(formData);
       ok = true;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     return ok;
   };
   const handleSubmit = async () => {
@@ -390,12 +393,18 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
               </Label>
               <Input
                 type="number"
-                onChange={(e) => handleInputChange('totalMarks', e.target.value)}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10); // Parse the input value as an integer
+                  if (value > 0) {
+                    handleInputChange('totalMarks', value); // Call handleInputChange only if value is greater than 0
+                  }
+                }}
                 value={formData.totalMarks}
                 min={1}
                 placeholder="Saisir la note totale"
                 className="placeholder:text-[#727272]"
               />
+
               {renderFieldError('totalMarks')}
             </div>
             <div className="w-[50%]">
@@ -418,7 +427,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
             <div className="flex gap-5">
               <div
                 className={cn(
-                  'flex items-center  justify-center  gap-9 p-3 border w-[50%]  rounded-xl cursor-pointer',
+                  'flex items-center  justify-center  gap-9 p-3 border w-[50%]  rounded-xl cursor-pointer ',
                   formData.style === 'fr' && 'border-[#1B8392] text-[#1B8392] '
                 )}
                 onClick={() => handleInputChange('style', 'fr')}
@@ -429,7 +438,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                   width={20}
                   height={20}
                 />
-                <span>Français</span>
+                <span className={cn(formData.style != 'fr' && 'text-[#a7a3a3]')}>Français</span>
               </div>
               <div
                 className={cn(
@@ -438,13 +447,9 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 )}
                 onClick={() => handleInputChange('style', 'ar')}
               >
-                <span>Arabe</span>
-                <Image
-                  src={formData.style === 'ar' ? '/examStyle.svg' : '/examStyleNoClicked.svg'}
-                  alt="examStyle"
-                  width={20}
-                  height={20}
-                />
+                <span className={cn(formData.style === 'fr' && 'text-[#a7a3a3]')}>Arabe</span>
+
+                <Image src={'/arabicStyle.svg'} alt="examStyle" width={20} height={20} />
               </div>
             </div>
           </div>

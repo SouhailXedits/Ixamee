@@ -54,7 +54,7 @@ export const getCountMonArchive = async (userId: string, etab_id: number) => {
         some: {
           establishment: {
             some: {
-              id: +etab_id,
+              id: +etab_id, // Corrected this line
             },
           },
         },
@@ -71,7 +71,7 @@ export const getCountMonArchive = async (userId: string, etab_id: number) => {
       },
       establishment: {
         some: {
-          id: +etab_id,
+          id: +etab_id, // Corrected this line
         },
       },
       is_archived: true,

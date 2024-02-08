@@ -73,9 +73,45 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
       }
       return result;
     };
+    const getArabicName = (currentName: string) => {
+      const arabicAlphabet = 'ابتثجحخدذرزسشصضطظعغفقكلمنهوي';
+      const base = arabicAlphabet.length;
+
+      let result = '';
+      let carry = 1;
+
+      for (let i = currentName.length - 1; i >= 0; i--) {
+        const char = currentName[i];
+        const charIndex = arabicAlphabet.indexOf(char);
+        const sum = charIndex + carry;
+
+        result = arabicAlphabet[sum % base] + result;
+        carry = Math.floor(sum / base);
+
+        if (carry === 0) {
+          result = currentName.substring(0, i) + result;
+          break;
+        }
+      }
+      if (carry > 0) {
+        result = arabicAlphabet[carry % base] + result;
+        if (carry > base) {
+          result = 'ا' + result; // Overflow, add an extra 'ا' (the first letter of the Arabic alphabet)
+        }
+      }
+      return result;
+    };
+
     const lastSubSubQuestion = data.children[data.children.length - 1];
 
-    const nextName = lastSubSubQuestion ? getNextName(lastSubSubQuestion.name) : 'a';
+    const nextName = isArabic
+      ? lastSubSubQuestion
+        ? getArabicName(lastSubSubQuestion.name)
+        : 'ا'
+      : lastSubSubQuestion
+      ? getNextName(lastSubSubQuestion.name)
+      : 'a';
+    console.log(nextName);
 
     const newSubSubQuestion = {
       id: Math.random().toString(36).substring(7),

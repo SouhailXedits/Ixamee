@@ -55,6 +55,7 @@ export const RegisterEtudSchema = z
         value: z.string(),
         label: z.string(),
       })
+      .optional()
     ),
   })
 
