@@ -20,26 +20,26 @@ export default function Home() {
   });
 
   const { data: examCount, isPending: examCountPending } = useQuery({
-    queryKey: ['dashExamCount'],
+    queryKey: ['dashExamCount', etab_id],
     queryFn: async () => await getCountOfExamenes(user?.id, etab_id),
   });
 
   const { data: archiveCount, isPending: archiveCountPending } = useQuery({
-    queryKey: ['dashArchiveCount'],
+    queryKey: ['dashArchiveCount', etab_id],
     queryFn: async () => await getCountMonArchive(user?.id, etab_id),
   });
 
   const { data: classe, isPending: isPendingClasse } = useQuery({
-    queryKey: ['dashClasses'],
+    queryKey: ['dashClasses', etab_id],
     queryFn: async () => await getAllClasseByPage({ user_id: user?.id, etab_id }),
   });
   const { data: studentCount, isPending: isPendingStudentClasse } = useQuery<any>({
-    queryKey: ['dashStudentClasses'],
+    queryKey: ['dashStudentClasses', etab_id],
     queryFn: async () => await getStudentClassCount({ user_id: user?.id, etab_id }),
   });
 
   const { data: classes, isPending: isPendingClasses } = useQuery({
-    queryKey: ['classes'],
+    queryKey: ['classes', etab_id],
     queryFn: async () => await getAllClassesNameAndId({ user_id: user?.id, etab_id }),
   });
   return isPendingStudentClasse ? (
