@@ -63,7 +63,7 @@ export default function Page({ params }: { params: { examenId: string } }) {
   //   }
   // }, [fakeData]);
   return (
-    <div className="flex flex-col gap-6 p-10">
+    <div className="flex flex-col gap-6 p-10 overflow-auto">
       <nav className="flex justify-between w-full ">
         <div className="flex flex-col gap-4">
           {/* {isPending ? (
