@@ -39,7 +39,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   const { collapsed } = useSidebar((state) => state);
 
   return (
-    <div className="h-full">
+    <div className="h-full flex">
       <>
         <div
           className={cn(

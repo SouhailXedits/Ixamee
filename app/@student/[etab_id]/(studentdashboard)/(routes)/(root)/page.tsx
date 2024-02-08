@@ -31,7 +31,7 @@ export default function Home() {
   });
 
   return (
-    <div className="flex flex-col w-full h-full p-9">
+    <div className="flex flex-col w-full h-full p-9 overflow-auto">
       <div className="pl-4 text-2xl font-semibold text-2 ">Tableau de bord</div>
       <div className="flex gap-6 pt-10 flex-nowrap max-2xl:flex-wrap">
         {/* first section 👺  */}

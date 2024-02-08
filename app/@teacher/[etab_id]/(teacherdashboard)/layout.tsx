@@ -33,7 +33,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   const { collapsed } = useSidebar((state) => state);
 
   return (
-    <div className="h-full">
+    <div className="h-full flex">
       <>
         <div
           className={cn(
@@ -49,9 +49,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
         <main
           className={cn(
             !collapsed
-              ? 'md:pl-[260px] transition-all duration-500'
+              ? 'md:pl-[260px] transition-all duration-500 '
               : 'pl-[63px] transition-all duration-500',
-            'pl-[63px] pt-[60px]'
+            'pl-[63px] pt-[60px] w-full '
           )}
         >
           {children}
