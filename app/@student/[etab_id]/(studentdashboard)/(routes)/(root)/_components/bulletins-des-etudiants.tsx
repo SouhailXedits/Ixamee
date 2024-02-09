@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
   Select,
   SelectContent,
@@ -17,12 +17,11 @@ import ExamCorrectionList from './ExamCorrections';
 
 const BulletinsDesEtudiants = ({ data }: any) => {
   const [filter, setFilter] = useState({
-    subject_id: "",
-    term: "",
+    subject_id: '',
+    term: '',
   });
-  const params = useParams()
-  const {etab_id: classeId} = params 
-
+  const params = useParams();
+  const { etab_id: classeId } = params;
 
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
@@ -32,14 +31,15 @@ const BulletinsDesEtudiants = ({ data }: any) => {
     queryKey: ['correction', filter],
     queryFn: async () => getUserCorrectionBySubject(user?.id, filter),
   });
-
+  console.log(userSubjects);
+  if (!userSubjects) return null;
   return (
     <>
       {!data ? (
-        <div className="w-full border h-full rounded-xl flex items-center justify-center p-10">
+        <div className="flex items-center justify-center w-full h-full p-10 border rounded-xl">
           <Rien
             image="/dashboard/books.svg"
-            className="flex flex-col gap-6 justify-center"
+            className="flex flex-col justify-center gap-6"
             message="Pas de bulletins pour le moment"
           />
         </div>
@@ -55,14 +55,15 @@ const BulletinsDesEtudiants = ({ data }: any) => {
                 <SelectValue placeholder="Matière" />
               </SelectTrigger>
               <SelectContent>
-                {userSubjects?.map((subject: any) => (
-                  <SelectItem
-                    value={subject.id}
-                    // onClick={() => handleInputChange('term', 'trimestre_1')}
-                  >
-                    {subject.name}
-                  </SelectItem>
-                ))}
+                {userSubjects &&
+                  userSubjects?.map((subject: any) => (
+                    <SelectItem
+                      value={subject.id}
+                      // onClick={() => handleInputChange('term', 'trimestre_1')}
+                    >
+                      {subject.name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
             <Select

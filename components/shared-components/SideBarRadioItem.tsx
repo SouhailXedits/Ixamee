@@ -30,7 +30,7 @@ interface SideBarRadioItemProps {
 }
 
 export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
-  console.log("🚀 ~ SideBarRadioItem ~ data:", data)
+  console.log('🚀 ~ SideBarRadioItem ~ data:', data);
   if (!data) return null;
   const router = useRouter();
   const pathname = usePathname();
@@ -51,6 +51,9 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   const currentestabName = currentestab?.id;
 
   if (data.every((res) => +res?.id !== +etabId)) {
+    if (+etabId === 0) {
+      return;
+    }
     router.push(`/${data[0]?.id}/${currPath}`);
   }
 
@@ -102,7 +105,12 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
                             defaultChecked={+lyce?.id === etabId}
                           />
                         </FormControl>
-                        <FormLabel className={cn("w-full h-4 font-normal", collapsed && "w-[38px] overflow-hidden text-center")}>
+                        <FormLabel
+                          className={cn(
+                            'w-full h-4 font-normal',
+                            collapsed && 'w-[38px] overflow-hidden text-center'
+                          )}
+                        >
                           {collapsed
                             ? shorting(lyce?.name)
                             : lyce?.name?.length > 20
