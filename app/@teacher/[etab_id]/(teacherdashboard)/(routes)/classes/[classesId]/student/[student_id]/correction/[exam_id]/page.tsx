@@ -49,11 +49,11 @@ export default function Page({
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
-  console.log(data?.content);
-  console.log(examContent?.content);
-  console.log(getCorrigeExamOfUser);
+  // console.log(data?.content);
+  // console.log(examContent?.content);
+  // console.log(getCorrigeExamOfUser);
 
-  console.log(isFullMarks)
+  // console.log(isFullMarks)
 
    useEffect(() => {
      if (isFullMarks) {
