@@ -6,7 +6,7 @@ import Classes from '@/app/@student/[etab_id]/(studentdashboard)/components/Clas
 
 export const SidebarRoutes = ({ guestRoutes }: any) => {
   return (
-    <div className="flex flex-col w-full gap-10 overflow-auto justify-between">
+    <div className="flex flex-col justify-between w-full gap-10 overflow-auto">
       <div className="flex flex-col items-start gap-4 mt-14">
         {guestRoutes.map((route: any) => (
           <SidebarItem
@@ -17,6 +17,10 @@ export const SidebarRoutes = ({ guestRoutes }: any) => {
             href={route.href}
           />
         ))}
+        {guestRoutes[1]?.href !== '/results' && <ParametersSidebar />}
+      </div>
+      <div className="flex flex-col">
+        {guestRoutes[1]?.href === '/results' ? <Classes /> : <Etablissement />}
       </div>
     </div>
   );
