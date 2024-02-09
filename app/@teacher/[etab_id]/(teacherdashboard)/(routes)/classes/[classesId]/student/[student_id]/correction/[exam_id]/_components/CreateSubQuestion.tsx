@@ -14,6 +14,7 @@ export const CreateSubQuestion = ({
   realExamContetn,
   fakeData,
 }: any) => {
+  console.log(realExamContetn);
   const onChange = (content: string) => {
     updateContentSubQuestion(content, data);
   };

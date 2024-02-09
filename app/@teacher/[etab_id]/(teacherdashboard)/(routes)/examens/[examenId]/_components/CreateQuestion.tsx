@@ -136,7 +136,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
 
   // Function to update a question's mark in the fake data
   const updateQuestion = (e: any, data: any) => {
-    if (+e < 0) {
+    if (+e < 1) {
       toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
@@ -193,7 +193,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
               className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 border text-center border-[#1B8392]"
               placeholder="--.--"
               type="number"
-              min={0}
+              min={1}
               // value={data.mark}
               disabled={data.children && data.children.length > 0}
               // defaultValue={calculerQuestionMark(data)}

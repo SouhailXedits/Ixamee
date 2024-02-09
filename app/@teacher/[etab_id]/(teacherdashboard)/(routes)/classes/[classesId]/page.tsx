@@ -53,10 +53,10 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryKey: ['classe'],
     queryFn: async () => await getClasseById(+params.classesId),
   });
-  console.log(classe);
-  console.log(classe?.exam_classe[0]?.id);
+  // console.log(classe);
+  // console.log(classe?.exam_classe[0]?.id);
   const [exam, setExam] = useState<any>(classe?.exam_classe[0]?.id);
-  console.log(exam);
+  // console.log(exam);
   useEffect(() => {
     // if (Array.isArray(classe?.exam_classe)) {
     const note = classe?.exam_classe[0]?.id;
@@ -98,12 +98,10 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // });
 
   // if (exam !== 'undefined') {
-  console.log(exam);
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
     queryFn: async () => await getCorigeExameContentOfAllUser(exam, data),
   });
-  console.log(getCorrigeExamOfUser);
   // }
   const newData = data
     ?.map((item: any) => {
@@ -195,7 +193,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
   return (
     <main className="flex flex-col gap-6 p-10">
-      <nav className="flex justify-between w-full ">
+      <nav className="flex items-center justify-between w-full gap-14 ">
         <div className="flex flex-col gap-4">
           <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div>
           <div className="flex items-center text-[#727272]">
@@ -210,7 +208,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+        <div className="flex flex-wrap justify-end gap-3 pt-4 h-14 cursor-pointe ">
           <div>
             {exam !== 'undefined' && (
               <Select
@@ -322,7 +320,8 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
       </nav>
 
-      <div>
+      {/* console.log(' :', ); */}
+      <div className="pt-6 max-lg:pt-20 max-ml:pt-30">
         <StudentList data={newData} class_id={classesId} isPending={false} />
       </div>
     </main>

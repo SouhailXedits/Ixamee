@@ -151,6 +151,10 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
         class_id: class_id,
         establishmentId: etab_id,
       });
+      setFormatData({
+        name: '',
+        email: '',
+      });
       if (!error) setIsFirstModalOpen(!isFirstModalOpen);
 
       // setIsFirstModalOpen(!isFirstModalOpen);

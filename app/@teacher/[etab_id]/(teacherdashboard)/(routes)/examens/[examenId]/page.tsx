@@ -5,15 +5,18 @@ import CreateExam from './_components/create-exam';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getOneExamById } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 
-export default function Page({ params }: { params: { examenId: string } }) {
+export default function Page({ params }: { params: { examenId: string ,etab_id : string} }) {
   const [sum, setSum] = useState(0);
+  const pathname = usePathname();
+  console.log(pathname);
+  console.log(params);
 
   const router = useRouter();
   const { examenId } = params;
@@ -82,9 +85,13 @@ export default function Page({ params }: { params: { examenId: string } }) {
                 <Skeleton className="w-[80px] h-[20px]" />
               </span>
             ) : ( */}
-            <span className="cursor-pointer">
-              {data?.exam_classess.map((item: any) => item.name).join(', ')}
-            </span>
+            <div className="flex gap-1 cursor-pointer">
+              {data?.exam_classess.map((item: any) => (
+                <span onClick={() => router.push(`/${params?.etab_id}/classes/${item.id}`)}>
+                  {item.name} ,
+                </span>
+              ))}
+            </div>
             {/* )} */}
           </div>
         </div>
