@@ -13,7 +13,7 @@ export default function ResetPassword() {
   const [verificationData, setVerificationData] = useState<VerificationData>({});
   const [isExpired, setExpired] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(59);
-  console.log(verificationData)
+  // console.log(verificationData)
 
   useEffect(() => {
     const updateTimer = () => {

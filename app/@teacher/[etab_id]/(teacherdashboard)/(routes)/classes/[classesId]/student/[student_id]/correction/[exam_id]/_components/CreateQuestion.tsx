@@ -14,91 +14,89 @@ export const CreateQuestion = ({
   isArabic,
   fakeData,
 }: any) => {
-  //  this the content of the Editor 🙄
   const onChange = (content: string) => {
     updateContetn(content, data);
   };
-  // Function to create and add a new subquestion to a specific question in fake data
-  const createSubQuestion = () => {
-    // Generating a new subquestion with a random id, name, initial mark, and an empty children array
-    const newSubQuestion = {
-      id: Math.random().toString(36).substring(7),
-      name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
-      mark: 0,
-      children: [],
-    };
+  // const createSubQuestion = () => {
+  //   // Generating a new subquestion with a random id, name, initial mark, and an empty children array
+  //   const newSubQuestion = {
+  //     id: Math.random().toString(36).substring(7),
+  //     name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
+  //     mark: 0,
+  //     children: [],
+  //   };
 
-    // Update the state to include the new subquestion
-    setFakeData((prevData: any) => {
-      // Mapping over the previous data to create a new updatedData array
-      return prevData.map((item: any) => {
-        // Checking if the current item's id matches the id of the parent question
-        if (item.id === allData.id) {
-          // Updating the children array of the parent question
-          return {
-            ...item,
-            children: item.children.map((subItem: any) => {
-              // Checking if the current subitem's id matches the id of the parent subquestion
-              if (subItem.id === data.id) {
-                // Adding the new subquestion to the children array of the parent subquestion
-                return {
-                  ...subItem,
-                  children: [...subItem.children, newSubQuestion],
-                };
-              }
-              // Returning unchanged subitems
-              return subItem;
-            }),
-          };
-        }
-        // Returning unchanged items
-        return item;
-      });
-    });
-  };
+  //   // Update the state to include the new subquestion
+  //   setFakeData((prevData: any) => {
+  //     // Mapping over the previous data to create a new updatedData array
+  //     return prevData.map((item: any) => {
+  //       // Checking if the current item's id matches the id of the parent question
+  //       if (item.id === allData.id) {
+  //         // Updating the children array of the parent question
+  //         return {
+  //           ...item,
+  //           children: item.children.map((subItem: any) => {
+  //             // Checking if the current subitem's id matches the id of the parent subquestion
+  //             if (subItem.id === data.id) {
+  //               // Adding the new subquestion to the children array of the parent subquestion
+  //               return {
+  //                 ...subItem,
+  //                 children: [...subItem.children, newSubQuestion],
+  //               };
+  //             }
+  //             // Returning unchanged subitems
+  //             return subItem;
+  //           }),
+  //         };
+  //       }
+  //       // Returning unchanged items
+  //       return item;
+  //     });
+  //   });
+  // };
 
   // Function to handle deleting a question from fake data
-  const handelDeleteQuestion = () => {
-    // 🚨 Logging the previous data for debugging purposes
-    setFakeData((prevData: any) => {
-      // Mapping over the previous data to create a new updatedData array
-      return prevData.map((item: any) => {
-        // Checking if the current item's id matches the id of the question to be deleted
-        if (item.id === allData.id) {
-          // 🗑️ Removing the specific child with the matching id from the children array
-          return {
-            ...item,
-            children: item.children.filter((subItem: any) => subItem.id !== data.id),
-          };
-        }
-        // Returning unchanged items
-        return item;
-      });
-    });
-    // 🔄 Triggering a re-render of questions after deletion
-    handeRenderQuestion();
-  };
+  // const handelDeleteQuestion = () => {
+  //   // 🚨 Logging the previous data for debugging purposes
+  //   setFakeData((prevData: any) => {
+  //     // Mapping over the previous data to create a new updatedData array
+  //     return prevData.map((item: any) => {
+  //       // Checking if the current item's id matches the id of the question to be deleted
+  //       if (item.id === allData.id) {
+  //         // 🗑️ Removing the specific child with the matching id from the children array
+  //         return {
+  //           ...item,
+  //           children: item.children.filter((subItem: any) => subItem.id !== data.id),
+  //         };
+  //       }
+  //       // Returning unchanged items
+  //       return item;
+  //     });
+  //   });
+  //   // 🔄 Triggering a re-render of questions after deletion
+  //   handeRenderQuestion();
+  // };
 
   // Function to handle rendering questions and updating their names
-  const handeRenderQuestion = () => {
-    // 🚨 Logging the previous data for debugging purposes
-    setFakeData((prevData: any) => {
-      // Mapping over the previous data to create a new updatedData array
-      return prevData.map((item: any) => {
-        // Function to get the next character in a sequence based on the index
-        const getNextChar = (num: number) => String.fromCharCode(0x2160 + num);
+  // const handeRenderQuestion = () => {
+  //   // 🚨 Logging the previous data for debugging purposes
+  //   setFakeData((prevData: any) => {
+  //     // Mapping over the previous data to create a new updatedData array
+  //     return prevData.map((item: any) => {
+  //       // Function to get the next character in a sequence based on the index
+  //       const getNextChar = (num: number) => String.fromCharCode(0x2160 + num);
 
-        // Mapping over the children array of each item
-        item.children.map((state: any, index: number) => {
-          // 🌟 Updating the name of each child with the next character in the sequence
-          state.name = getNextChar(index);
-        });
+  //       // Mapping over the children array of each item
+  //       item.children.map((state: any, index: number) => {
+  //         // 🌟 Updating the name of each child with the next character in the sequence
+  //         state.name = getNextChar(index);
+  //       });
 
-        // Returning the updated item
-        return item;
-      });
-    });
-  };
+  //       // Returning the updated item
+  //       return item;
+  //     });
+  //   });
+  // };
 
   /**
    * Calculate the mark for the given data
@@ -168,6 +166,7 @@ export const CreateQuestion = ({
       return updatedData;
     });
   };
+  console.log(fakeData)
 
   return (
     <>
@@ -196,7 +195,7 @@ export const CreateQuestion = ({
                     : `${calculateMark(data)}.00`}
                 </span>
                 <span>/</span>
-                <span>0{getMarkOfExerciceWithId(realExamContetn, data.id)}.00</span>
+                <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
               </div>
             ) : (
               <Input

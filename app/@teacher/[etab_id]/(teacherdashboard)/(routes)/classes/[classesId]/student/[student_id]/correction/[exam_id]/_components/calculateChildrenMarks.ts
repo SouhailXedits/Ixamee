@@ -42,11 +42,12 @@ export const getMarkOfExerciceWithId = (content: any, id: string): number | null
 
 export const transferAllMarkToNull = (content: any) => {
   for (const item of content) {
-    item.mark = null;
+    item.mark = 0;
     if (item.children) {
       transferAllMarkToNull(item.children);
     }
   }
+  console.log(content);
 };
 
 // Call the function passing the fakeData array to get the sum of marks for immediate children

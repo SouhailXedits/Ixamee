@@ -1,5 +1,4 @@
 function ExamCorrectionRow({ Examdata }: any) {
-  console.log(Examdata);
 //   {
 //     id: 67,
 //     mark_obtained: 5,

@@ -71,7 +71,13 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
   });
   return exams;
 };
-export const getAllExamsNameAndId = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
+export const getAllExamsNameAndId = async ({
+  user_id,
+  etab_id,
+}: {
+  user_id: string;
+  etab_id: number;
+}) => {
   const exams = await db.exam.findMany({
     where: {
       teacher: {
@@ -93,7 +99,7 @@ export const getAllExamsNameAndId = async ({ user_id, etab_id }: { user_id: stri
     select: {
       id: true,
       name: true,
-    }
+    },
   });
   return exams;
 };
@@ -125,13 +131,10 @@ export const createExamCorrection = async (
     },
   });
 
-
-
   // let examCorrection;
 
   if (existingExamCorrection.length === 0) {
     // Create a new examCorrection if it doesn't exist
-
 
     const examCorrection = await db.examCorrection.create({
       data: {
@@ -298,7 +301,6 @@ export const getEstablishmentOfUser = async (user_id: string) => {
     },
   });
 
-
   return data;
 };
 // getExamenById;
@@ -336,7 +338,6 @@ export const getExamContent = async ({ id }: { id: string }) => {
 };
 
 export async function createExamm(data: any, user_id: string) {
-
   const examm = await db.exam.create({
     data: {
       name: data.name,
@@ -366,8 +367,6 @@ export async function createExamm(data: any, user_id: string) {
     },
   });
 
-
-
   const allUsers = await db.classe.findMany({
     where: {
       id: {
@@ -391,7 +390,6 @@ export async function createExamm(data: any, user_id: string) {
     )
   );
 
-
   const allData = await db.examCorrection.createMany({
     data: flattenedUsers.map((user: any) => ({
       exam_id: examm.id,
@@ -404,7 +402,6 @@ export async function createExamm(data: any, user_id: string) {
   return examm;
 }
 export async function updateExam(examId: number, data: any, user_id: string) {
-
   try {
     const updatedExam = await db.exam.update({
       where: {
@@ -436,17 +433,13 @@ export const deleteExame = async (id: number) => {
         id: id,
       },
     });
-
-
   } catch (error: any) {
-
     return {
       error: 'Failed to delete Exam.',
     };
   }
 };
 export const updateExamContent = async (examId: string, content: any) => {
-
   try {
     const updatedExam = await db.exam.update({
       where: {
@@ -474,7 +467,6 @@ export const createNoteExamCorrectio = async ({
   mark_obtained: string;
   exam_id: string;
 }) => {
-
   try {
     const existingExamCorrection = await db.examCorrection.findMany({
       where: {
@@ -483,11 +475,7 @@ export const createNoteExamCorrectio = async ({
       },
     });
 
-
-
     if (existingExamCorrection.length === 0) {
-
-
       const examCorrection = await db.examCorrection.create({
         data: {
           exam: {
@@ -528,7 +516,6 @@ export const createNoteExamCorrectio = async ({
 };
 
 export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any[] }) => {
-
   const subject = await db.subject.findMany({
     // where: {
     //   exams: {
@@ -548,7 +535,6 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
       },
     },
   });
-
 
   try {
     const updatedExamCorrectionBatch = await Promise.all(
@@ -570,7 +556,6 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
 
     await Promise.all(
       marks.map(async (item: any) => {
-
         const markSheets = await db.examCorrection.findMany({
           where: {
             exam: {
@@ -616,7 +601,6 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           },
         });
         const groupedExams = markSheets.reduce((result: any, exam: any) => {
-
           const term = exam.exam.term;
           if (!result[term]) {
             result[term] = [];
@@ -685,7 +669,6 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           };
         });
 
-
         const existingInfo = infos.length! == 0;
 
         for (const item of ranked) {
@@ -701,7 +684,6 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
               },
             });
           } else {
-
             await db.userClasseInfos.updateMany({
               where: {
                 user_id,
@@ -734,7 +716,6 @@ export const editeExamFeedback = async ({
   exam_id: string;
   newFeedback: any;
 }) => {
-
   try {
     const existingExamCorrection = await db.examCorrection.findMany({
       where: {
@@ -742,8 +723,6 @@ export const editeExamFeedback = async ({
         user_id: student_id,
       },
     });
-
-
 
     if (existingExamCorrection.length === 0) {
       const examCorrection = await db.examCorrection.create({
@@ -790,7 +769,6 @@ export const editeExamStatus = async ({
   exam_id: string;
   status: 'notClassified' | 'absent';
 }) => {
-
   try {
     const existingExamCorrection = await db.examCorrection.findMany({
       where: {
@@ -798,8 +776,6 @@ export const editeExamStatus = async ({
         user_id: user_id,
       },
     });
-
-
 
     if (existingExamCorrection.length === 0) {
       const examCorrection = await db.examCorrection.create({
@@ -845,7 +821,6 @@ export const editeExamStatus = async ({
 
 //     includeRecursive: { children: { maxDepth: 10 } },
 //   });
-
 
 //   const questionsId = exercises[0]?.question?.id;
 
