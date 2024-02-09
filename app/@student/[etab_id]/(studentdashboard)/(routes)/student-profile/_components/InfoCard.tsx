@@ -46,7 +46,7 @@ export default function InfoCard({ user, userEstablishment, classe }: any) {
             <span className="text-[#727272] font-light">
               {userEstablishment && userEstablishment.length
                 ? userEstablishment.map((estab: any) => estab?.name)
-                : 'Votre professeur ne choisi la classe'}
+                : 'Votre professeur ne choisi pas la classe'}
             </span>
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function InfoCard({ user, userEstablishment, classe }: any) {
             <span className="text-[#727272] font-light">
               {classe && classe.length
                 ? classe.map((classe: any) => classe?.name)
-                : 'Votre professeur ne choisi la classe'}
+                : 'Contactez votre professeur pour vous invitez à une classe'}
             </span>
           </p>
         </div>

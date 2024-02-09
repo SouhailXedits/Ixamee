@@ -18,7 +18,7 @@ const Input = React.forwardRef<HTMLInputElement | HTMLSelectElement, InputProps>
 
     return (
       <div className="relative flex items-center border gap-[4px] rounded-lg">
-        {icon && <div className="">{icon}</div>}
+        {icon && <div className="px-2">{icon}</div>}
 
         <input
           name={name}

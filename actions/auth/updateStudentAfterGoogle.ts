@@ -15,7 +15,7 @@ export const updateStudentAfterGoogle = async (values: z.infer<typeof EtudiantAf
   if (!validatedFields.success || !existingUser) {
     return { error: "Une erreur s'est produite. Veuillez réessayer." };
   }
-  const { government, etablissement: establishment, classe } = validatedFields.data;
+  const { government, etablissement: establishment } = validatedFields.data;
   try {
     enum UserRole {
       ADMIN = 'ADMIN',
@@ -36,9 +36,6 @@ export const updateStudentAfterGoogle = async (values: z.infer<typeof EtudiantAf
         government,
         user_establishment: {
           connect: { id: establishment[0].id },
-        },
-        classe: {
-          connect: { id: classe[0].id },
         },
       },
     });

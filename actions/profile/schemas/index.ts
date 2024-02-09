@@ -35,14 +35,17 @@ export const UpdateTeacherSchema = z.object({
   }),
   phone: z
     .string()
-    .refine((value) => /^[2459]\d{7}$/.test(value), {
-      message:
-        'Le numéro de téléphone doit commencer par 2, 4, 5, ou 9 et avoir 8 chiffres au total',
-    })
+    // .refine((value) => /^[2459]\d{7}$/.test(value), {
+    //   message:
+    //     'Le numéro de téléphone doit commencer par 2, 4, 5, ou 9 et avoir 8 chiffres au total',
+    // })
     .optional(),
-  government: z.string().min(3, {
-    message: 'La gouvernorat est requis',
-  }),
+  government: z
+    .string()
+    // .min(3, {
+    //   message: 'La gouvernorat est requis',
+    // })
+    .optional(),
   subject: z
     .array(
       z.object({

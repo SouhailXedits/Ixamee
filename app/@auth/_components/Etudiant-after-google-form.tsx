@@ -47,7 +47,6 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
     defaultValues: {
       government: '',
       etablissement: [],
-      classe: [],
     },
   });
   const { data: establishments, isPending: estabPending } = useQuery<any>({
@@ -66,33 +65,11 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
   const [isTransPending, startTransition] = useTransition();
 
   const handleEtablissementChange = async (selectedEtablissement: any) => {
-    setChooseEstab(true);
-
     form.setValue('etablissement', [selectedEtablissement], {
       shouldValidate: true,
     });
+  };
 
-    if (selectedEtablissement.id) {
-      try {
-        const { data: estabClasses } = await getClassesByEstablishmentId(selectedEtablissement.id);
-        setChooseEstab(false);
-        const newOptions =
-          (estabClasses &&
-            estabClasses.map((estab: any) => {
-              return { id: estab.id, value: estab.name, label: estab.name };
-            })) ||
-          [];
-        setEstabClassesOptions(newOptions);
-      } catch (error) {
-        console.error('Error fetching classes:', error);
-      }
-    }
-  };
-  const handleClasseChange = async (selectedClasse: any) => {
-    form.setValue('classe', [selectedClasse], {
-      shouldValidate: true,
-    });
-  };
   const formData = form.getValues();
 
   const onSubmit = async (values: z.infer<typeof EtudiantAfterSchema>) => {
@@ -134,7 +111,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
         >
           <div
             id="Buttons"
-            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
+            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-[5px] mt-[-2px] w-1/2 h-12 items-start justify-center pt-2 rounded-[50px] ${
               role === 'TEACHER' ? 'bg-2 ' : ''
             }`}
             onClick={() => {
@@ -146,7 +123,7 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
           </div>
           <div
             id="Buttons1"
-            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
+            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-[5px] mt-[-2px] w-1/2 h-12 items-start justify-center pt-2 rounded-[50px] ${
               role === 'STUDENT' ? 'bg-2 ' : ''
             }`}
             onClick={() => {
@@ -199,63 +176,6 @@ export default function EtudiantAfterGoogleForm({ handleRole, session }: ProfFor
                         Choisissez votre établissement
                       </div>
                     }
-                    styles={{
-                      control: (provided, state) => ({
-                        ...provided,
-                        borderColor: '#e0e2e6',
-                      }),
-                      option: (provided, state) => ({
-                        ...provided,
-                        fontSize: '14px',
-                        backgroundColor: state.isFocused ? '#F0F6F8' : 'transparent',
-                        '&:hover': {
-                          backgroundColor: '#F0F6F8',
-                        },
-                      }),
-                      multiValue: (provided, state) => ({
-                        ...provided,
-                        backgroundColor: '#F0F6F8',
-                      }),
-                      indicatorSeparator: (provided, state) => ({
-                        ...provided,
-                        display: 'none',
-                      }),
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="classe"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Classe<span className="text-red"> *</span>
-                </FormLabel>
-                <FormControl className="flex-grow ">
-                  {/* <SelectScrollable
-                    disabled={isTransPending || isChooseEstab}
-                    field={field}
-                    placeholder="Sélectionnez votre classe"
-                    options={estabClassesOptions}
-                    icon={<MdOutlineClass className="text-muted-foreground w-5 h-5" />}
-                    onChange={(selectedOption: any) => handleClasseChange(selectedOption)}
-                  /> */}
-                  <Select
-                    isMulti={false}
-                    options={estabClassesOptions}
-                    isDisabled={formData.etablissement.length == 0 || isTransPending}
-                    placeholder={
-                      <div className="flex items-center text-gray text-sm ">
-                        <MdOutlineClass className="text-gray w-5 h-5 mr-2" />
-                        Sélectionnez votre classe
-                      </div>
-                    }
-                    onChange={(selectedOption: any) => handleClasseChange(selectedOption)}
                     styles={{
                       control: (provided, state) => ({
                         ...provided,

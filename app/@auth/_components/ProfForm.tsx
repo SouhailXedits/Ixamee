@@ -84,7 +84,10 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full transition-all duration-300 ease-in-out">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 w-full transition-all duration-300 ease-in-out"
+      >
         <FormError message={error} />
         <FormSuccess message={success} />
 
@@ -94,7 +97,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
         >
           <div
             id="Buttons"
-            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
+            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-[5px] mt-[-2px] w-1/2 h-12 items-start justify-center pt-2 rounded-[50px] ${
               role === 'TEACHER' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
@@ -106,7 +109,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
           </div>
           <div
             id="Buttons1"
-            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
+            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-[5px] mt-[-2px] w-1/2 h-12 items-start justify-center pt-2  rounded-[50px] ${
               role === 'STUDENT' ? 'bg-[#1b8392] ' : ''
             }`}
             onClick={() => {
@@ -263,7 +266,7 @@ export default function ProfForm({ handleRole }: ProfFormProps) {
                       icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                       disabled={isTransPending}
                       className=" max-w-full"
-                      name='mot de passe'
+                      name="mot de passe"
                     />
                   </FormControl>
                   <FormMessage />
