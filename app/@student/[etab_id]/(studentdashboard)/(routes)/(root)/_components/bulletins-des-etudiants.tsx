@@ -32,7 +32,6 @@ const BulletinsDesEtudiants = ({ data }: any) => {
     queryKey: ['correction', filter],
     queryFn: async () => getUserCorrectionBySubject(user?.id, filter),
   });
-  console.log(userCorrections)
 
   return (
     <>

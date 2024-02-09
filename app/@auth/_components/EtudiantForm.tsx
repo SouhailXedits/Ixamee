@@ -23,12 +23,10 @@ import { LucidePencil } from 'lucide-react';
 import Select from 'react-select';
 import { register } from '@/actions/auth/registerEtudiant';
 import { SelectScrollable } from '../../../components/modals/SelectScrollable';
-import { MdOutlineClass } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import { getAllEstabs } from '@/actions/establishements';
 import { Tunisiangovernments } from '@/public/auth/data/TunisianGovernments';
-import { getClassesByEstablishmentId } from '@/actions/classe';
 import bcryptjs from 'bcryptjs';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
@@ -42,8 +40,6 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
   const [role, setRole] = useState<string>('STUDENT');
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
-  const [isChooseEstab, setChooseEstab] = useState<boolean>(true);
-  const [estabClassesOptions, setEstabClassesOptions] = useState([]);
 
   const form = useForm<z.infer<typeof RegisterEtudSchema>>({
     resolver: zodResolver(RegisterEtudSchema),
@@ -56,7 +52,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
       password: '',
       confirmPassword: '',
       etablissement: [],
-      classe: [],
+      // classe: [],
     },
   });
   const formData = form.getValues();
@@ -77,30 +73,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
   const [isTransPending, startTransition] = useTransition();
 
   const handleEtablissementChange = async (selectedEtablissement: any) => {
-    setChooseEstab(true);
-
     form.setValue('etablissement', [selectedEtablissement], {
-      shouldValidate: true,
-    });
-
-    if (selectedEtablissement.id) {
-      try {
-        const { data: estabClasses } = await getClassesByEstablishmentId(selectedEtablissement.id);
-        setChooseEstab(false);
-        const newOptions =
-          (estabClasses &&
-            estabClasses.map((estab: any) => {
-              return { id: estab.id, value: estab.name, label: estab.name };
-            })) ||
-          [];
-        setEstabClassesOptions(newOptions);
-      } catch (error) {
-        console.error('Error fetching classes:', error);
-      }
-    }
-  };
-  const handleClasseChange = async (selectedClasse: any) => {
-    form.setValue('classe', [selectedClasse], {
       shouldValidate: true,
     });
   };
@@ -147,7 +120,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
         >
           <div
             id="Buttons"
-            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-2 w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
+            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-[5px] mt-[-2px] w-1/2 h-12 items-start justify-center pt-2  rounded-[50px] ${
               role === 'TEACHER' ? 'bg-2 ' : ''
             }`}
             onClick={() => {
@@ -159,7 +132,7 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
           </div>
           <div
             id="Buttons1"
-            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mt-px w-1/2 h-12 items-start justify-center pt-2 px-4 rounded-[50px] ${
+            className={`text-center text-xl font-semibold capitalize text-white flex flex-row mb-[5px] mt-[-2px] w-1/2 h-12 items-start justify-center pt-2  rounded-[50px] ${
               role === 'STUDENT' ? 'bg-2 ' : ''
             }`}
             onClick={() => {
@@ -291,56 +264,6 @@ export default function EtudiantForm({ handleRole }: ProfFormProps) {
                           Choisissez votre établissement
                         </div>
                       }
-                      styles={{
-                        control: (provided, state) => ({
-                          ...provided,
-                          borderColor: '#e0e2e6',
-                        }),
-                        option: (provided, state) => ({
-                          ...provided,
-                          fontSize: '14px',
-                          backgroundColor: state.isFocused ? '#F0F6F8' : 'transparent',
-                          '&:hover': {
-                            backgroundColor: '#F0F6F8',
-                          },
-                        }),
-                        multiValue: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: '#F0F6F8',
-                        }),
-                        indicatorSeparator: (provided, state) => ({
-                          ...provided,
-                          display: 'none',
-                        }),
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-full">
-            <FormField
-              control={form.control}
-              name="classe"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Classe<span className="text-red"> *</span>
-                  </FormLabel>
-                  <FormControl className="flex-grow ">
-                    <Select
-                      isMulti={false}
-                      options={estabClassesOptions}
-                      isDisabled={formData.etablissement.length == 0 || isTransPending}
-                      placeholder={
-                        <div className="flex items-center text-sm text-gray ">
-                          <MdOutlineClass className="w-5 h-5 mr-2 text-gray" />
-                          Sélectionnez votre classe
-                        </div>
-                      }
-                      onChange={(selectedOption: any) => handleClasseChange(selectedOption)}
                       styles={{
                         control: (provided, state) => ({
                           ...provided,

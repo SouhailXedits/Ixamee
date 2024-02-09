@@ -26,7 +26,7 @@ export const updateTeacherCredentials = async (values: z.infer<typeof UpdateTeac
       data: {
         name: values.name,
         email: values.email,
-        phone_number: values.phone,
+        phone_number: values?.phone,
         government:values.government,
         image: values.image,
         user_establishment: {

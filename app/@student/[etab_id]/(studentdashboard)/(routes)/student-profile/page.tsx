@@ -8,7 +8,7 @@ const Profile = () => {
 
   const user = queryClient.getQueryData(['user']) as any;
   const userEstablishment = queryClient.getQueryData(['AllEstabOfUser']) as any;
-  const classe = queryClient.getQueryData(['user-classes']) as any;
+  const classe = queryClient.getQueryData(['user-classes']) || [] as any;
 
   return (
     <main className="flex flex-col gap-6 p-10">

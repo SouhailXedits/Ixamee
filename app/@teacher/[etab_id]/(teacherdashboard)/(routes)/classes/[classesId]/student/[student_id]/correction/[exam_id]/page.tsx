@@ -9,17 +9,19 @@ import { useRouter } from 'next/navigation';
 // import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
-import { calcAllMark, transferAllMarkToNull } from './_components/calculateChildrenMarks';
+import { calcAllMark } from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
 import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorrection';
+import { Button } from '@/components/ui/button';
 export default function Page({
   params,
 }: {
   params: { exam_id: string; classesId: string; student_id: string };
 }) {
   const [sum, setSum] = useState(0);
+  const[isFullMarks, setIsFullMarks] = useState(false)
 
   const router = useRouter();
   const { exam_id } = params;
@@ -47,7 +49,21 @@ export default function Page({
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
+  console.log(data?.content);
+  console.log(examContent?.content);
+  console.log(getCorrigeExamOfUser);
 
+  console.log(isFullMarks)
+
+   useEffect(() => {
+     if (isFullMarks) {
+       const copiedData = JSON.parse(JSON.stringify(examContent?.content));
+       setFakeData(copiedData);
+     } else if (data?.content) {
+       const copiedData = JSON.parse(JSON.stringify(data.content));
+       setFakeData(copiedData);
+     }
+   }, [isFullMarks]);
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
@@ -114,6 +130,8 @@ export default function Page({
   const examContentt = examContent?.content;
 
   if (!examContent) return <Loading />;
+  console.log(fakeData);
+  
 
   return (
     <div className="flex flex-col gap-6 p-10">
@@ -148,6 +166,13 @@ export default function Page({
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+          <Button
+            onClick={() => setIsFullMarks((prev) => !prev)}
+            className={` bg-transparent border text-white bg-2`}
+            // className={` bg-transparent border text-1 ${isFullMarks && 'bg-[#000] text-16'}`}
+          >
+            Commencer au {isFullMarks ? 'min': 'max'}
+          </Button>
           <div
             className={cn(
               'flex items-center w-[109px]  gap-3  border rounded-lg cursor-pointer border-[#F04438]  text-[rgb(240,68,56)] hover:opacity-80',

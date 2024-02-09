@@ -49,14 +49,14 @@ export const RegisterEtudSchema = z
       .refine((data) => data.length >= 1, {
         message: "L'établissement est requis",
       }),
-    classe: z.array(
-      z.object({
-        id: z.number(),
-        value: z.string(),
-        label: z.string(),
-      })
-      .optional()
-    ),
+    // classe: z.array(
+    //   z.object({
+    //     id: z.number(),
+    //     value: z.string(),
+    //     label: z.string(),
+    //   })
+    //   .optional()
+    // ),
   })
 
   .refine((data) => data.password === data.confirmPassword, {
@@ -127,13 +127,6 @@ export const EtudiantAfterSchema = z.object({
     .refine((data) => data.length >= 1, {
       message: "L'établissement est requis",
     }),
-  classe: z.array(
-    z.object({
-      id: z.number(),
-      value: z.string(),
-      label: z.string(),
-    })
-  ),
 });
 
 export const ProfAfterSchema = z.object({

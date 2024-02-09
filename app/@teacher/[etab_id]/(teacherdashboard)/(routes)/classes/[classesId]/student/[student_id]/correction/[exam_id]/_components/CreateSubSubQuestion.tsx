@@ -12,9 +12,13 @@ export const CreateSubSubQuestion = ({
   realExamContetn,
   allData,
 }: any) => {
+  console.log(realExamContetn);
+  console.log(data);
+  console.log(allData);
   const onChange = (content: string) => {
     updateContentSubSubQuestion(content, data);
   };
+  // const r
 
   const updateContentSubSubQuestion = (content: any, data: any) => {
     setFakeData((prevData: any) => {
@@ -116,7 +120,9 @@ export const CreateSubSubQuestion = ({
     return sum;
   };
   const updateSubSubQuestion = (e: any, data: any) => {
+    console.log(realExamContetn)
     const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
+    console.log(mark)
     if (+e.target.value > +mark) {
       toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
@@ -205,6 +211,7 @@ export const CreateSubSubQuestion = ({
 
     calculerExerciceMark(allData);
   };
+  console.log(data)
   return (
     <>
       <div

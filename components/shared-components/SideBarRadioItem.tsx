@@ -30,6 +30,7 @@ interface SideBarRadioItemProps {
 }
 
 export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
+  console.log("🚀 ~ SideBarRadioItem ~ data:", data)
   if (!data) return null;
   const router = useRouter();
   const pathname = usePathname();

@@ -49,6 +49,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
       confirmNewPassword: '',
     },
   });
+  
   const [isTransPending, startTransition] = useTransition();
   console.log(form);
   const onSubmit = async (values: z.infer<typeof UpdatePasswordSchema>) => {
@@ -168,7 +169,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                 />
                 <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
                   <Image src={'/subjects-green.svg'} alt="user" width={15} height={15} />
-                  Mot ed passe modifier avec succees.
+                  Mot de passe modifier avec succees.
                 </div>
               </div>
             )}
@@ -194,6 +195,9 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
             ) : (
               <DialogClose className="flex w-full gap-4">
                 <Button
+                onClick={() => {
+                  form.reset();
+                  setIsFirstModalOpen(false)}}
                   type="reset"
                   className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "
                 >

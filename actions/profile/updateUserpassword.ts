@@ -25,18 +25,24 @@ export const updatePassword = async (values: z.infer<typeof UpdatePasswordSchema
 
   if (compare) {
     try {
-      const hashedPassword = await bcryptjs.hash(newPassword, 10);
+      if (actualPassord !== newPassword) {
+        const hashedPassword = await bcryptjs.hash(newPassword, 10);
 
-      await db.user.update({
-        where: {
-          id: existingUser.id,
-        },
-        data: {
-          password: hashedPassword,
-        },
-      });
+        await db.user.update({
+          where: {
+            id: existingUser.id,
+          },
+          data: {
+            password: hashedPassword,
+          },
+        });
 
-      return { success: 'Mot de passe mis à jour avec succès.' };
+        return { success: 'Mot de passe mis à jour avec succès.' };
+      }
+      return {
+        error:
+          "Veillier choisissez un nouveau mot de passe.",
+      };
     } catch (error) {
       return {
         error:

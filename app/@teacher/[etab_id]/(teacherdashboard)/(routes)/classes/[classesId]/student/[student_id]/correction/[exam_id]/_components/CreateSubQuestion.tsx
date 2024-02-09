@@ -354,11 +354,11 @@ export const CreateSubQuestion = ({
                   {data.mark === null
                     ? 0
                     : data.mark.toString().length === 1
-                    ? `0${data.mark}.00`
+                    ? `${data.mark}.00`
                     : `${data.mark}.00`}
                 </span>
                 <span>/</span>
-                <span>0{getMarkOfExerciceWithId(realExamContetn, data.id)}.00</span>
+                <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
               </div>
             ) : (
               <Input

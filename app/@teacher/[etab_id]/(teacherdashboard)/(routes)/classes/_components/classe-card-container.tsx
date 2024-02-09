@@ -16,7 +16,7 @@ const ClasseCardContainer = ({
   const CLassData = data;
   console.log(CLassData);
   return (
-    <div className="flex flex-wrap gap-[36px]">
+    <div className="flex flex-wrap gap-[36px] justify-between">
       {/* Pas de classes ajoutées pour le moment. */}
       {CLassData?.length === 0 ? (
         <div className="w-[440px] p-5">

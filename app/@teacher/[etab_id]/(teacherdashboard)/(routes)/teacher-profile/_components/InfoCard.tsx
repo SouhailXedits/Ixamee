@@ -83,7 +83,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
       name: name,
       email: email,
       phone: phoneNumber || '',
-      government: government,
+      government: government || '',
       subject: defaultTeachersubject || [],
       etablissement: defaultTeacherestablishments || [],
     },
@@ -97,7 +97,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
       name: name,
       email: email,
       phone: phoneNumber || '',
-      government: government,
+      government: government || '',
       subject: defaultTeachersubject || [],
       etablissement: defaultTeacherestablishments || [],
     });
@@ -152,6 +152,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
         JSON.stringify(values.etablissement) !== JSON.stringify(initialValues?.etablissement);
       if (isFormChanged) {
         updateUser(values);
+        setInitialValues(values);
       } else {
         setError('Aucune modification détectée.');
       }
@@ -319,7 +320,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                         isDisabled={isPending}
                         name="government"
                         options={govOptions}
-                        placeholder={government}
+                        placeholder={government || 'Ajouter votre gouvernerat'}
                         isSearchable={true}
                         styles={{
                           control: (provided, state) => ({

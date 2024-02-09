@@ -17,10 +17,6 @@ export const SidebarRoutes = ({ guestRoutes }: any) => {
             href={route.href}
           />
         ))}
-        {guestRoutes[1].href !== '/results' && <ParametersSidebar />}
-      </div>
-      <div className="flex flex-col">
-        {guestRoutes[1].href === '/results' ? <Classes /> : <Etablissement />}
       </div>
     </div>
   );

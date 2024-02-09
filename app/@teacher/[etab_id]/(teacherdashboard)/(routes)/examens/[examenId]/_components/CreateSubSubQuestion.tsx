@@ -221,11 +221,12 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
               //     : exercise.mark
               // }
               onChange={(e) => {
-                if (/^0*[1-9]\d*$/.test(e.target.value)) {
+                // if (+e.target.value < 0) {
+                //   toast.error('la note ne doit pas etre inferieur a 0');
+                //   return;
+                // } else {
                   updateSubSubQuestion(e, data);
-                } else {
-                  toast.error('La note ne doit pas être inférieure à 0');
-                }
+                // }
               }}
             />
             <Image

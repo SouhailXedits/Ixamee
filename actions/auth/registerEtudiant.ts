@@ -21,7 +21,6 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>, code:
     government,
     role,
     etablissement: establishment,
-    classe,
   } = validatedFields.data;
   const hashesPassword = await bcryptjs.hash(password, 10);
 
@@ -51,9 +50,6 @@ export const register = async (values: z.infer<typeof RegisterEtudSchema>, code:
       image,
       user_establishment: {
         connect: { id: establishment[0].id },
-      },
-      classe: {
-        connect: { id: classe[0].id },
       },
     },
   });
