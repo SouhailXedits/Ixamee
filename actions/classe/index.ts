@@ -108,6 +108,21 @@ export const createUserInClasse = async (
   class_id: string,
   establishmentId: number
 ) => {
+  const nameExiste = await db.user.findMany({
+    where: {
+      name: name,
+      classe: {
+        some: {
+          id: +class_id,
+        },
+      },
+    },
+  });
+  console.log(nameExiste);
+  if (nameExiste?.length > 0) {
+    throw new Error('Name already exists');
+    return;
+  }
   const data = await db.user.findUnique({
     where: {
       email: email,

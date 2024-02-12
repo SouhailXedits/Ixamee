@@ -25,14 +25,14 @@ export default async function ClassHydration({
 }) {
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ['userOfClasses'],
-    queryFn: async () => await getStudentOfClasse(+params.classesId),
-  });
-  await queryClient.prefetchQuery({
-    queryKey: ['classe'],
-    queryFn: async () => await getClasseById(+params.classesId),
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['userOfClasses'],
+  //   queryFn: async () => await getStudentOfClasse(+params.classesId),
+  // });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['classe'],
+  //   queryFn: async () => await getClasseById(+params.classesId),
+  // });
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
 }

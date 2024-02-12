@@ -140,11 +140,11 @@ export const CreateQuestion = ({
   const updateQuestion = (e: any, data: any) => {
     const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
     if (+e > +mark) {
-      toast.error("la note ne doit pas de passer la note de l'exercice");
+      // toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
     }
     if (+e < 0) {
-      toast.error('la note ne doit pas etre inferieur a 0');
+      // toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
     // Using setFakeData to update the state based on previous data
@@ -166,7 +166,7 @@ export const CreateQuestion = ({
       return updatedData;
     });
   };
-  console.log(fakeData)
+  console.log(fakeData);
 
   return (
     <>
@@ -189,20 +189,18 @@ export const CreateQuestion = ({
           <div className="flex gap-3 item-center">
             {data.children && data.children.length > 0 ? (
               <div className="w-[160px] bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
-                <span>
-                  {calculateMark(data).length === 1
-                    ? `0${calculateMark(data)}.00`
-                    : `${calculateMark(data)}.00`}
-                </span>
+                <span>{calculateMark(data).toFixed(2)}</span>
+
                 <span>/</span>
                 <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
               </div>
             ) : (
               <Input
-                className="bg-transparent a text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen text-center p-3 border border-[#1B8392]"
+                className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen text-center p-3 border border-[#1B8392]"
                 type="number"
                 placeholder={'--.--'}
                 // value={data.mark}
+                step="0.25"
                 disabled={data.children && data.children.length > 0}
                 value={
                   data.children && data.children.length > 0

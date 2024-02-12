@@ -16,7 +16,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
     const newSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
-      mark: 0,
+      mark: 1,
       children: [],
     };
 
@@ -194,6 +194,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
               placeholder="--.--"
               type="number"
               min={1}
+              step="0.25"
               // value={data.mark}
               disabled={data.children && data.children.length > 0}
               // defaultValue={calculerQuestionMark(data)}

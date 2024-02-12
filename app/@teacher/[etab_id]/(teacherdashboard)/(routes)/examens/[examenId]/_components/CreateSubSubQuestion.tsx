@@ -72,6 +72,59 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
         return item;
       });
     });
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        if (item.id === allData.id) {
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              return {
+                ...subItem,
+
+                children: subItem.children.map((subSubItem: any, index: number) => {
+                  return {
+                    ...subSubItem,
+
+                    mark: calcSumOfMarks(subSubItem),
+                  };
+                }),
+                // mark: calculerExerciceMark(allData),
+              };
+            }),
+            // mark: calculerExerciceMark(allData),
+          };
+        }
+        return item;
+      });
+    });
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        // Checking if the current item's id matches the id of the parent question and it has children
+        if (item.id === allData.id && item.children.length > 0) {
+          // Updating the children array of the parent question
+          return {
+            ...item,
+            children: item.children.map((subItem: any) => {
+              // Updating the children array of the parent subquestion
+              return {
+                ...subItem,
+                mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
+
+                children: subItem.children.map((subSubItem: any) => {
+                  // Returning unchanged subsubitems
+                  return {
+                    ...subSubItem,
+                    mark: calcSumOfMarks(subSubItem),
+                  };
+                }),
+              };
+            }),
+          };
+        }
+        // Returning unchanged items
+        return item;
+      });
+    });
     renderSubSubQuestion();
   };
   const renderSubSubQuestion = () => {
@@ -147,6 +200,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
                 children: subItem.children.map((subSubItem: any, index: number) => {
                   return {
                     ...subSubItem,
+
                     mark: calcSumOfMarks(subSubItem),
                   };
                 }),
@@ -171,6 +225,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
               return {
                 ...subItem,
                 mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
+
                 children: subItem.children.map((subSubItem: any) => {
                   // Returning unchanged subsubitems
                   return {
@@ -212,23 +267,43 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
             <Input
               className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 text-center border border-[#1B8392]"
               type="number"
-              min={1}
+              min={0}
+              step="0.25"
               placeholder="--.--"
+              defaultValue={data?.mark}
+              value={data?.mark}
+              onChange={(e) => {
+                if (+e.target.value <= 0) {
+                  toast.error('la note ne doit pas etre inferieur a 0');
+                  return;
+                }
+                updateSubSubQuestion(e, data);
+                // }
+              }}
+            />
+            {/* <Input
+              className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 border text-center border-[#1B8392]"
+              placeholder="--.--"
+              type="number"
+              min={0}
               defaultValue={data.mark}
+              step="0.25"
+              maxLength={5}
+              disabled={data.children && data.children.length > 0}
               // value={
               //   exercise.children && exercise.children.length > 0
               //     ? calculateSumOfMarks(exercise).toFixed(2)
               //     : exercise.mark
               // }
-              onChange={(e) => {
-                // if (+e.target.value < 0) {
-                //   toast.error('la note ne doit pas etre inferieur a 0');
-                //   return;
-                // } else {
-                  updateSubSubQuestion(e, data);
-                // }
+              value={data.mark !== 0 && data.mark}
+              onChange={(e: any) => {
+                if (e.target.value <= 0) {
+                  toast.error('la note ne doit pas etre inferieur a 0');
+                  return;
+                }
+                updateSubQuestion(e, data);
               }}
-            />
+            /> */}
             <Image
               src="/redcloseicon.svg"
               width={20}

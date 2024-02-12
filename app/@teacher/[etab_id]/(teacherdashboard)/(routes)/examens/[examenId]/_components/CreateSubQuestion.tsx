@@ -116,7 +116,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
     const newSubSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: nextName,
-      mark: 0,
+      mark: 1,
       children: [],
     };
 
@@ -281,10 +281,12 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
       // Adding the mark of each child to the sum
       sum += +item.mark;
     });
+    data.mark = sum;
 
     // Returning the calculated sum
     return sum;
   };
+  console.log(allData);
 
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
   const updateSubQuestion = (e: any, data: any) => {
@@ -353,7 +355,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
     <>
       <div
         className={cn(
-          `relative border flex h-auto min-h-[79px] mr-3  rounded-xl flex items-center justify-start`,
+          `relative border  h-auto min-h-[79px] mr-3  rounded-xl flex items-center justify-start`,
           !isArabic ? 'ml-[6rem]' : 'mr-[6rem]'
         )}
       >
@@ -384,15 +386,15 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
               type="number"
               min={0}
               defaultValue={data.mark}
+              step="0.25"
               maxLength={5}
               disabled={data.children && data.children.length > 0}
-              // value={
-              //   exercise.children && exercise.children.length > 0
-              //     ? calculateSumOfMarks(exercise).toFixed(2)
-              //     : exercise.mark
-              // }
-              value={data.mark !== 0 && data.mark}
+              value={data.children && data.children.length > 0 ? calcSumOfMarks(data) : data.mark}
               onChange={(e: any) => {
+                if (e.target.value <= 0) {
+                  toast.error('la note ne doit pas etre inferieur a 0');
+                  return;
+                }
                 updateSubQuestion(e, data);
               }}
             />

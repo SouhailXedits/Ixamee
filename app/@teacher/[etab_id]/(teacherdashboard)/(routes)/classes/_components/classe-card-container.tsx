@@ -16,11 +16,11 @@ const ClasseCardContainer = ({
   const CLassData = data;
   console.log(CLassData);
   return (
-    <div className="flex flex-wrap gap-[36px] justify-between">
+    <div className="grid w-full gap-4 2xl:grid-cols-5 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2">
       {/* Pas de classes ajoutées pour le moment. */}
       {CLassData?.length === 0 ? (
         <div className="w-[440px] p-5">
-          <span className="text-[#727272] text-[19px] font-normal  leading-[33.34px]">
+          <span className="text-[#727272] text-[19px] font-normal  leading-[33.34px]">Ò
             Pas de classes ajoutés pour le moment.
           </span>
           <AjouterUneClasse user_id={user_id} estab={estab}>

@@ -16,7 +16,7 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
       const newData = {
         id: Math.random().toString(36).substring(7),
         name: getNextChar(data.children.length),
-        mark: 0,
+        mark: 1,
         content: '',
         children: [],
       };
@@ -36,7 +36,17 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
     setFakeData(newData);
   };
 
-  //   calculateChildrenMarks(allData);
+  //   calculateChildrenMarks(allData);  console.log(allData)
+  const hndelChangeExcericeName = (e: any) => {
+    setFakeData((prevData: any) => {
+      return prevData.map((item: any) => {
+        if (item.id === data.id) {
+          return { ...item, name: e.target.value };
+        }
+        return item;
+      });
+    });
+  };
 
   return (
     <div
@@ -45,16 +55,17 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
     >
       <div className="flex items-center justify-between w-full p-3">
         <div className="p-3 flex items-center justify-between bg-[#F0F6F8] w-full rounded-xl">
-          <div className="flex items-center gap-10">
+          <div className="flex items-center gap-8">
             <Input
               type="text"
               className={cn(
-                'text-2xl bg-transparent border-none w-[220px] -mr-10 -ml-1 text-[#1B8392]',
+                'text-2xl bg-transparent border-none -mr-10 -ml-1 text-[#1B8392]',
                 isArabic && 'pr-[3rem]'
               )}
               // defaultValue={data.name || !isArabic ? 'Exercice 1' : 'تمرين 1'}
-              defaultValue={data.name}
-              // value={}
+              // defaultValue={data.name}
+              value={data.name}
+              onChange={(e) => hndelChangeExcericeName(e)}
             />
 
             <Image

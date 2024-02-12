@@ -13,9 +13,11 @@ interface itemProps {
 const ClasseCard = ({ data }: { data: itemProps }) => {
   const route = useRouter();
   return (
-    <div className="w-[280px] h-[190px] bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] ">
+    <div className="min-w-[195px] h-[190px] bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] ">
       <div className="flex justify-between w-full px-5">
-        <span className="text-xl font-semibold  text-[#727272]">{data.name.length > 15 ? data.name.slice(0, 15) + '...' : data.name}</span>
+        <span className="text-xl font-semibold  text-[#727272]">
+          {data.name.length > 10 ? data.name.slice(0, 10) + '...' : data.name}
+        </span>
         <DropdownMenuItemSelect data={data}>
           <Image
             src="/icons/kebab-menu.svg"

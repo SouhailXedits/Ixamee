@@ -415,7 +415,20 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 type="number"
                 min={1}
                 placeholder="Saisir le coefficient"
-                onChange={(e) => handleInputChange('coefficient', e.target.value)}
+                onChange={(e) =>{
+                
+                
+                
+                  const value = parseInt(e.target.value, 10); // Parse the input value as an integer
+                  if (value > 0) {
+                    
+                    handleInputChange('coefficient', value);
+                  }
+                  }
+                } 
+                  
+                  
+                  
                 value={formData.coefficient}
                 className="placeholder:text-[#727272]"
               />

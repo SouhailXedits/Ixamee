@@ -34,6 +34,7 @@ import Loading from '@/app/loading';
 import { useSendExamMark } from '../hooks/useSendResult';
 import PDFExport from '@/app/_utils/ExportAsPdf';
 import { AllStudentList } from './_components/allStudent';
+import { Skeleton } from '@/components/ui/skeleton';
 interface classe {
   id: number;
   name: string;
@@ -43,20 +44,15 @@ interface classe {
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
   const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
-
   const queryClient = useQueryClient();
   const { classesId } = params;
   const [filter, setFilter] = useState<any>('');
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
-  // const classe = queryClient.getQueryData(['classe', etab_id]) as any;
   const { data: classe, isPending: isPendingClasse } = useQuery({
     queryKey: ['classe'],
     queryFn: async () => await getClasseById(+params.classesId),
   });
-  // console.log(classe);
-  // console.log(classe?.exam_classe[0]?.id);
-  const [exam, setExam] = useState<any>(classe?.exam_classe[0]?.id);
-  // console.log(exam);
+  const [exam, setExam] = useState<string>('');
   useEffect(() => {
     // if (Array.isArray(classe?.exam_classe)) {
     const note = classe?.exam_classe[0]?.id;
@@ -64,9 +60,9 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     // }
   }, [classe, isPendingClasse]);
   console.log(exam);
-  if (isPendingClasse) {
-    return <Loading />;
-  }
+  // if (isPendingClasse) {
+  //   return <Loading />;
+  // }
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
@@ -76,7 +72,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   // const data = queryClient.getQueryData(['userOfClasses']) as any;
   const { data, isPending: isPendingUserOfClasses } = useQuery({
-    queryKey: ['userOfClasses'],
+    queryKey: ['userOfClasses', classesId],
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
   // queryKey: ['userOfClasses'],
@@ -321,9 +317,15 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       </nav>
 
       {/* console.log(' :', ); */}
-      <div className="pt-6 max-lg:pt-20 max-ml:pt-30">
-        <StudentList data={newData} class_id={classesId} isPending={false} />
-      </div>
+      {isPendingClasse ? (
+        <div>
+          <Skeleton className="w-full h-[200px]" />
+        </div>
+      ) : (
+        <div className="pt-6 max-lg:pt-20 max-ml:pt-30">
+          <StudentList data={newData} class_id={classesId} isPending={false} />
+        </div>
+      )}
     </main>
   );
 };

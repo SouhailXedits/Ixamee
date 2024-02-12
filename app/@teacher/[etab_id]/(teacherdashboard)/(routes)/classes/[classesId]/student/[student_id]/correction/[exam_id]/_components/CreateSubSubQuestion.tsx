@@ -120,11 +120,10 @@ export const CreateSubSubQuestion = ({
     return sum;
   };
   const updateSubSubQuestion = (e: any, data: any) => {
-    console.log(realExamContetn)
     const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
-    console.log(mark)
+
     if (+e.target.value > +mark) {
-      toast.error("la note ne doit pas de passer la note de l'exercice");
+      // toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
     }
     if (+e.target.value < 0) {
@@ -211,7 +210,7 @@ export const CreateSubSubQuestion = ({
 
     calculerExerciceMark(allData);
   };
-  console.log(data)
+  console.log(data);
   return (
     <>
       <div
@@ -236,6 +235,7 @@ export const CreateSubSubQuestion = ({
               className="bg-transparenta text-center text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
               type="number"
+              step="0.25"
               defaultValue={data.mark}
               maxLength={5}
               value={data.mark}

@@ -88,7 +88,7 @@ export const CreateSubQuestion = ({
     const newSubSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: nextName,
-      mark: 0,
+      mark: 1,
       children: [],
     };
 
@@ -263,11 +263,11 @@ export const CreateSubQuestion = ({
   const updateSubQuestion = (e: any, data: any) => {
     const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
     if (+e.target.value > +mark) {
-      toast.error("la note ne doit pas de passer la note de l'exercice");
+      // toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
     }
     if (+e.target.value < 0) {
-      toast.error('la note ne doit pas etre inferieur a 0');
+      // toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
 
@@ -351,21 +351,18 @@ export const CreateSubQuestion = ({
             {data.children && data.children.length > 0 ? (
               <div className="w-[160px] bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
                 <span>
-                  {data.mark === null
-                    ? 0
-                    : data.mark.toString().length === 1
-                    ? `${data.mark}.00`
-                    : `${data.mark}.00`}
+                  <span>{data.mark.toFixed(2)}</span>
                 </span>
                 <span>/</span>
                 <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
               </div>
             ) : (
               <Input
-                className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen flex items-center justify-center p-3 border border-[#1B8392]"
+                className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen flex items-center justify-center p-3 border border-[#1B8392] text-center"
                 placeholder={`00/0${getMarkOfExerciceWithId(realExamContetn, data.id)}`}
                 type="number"
                 defaultValue={data.mark}
+                step="0.25"
                 maxLength={5}
                 disabled={data.children && data.children.length > 0}
                 value={data.mark}

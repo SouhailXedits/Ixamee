@@ -12,7 +12,7 @@ import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 
-export default function Page({ params }: { params: { examenId: string ,etab_id : string} }) {
+export default function Page({ params }: { params: { examenId: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
   const pathname = usePathname();
   console.log(pathname);
@@ -48,7 +48,18 @@ export default function Page({ params }: { params: { examenId: string ,etab_id :
     router.back();
   }
   const arabic = data?.language === 'ar' ? true : false;
-
+  const haveZeroInfakeData = (data: any) => {
+    for (const item of data) {
+      console.log(item.mark);
+      if (item.mark === 0) {
+        return true;
+      }
+      if (item.children && haveZeroInfakeData(item.children)) {
+        return true;
+      }
+    }
+    return false;
+  };
   const handleSaveData = () => {
     if (fakeData === data?.content) {
       toast.error("Aucune modification n'a été effectuee.");
@@ -56,6 +67,10 @@ export default function Page({ params }: { params: { examenId: string ,etab_id :
     }
     if (sum > data?.total_mark) {
       toast.error(`La note doit être minimum a ${data?.total_mark}`);
+      return;
+    }
+    if (haveZeroInfakeData(fakeData)) {
+      toast.error('Ilya des champs obligatoires sont manquants.');
       return;
     }
     let exam_id = examenId;

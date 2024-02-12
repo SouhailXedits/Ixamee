@@ -3,13 +3,11 @@ import ClassHydration from '@/app/providers/classeHydration';
 import React, { Suspense } from 'react';
 
 const layout = ({ children, params }: { children: React.ReactNode; params: any }) => {
-
-
   return (
     <Suspense fallback={<Loading />}>
-      <ClassHydration params={params}>
+      {/* <ClassHydration params={params}> */}
       <div>{children}</div>
-      </ClassHydration>
+      {/* </ClassHydration> */}
     </Suspense>
   );
 };

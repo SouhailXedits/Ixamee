@@ -21,11 +21,12 @@ export default function Page({
   params: { exam_id: string; classesId: string; student_id: string };
 }) {
   const [sum, setSum] = useState(0);
-  const[isFullMarks, setIsFullMarks] = useState(false)
+  const [isFullMarks, setIsFullMarks] = useState(false);
 
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
+
   const { data, isPending } = useQuery<any>({
     queryKey: ['examenByIdd', exam_id],
     queryFn: async () => await getOneExamByIdForCorrection({ id: exam_id }),
@@ -55,15 +56,15 @@ export default function Page({
 
   // console.log(isFullMarks)
 
-   useEffect(() => {
-     if (isFullMarks) {
-       const copiedData = JSON.parse(JSON.stringify(examContent?.content));
-       setFakeData(copiedData);
-     } else if (data?.content) {
-       const copiedData = JSON.parse(JSON.stringify(data.content));
-       setFakeData(copiedData);
-     }
-   }, [isFullMarks]);
+  useEffect(() => {
+    if (isFullMarks) {
+      const copiedData = JSON.parse(JSON.stringify(examContent?.content));
+      setFakeData(copiedData);
+    } else if (data?.content) {
+      const copiedData = JSON.parse(JSON.stringify(data.content));
+      setFakeData(copiedData);
+    }
+  }, [isFullMarks]);
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
@@ -131,7 +132,6 @@ export default function Page({
 
   if (!examContent) return <Loading />;
   console.log(fakeData);
-  
 
   return (
     <div className="flex flex-col gap-6 p-10">
@@ -171,7 +171,7 @@ export default function Page({
             className={` bg-transparent border text-white bg-2`}
             // className={` bg-transparent border text-1 ${isFullMarks && 'bg-[#000] text-16'}`}
           >
-            Commencer au {isFullMarks ? 'min': 'max'}
+            Commencer au {isFullMarks ? 'min' : 'max'}
           </Button>
           <div
             className={cn(
