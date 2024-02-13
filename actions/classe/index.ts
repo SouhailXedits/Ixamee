@@ -246,6 +246,7 @@ export const deleteClasse = async (id: number) => {
 };
 
 export const getAllClasse = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
+  if(!user_id || !etab_id) return null;
   try {
     const classes = await db.classe.findMany({
       where: {
@@ -304,6 +305,7 @@ export const getAllClassesNameAndId = async ({
   user_id: string;
   etab_id: number;
 }) => {
+  if (!user_id || !etab_id) return null;
   try {
     const classes = await db.classe.findMany({
       where: {
@@ -353,6 +355,7 @@ export const getAllClassesNameAndIdDash = async ({
   user_id: string;
   etab_id: number;
 }) => {
+  if (!user_id || !etab_id) return null;
   try {
     const classes = await db.classe.findMany({
       where: {
@@ -395,6 +398,7 @@ export const getAllClasseByPage = async ({
   user_id: string;
   etab_id: number;
 }) => {
+  if (!user_id || !etab_id) return null;
   try {
     const classes = await db.classe.findMany({
       where: {
@@ -445,6 +449,7 @@ export const getStudentClassCount = async ({
   user_id: string;
   etab_id: number;
 }) => {
+  if (!user_id || !etab_id) return null;
   try {
     const studentClasses = await db.classe.findMany({
       where: {
@@ -494,6 +499,7 @@ export const getStudentClassCount = async ({
 };
 
 export const getStudentOfClasse = async (classe_id: number) => {
+  if(!classe_id) return null;
   const res = await db.user.findMany({
     where: {
       role: 'STUDENT',
@@ -548,6 +554,7 @@ export const updateUserInClasse = async (
   email: string,
   image: string
 ) => {
+
   // const existingUser = await db.user.findUnique({
   //   where: {
   //     email: email,
@@ -580,6 +587,7 @@ export const deleteUserInClasse = async (id: string) => {
 };
 
 export const getClassesByEstablishmentId = async (etab_id: number) => {
+  if(!etab_id) return null
   try {
     const classes = await db.classe.findMany({
       where: {
@@ -600,6 +608,7 @@ export const getClassesByEstablishmentId = async (etab_id: number) => {
 };
 
 export const getUserById = async (id: string) => {
+  if(!id) return null
   const user = await db.user.findUnique({
     where: {
       id: id,
@@ -615,6 +624,7 @@ export const getUserById = async (id: string) => {
   return user;
 };
 export const getNameOfuserById = async (id: string) => {
+  if(!id) return null
   const user = await db.user.findUnique({
     where: {
       id: id,
@@ -685,6 +695,7 @@ export const getStatusById = async (id: any) => {
 };
 
 export const getCorigeExameContent = async (exam_id: number, student_id: string) => {
+  if(!exam_id || !student_id) return null
   const data = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -702,6 +713,7 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
 export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
   console.log(exam_id);
   console.log(userData);
+  if(!exam_id || !userData) return null
 
   // if (exam_id === 'undefined') return null;
   const data = await db.examCorrection.findMany({
@@ -728,6 +740,7 @@ export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any
   return data;
 };
 export const getNameClasseByClasseId = async (classe_id: number) => {
+  if(!classe_id) return null
   const data = await db.classe.findMany({
     where: {
       id: classe_id,
