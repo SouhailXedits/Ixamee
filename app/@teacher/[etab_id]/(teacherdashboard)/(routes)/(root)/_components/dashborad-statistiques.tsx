@@ -11,7 +11,8 @@ import StatistiquesItems from './statistiques-items';
 
 import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getClasseByClassId, getCorrectionOfUser } from '@/actions/classe';
+import { getClasseByClassId } from '@/actions/classe';
+import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
 
 const DashboradStatistiques = ({
   isPendingClasses,

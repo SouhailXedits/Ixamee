@@ -48,6 +48,7 @@ export const createClasse = async (
   }
 };
 export const getClasseById = async (id: number) => {
+  if(!id) return null;
   const classe = await db.classe.findUnique({
     where: {
       id: id,
@@ -59,6 +60,7 @@ export const getClasseById = async (id: number) => {
   return classe;
 };
 export const getClasseByClassId = async (id: number) => {
+  if(!id) return null;
   const classe = await db.classe.findUnique({
     where: {
       id: id,
@@ -517,34 +519,7 @@ export const getStudentOfClasse = async (classe_id: number) => {
   console.log(res);
   return res;
 };
-export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
-  if (exam_id === 'undefined') return null;
-  const res = await db.examCorrection.findMany({
-    where: {
-      exam_id: +exam_id,
-      user: {
-        classe: {
-          some: {
-            id: +class_id,
-          },
-        },
-      },
-      user_id: {
-        in: data?.map((el: any) => el.id),
-      },
-    },
-    select: {
-      status: true,
-      user_id: true,
-    },
-  });
-  return res;
 
-  // const res = await db.examCorrection.findMany({
-  //   // relationLoadStrategy: 'join',
-  //   include: {},
-  // });
-};
 
 // export const createManyUserInClasseApi = async (
 //   name: string,
