@@ -163,7 +163,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
   return (
     <>
       <div
-        className={`relative border flex  h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
+        className={`relative border  h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
       >
         <div
           className={cn(
