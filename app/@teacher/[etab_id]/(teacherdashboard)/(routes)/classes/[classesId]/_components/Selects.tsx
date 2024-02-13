@@ -28,7 +28,7 @@ function Selects({ exam, setExam, setFilter, classe }: any) {
 
             <SelectContent>
               {classe?.exam_classe?.map((exam: any) => (
-                <SelectItem value={exam.id + ''} className="">
+                <SelectItem key={exam.id} value={exam.id + ''} className="">
                   {exam.name}
                 </SelectItem>
               ))}

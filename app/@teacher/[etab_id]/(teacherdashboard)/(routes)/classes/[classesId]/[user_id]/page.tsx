@@ -1,19 +1,5 @@
 'use client';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import React from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-} from '@/components/ui/dropdown-menu';
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getClasseById, getUserById } from '@/actions/classe';
@@ -22,7 +8,7 @@ import { useParams } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import StudentDetails from './_components/studentDetails';
 
-export default function page() {
+export default function Page() {
   const params = useParams();
 
   const { data: classe, isPending: isPendingClasse } = useQuery({

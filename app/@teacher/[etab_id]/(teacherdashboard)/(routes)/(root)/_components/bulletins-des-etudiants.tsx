@@ -60,7 +60,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userClasses &&
                   userClasses?.map((classe: any) => (
-                    <SelectItem value={classe.id}>{classe.name}</SelectItem>
+                    <SelectItem key={classe.id} value={classe.id}>{classe.name}</SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
@@ -76,7 +76,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userExams?.length &&
                   userExams?.map((exam: any) => (
-                    <SelectItem value={exam.id}>{exam.name}</SelectItem>
+                    <SelectItem key={exam.id} value={exam.id}>{exam.name}</SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
@@ -105,7 +105,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userClasses &&
                   userClasses?.map((classe: any) => (
-                    <SelectItem value={classe.id}>{classe.name}</SelectItem>
+                    <SelectItem key={classe.id} value={classe.id}>{classe.name}</SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
@@ -121,7 +121,7 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userExams?.length &&
                   userExams?.map((exam: any) => (
-                    <SelectItem value={exam.id}>{exam.name}</SelectItem>
+                    <SelectItem key={exam.id} value={exam.id}>{exam.name}</SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}

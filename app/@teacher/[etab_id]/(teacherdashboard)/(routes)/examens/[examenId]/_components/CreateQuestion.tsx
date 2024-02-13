@@ -216,6 +216,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
       </div>
       {data.children.map((item: any) => (
         <CreateSubQuestion
+          key={item.id}
           allData={allData}
           data={item}
           setFakeData={setFakeData}

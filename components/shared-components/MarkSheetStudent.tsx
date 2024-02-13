@@ -1,5 +1,4 @@
 import React from 'react';
-import data from './fakeMarkSheetsData';
 // import StudentRow from './StudentRow';
 import PdfHeader from '@/components/shared-components/PdfHeader';
 import { calculateAverageMark } from '@/app/_utils/calculateAverage';
@@ -38,7 +37,7 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
       <div className="flex justify-center">
         <div className=" flex flex-col gap-10">
           {data.map((term: any) => (
-            <div className=" flex flex-col gap-5">
+            <div className=" flex flex-col gap-5" key={term}>
               <h2>{term.name}</h2>
 
               <table className=" text-center w-[700px] border border-black/50 ">
@@ -51,7 +50,7 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                 </thead>
                 <tbody>
                   {term.exams?.map((exam: any) => (
-                    <tr className="">
+                    <tr className="" key={exam.exam_id}>
                       {/* <td className="bg-[#99C6D3]"></td> */}
                       <td className="pb-4 border  border-black/50">{exam.name}</td>
                       <td className="border pb-4  border-black/50">{exam.coefficient}</td>

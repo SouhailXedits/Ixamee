@@ -28,9 +28,7 @@ export default function ResetForm({ email }: VerificationData) {
   const searchParams = useSearchParams();
 
   const token = searchParams.get('token');
-  if (!token) {
-    return <AuthErrorPage />;
-  }
+  
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
   const router = useRouter();
@@ -70,6 +68,9 @@ export default function ResetForm({ email }: VerificationData) {
       router.push('/login');
     }
   }, [isUpdatedSuccessfully, router]);
+  if (!token) {
+    return <AuthErrorPage />;
+  }
 
   return (
     <Form {...form}>

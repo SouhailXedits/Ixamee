@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface PdfHeaderProps {
   type: 'MSTeach' | 'MSStudent' | 'LOS';
   meta: any;
@@ -411,7 +413,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             {meta.session}
           </div>
         </div>
-        <img
+        <Image
           style={{
             height: '60px',
             left: '325px',
@@ -421,6 +423,8 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
           }}
           alt="Layer"
           src="/logo.svg"
+          width={200}
+          height={60}
         />
       </div>
     </div>

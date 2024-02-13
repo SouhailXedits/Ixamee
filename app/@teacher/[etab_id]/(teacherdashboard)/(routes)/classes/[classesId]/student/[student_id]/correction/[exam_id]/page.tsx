@@ -64,7 +64,7 @@ export default function Page({
       const copiedData = JSON.parse(JSON.stringify(data.content));
       setFakeData(copiedData);
     }
-  }, [isFullMarks]);
+  }, [isFullMarks, examContent?.content, data.content]);
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
@@ -78,7 +78,7 @@ export default function Page({
       }
       setSum(calcAllMark(fakeData));
     }
-  }, [isPending, getCorrigeExamOfUser]);
+  }, [isPending, getCorrigeExamOfUser, data, fakeData]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));

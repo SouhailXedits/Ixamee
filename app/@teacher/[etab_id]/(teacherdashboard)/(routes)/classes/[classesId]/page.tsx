@@ -41,7 +41,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     const note = classe?.exam_classe[0]?.id;
     setExam(note + '');
   }, [classe, isPendingClasse]);
-  console.log(exam);
+  // console.log(exam);
 
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],

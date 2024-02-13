@@ -1,10 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ImportUneClasse } from '@/components/modals/importer-une-classe';
-import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useParams, useRouter } from 'next/navigation';
-import UserExam from '../../../../../../../../../../../../components/shared-components/UserExam';
 import TermCard from '@/components/shared-components/TermCard';
 import { useQuery } from '@tanstack/react-query';
 import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
@@ -20,70 +17,7 @@ import { getTeacherName } from '@/actions/teachers';
 import PDFExport from '@/app/_utils/ExportAsPdf';
 import { MarkSheetStudent } from '@/components/shared-components/MarkSheetStudent';
 
-// const trimesters = [
-//   {
-//     name: 'Trimester 1',
-//     exams: [
-//       {
-//         id: 1,
-//         name: 'Devoir de Controle N°1 Maths',
-//         date: '22/03/2023',
-//         marksObtained: 15.5,
-//         totalScore: 20,
-//         rang: 8,
-//       },
-//       {
-//         id: 2,
-//         name: 'Devoir de Controle physique',
-//         date: '22/03/2023',
-//         marksObtained: 15.5,
-//         totalScore: 20,
-//         rang: 8,
-//       },
-//       {
-//         id: 3,
-//         name: 'Devoir de Controle N°1 Maths',
-//         date: '22/03/2023',
-//         marksObtained: 15.5,
-//         totalScore: 20,
-//         rang: 8,
-//       },
-//       {
-//         id: 4,
-//         name: 'Devoir de Controle physique',
-//         date: '22/03/2023',
-//         marksObtained: 15.5,
-//         totalScore: 20,
-//         rang: 8,
-//       },
-//     ],
-//   },
-//   {
-//     name: 'Trimester 2',
-//     exams: [],
-//   },
-//   {
-//     name: 'Trimester 3',
-//     exams: [
-//       {
-//         id: 1,
-//         name: 'Devoir de Controle N°1 Maths',
-//         date: '22/03/2023',
-//         marksObtained: 15.5,
-//         totalScore: 20,
-//         rang: 8,
-//       },
-//       {
-//         id: 2,
-//         name: 'Devoir de Controle physique',
-//         date: '22/03/2023',
-//         marksObtained: 15.5,
-//         totalScore: 20,
-//         rang: 8,
-//       },
-//     ],
-//   },
-// ];
+
 const Student = () => {
   const params = useParams();
   const router = useRouter();
@@ -234,7 +168,7 @@ const Student = () => {
 
       <div className="flex overflow-auto gap-9 p-7">
         {trimesters.map((trimester) => (
-          <TermCard term={trimester} />
+          <TermCard term={trimester} key={trimester.name} />
         ))}
       </div>
       <div className="flex justify-end w-full gap-2 text-white ">
