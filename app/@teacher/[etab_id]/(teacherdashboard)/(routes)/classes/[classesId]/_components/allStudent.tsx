@@ -74,7 +74,7 @@ export const AllStudentList = ({
           </thead>
           <tbody>
             {sortedArray?.map((student: any, i: number) => (
-              <tr>
+              <tr key={i}>
                 <td className="pb-4 border border-black/50 ">{i + 1}</td>
                 <td className="pb-4 border border-black/50 ">{student.name}</td>
                 <td className="pb-4 border border-black/50">{student.email}</td>

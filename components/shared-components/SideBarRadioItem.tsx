@@ -31,7 +31,7 @@ interface SideBarRadioItemProps {
 
 export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   console.log('🚀 ~ SideBarRadioItem ~ data:', data);
-  if (!data) return null;
+  
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -39,6 +39,7 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+  
   let Path = pathname.split('/');
 
   Path.shift();
@@ -46,8 +47,14 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   const currPath = Path.join('/');
   const params = useParams();
   const etabId = +params?.etab_id;
+  
 
-  const currentestab = data.find((res) => +res?.id === +etabId);
+  
+
+  
+  const { collapsed } = useSidebar((state) => state);
+  if (!data) return null;
+  const currentestab = data?.find((res) => +res?.id === +etabId);
   const currentestabName = currentestab?.id;
 
   if (data.every((res) => +res?.id !== +etabId)) {
@@ -57,7 +64,6 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
     router.push(`/${data[0]?.id}/${currPath}`);
   }
 
-  const { collapsed } = useSidebar((state) => state);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {}
   const shorting = (ch: string | null) => {

@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import Editor from '../../../../../../../../components/shared-components/toolbar-editor';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
-import { getMarkOfExerciceWithId } from '../../../classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 
 export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
   const onChange = (content: string) => {
@@ -413,6 +412,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
       </div>
       {data.children.map((item: any) => (
         <CreateSubSubQuestion
+        key={item.id}
           data={item}
           setFakeData={setFakeData}
           isArabic={isArabic}

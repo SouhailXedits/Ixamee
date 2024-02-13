@@ -36,7 +36,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
       setFakeData(data.content);
       setSum(calcAllMark(fakeData));
     }
-  }, [data]);
+  }, [data, fakeData]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
@@ -102,7 +102,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
             ) : ( */}
             <div className="flex gap-1 cursor-pointer">
               {data?.exam_classess.map((item: any) => (
-                <span onClick={() => router.push(`/${params?.etab_id}/classes/${item.id}`)}>
+                <span key={item.id} onClick={() => router.push(`/${params?.etab_id}/classes/${item.id}`)}>
                   {item.name} ,
                 </span>
               ))}
@@ -121,7 +121,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
           >
             <button
               className={cn(
-                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold font-[500] leading-tight '
+                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
               )}
             >
               {sum} / {data?.total_mark}

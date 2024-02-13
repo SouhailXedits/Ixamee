@@ -1,40 +1,24 @@
 'use client';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import Image from 'next/image';
 import Link from 'next/link';
 import { StudentList } from './_components/student-list';
-import { ImportUneClasse } from '@/components/modals/importer-une-classe';
-import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getClasseById,
-  getCorigeExameContent,
   getCorigeExameContentOfAllUser,
-  getCorrectionOfUser,
   getStudentOfClasse,
 } from '@/actions/classe';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-} from '@/components/ui/dropdown-menu';
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
-import { any } from 'zod';
 import { useEffect, useState } from 'react';
 import Loading from '@/app/loading';
 import { useSendExamMark } from '../hooks/useSendResult';
-import PDFExport from '@/app/_utils/ExportAsPdf';
-import { AllStudentList } from './_components/allStudent';
 import { Skeleton } from '@/components/ui/skeleton';
+import AddStudent from './_components/AddStudent';
+import ImportClasse from './_components/ImportClasse';
+import ExportClassePdf from './_components/ExportClassePdf';
+import Selects from './_components/Selects';
+import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
+
 interface classe {
   id: number;
   name: string;
@@ -54,15 +38,11 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   });
   const [exam, setExam] = useState<string>('');
   useEffect(() => {
-    // if (Array.isArray(classe?.exam_classe)) {
     const note = classe?.exam_classe[0]?.id;
     setExam(note + '');
-    // }
   }, [classe, isPendingClasse]);
+  // console.log(exam);
 
-  // if (isPendingClasse) {
-  //   return <Loading />;
-  // }
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
@@ -75,25 +55,12 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryKey: ['userOfClasses', classesId],
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
-  // queryKey: ['userOfClasses'],
-  // queryFn: async () => await getStudentOfClasse(+params.classesId),
+
 
   const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
   const classeName = classe?.name as string;
 
-  // const handleImportedData = (jsonData: any) => {
-  //   // Handle the imported data in the external page
-  // };
-  // const { data, isPending } = useQuery({
-  //   queryKey: ['userOfClasses'],
-  //   queryFn: async () => await getStudentOfClasse(+classesId),
-  // });
-  // const { data: classe, isPending: isPendingClasse } = useQuery({
-  //   queryKey: ['classe'],
-  //   queryFn: async () => await getClasseById(+classesId),
-  // });
 
-  // if (exam !== 'undefined') {
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
     queryFn: async () => await getCorigeExameContentOfAllUser(exam, data),
@@ -104,7 +71,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       return {
         ...item,
         correctionExamOfUser: getCorrigeExamOfUser,
-        exam: exam, // Add your new field here
+        exam: exam,
         classe: classe,
         status:
           userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
@@ -177,7 +144,6 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   };
   if (isPendingUser) return <Loading />;
   if (isPendingCorrige) return <Loading />;
-  const handleDownload = () => {};
   function notCorrected(userCorrection: any) {
     return userCorrection?.filter(
       (user: any) => user?.status === 'notCorrected' || user?.status === 'pending'
@@ -205,60 +171,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
 
         <div className="flex flex-wrap justify-end gap-3 pt-4 h-14 cursor-pointe ">
-          <div>
-            {exam !== 'undefined' && (
-              <Select
-                onValueChange={(value) => setExam(value)}
-                defaultValue={classe?.exam_classe[0]?.id + ''}
-              >
-                <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
-                  <SelectValue
-                    placeholder={
-                      <div className="flex items-center">
-                        <span className="ml-2 text-[#1B8392] text-base  ">
-                          Sélectionner un examen
-                        </span>
-                      </div>
-                    }
-                  />
-                </SelectTrigger>
-
-                <SelectContent>
-                  {classe?.exam_classe?.map((exam: any) => (
-                    <SelectItem value={exam.id + ''} className="">
-                      {exam.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          </div>
-          {exam !== 'undefined' && (
-            <Select onValueChange={(value) => setFilter(value)}>
-              <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
-                <SelectValue
-                  placeholder={
-                    <div className="flex items-center">
-                      <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
-                      <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
-                    </div>
-                  }
-                />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="allExam" className="">
-                  Filter
-                </SelectItem>
-                <SelectItem value="corrige" className="">
-                  Corrigé
-                </SelectItem>
-                <SelectItem value="en-cours">En cours</SelectItem>
-                <SelectItem value="non-corrigé">Non corrigé</SelectItem>
-                <SelectItem value="non-classé">Non classé</SelectItem>
-                <SelectItem value="absent">Absent</SelectItem>
-              </SelectContent>
-            </Select>
-          )}
+          <Selects exam={exam} setExam={setExam} setFilter={setFilter} classe={classe} />
           <Button
             className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
             disabled={userNotCorrected?.length !== 0 || userCorrection?.length === 0}
@@ -270,49 +183,11 @@ const Student = ({ params }: { params: { classesId: string } }) => {
             </span>
           </Button>
 
-          {/* {data?.length === 0 && ( */}
-          <ImportUneClasse class_id={classesId} etab_id={etab_id}>
-            <div className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
-              <Image src="/importerIcon.svg" alt="icons" width={20} height={20} />
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Importer
-              </div>
-            </div>
-          </ImportUneClasse>
-          <PDFExport pdfName="Etudiants">
-            <AllStudentList
-              data={newData}
-              classeName={classeName}
-              teacherEstabName={teacherEstabName}
-            />
-          </PDFExport>
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <div className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center">
-                <Image src="/telechargeIcon.svg" alt="icons" width={20} height={20} />
-                <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                  Télécharger
-                </div>
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer ">
-                
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer ">Fichier CSV</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
+          <ImportClasse classesId={classesId} etab_id={etab_id} />
 
-          {/* )} */}
-          {/* importer */}
+          <ExportClassePdf newData={newData} classeName={classeName} teacherEstabName={teacherEstabName} />
 
-          <AjouterUnEtudiant class_id={classesId} etab_id={etab_id}>
-            <div className="flex items-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                Ajouter un étudiant
-              </div>
-            </div>
-          </AjouterUnEtudiant>
+          <AddStudent classesId={classesId} etab_id={etab_id} />
         </div>
       </nav>
 
