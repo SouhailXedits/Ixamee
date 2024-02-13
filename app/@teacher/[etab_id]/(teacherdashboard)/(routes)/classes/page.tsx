@@ -18,13 +18,13 @@ export default function Classes() {
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id, etab_id }),
   });
-  console.log(data);
+
   // to DO Scelton
   const filteredData = data?.data?.filter((classe: any) => {
     const classes = classe.name.toLowerCase();
     return classes.includes(value.toLowerCase());
   });
-  console.log(filteredData);
+
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -38,7 +38,7 @@ export default function Classes() {
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4 h-14 cursor-pointer">
+        <div className="flex gap-3 pt-4 cursor-pointer h-14">
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 

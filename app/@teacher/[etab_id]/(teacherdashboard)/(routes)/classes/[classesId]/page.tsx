@@ -59,7 +59,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     setExam(note + '');
     // }
   }, [classe, isPendingClasse]);
-  console.log(exam);
+
   // if (isPendingClasse) {
   //   return <Loading />;
   // }

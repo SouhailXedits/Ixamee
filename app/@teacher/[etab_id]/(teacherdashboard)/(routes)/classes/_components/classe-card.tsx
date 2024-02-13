@@ -18,7 +18,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
         <span className="text-xl font-semibold  text-[#727272]">
           {data.name.length > 10 ? data.name.slice(0, 10) + '...' : data.name}
         </span>
-        <DropdownMenuItemSelect data={data}>
+        <DropdownMenuItemSelect  data={data}>
           <Image
             src="/icons/kebab-menu.svg"
             alt="kebabMenu "

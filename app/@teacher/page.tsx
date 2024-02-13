@@ -6,5 +6,5 @@ export default async function page() {
   const session = (await auth()) as any;
   const userEstablishment = await getUserEstablishmentByUserId(session?.user.id);
   console.log('🚀 ~ page ~ userEstablishment:', userEstablishment);
-  redirect(`/${userEstablishment[0].id}`);
+  redirect(`/${userEstablishment[0]?.id}`);
 }

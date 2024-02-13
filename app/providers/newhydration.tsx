@@ -37,7 +37,7 @@ export default async function NewHydration({
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['teacherTerm', user_id, etab_id],
+    queryKey: ['teacherTerm'],
     queryFn: async () => await getTermOfUser(user_id),
   });
   await queryClient.prefetchQuery({

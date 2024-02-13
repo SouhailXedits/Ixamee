@@ -733,7 +733,7 @@ export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any
     where: {
       exam_id: +exam_id,
       user_id: {
-        in: userData.map((user: any) => user.id),
+        in: userData?.map((user: any) => user.id),
       },
     },
     select: {
@@ -749,7 +749,7 @@ export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any
       correction_exam_content: true,
     },
   });
-  console.log(data);
+
   return data;
 };
 export const getNameClasseByClasseId = async (classe_id: number) => {
