@@ -173,7 +173,8 @@ export const createUserInClasse = async (
 };
 export const createUserWithImportInClasse = async (data: any) => {
   data.map(async (user: any) => {
-    console.log(user);
+    // console.log(user);
+    
     const res = await db.user.findMany({
       where: {
         email: user.email.trim(),
