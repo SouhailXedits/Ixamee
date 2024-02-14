@@ -5,7 +5,7 @@ import NavbarNotification from './navbar-notfication';
 const NavbarItems = () => {
   return (
     <div className="flex items-center gap-7">
-      <NavbarNotification />
+      {/* <NavbarNotification /> */}
 
       <NavbarProfile />
     </div>

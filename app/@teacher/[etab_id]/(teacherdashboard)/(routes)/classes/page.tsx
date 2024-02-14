@@ -11,8 +11,6 @@ export default function Classes() {
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
-
-  // const data = queryClient.getQueryData(['classe', etab_id]) as any;
   const user_id = user.id;
   const { data, isPending } = useQuery({
     queryKey: ['classe', etab_id],
@@ -66,7 +64,7 @@ export default function Classes() {
           user_id={user?.id}
           estab={etab_id}
           // class_id ={}
-          isPending={false}
+          isPending={isPending}
         />
       </div>
     </main>
