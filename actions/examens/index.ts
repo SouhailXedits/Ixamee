@@ -403,6 +403,7 @@ export async function createExamm(data: any, user_id: string) {
 }
 export async function updateExam(examId: number, data: any, user_id: string) {
   try {
+    console.log(data.subject[0].value);
     const updatedExam = await db.exam.update({
       where: {
         id: examId,
@@ -412,13 +413,14 @@ export async function updateExam(examId: number, data: any, user_id: string) {
         total_mark: +data.totalMarks,
         coefficient: +data.coefficient,
         subject: {
-          connect: data.subject.map((subjectId: any) => ({ id: +subjectId.value })),
+          connect: { id: +data.subject[0].value }, // Assuming subject is a single selection
         },
         exam_classess: {
-          connect: data.classes.map((class_id: any) => ({ id: +class_id.value })),
+          set: data.classes.map((class_id: any) => ({ id: +class_id.value })),
         },
       },
     });
+
     return updatedExam;
   } catch (error) {
     console.error('Error updating exam:', error);

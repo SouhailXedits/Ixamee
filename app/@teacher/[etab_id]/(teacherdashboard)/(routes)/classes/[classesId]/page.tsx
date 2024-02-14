@@ -9,7 +9,7 @@ import {
   getStudentOfClasse,
 } from '@/actions/classe';
 import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Loading from '@/app/loading';
 import { useSendExamMark } from '../hooks/useSendResult';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -27,77 +27,97 @@ interface classe {
   exam_classe: [];
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
-  const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
+  //query Client called
   const queryClient = useQueryClient();
+
+  /// get the classse Id
   const { classesId } = params;
-  const [filter, setFilter] = useState<any>('');
+  /// get the Etab Id
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
+
+  // get the teacher establishment  with hydration
+  const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
+  // get the teacher establishment name
+  const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
+
+  //Mutation
+  const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
+
+  // End Mutaion Clalled
+
+  // use State
+
+  const [filter, setFilter] = useState<any>('');
+  const [exam, setExam] = useState<string>('');
+
+  //End UseState
+
+  // ======================= All Queries✨✨✨✨✨✨✨✨ ======================
+  // get the data of classe by Id of classe
   const { data: classe, isPending: isPendingClasse } = useQuery({
     queryKey: ['classe'],
     queryFn: async () => await getClasseById(+params.classesId),
   });
-  const [exam, setExam] = useState<string>('');
-  useEffect(() => {
-    const note = classe?.exam_classe[0]?.id;
-    setExam(note + '');
-  }, [classe, isPendingClasse]);
-  // console.log(exam);
-
+  // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
-
-  const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
-  // const data = queryClient.getQueryData(['userOfClasses']) as any;
+  // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
     queryKey: ['userOfClasses', classesId],
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
-
-
-  const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
-  const classeName = classe?.name as string;
-
-
+  // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
     queryFn: async () => await getCorigeExameContentOfAllUser(exam, data),
   });
+  // ======================= End All Queries✨✨✨✨✨✨✨✨✨✨✨✨ ======================
+  // ==================== Start useEffect 😵‍💫😵‍💫😵‍💫 ======================
+  // set the default exam if he find a exam  : 3la 5ater bach ki yadhreb yadhreb 3la el examan mo33ain
+  useEffect(() => {
+    const note = classe?.exam_classe[0]?.id;
+    setExam(note + '');
+  }, [classe, isPendingClasse]);
+
+  // ==================== End useEffect 😵‍💫😵‍💫😵‍💫 ======================
+
+  // const data = queryClient.getQueryData(['userOfClasses']) as any;
+
+  // set the calasseName in varaibel
+  const classeName = classe?.name as string;
+
   // }
-  const newData = data
-    ?.map((item: any) => {
-      return {
+  const newData = useMemo(() => {
+    return data
+      ?.map((item: any) => ({
         ...item,
         correctionExamOfUser: getCorrigeExamOfUser,
         exam: exam,
         classe: classe,
         status:
           userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
-      };
-    })
-    ?.filter((item: any) => {
-      // Apply your filter condition here based on the 'filter' state and item.status
-      if (filter === 'corrige' && item.status === 'done') {
-        return true;
-      } else if (filter === 'en-cours' && item.status === 'pending') {
-        return true;
-      } else if (filter === 'non-corrigé' && item.status === 'notCorrected') {
-        return true;
-      } else if (filter === 'non-classé' && item.status === 'notClassified') {
-        return true;
-      } else if (filter === 'absent' && item.status === 'absent') {
-        return true;
-      } else if (filter === 'allExam') {
-        // If filter is empty, include all items
-        return true;
-      } else if (filter === '') {
-        // If filter is empty, include all items
-        return true;
-      }
-      return false;
-    });
+      }))
+      ?.filter((item: any) => {
+        if (filter === 'corrige' && item.status === 'done') {
+          return true;
+        } else if (filter === 'en-cours' && item.status === 'pending') {
+          return true;
+        } else if (filter === 'non-corrigé' && item.status === 'notCorrected') {
+          return true;
+        } else if (filter === 'non-classé' && item.status === 'notClassified') {
+          return true;
+        } else if (filter === 'absent' && item.status === 'absent') {
+          return true;
+        } else if (filter === 'allExam' || filter === '') {
+          return true;
+        }
+        return false;
+      });
+  }, [data, exam, getCorrigeExamOfUser, userCorrection, filter]);
+  console.log(newData);
   const handleSendResults = () => {
     if (data?.length === userCorrection?.length) {
       const ExamMarkData = userCorrection?.map((user: any) => {
@@ -142,8 +162,8 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       sendExamMark({ exam_id: exam, marks: marksDataToSend });
     }
   };
-  if (isPendingUser) return <Loading />;
-  if (isPendingCorrige) return <Loading />;
+  // if (isPendingUser) return <Loading />;
+  // if (isPendingCorrige) return <Loading />;
   function notCorrected(userCorrection: any) {
     return userCorrection?.filter(
       (user: any) => user?.status === 'notCorrected' || user?.status === 'pending'
@@ -157,7 +177,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full gap-14 ">
         <div className="flex flex-col gap-4">
-          <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div>
+          {isPendingClasse ? (
+            <div className="text-[#1B8392] text-2xl font-semibold ">
+              <Skeleton className="w-[300px] h-[40px]" />
+            </div>
+          ) : (
+            <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div>
+          )}
+
           <div className="flex items-center text-[#727272]">
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
@@ -185,7 +212,11 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
           <ImportClasse classesId={classesId} etab_id={etab_id} />
 
-          <ExportClassePdf newData={newData} classeName={classeName} teacherEstabName={teacherEstabName} />
+          <ExportClassePdf
+            newData={newData}
+            classeName={classeName}
+            teacherEstabName={teacherEstabName}
+          />
 
           <AddStudent classesId={classesId} etab_id={etab_id} />
         </div>
@@ -193,8 +224,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
       {/* console.log(' :', ); */}
       {isPendingClasse ? (
-        <div>
-          <Skeleton className="w-full h-[200px]" />
+        <div className="flex flex-col gap-6 pt-10">
+          <Skeleton className="w-full h-[60px]" />
+          <Skeleton className="w-full h-[30px]" />
+          <Skeleton className="w-full h-[30px]" />
+
+          <Skeleton className="w-full h-[30px]" />
+
+          <Skeleton className="w-full h-[30px]" />
         </div>
       ) : (
         <div className="pt-6 max-lg:pt-20 max-ml:pt-30">

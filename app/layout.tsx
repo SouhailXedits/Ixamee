@@ -13,6 +13,7 @@ import QueryClientProviderWrapper from './providers/queryClientProvider';
 
 import { Suspense } from 'react';
 import Hydration from './providers/hydration';
+import { ConfettiProvider } from './providers/confetti-provider';
 
 export const metadata: Metadata = {
   title: 'Ixamee',
@@ -39,6 +40,7 @@ export default async function RootLayout({
           <Suspense>
             <Hydration>
               <ToastProvider />
+              <ConfettiProvider />
               {/* {teacher} */}
               {session?.user?.role === 'STUDENT'
                 ? student

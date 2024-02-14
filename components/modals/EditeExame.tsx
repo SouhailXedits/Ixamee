@@ -118,6 +118,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
+  console.log(formData);
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({
@@ -155,7 +156,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
   });
   useEffect(() => {
     handleInputChange('subject', currentSubject);
-  }, [Teachersubject,currentSubject]);
+  }, [Teachersubject]);
 
   const classoption = classe?.map((item: any) => ({
     value: item.id,
@@ -170,7 +171,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
 
   useEffect(() => {
     handleInputChange('classes', defaultClasse);
-  }, [TeacherClasse, defaultClasse]);
+  }, [TeacherClasse]);
 
   // const { creatExam, isPending } = useCreateExam();
   const verfierSchema = () => {

@@ -11,7 +11,8 @@ export const AllStudentList = ({
   data: any;
   classeName: string;
   teacherEstabName: string;
-}) => {
+  }) => {
+  if (!data) return null;
   // const data = {
   //   terms = [{trimester1: [exams= {}}]
   // }
@@ -25,7 +26,7 @@ export const AllStudentList = ({
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', options);
   }
-  const sortedArray = data.sort((a: any, b: any) => {
+  const sortedArray = data?.sort((a: any, b: any) => {
     // Convert names to lowercase for case-insensitive sorting
     const nameA = a.name.toLowerCase();
     const nameB = b.name.toLowerCase();

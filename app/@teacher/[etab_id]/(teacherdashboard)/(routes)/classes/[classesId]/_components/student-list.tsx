@@ -299,7 +299,9 @@ export const columns = [
 ];
 
 export function StudentList({ data, class_id, isPending }: any) {
-  console.log(data);
+  if (!data) {
+    return null;
+  }
   // let newData = [data, exam];
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;

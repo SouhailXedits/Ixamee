@@ -11,13 +11,13 @@ import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
+import { useConfettiStore } from '@/store/use-confetti-store';
 
 export default function Page({ params }: { params: { examenId: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
   const pathname = usePathname();
-  console.log(pathname);
-  console.log(params);
-
+  const confetti = useConfettiStore();
+  console.log(confetti);
   const router = useRouter();
   const { examenId } = params;
 
@@ -36,7 +36,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
       setFakeData(data.content);
       setSum(calcAllMark(fakeData));
     }
-  }, [data, fakeData]);
+  }, [data]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
@@ -74,12 +74,19 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
       return;
     }
     let exam_id = examenId;
+    console.log(fakeData);
     editExam({ exam_id, content: fakeData });
+    confetti.onOpen();
+
+    handleConfetti;
   };
   // useEffect(() => {
   //   if (fakeData) {
   //   }
   // }, [fakeData]);
+  const handleConfetti = () => {
+    confetti.onOpen();
+  };
   return (
     <div className="flex flex-col gap-6 p-10 overflow-auto">
       <nav className="flex justify-between w-full ">
@@ -102,7 +109,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
             ) : ( */}
             <div className="flex gap-1 cursor-pointer">
               {data?.exam_classess.map((item: any) => (
-                <span key={item.id} onClick={() => router.push(`/${params?.etab_id}/classes/${item.id}`)}>
+                <span onClick={() => router.push(`/${params?.etab_id}/classes/${item.id}`)}>
                   {item.name} ,
                 </span>
               ))}
@@ -121,7 +128,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
           >
             <button
               className={cn(
-                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
+                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold font-[500] leading-tight '
               )}
             >
               {sum} / {data?.total_mark}
@@ -144,11 +151,11 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
             </div>
           </div>
 
-          <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-            <div
-              className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
-              onClick={handleSaveData}
-            >
+          <div
+            className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 "
+            onClick={handleSaveData}
+          >
+            <div className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center">
               <Image src={'/enregistreIcon.svg'} alt="icons" width={20} height={20} className="" />
               Enregister
             </div>
