@@ -10,8 +10,8 @@ import {
 import StatistiquesItems from './statistiques-items';
 
 import { useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { getClasseByClassId, getCorrectionOfUser } from '@/actions/classe';
+import { getClasseByClassId } from '@/actions/classe';
+import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
 
 const DashboradStatistiques = ({
   isPendingClasses,
@@ -64,7 +64,7 @@ const DashboradStatistiques = ({
             <SelectContent>
               {classes &&
                 classes?.map((classe: any) => (
-                  <SelectItem value={classe.id} className="">
+                  <SelectItem key={classe.id} value={classe.id} className="">
                     {classe.name}
                   </SelectItem>
                 ))}
@@ -90,7 +90,7 @@ const DashboradStatistiques = ({
             <SelectContent>
               {classe &&
                 classe?.exam_classe?.map((exam: any) => (
-                  <SelectItem value={exam.id} className="">
+                  <SelectItem key={exam.id} value={exam.id} className="">
                     {exam.name}
                   </SelectItem>
                 ))}

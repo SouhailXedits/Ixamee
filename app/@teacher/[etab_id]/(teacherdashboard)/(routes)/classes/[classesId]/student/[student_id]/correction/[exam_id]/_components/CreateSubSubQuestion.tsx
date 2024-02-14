@@ -215,7 +215,7 @@ export const CreateSubSubQuestion = ({
     <>
       <div
         className={cn(
-          `relative border flex h-auto min-h-[79px] mr-3  rounded-xl flex items-center justify-start`,
+          `relative border h-auto min-h-[79px] mr-3  rounded-xl flex items-center justify-start`,
           !isArabic ? 'ml-[12rem]' : ' mr-[12rem] '
         )}
       >

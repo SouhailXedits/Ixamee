@@ -6,8 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import Image from 'next/image';
-import BulletinsStudentList from './bulletins-student-list';
 import Rien from './Rien';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
@@ -58,6 +56,7 @@ const BulletinsDesEtudiants = ({ data }: any) => {
                 {userSubjects &&
                   userSubjects?.map((subject: any) => (
                     <SelectItem
+                    key={subject.id}
                       value={subject.id}
                       // onClick={() => handleInputChange('term', 'trimestre_1')}
                     >

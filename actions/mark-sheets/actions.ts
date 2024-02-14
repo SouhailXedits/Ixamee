@@ -126,3 +126,34 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
     };
   }
 };
+
+
+
+export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
+  if (exam_id === 'undefined') return null;
+  const res = await db.examCorrection.findMany({
+    where: {
+      exam_id: +exam_id,
+      user: {
+        classe: {
+          some: {
+            id: +class_id,
+          },
+        },
+      },
+      user_id: {
+        in: data?.map((el: any) => el.id),
+      },
+    },
+    select: {
+      status: true,
+      user_id: true,
+    },
+  });
+  return res;
+
+  // const res = await db.examCorrection.findMany({
+  //   // relationLoadStrategy: 'join',
+  //   include: {},
+  // });
+};

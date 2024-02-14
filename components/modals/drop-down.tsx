@@ -9,14 +9,17 @@ import {
 import { ModifierUneClasse } from './modifier-une-classe';
 import { SupprimerUneClasse } from './suprimer-classe';
 import { ArchiveUneClasse } from './archiver-classe';
+import { useState } from 'react';
 interface DropdownMenuItemSelectProps {
   children: React.ReactNode;
   data: any;
 }
 
 export const DropdownMenuItemSelect = ({ children, data }: DropdownMenuItemSelectProps) => {
+  const [isopen, setIsOpen] =useState(false)
   return (
-    <DropdownMenu>
+    
+    <DropdownMenu modal={isopen}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent className="w-45  text-[#727272]">
         <DropdownMenuGroup>

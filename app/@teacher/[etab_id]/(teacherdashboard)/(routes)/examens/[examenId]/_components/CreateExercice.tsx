@@ -118,6 +118,7 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
           )} */}
           {data.children.map((item: any) => (
             <CreateQuestion
+              key={item.id}
               data={item}
               allData={data}
               fakeData={allData}

@@ -14,7 +14,7 @@ import Image from 'next/image';
 import { use, useState } from 'react';
 import { Label } from '../ui/label';
 import csvtojson from 'csvtojson';
-import { createManyUserInClass } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteManyUser';
+import { useCreateManyUserInClass } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteManyUser';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface ImportUneClasseProps {
@@ -25,7 +25,7 @@ interface ImportUneClasseProps {
 
 export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasseProps) => {
   const [file, setFile] = useState<File | null>(null);
-  const { createManyUser, isPending, error } = createManyUserInClass();
+  const { createManyUser, isPending, error } = useCreateManyUserInClass();
   const queryClient = useQueryClient();
 
   const user = queryClient.getQueryData(['user']) as any;

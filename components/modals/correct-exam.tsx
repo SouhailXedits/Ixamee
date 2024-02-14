@@ -31,64 +31,51 @@ interface CorrectExamProps {
 }
 
 export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_id }) => {
-  if (!data) return null;
-  let userData = data.filter((item: any) => item?.user_id == user_id);
-  userData = userData[0];
-
-  const [note, setNote] = useState<string>(userData?.mark_obtained || 0);
-
+  const [note, setNote] = useState<string>('0');
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const new_total_mark = userData?.exam.total_mark || 0;
-
-  // const examan = data?.classe?.exam_classe?.filter((item: any) => item?.id == data?.exam);
-  // const new_total_mark = examan[0]?.total_mark;
-  // const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-  //   queryKey: ['CorigeExameContent', +examan[0]?.id, data?.id],
-  //   queryFn: async () => await getCorigeExameContent(+examan[0]?.id, data?.id),
-  // });
+  const new_total_mark = data?.exam.total_mark || 0;
 
   useEffect(() => {
-    const initialNote = userData?.mark_obtained || 0;
-    setNote(initialNote);
-  }, [data]);
+    const userData = data?.find((item: any) => item?.user_id === user_id);
+    if (userData) {
+      const initialNote = userData.mark_obtained || '0';
+      setNote(initialNote);
+    }
+  }, [data, user_id]);
 
   const handelCorrectExam = () => {
-    console.log(userData);
-    const examanId = userData?.exam_id;
-    console.log(examanId);
-    router.push(pathname + `/student/${user_id}/correction/${examanId}`);
+    const examanId = data?.exam_id;
+    router.push(`${pathname}/student/${user_id}/correction/${examanId}`);
   };
 
-  const handelSubmitCorrectionExam = (e: any) => {
-    // Your logic for submitting the correction exam
-    if (e.target.value > new_total_mark) {
+  const handelSubmitCorrectionExam = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (Number(value) > new_total_mark) {
       toast.error('la note ne doit pas depasser le total de la classe');
       return;
     }
-    setNote(e.target.value);
+    setNote(value);
   };
+
   const { createExamCorrectionn, isPending } = useCreateExamCorrection();
   const { editeStatus, isPending: isPendingStatus } = useEditeExamStatus();
 
   const handelSubmit = () => {
     if (!item) {
       const obj = {
-        exam_id: userData.exam_id,
+        exam_id: data?.exam_id,
         mark_obtained: note,
         user_id: user_id,
       };
       createExamCorrectionn(obj);
     } else {
       const obj = {
-        exam_id: userData?.exam_id,
-
+        exam_id: data?.exam_id,
         user_id: user_id,
         status: item as 'notClassified' | 'absent',
       };
-      console.log(obj);
-
       editeStatus(obj);
     }
   };
@@ -111,23 +98,17 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
                   type="number"
                   placeholder="--"
                   className="p-0 text-xl text-right bg-transparent border-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                  maxLength={new_total_mark.length}
+                  maxLength={new_total_mark.toString().length}
                   min={0}
-                  // defaultValue={+getCorrigeExamOfUser[0]?.mark || 0}
                   value={note}
-                  onChange={(e) => handelSubmitCorrectionExam(e)}
+                  onChange={handelSubmitCorrectionExam}
                 />
                 <span>/</span>
                 <span className="flex items-center text-xl ">{new_total_mark}</span>
               </div>
             </div>
           </div>
-          <span
-            className="text-[#1B8392] text-xl h-1
-"
-          >
-            ou
-          </span>
+          <span className="text-[#1B8392] text-xl h-1">ou</span>
           <div>
             <span className="text-[#959595] text-[15px]">Corriger l’examen</span>
             <div className="flex items-center gap-2">
@@ -175,12 +156,12 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
                 id="r2"
                 style={item === 'notClassified' ? { backgroundColor: '#1B8392' } : {}}
               />
-              <Label htmlFor="r1" className="text-xs">
+              <Label htmlFor="r2" className="text-xs">
                 Non classé
               </Label>
             </div>
           </RadioGroup>
-        </div>{' '}
+        </div>
         <DialogFooter className="mt-4">
           <DialogClose asChild>
             <Button

@@ -67,13 +67,11 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
       label: item?.name,
     };
   });
-
+  
   const exam_Establishment = exam.exam_classess[0].establishment[0];
   const defaultEstablishment = userEstablishmentoptions?.find(
     (item: any) => item.value === exam_Establishment.id
   );
-
-  //
 
   const examSchema = z.object({
     establishment: z
@@ -108,7 +106,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
     style: z.string(),
   });
 
-  const [clickedStyle, setClickedStyle] = useState('fr');
+  // const [clickedStyle, setClickedStyle] = useState('fr');
   const [formData, setFormData] = useState({
     establishment: [defaultEstablishment],
     name: exam?.name,
@@ -157,7 +155,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
   });
   useEffect(() => {
     handleInputChange('subject', currentSubject);
-  }, [Teachersubject]);
+  }, [Teachersubject,currentSubject]);
 
   const classoption = classe?.map((item: any) => ({
     value: item.id,
@@ -172,9 +170,9 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
 
   useEffect(() => {
     handleInputChange('classes', defaultClasse);
-  }, [TeacherClasse]);
+  }, [TeacherClasse, defaultClasse]);
 
-  const { creatExam, isPending } = useCreateExam();
+  // const { creatExam, isPending } = useCreateExam();
   const verfierSchema = () => {
     let ok = false;
     try {

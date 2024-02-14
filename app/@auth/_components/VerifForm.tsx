@@ -30,9 +30,7 @@ export default function VerifForm({ email, code }: VerificationData) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  if (!token) {
-    return <AuthErrorPage />;
-  }
+  
   const [isRegistrationSuccessful, setRegistrationSuccessful] = useState<boolean>(false);
   const [isDisabled, setDisabled] = useState<boolean>(false);
 
@@ -97,7 +95,7 @@ export default function VerifForm({ email, code }: VerificationData) {
     } catch (err) {
       setError("Quelque chose s'est mal passé !");
     }
-  }, [form, success, error]);
+  }, [form, success, error, token]);
 
   useEffect(() => {
     if (isRegistrationSuccessful) {
@@ -133,6 +131,10 @@ export default function VerifForm({ email, code }: VerificationData) {
       }
     });
   };
+
+  if (!token) {
+    return <AuthErrorPage />;
+  }
 
   return (
     <Form {...form}>

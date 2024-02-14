@@ -6,18 +6,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/selectModifierStudent';
-import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
 export default function StudentDetails({ student, classe }: any) {
-  if (!student) return;
-  if (!classe) return;
+  
   const [name, setName] = useState(student?.name);
   const [email, setEmail] = useState(student?.email);
   const [defaultClass, setDefaultClass] = useState(
-    student?.classe?.map((classe: any) => classe.id)
+    student?.classe?.map((classe: any) => classe?.id)
   );
+  if (!student) return;
+  if (!classe) return;
 
   return (
     <div className="flex w-full h-full gap-10 p-3 ">
@@ -113,7 +113,7 @@ export default function StudentDetails({ student, classe }: any) {
                 <SelectItem value="non-classé">Non classé</SelectItem>
                 <SelectItem value="absent">Absent</SelectItem> */}
                 {student?.classe?.map((classe: any) => (
-                  <SelectItem value={classe.id}>{classe.name}</SelectItem>
+                  <SelectItem key={classe.id} value={classe.id}>{classe.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

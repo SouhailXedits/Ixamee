@@ -2,7 +2,6 @@
 import Editor from '@/components/shared-components/toolbar-editor';
 import { SubQuestion } from './SubQuestion';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
 
 export const Question = ({ data, isArabic }: any) => {
 
@@ -48,6 +47,7 @@ export const Question = ({ data, isArabic }: any) => {
       </div>
       {data.children.map((item: any) => (
         <SubQuestion
+        key={item.id}
           data={item}
           isArabic={isArabic}
         />
