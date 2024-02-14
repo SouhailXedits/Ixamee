@@ -34,11 +34,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
 
   return (
     <div
-      // className={cn(
-      //   'h-full grid grid-cols-[260px,1fr] grid-rows-[260px,1fr]',
-      //   collapsed && 'grid-cols-[65px,1fr]'
-      // )}
-      className={cn('h-full pr-[65px]', collapsed && 'grid-cols-[65px,1fr]')}
+      className={cn(
+        'h-full grid grid-cols-[260px,1fr] grid-rows-[260px,1fr]',
+        collapsed && 'grid-cols-[65px,1fr]'
+      )}
     >
       <>
         <div
@@ -49,21 +48,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
         >
           <Sidebar isOpen={collapsed} />
         </div>
-        <div
-          className={cn(
-            'fixed inset-y-0 z-50 flex-col flex h-full w-[260px] md:hidden transition-width duration-300',
-            collapsed && 'w-[60px]'
-          )}
-        >
-          firas{' '}
-        </div>
         <div>
           <Navbar />
         </div>
         <main
           className={cn(
             !collapsed ? 'transition-all duration-500 ' : ' transition-all duration-500',
-            '  w-full overflow-auto h-screen '
+            ' pt-[60px] w-full overflow-auto h-screen '
           )}
         >
           {children}

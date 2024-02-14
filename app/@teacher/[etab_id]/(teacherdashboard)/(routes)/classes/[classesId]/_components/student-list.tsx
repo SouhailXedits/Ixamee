@@ -250,7 +250,7 @@ export const columns = [
       return <span className="text-[#1B8392] ">Nom et prénom</span>;
     },
     cell: ({ row }: any) => (
-      <div className="flex items-center gap-2 capitalize">
+      <div className="flex items-center gap-2">
         <Image
           src={row?.original?.image ? row?.original?.image : '/defaultUserAvatr.svg'}
           alt=""

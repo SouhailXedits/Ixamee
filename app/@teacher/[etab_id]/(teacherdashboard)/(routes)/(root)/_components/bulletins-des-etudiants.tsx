@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Select,
   SelectContent,
@@ -15,16 +15,16 @@ import { getAllExamsNameAndId } from '@/actions/examens';
 import { useState } from 'react';
 import { getAllExamCorrections } from '@/actions/exam-correction';
 
-const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
+const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
   const [filters, setFilters] = useState({
     exam_id: '',
-    classe_id: ''
-  })
-  
+    classe_id: '',
+  });
+
   const queryClient = useQueryClient();
 
-  const user = queryClient.getQueryData(['user']) as any
-  const userId = user?.id 
+  const user = queryClient.getQueryData(['user']) as any;
+  const userId = user?.id;
 
   // const { data: userClasses } = useQuery({
   //   queryKey: ['user-classes'],
@@ -38,12 +38,9 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
   // data = ['zegzeg']
   const { data: tableData } = useQuery<any>({
     queryKey: ['users-results', filters],
-    queryFn: async() => await getAllExamCorrections(filters, userId)
+    queryFn: async () => await getAllExamCorrections(filters, userId),
   });
 
-
-
-  
   return (
     <>
       {!tableData?.length ? (
@@ -60,7 +57,9 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userClasses &&
                   userClasses?.map((classe: any) => (
-                    <SelectItem key={classe.id} value={classe.id}>{classe.name}</SelectItem>
+                    <SelectItem key={classe.id} value={classe.id}>
+                      {classe.name}
+                    </SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
@@ -76,14 +75,16 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userExams?.length &&
                   userExams?.map((exam: any) => (
-                    <SelectItem key={exam.id} value={exam.id}>{exam.name}</SelectItem>
+                    <SelectItem key={exam.id} value={exam.id}>
+                      {exam.name}
+                    </SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col items-center justify-center w-full h-full p-10 border rounded-xl">
+          <div className="flex flex-col items-center justify-center w-full p-10 border rounded-xl">
             <Rien
               image="/dashboard/books.svg"
               className="flex flex-col justify-center gap-6"
@@ -105,7 +106,9 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userClasses &&
                   userClasses?.map((classe: any) => (
-                    <SelectItem key={classe.id} value={classe.id}>{classe.name}</SelectItem>
+                    <SelectItem key={classe.id} value={classe.id}>
+                      {classe.name}
+                    </SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
@@ -121,7 +124,9 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
               <SelectContent>
                 {userExams?.length &&
                   userExams?.map((exam: any) => (
-                    <SelectItem key={exam.id} value={exam.id}>{exam.name}</SelectItem>
+                    <SelectItem key={exam.id} value={exam.id}>
+                      {exam.name}
+                    </SelectItem>
                   ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
@@ -129,7 +134,10 @@ const BulletinsDesEtudiants = ({ data, etabId , classes}: any) => {
             </Select>
           </div>
           <div className="w-full overflow-auto border rounded-xl">
-            <BulletinsStudentList data={tableData} nameClasse={userClasses.find((classe:any) => classe.id === filters.classe_id).name} />
+            <BulletinsStudentList
+              data={tableData}
+              nameClasse={userClasses.find((classe: any) => classe.id === filters.classe_id).name}
+            />
           </div>
         </div>
       )}

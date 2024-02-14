@@ -45,7 +45,7 @@ export default function Home() {
   return isPendingStudentClasse ? (
     <Loading />
   ) : (
-    <div className="flex flex-col w-full h-full p-9 overflow-auto">
+    <div className="flex flex-col w-full overflow-auto p-9">
       <div className="text-2 text-2xl font-[500] pl-4 ">Tableau de bord</div>
       <div className="flex gap-6 pt-10 flex-nowrap max-2xl:flex-wrap">
         {/* first section 👺  */}
@@ -76,7 +76,7 @@ export default function Home() {
 
         <div className="w-[40%] h-full p-2 flex flex-col gap-6 max-2xl:w-[100%]">
           <DashboradCorrectionsRecentes etabId={etab_id} />
-          <DashboradBulletinsDesEtudiants etabId={etab_id} classes={classe?.data}  />
+          <DashboradBulletinsDesEtudiants etabId={etab_id} classes={classe?.data} />
         </div>
       </div>
     </div>
