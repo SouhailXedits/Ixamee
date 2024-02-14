@@ -36,9 +36,9 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
       />
       {/* {data.terms.map(term => ())} */}
       <div className="flex justify-center">
-        <div className=" flex flex-col gap-10">
+        <div className="flex flex-col gap-10 ">
           {data.map((term: any) => (
-            <div className=" flex flex-col gap-5">
+            <div key={term.id} className="flex flex-col gap-5 ">
               <h2>{term.name}</h2>
 
               <table className=" text-center w-[700px] border border-black/50 ">
@@ -51,15 +51,15 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                 </thead>
                 <tbody>
                   {term.exams?.map((exam: any) => (
-                    <tr className="">
+                    <tr key={exam.id} className="">
                       {/* <td className="bg-[#99C6D3]"></td> */}
-                      <td className="pb-4 border  border-black/50">{exam.name}</td>
-                      <td className="border pb-4  border-black/50">{exam.coefficient}</td>
-                      <td className="border pb-4 border-black/50">
+                      <td className="pb-4 border border-black/50">{exam.name}</td>
+                      <td className="pb-4 border border-black/50">{exam.coefficient}</td>
+                      <td className="pb-4 border border-black/50">
                         {exam.marksObtained} / {exam.totalScore}
                       </td>
-                      <td className="border pb-4 border-black/50">{exam.range}</td>
-                      <td className="border pb-4  border-black/50">--</td>
+                      <td className="pb-4 border border-black/50">{exam.range}</td>
+                      <td className="pb-4 border border-black/50">--</td>
                       {/* <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td> */}
                     </tr>
                   ))}

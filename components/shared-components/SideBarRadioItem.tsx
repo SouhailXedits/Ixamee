@@ -26,12 +26,12 @@ const FormSchema = z.object({
   }),
 });
 interface SideBarRadioItemProps {
-  data: { name: string; id: number }[] | undefined;
+  data: any;
+  // data: { name: string; id: number }[] | undefined;
 }
 
 export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   console.log('🚀 ~ SideBarRadioItem ~ data:', data);
-  if (!data) return null;
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -47,10 +47,10 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   const params = useParams();
   const etabId = +params?.etab_id;
 
-  const currentestab = data.find((res) => +res?.id === +etabId);
+  const currentestab = data.find((res :any) => +res?.id === +etabId);
   const currentestabName = currentestab?.id;
 
-  if (data.every((res) => +res?.id !== +etabId)) {
+  if (data.every((res :any) => +res?.id !== +etabId)) {
     if (+etabId === 0) {
       return;
     }
@@ -68,6 +68,7 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
     });
     return newarr;
   };
+  if (!data) return null;
 
   return (
     <Form {...form}>
@@ -88,7 +89,7 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
                     // onChange={(e: any) => router.push(`/${e.target?.value}`)}
                     className="flex flex-col space-y-1"
                   >
-                    {data.map((lyce) => (
+                    {data.map((lyce :any) => (
                       <FormItem // Add a unique key for each item
                         key={lyce.id}
                         className={cn(
