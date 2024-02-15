@@ -6,7 +6,7 @@ import Classes from '@/app/@student/[etab_id]/(studentdashboard)/components/Clas
 
 export const SidebarRoutes = ({ guestRoutes }: any) => {
   return (
-    <div className="flex flex-col justify-between w-full gap-10 overflow-auto h-full">
+    <div className="flex flex-col w-full gap-4 overflow-auto h-full">
       <div className="flex flex-col items-start gap-2 mt-12">
         {guestRoutes.map((route: any) => (
           <SidebarItem
