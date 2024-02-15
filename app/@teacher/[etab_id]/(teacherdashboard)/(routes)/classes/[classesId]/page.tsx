@@ -64,11 +64,13 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
+  console.log(userCorrection);
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
     queryKey: ['userOfClasses', classesId],
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
+  console.log(data);
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
@@ -117,6 +119,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         return false;
       });
   }, [data, exam, getCorrigeExamOfUser, userCorrection, filter]);
+  console.log(exam);
   console.log(newData);
   const handleSendResults = () => {
     if (data?.length === userCorrection?.length) {
@@ -170,8 +173,6 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     );
   }
   const userNotCorrected = notCorrected(userCorrection);
-  console.log(exam);
-  console.log(newData);
 
   return (
     <main className="flex flex-col gap-6 p-10">

@@ -35,7 +35,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const new_total_mark = data?.exam.total_mark || 0;
+  const new_total_mark = data?.exam?.total_mark || 0;
 
   useEffect(() => {
     const userData = data?.find((item: any) => item?.user_id === user_id);

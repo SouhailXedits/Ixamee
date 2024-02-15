@@ -64,7 +64,7 @@ export default function Page({
       const copiedData = JSON.parse(JSON.stringify(data.content));
       setFakeData(copiedData);
     }
-  }, [isFullMarks, examContent?.content, data.content]);
+  }, [isFullMarks, examContent?.content]);
   useEffect(() => {
     if (!isPending && data && data.content) {
       // const fakeData = data.content;
