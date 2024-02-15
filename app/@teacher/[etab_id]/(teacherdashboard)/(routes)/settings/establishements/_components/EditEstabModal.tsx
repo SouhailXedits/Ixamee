@@ -95,7 +95,7 @@ export const EditEstab = ({ id, currentName, children }: editEstabProps) => {
               disabled={isPending}
               className="w-full bg-[#1B8392] hover:opacity-80 "
             >
-              éditer une établissement.
+              Modifier une établissement.
             </Button>
           </DialogClose>
         </DialogFooter>

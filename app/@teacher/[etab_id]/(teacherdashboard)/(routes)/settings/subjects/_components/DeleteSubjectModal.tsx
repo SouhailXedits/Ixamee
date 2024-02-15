@@ -37,7 +37,7 @@ export const DeleteSubject = ({ id, children }: editEstabProps) => {
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Supprimer cet établissement
+            Supprimer cet matière
           </DialogTitle>
         </DialogHeader>
 
@@ -77,7 +77,7 @@ export const DeleteSubject = ({ id, children }: editEstabProps) => {
               disabled={isPending}
               className="w-full bg-[#F04438] hover:opacity-80 "
             >
-              Supprimer une établissement.
+              Supprimer une Matière.
             </Button>
           </DialogClose>
         </DialogFooter>
