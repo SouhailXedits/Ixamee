@@ -156,7 +156,7 @@ const confetti = useConfettiStore();
               </span>
             ) : (
               <>
-                <span className="cursor-pointer">
+                <span className="cursor-pointer" onClick={() => router.back()}>
                   {data?.exam_classess.map((item: any) => item.name).join(', ')}
                 </span>
                 <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />

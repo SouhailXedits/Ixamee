@@ -15,10 +15,10 @@ export function useEditEstab() {
     mutationFn: (params: paramsProps) => editEstablishementApi(params.id, params.name),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['estabs'] });
-      toast.success('Admin ajouté avec succès.');
+      toast.success('Etablissement modifieé avec succès.');
     },
     onError: (err) => {
-      toast.error("Une erreur est survenue lors de l'ajout de l'admin");
+      toast.error("Une erreur est survenue lors de la modification de l'établissement");
     },
     retry: false,
   });

@@ -1,5 +1,7 @@
 'use client';
 import { DropdownMenuItemSelect } from '@/components/modals/drop-down';
+import { Button } from '@/components/ui/button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -15,10 +17,18 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
   return (
     <div className="min-w-[195px] h-[190px] bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] ">
       <div className="flex justify-between w-full px-5">
-        <span className="text-xl font-semibold  text-[#727272]">
-          {data.name.length > 10 ? data.name.slice(0, 10) + '...' : data.name}
-        </span>
-        <DropdownMenuItemSelect  data={data}>
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <span className="text-xl font-semibold  text-[#727272]">
+              {data.name.length > 10 ? data.name.slice(0, 10) + '...' : data.name}
+            </span>
+          </HoverCardTrigger>
+          <HoverCardContent className="max-w-[200px]">
+            <span className="text-[#727272]">{data.name}</span>
+          </HoverCardContent>
+        </HoverCard>
+
+        <DropdownMenuItemSelect data={data}>
           <Image
             src="/icons/kebab-menu.svg"
             alt="kebabMenu "

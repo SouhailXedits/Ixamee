@@ -179,21 +179,25 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent,
             </Button>
           </DialogClose>
           {isPending ? (
-            <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
-              <div
-                className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
-                role="status"
-                aria-label="loading"
-              ></div>
-            </Button>
+            <DialogClose>
+              <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
+                <div
+                  className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
+                  role="status"
+                  aria-label="loading"
+                ></div>
+              </Button>
+            </DialogClose>
           ) : (
-            <Button
-              type="submit"
-              className="w-full text-white bg-[#177C9A] hover:opacity-80"
-              onClick={handelSubmit}
-            >
-              Enregistrer
-            </Button>
+            <DialogClose>
+              <Button
+                type="submit"
+                className="w-full text-white bg-[#177C9A] hover:opacity-80"
+                onClick={handelSubmit}
+              >
+                Enregistrer
+              </Button>
+            </DialogClose>
           )}
         </DialogFooter>
       </DialogContent>
