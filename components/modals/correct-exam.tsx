@@ -26,27 +26,33 @@ import { set } from 'date-fns';
 
 interface CorrectExamProps {
   children: React.ReactNode;
-  data: any;
+  userContent: any;
   user_id: string;
 }
 
-export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_id }) => {
+export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent, user_id }) => {
   const [note, setNote] = useState<string>('0');
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const new_total_mark = data?.exam?.total_mark || 0;
+
+  const data = userContent ? (userContent as any) : [];
+  console.log(data);
+  if (!data) {
+    return <Loading />;
+  }
+  const new_total_mark = data[0]?.exam?.total_mark || 0;
+  console.log(new_total_mark);
 
   useEffect(() => {
-    const userData = data?.find((item: any) => item?.user_id === user_id);
-    if (userData) {
-      const initialNote = userData.mark_obtained || '0';
-      setNote(initialNote);
-    }
-  }, [data, user_id]);
+    const userData = data && data?.find((item: any) => item?.user_id === user_id);
+
+    const initialNote = userData?.mark_obtained || '0';
+    setNote(initialNote);
+  }, [data]);
 
   const handelCorrectExam = () => {
-    const examanId = data?.exam_id;
+    const examanId = data[0]?.exam_id;
     router.push(`${pathname}/student/${user_id}/correction/${examanId}`);
   };
 

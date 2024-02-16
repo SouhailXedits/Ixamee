@@ -15,6 +15,7 @@ import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions
 import { StudentFeadback } from '@/components/modals/studentFeadback';
 import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorrection';
 import { Button } from '@/components/ui/button';
+import { useConfettiStore } from '@/store/use-confetti-store';
 export default function Page({
   params,
 }: {
@@ -22,7 +23,7 @@ export default function Page({
 }) {
   const [sum, setSum] = useState(0);
   const [isFullMarks, setIsFullMarks] = useState(false);
-
+const confetti = useConfettiStore();
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
@@ -121,6 +122,7 @@ export default function Page({
       };
 
       createExamCorrectionn(dataToSave);
+      confetti.onOpen();
 
       // Additional logic after creating the exam correction, if needed
     } catch (error) {

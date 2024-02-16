@@ -41,6 +41,25 @@ interface ExamData {
   examEstablishment: ExamEstablishment;
   ExamClassess: ExamClass[];
 }
+
+
+
+export const getIdOfUserInTheClasse = async (classeId: number) => {
+  const data = await db.user.findMany({
+    where: {
+      role: 'STUDENT',
+      classe: {
+        some: {
+          id: classeId,
+        },
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+  return data;
+}
 export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
   const exams = await db.exam.findMany({
     where: {

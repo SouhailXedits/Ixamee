@@ -9,6 +9,7 @@ import {
   getAllExam,
   getClasseOfUser,
   getEstablishmentOfUser,
+  getIdOfUserInTheClasse,
   getMe,
   getSubjectOfUser,
   getSubjectOfUserById,
@@ -23,12 +24,11 @@ export default async function ClassHydration({
   children: React.ReactNode;
   params: { etab_id: string; classesId: string };
 }) {
-
   const queryClient = new QueryClient();
-  // await queryClient.prefetchQuery({
-  //   queryKey: ['userOfClasses'],
-  //   queryFn: async () => await getStudentOfClasse(+params.classesId),
-  // });
+  await queryClient.prefetchQuery({
+    queryKey: ['getIdOfUserInTheClasse'],
+    queryFn: async () => await getIdOfUserInTheClasse(+params.classesId),
+  });
   // await queryClient.prefetchQuery({
   //   queryKey: ['classe'],
   //   queryFn: async () => await getClasseById(+params.classesId),

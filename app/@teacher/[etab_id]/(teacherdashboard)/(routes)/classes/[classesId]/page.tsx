@@ -18,6 +18,7 @@ import ImportClasse from './_components/ImportClasse';
 import ExportClassePdf from './_components/ExportClassePdf';
 import Selects from './_components/Selects';
 import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
+import { useConfettiStore } from '@/store/use-confetti-store';
 
 interface classe {
   id: number;
@@ -30,11 +31,16 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   //query Client called
   const queryClient = useQueryClient();
 
+  const confetti = useConfettiStore();
+
   /// get the classse Id
   const { classesId } = params;
   /// get the Etab Id
-  const etab_id = queryClient.getQueryData(['etab_id']) as number;
-
+  const etab_id = queryClient.getQueryData(['etab_id']) as number; 
+  //get The list of Id in the classe 
+  ;
+  const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
+  
   // get the teacher establishment  with hydration
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   // get the teacher establishment name
@@ -69,13 +75,15 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const { data, isPending: isPendingUserOfClasses } = useQuery({
     queryKey: ['userOfClasses', classesId],
     queryFn: async () => await getStudentOfClasse(+classesId),
+    retry: 0,
   });
   console.log(data);
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
-    queryFn: async () => await getCorigeExameContentOfAllUser(exam, data),
+    queryFn: async () => await getCorigeExameContentOfAllUser(exam, getIdOfUserInTheClasse),
   });
+  console.log(getCorrigeExamOfUser);
   // ======================= End All Queries✨✨✨✨✨✨✨✨✨✨✨✨ ======================
   // ==================== Start useEffect 😵‍💫😵‍💫😵‍💫 ======================
   // set the default exam if he find a exam  : 3la 5ater bach ki yadhreb yadhreb 3la el examan mo33ain
@@ -163,8 +171,10 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         rank,
       }));
       sendExamMark({ exam_id: exam, marks: marksDataToSend });
+      confetti.onOpen();
     }
   };
+
   // if (isPendingUser) return <Loading />;
   // if (isPendingCorrige) return <Loading />;
   function notCorrected(userCorrection: any) {
@@ -173,7 +183,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     );
   }
   const userNotCorrected = notCorrected(userCorrection);
-
+  console.log(newData);
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full gap-14 ">
@@ -236,7 +246,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
       ) : (
         <div className="pt-6 max-lg:pt-20 max-ml:pt-30">
-          <StudentList data={newData} class_id={classesId} isPending={false} />
+          <StudentList data={newData} class_id={classesId} isPending={isPendingClasse} />
         </div>
       )}
     </main>

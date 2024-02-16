@@ -118,16 +118,19 @@ const Action = ({ row }: any) => {
 
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
   console.log(correctionExamOfUser);
+  // if (!correctionExamOfUser) return;
 
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <ModifierUnEtudiant data={row.original}>
         <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
       </ModifierUnEtudiant>
-      {row?.original?.exam !== undefined && (
-        <CorrectExam data={correctionExamOfUser} user_id={row.original.id}>
+      {correctionExamOfUser ? (
+        <CorrectExam userContent={correctionExamOfUser} user_id={row.original.id}>
           <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
         </CorrectExam>
+      ) : (
+        <Skeleton className="w-[20px] h-[20px] bg-1" />
       )}
 
       {!row.original.emailVerified ? (
@@ -299,6 +302,7 @@ export const columns = [
 ];
 
 export function StudentList({ data, class_id, isPending }: any) {
+  console.log(data, 'data');
   if (!data) {
     return null;
   }
