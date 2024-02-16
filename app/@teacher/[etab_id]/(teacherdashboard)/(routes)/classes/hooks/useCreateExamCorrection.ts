@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { createExamCorrection as createExamCorrectionApi } from '@/actions/examens';
+import { useRouter } from 'next/navigation';
 
 interface CreateExamCorrectionParams {
   exam_id: number;
@@ -12,6 +13,7 @@ interface CreateExamCorrectionParams {
 
 export function useCreateExamCorrection() {
   const queryClient = useQueryClient();
+  const router = useRouter()
   const { mutate: createExamCorrectionn, isPending } = useMutation({
     mutationFn: ({
       exam_id,
@@ -24,6 +26,7 @@ export function useCreateExamCorrection() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['examCorrections'] });
       toast.success("Correction de l'examen ajoutée avec succès.");
+      router.back()
     },
     onError: (err) => {
       toast.error("Il y a eu une erreur lors de la création de la correction de l'examen.");

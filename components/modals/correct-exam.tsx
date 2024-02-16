@@ -43,7 +43,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, data, user_i
       const initialNote = userData.mark_obtained || '0';
       setNote(initialNote);
     }
-  }, [data, user_id]);
+  }, [data]);
 
   const handelCorrectExam = () => {
     const examanId = data?.exam_id;

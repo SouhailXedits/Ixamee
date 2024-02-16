@@ -95,7 +95,7 @@ export default function VerifForm({ email, code }: VerificationData) {
     } catch (err) {
       setError("Quelque chose s'est mal passé !");
     }
-  }, [form, success, error, token]);
+  }, [form, success, error]);
 
   useEffect(() => {
     if (isRegistrationSuccessful) {
