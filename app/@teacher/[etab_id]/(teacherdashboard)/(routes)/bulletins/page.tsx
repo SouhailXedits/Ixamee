@@ -45,7 +45,7 @@ const Student = () => {
 
   useEffect(() => {
     classes?.data?.length && setFilters({ ...filters, classe_id: classes?.data[0]?.id });
-  }, [classes?.data, filters]);
+  }, [classes?.data]);
 
 
   const { data: markSheets, isPending } = useQuery({
