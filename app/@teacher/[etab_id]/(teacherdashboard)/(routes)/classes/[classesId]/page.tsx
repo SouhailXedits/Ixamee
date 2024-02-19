@@ -70,7 +70,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
-  console.log(userCorrection);
+
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
     queryKey: ['userOfClasses', classesId],
@@ -127,8 +127,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         return false;
       });
   }, [data, exam, getCorrigeExamOfUser, userCorrection, filter]);
-  console.log(exam);
-  console.log(newData);
+
   const handleSendResults = () => {
     if (data?.length === userCorrection?.length) {
       const ExamMarkData = userCorrection?.map((user: any) => {

@@ -10,8 +10,7 @@ import {
 } from '@/components/ui/table';
 import Image from 'next/image';
 
-const BulletinsStudentList = ({data, nameClasse}:any) => {
-
+const BulletinsStudentList = ({ data, nameClasse }: any) => {
   const [sortByRank, setSortByRank] = useState(true); // true for descending order
 
   const studentData = data.map((item: any, index: number) => ({
@@ -23,8 +22,6 @@ const BulletinsStudentList = ({data, nameClasse}:any) => {
     totalMarks: item.exam.total_mark,
     rank: item.rank,
   }));
-
-
 
   // const studentData = useMemo(
   //   () => [
@@ -73,7 +70,7 @@ const BulletinsStudentList = ({data, nameClasse}:any) => {
   };
 
   return (
-    <Table className="rounded-2xl">
+    <Table className="rounded-2xl ">
       <TableHeader className="bg-[#F0F6F8]">
         <TableRow>
           <TableHead
@@ -106,16 +103,9 @@ const BulletinsStudentList = ({data, nameClasse}:any) => {
       </TableHeader>
       <TableBody>
         {sortData().map((student: any) => (
-          
           <TableRow key={student.id} className="">
             <TableCell className="flex items-center justify-start gap-3 font-medium">
-              <Image
-                src={student.avatarSrc}
-                alt="user"
-                width={38}
-                height={38}
-                className="h-full"
-              />
+              <Image src={student.avatarSrc} alt="user" width={38} height={38} className="h-full" />
               <div className="text-gray-900 text-xs font-medium  leading-[25px]">
                 {student.name}
               </div>

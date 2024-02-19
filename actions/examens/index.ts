@@ -42,8 +42,6 @@ interface ExamData {
   ExamClassess: ExamClass[];
 }
 
-
-
 export const getIdOfUserInTheClasse = async (classeId: number) => {
   const data = await db.user.findMany({
     where: {
@@ -59,7 +57,7 @@ export const getIdOfUserInTheClasse = async (classeId: number) => {
     },
   });
   return data;
-}
+};
 export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
   const exams = await db.exam.findMany({
     where: {
@@ -93,10 +91,13 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
 export const getAllExamsNameAndId = async ({
   user_id,
   etab_id,
+  classe_id,
 }: {
   user_id: string;
   etab_id: number;
+  classe_id: string;
 }) => {
+  console.log(user_id, etab_id, classe_id);
   const exams = await db.exam.findMany({
     where: {
       teacher: {
@@ -106,6 +107,7 @@ export const getAllExamsNameAndId = async ({
       },
       exam_classess: {
         some: {
+          id: +classe_id,
           establishment: {
             some: {
               id: +etab_id,
@@ -120,6 +122,7 @@ export const getAllExamsNameAndId = async ({
       name: true,
     },
   });
+  console.log(exams);
   return exams;
 };
 export const getUserSubject = async (user_id: string) => {

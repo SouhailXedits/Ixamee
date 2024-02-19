@@ -42,6 +42,8 @@ export default function Home() {
     queryKey: ['classes', etab_id],
     queryFn: async () => await getAllClassesNameAndId({ user_id: user?.id, etab_id }),
   });
+
+  console.log(classes);
   return isPendingStudentClasse ? (
     <Loading />
   ) : (
@@ -75,8 +77,8 @@ export default function Home() {
         </div>
 
         <div className="w-[40%] h-full p-2 flex flex-col gap-6 max-2xl:w-[100%]">
-          <DashboradCorrectionsRecentes etabId={etab_id} />
-          <DashboradBulletinsDesEtudiants etabId={etab_id} classes={classe?.data} />
+          <DashboradCorrectionsRecentes etabId={etab_id} classes={classes?.data} />
+          <DashboradBulletinsDesEtudiants etabId={etab_id} classes={classes?.data} />
         </div>
       </div>
     </div>

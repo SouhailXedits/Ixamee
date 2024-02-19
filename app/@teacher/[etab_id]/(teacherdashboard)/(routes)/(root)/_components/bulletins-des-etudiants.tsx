@@ -31,9 +31,11 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
   //   queryFn: async () => await getAllClassesNameAndIdDash({ user_id: userId, etab_id: etabId }),
   // });
   const userClasses = classes;
+  const classe_id = filters.classe_id;
   const { data: userExams } = useQuery({
     queryKey: ['user-exams'],
-    queryFn: async () => await getAllExamsNameAndId({ user_id: userId, etab_id: etabId }),
+    queryFn: async () =>
+      await getAllExamsNameAndId({ user_id: userId, etab_id: etabId, classe_id }),
   });
   // data = ['zegzeg']
   const { data: tableData } = useQuery<any>({

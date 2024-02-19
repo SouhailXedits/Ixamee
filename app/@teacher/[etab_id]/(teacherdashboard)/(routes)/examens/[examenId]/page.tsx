@@ -12,21 +12,22 @@ import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 import { useConfettiStore } from '@/store/use-confetti-store';
+import { haveZeroInfakeData } from './_components/sharedFunction';
 
 export default function Page({ params }: { params: { examenId: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
   const pathname = usePathname();
   const confetti = useConfettiStore();
-  console.log(confetti);
+  
   const router = useRouter();
   const { examenId } = params;
 
-  // const { data, isPending } = useQuery<any>({
-  //   queryKey: ['examenById', examenId],
-  //   queryFn: async () => await getOneExamById({ id: examenId }),
-  // });
+  const { data, isPending } = useQuery<any>({
+    queryKey: ['examenById', examenId],
+    queryFn: async () => await getOneExamById({ id: examenId }),
+  });
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData(['examenById', examenId]) as any;
+  // const data = queryClient.getQueryData(['examenById', examenId]) as any;
   const { editExam, isPending: isPendingEdit } = useEditExamContent();
 
   const [fakeData, setFakeData] = useState<any>([]);
@@ -39,6 +40,8 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   }, [data]);
 
   useEffect(() => {
+    console.log(fakeData);
+    console.log(calcAllMark(fakeData));
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
 
@@ -48,18 +51,18 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
     router.back();
   }
   const arabic = data?.language === 'ar' ? true : false;
-  const haveZeroInfakeData = (data: any) => {
-    for (const item of data) {
-      console.log(item.mark);
-      if (item.mark === 0) {
-        return true;
-      }
-      if (item.children && haveZeroInfakeData(item.children)) {
-        return true;
-      }
-    }
-    return false;
-  };
+  // const haveZeroInfakeData = (data: any) => {
+  //   for (const item of data) {
+  //     console.log(item.mark);
+  //     if (item.mark === 0) {
+  //       return true;
+  //     }
+  //     if (item.children && haveZeroInfakeData(item.children)) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // };
   const handleSaveData = () => {
     if (fakeData === data?.content) {
       toast.error("Aucune modification n'a été effectuee.");
@@ -164,8 +167,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
       </nav>
       {/* <CreateExam examId={examenId} /> */}
       {/* <EmailSend /> */}
-
-      <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />
+      {isPending ? <Skeleton /> : <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />}
     </div>
   );
 }
