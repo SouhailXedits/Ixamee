@@ -3,9 +3,9 @@
     "next/core-web-vitals",
     "plugin:testing-library/react",
     "plugin:jest-dom/recommended"
+  ],
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
   ]
-  // "presets": [
-  //   "@babel/preset-env",
-  //   "@babel/preset-react"
-  // ]
 }

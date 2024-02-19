@@ -96,18 +96,614 @@
   background: #d3eff7;
 }
 
-
 .apexcharts-toolbar {
-    z-index: 0 !important;
+  z-index: 0 !important;
 }
 
-
 .bn-block-content.bn-is-empty.bn-has-anchor .bn-inline-content:before {
-    /* content: "Enter text dssdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf type '/' for commands"; */
-    /* padding: 100px; */
-    color: white;
+  /* content: "Enter text dssdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf type '/' for commands"; */
+  /* padding: 100px; */
+  color: white;
 }
 
 body {
   overflow: hidden;
+}
+
+/* 
+@import './components/input/input.css';
+@import './components/duationPicker/durationPicker.css';
+@import './components/eventDetails/eventDetails.css'; */
+
+/* @import './components/input/input.css';
+@import './components/duationPicker/durationPicker.css';
+@import './components/eventDetails/eventDetails.css'; */
+
+.calendar {
+  padding: 1rem 3rem 0rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+}
+
+.calendar * {
+  text-transform: capitalize;
+}
+
+.calendar h6 {
+  font-family: Poppins;
+  /* font-size: 2.2rem !important; */
+  font-weight: 500;
+  text-align: center;
+  color: 'purple';
+}
+
+.calendar .page__header-left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.calendar .page__header-left .btn {
+  max-width: 20rem;
+}
+
+.calendar svg {
+  width: 30px;
+  height: 30px;
+}
+
+.calendar button {
+  /* font-size: 1.5rem; */
+}
+
+.calendar-todayBtn {
+  color: 'green';
+  /* font-size: 2rem !important; */
+  font-weight: 400;
+}
+
+.calendar .MuiStack-root .MuiButton-root:first-child {
+  /* font-size: 2rem !important; */
+  font-weight: 400;
+  color: 'green';
+}
+
+.MuiButtonBase-root .MuiMenuItem-root .MuiMenuItem-gutters .MuiMenuItem-root .MuiMenuItem-gutters {
+  /* font-size: 1.5rem; */
+}
+
+.dialog-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialog-title h2 {
+  /* font-size: 2rem; */
+  font-weight: 500;
+  color: 'green';
+  text-align: left;
+}
+
+.exam-scheduler-classes {
+  display: flex;
+  padding: 11px 24px;
+  flex-direction: column;
+  gap: 01rem;
+  width: 100%;
+}
+
+.exam-scheduler-classes .select-container {
+  padding: 0;
+}
+
+.exam-scheduler-classes .children-select-name {
+  display: flex;
+  /* font-size: 1.8rem; */
+  font-weight: 400;
+  color: #999999;
+}
+
+.exam-scheduler-classes input {
+  border-radius: 12px;
+  border: 1px solid #e4e4e4;
+  width: 100%;
+  /* padding: 1.5rem; */
+}
+
+.exam-scheduler-classes [id^='react-select-'][id$='-placeholder'] {
+  /* font-size: 1.8rem !important; */
+  font-weight: 400;
+  color: #bfbfbf;
+}
+
+.calendar-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+}
+
+.subjects-select {
+  width: 100%;
+}
+
+.options__placeholder {
+  font-size: 1.8rem !important;
+  font-weight: 400 !important;
+  color: #bfbfbf !important;
+}
+
+.color-picker-container {
+  border-radius: 12px;
+  border: 1px solid #e4e4e4;
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.color-picker-color {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+}
+
+.color-picker-color.selected::after {
+  content: 'tick icon ';
+  position: absolute;
+  top: -0.3rem;
+  right: -0.8rem;
+}
+
+.student-visibilty {
+  color: #999999;
+  /* font-size: 1.7rem; */
+  font-weight: 400;
+}
+
+.student-visibilty-container {
+  display: flex;
+  flex-direction: row !important;
+  gap: 1rem;
+}
+
+.student-visibilty-radio {
+  display: flex;
+  gap: 1rem;
+}
+
+.student-visibilty-radio input {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.student-visibilty-radio span {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  border-radius: 50%;
+  border: 1.5px solid #888888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 9px;
+}
+
+.student-visibilty-radio input:checked ~ span::before {
+  content: '';
+  background-color: #1b8392;
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.student-visibilty-radio input:checked ~ span {
+  border-color: #1b8392;
+}
+
+.student-visibilty-radio label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  font-family: Poppins;
+  /* font-size: 1.5rem; */
+  font-weight: 400;
+  color: #999999;
+}
+
+.event-cont {
+  border-radius: 6px;
+  padding: 0 0.5rem;
+}
+
+.event-cont-text {
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.date-picker-container {
+  display: flex;
+  padding: 11px 24px;
+  gap: 1rem;
+}
+
+.date-picker-container .text_field_container {
+  padding: 0;
+}
+
+.date-picker-container .text_field_container:first-child {
+  flex-grow: 1;
+}
+
+.date-time-picker input {
+  /* padding: 1.5rem; */
+  /* font-size: 1.5rem !important; */
+}
+
+.date-time-picker .MuiFormControl-root.MuiTextField-root {
+  width: 100% !important;
+  position: relative !important;
+  border-radius: 12px;
+  border: 1px solid red;
+}
+
+.date-time-picker .MuiFormControl-root.MuiTextField-root:hover {
+  border-radius: 12px;
+  border: 1px solid #e4e4e4;
+}
+
+.date-time-picker .MuiFormControl-root.MuiTextField-root::after {
+  position: absolute;
+  content: url('/public/calendriericon.svg');
+  filter: invert(68%) sepia(9%) saturate(7%) hue-rotate(321deg) brightness(89%) contrast(84%) !important;
+  right: 2rem;
+  top: 20%;
+  background-repeat: no-repeat;
+}
+
+.date-time-picker * {
+  border: none !important;
+}
+
+.MuiTabs-flexContainer {
+  background-color: #f0f6f8;
+}
+
+.MuiPaper-rounded {
+  border-radius: 16px !important;
+}
+
+.MuiPickersToolbar-root {
+  background-color: #f0f6f8;
+}
+
+.MuiPickersToolbar-root .MuiTypography-root.MuiTypography-overline {
+  display: none !important;
+}
+
+.MuiDateTimePickerToolbar-timeDigitsContainer {
+  align-items: center;
+}
+
+.MuiSvgIcon-root,
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiPickersCalendarHeader-switchViewIcon {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.MuiPickersCalendarHeader-labelContainer,
+.MuiTypography-root.MuiTypography-subtitle1.MuiPickersToolbarText-root,
+.MuiClockPointer-thumb,
+.MuiClockNumber-root,
+.MuiTypography-root,
+.MuiButtonBase-root,
+.MuiPickersYear-root > button {
+  /* font-size: 1.8rem !important; */
+}
+
+.fc-list-event-time {
+  /* font-size: 1.5rem; */
+}
+
+.fc .fc-list-day-cushion,
+.fc .fc-list-table td {
+  padding: 8px;
+}
+
+.fc-list-event-dot {
+  margin-top: 0.3rem;
+}
+
+.confirm-vbtn {
+  padding: 0px 20px 20px 20px;
+}
+
+.delete-btn-cont {
+  display: flex;
+  align-items: center;
+  padding: 0px 20px 20px 20px;
+  justify-content: space-between;
+}
+
+.delete-btn-cont-delete {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn-cont-delete:hover {
+  border-radius: 50%;
+  background-color: rgba(99, 115, 129, 0.08);
+}
+
+.delete-btn-cont svg {
+  width: 22px;
+  height: 22px;
+}
+
+.calendar .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root {
+  border-radius: 5px !important;
+  border: 1px solid blue;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+.MuiMenuItem-root.MuiMenuItem-gutters {
+  /* font-size: 2rem !important; */
+  font-weight: 400;
+  color: 'green';
+}
+
+.fc-scrollgrid.fc-scrollgrid-liquid {
+  border-top: none;
+}
+
+.calendar-filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-filter-btn svg {
+  width: 20px;
+  height: 20px;
+  color: #1b8392;
+}
+
+.color-picker-filter-cont {
+  gap: 10px;
+}
+
+.calendar-filter-cont {
+  flex-direction: column !important;
+  gap: 2rem;
+}
+
+.toolbar-cont {
+  gap: 2rem;
+  flex-direction: column !important;
+}
+
+.fc-scroller,
+.fc-scrollgrid-sync-table,
+.fc-scrollgrid-section-body,
+.fc-daygrid-body,
+.fc,
+.fc-view,
+tbody,
+.fc-scroller-harness {
+  height: 100% !important;
+}
+
+.calendar .MuiPaper-elevation {
+  height: 100% !important;
+}
+
+.MuiDialog-container {
+  background: hsla(0, 0%, 100%, 0.671);
+  position: absolute;
+  width: 100vw;
+  z-index: 999999999999999999999999999999;
+}
+
+.fc-daygrid-more-link {
+  /* font-size: 1.3rem !important; */
+}
+
+.noteSTUDENT .MuiDialog-container {
+  background: hsla(0, 0%, 100%, 0.1);
+}
+
+.toolbar_time_picker {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem 0;
+  background-color: #f0f6f8;
+  justify-content: space-between;
+}
+
+.toolbar_time_picker-date {
+  text-transform: capitalize;
+  padding-left: 5rem;
+}
+
+.toolbar_time_picker-time {
+  padding-right: 7.2rem;
+}
+
+.toolbar_time_picker-date,
+.toolbar_time_picker-time {
+  font-weight: 500;
+  /* font-size: 1.5rem; */
+  color: green;
+}
+
+.MuiPickersLayout-root {
+  display: flex !important;
+  flex-direction: column;
+}
+.options__value-container {
+  font-size: 1rem;
+}
+.fc {
+  font-size: 1rem !important;
+}
+
+.select-container {
+  /* display: flex; */
+  align-items: center;
+  font-size: 1rem;
+  padding-left: 0.5rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+
+  &-error {
+    border-color: red;
+  }
+
+  &-borderless {
+    border: none;
+  }
+}
+
+.select-async {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.teacher-profile-form .select-async {
+  width: 100%;
+}
+
+.duration-picker {
+  display: flex;
+  border-radius: 12px;
+  border: 1px solid #e4e4e4;
+  width: 100%;
+  /* padding: 0 1rem; */
+}
+
+.duration-picker .duration-input {
+  border: none !important;
+  width: 6rem !important;
+  /* padding: 1.5rem 0rem !important; */
+}
+
+.duration-picker .duration-input.minutes {
+  width: 7.6rem !important;
+}
+
+.duration-picker .duration-field {
+  position: relative;
+}
+
+.duration-picker .suffix-hours,
+.duration-picker .suffix-minutes {
+  position: absolute;
+  z-index: 2;
+  /* font-size: 1.5rem; */
+  font-weight: 400;
+  color: pink;
+}
+
+.duration-picker .suffix-hours {
+  right: 35%;
+  top: 30%;
+}
+
+.duration-picker .suffix-minutes {
+  right: 30%;
+  top: 28%;
+}
+
+.ant-dropdown {
+  z-index: 10000;
+}
+
+.dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.details-event {
+  padding: 16px 24px 20px 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.details-event-date {
+  /* font-size: 1.3rem; */
+  font-weight: 500;
+  color: pink;
+}
+
+.details-event-det {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  /* font-size: 1.5rem; */
+  font-weight: 500;
+  color: green;
+}
+
+.dialog-title {
+  /* min-width: 40rem; */
+}
+
+.btn-delete {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  width: 100%;
+  background: #f04438;
+  border-radius: 8px;
+  border: 0 !important;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  /* font-size: 16px; */
+  line-height: 24px;
+  color: white;
+}
+
+.text_field_container {
+  display: flex;
+  flex-direction: column;
+  padding: 11px 24px;
+  /* flex-direction: column; */
+}
+
+.text_field_container .label {
+  display: flex;
+  /* font-size: 1.8rem; */
+  font-weight: 400;
+  color: #999999;
+}
+
+.text_field_container .label .required {
+  color: purple;
+}
+
+.text_field_container .input_container input {
+  border-radius: 12px;
+  border: 1px solid #e4e4e4;
+  width: 100%;
+  padding: 0.5rem;
+  /* padding: 1.5rem; */
 }
