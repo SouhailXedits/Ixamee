@@ -49,7 +49,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
   return (
     /* Container div for the exam card */
     <div
-      className="w-[333px] h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2 cursor-pointer"
+      className=" h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2 cursor-pointer"
       onClick={() => onClick(exam?.id)}
     >
       {/* Header section with exam name and dropdown menu */}

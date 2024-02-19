@@ -16,7 +16,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
     const newSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: `${data.children.length + 1})`, // 🆕 Naming the subquestion based on the current number of children
-      mark: 1,
+      mark: 0,
       children: [],
     };
 
@@ -137,7 +137,7 @@ export const CreateQuestion = ({ allData, data, setFakeData, isArabic, fakeData 
   // Function to update a question's mark in the fake data
   const updateQuestion = (e: any, data: any) => {
     if (+e < 1) {
-      toast.error('la note ne doit pas etre inferieur a 0');
+      // toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
     // Using setFakeData to update the state based on previous data

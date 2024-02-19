@@ -88,7 +88,7 @@ export const CreateSubQuestion = ({
     const newSubSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: nextName,
-      mark: 1,
+      mark: 0,
       children: [],
     };
 

@@ -1,16 +1,15 @@
-"use client"
-import { cn } from "@/lib/utils";
-import { useSidebar } from "@/store/use-sidebar";
-import Image from "next/image";
-import { redirect, useParams, useRouter } from "next/navigation";
+'use client';
+import { cn } from '@/lib/utils';
+import { useSidebar } from '@/store/use-sidebar';
+import Image from 'next/image';
+import { redirect, useParams, useRouter } from 'next/navigation';
 
-
-export const  Logo = () => {
-  const {collapsed ,onCollapse ,onExpand } =useSidebar((state) =>state)  
-  const router = useRouter()
-  const params = useParams()
-  const {etab_id} = params
-  console.log(etab_id)
+export const Logo = () => {
+  const { collapsed, onCollapse, onExpand } = useSidebar((state) => state);
+  const router = useRouter();
+  const params = useParams();
+  const { etab_id } = params;
+  console.log(etab_id);
   return (
     <div className="flex items-center justify-between cursor-pointer">
       <Image
@@ -30,6 +29,7 @@ export const  Logo = () => {
           width={20}
           alt="menu"
           src="/whiteburrgermenuicon.svg"
+          // className="hidden md:block"
           onClick={() => onExpand()}
         />
       ) : (
@@ -38,11 +38,12 @@ export const  Logo = () => {
           width={20}
           alt="menu"
           src="/burrgermenuicon.svg"
+          className="hidden md:block"
           onClick={() => onCollapse()}
         />
       )}
     </div>
   );
-}
- 
-export default  Logo;
+};
+
+export default Logo;

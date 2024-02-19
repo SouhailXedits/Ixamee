@@ -3,8 +3,6 @@
 import { useConfettiStore } from '@/store/use-confetti-store';
 import ReactConfetti from 'react-confetti';
 
-
-
 export const ConfettiProvider = () => {
   const confetti = useConfettiStore();
   console.log(confetti);

@@ -16,9 +16,12 @@ export function useCreateManyUserInClass() {
   } = useMutation({
     mutationFn: (data: CreateClasseParams) => createUserWithImportInClasseAPi(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
-      toast.success('Étudiantsw ajoutés avec succès.');
+      queryClient.invalidateQueries({ queryKey: ["userOfClasses"] });
+    
+      toast.success('Étudiants ajoutés avec succès.');
+
     },
+    
     onError: (err) => {
       toast.error("Une erreur s'est produite lors de la création de l'étudiant");
     },

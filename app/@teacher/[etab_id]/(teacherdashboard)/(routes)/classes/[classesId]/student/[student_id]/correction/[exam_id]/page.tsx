@@ -23,7 +23,7 @@ export default function Page({
 }) {
   const [sum, setSum] = useState(0);
   const [isFullMarks, setIsFullMarks] = useState(false);
-const confetti = useConfettiStore();
+  const confetti = useConfettiStore();
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
@@ -110,6 +110,13 @@ const confetti = useConfettiStore();
   };
   const handleSaveData = async () => {
     try {
+      console.log(data?.total_mark);
+      console.log(sum);
+
+      if (sum > data?.total_mark) {
+        toast.error(`La note doit être minimum a ${data?.total_mark}`);
+        return;
+      }
       const stataus = statusOf(fakeData);
 
       // Assuming you have the necessary data

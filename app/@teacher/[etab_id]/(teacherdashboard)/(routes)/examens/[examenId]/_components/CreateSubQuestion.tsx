@@ -115,7 +115,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
     const newSubSubQuestion = {
       id: Math.random().toString(36).substring(7),
       name: nextName,
-      mark: 1,
+      mark: 0,
       children: [],
     };
 
@@ -290,7 +290,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
   // Function to update the mark of a subquestion and recalculate the marks in the hierarchy
   const updateSubQuestion = (e: any, data: any) => {
     if (+e.target.value < 0) {
-      toast.error('la note ne doit pas etre inferieur a 0');
+      // toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
     // Updating the mark of the specific subquestion
@@ -391,7 +391,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
               value={data.children && data.children.length > 0 ? calcSumOfMarks(data) : data.mark}
               onChange={(e: any) => {
                 if (e.target.value <= 0) {
-                  toast.error('la note ne doit pas etre inferieur a 0');
+                  // toast.error('la note ne doit pas etre inferieur a 0');
                   return;
                 }
                 updateSubQuestion(e, data);

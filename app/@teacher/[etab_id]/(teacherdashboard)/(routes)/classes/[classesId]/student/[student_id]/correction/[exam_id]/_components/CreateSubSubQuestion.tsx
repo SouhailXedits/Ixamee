@@ -127,7 +127,7 @@ export const CreateSubSubQuestion = ({
       return;
     }
     if (+e.target.value < 0) {
-      toast.error('la note ne doit pas etre inferieur a 0');
+      // toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
     setFakeData((prevData: any) => {

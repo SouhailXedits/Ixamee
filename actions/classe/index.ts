@@ -172,71 +172,59 @@ export const createUserInClasse = async (
   }
 };
 export const createUserWithImportInClasse = async (data: any) => {
-  data.map(async (user: any) => {
-    // console.log(user);
-
-    const res = await db.user.findMany({
-      where: {
-        email: user.email.trim(),
-        role: 'STUDENT',
-        // NOT: {
-        //   classe: {
-        //     some: {
-        //       id: {
-        //         equals: +user?.class_id,
-        //       },
-        //     },
-        //   },
-        // },
-      },
-      // select: {
-      //   classe: {
-      //     select: {
-      //       id: true,
-      //     },
-      //   },
-      // },
-    });
-
-    console.log(res);
-    if (res.length === 0) {
-      const data = await db.user.create({
-        data: {
-          name: user.name,
-          email: user.email.trim(),
-          role: 'STUDENT',
-
-          term: user.term,
-          classe: {
-            connect: {
-              id: +user?.class_id,
-            },
+  try {
+    await Promise.all(
+      data.map(async (user: any) => {
+        const res = await db.user.findMany({
+          where: {
+            email: user.email.trim(),
+            role: 'STUDENT',
           },
-          user_establishment: {
-            connect: {
-              id: +user.establishmentId,
+        });
+
+        if (res.length === 0) {
+          await db.user.create({
+            data: {
+              name: user.name,
+              email: user.email.trim(),
+              role: 'STUDENT',
+              term: user.term,
+              classe: {
+                connect: {
+                  id: +user?.class_id,
+                },
+              },
+              user_establishment: {
+                connect: {
+                  id: +user.establishmentId,
+                },
+              },
             },
-          },
-        },
-      });
-      console.log(data);
-    } else {
-      const data = await db.user.update({
-        where: {
-          email: user.email.trim(),
-        },
-        data: {
-          classe: {
-            connect: {
-              id: +user?.class_id,
+          });
+        } else {
+          await db.user.update({
+            where: {
+              email: user.email.trim(),
             },
-          },
-        },
-      });
-      console.log(data);
-    }
-  });
+            data: {
+              classe: {
+                connect: {
+                  id: +user?.class_id,
+                },
+              },
+            },
+          });
+        }
+      })
+    );
+    // If all users are created/updated successfully, return a resolved Promise
+    return Promise.resolve();
+  } catch (error) {
+    // If any error occurs during creation/updation, return a rejected Promise with the error
+    return Promise.reject(error);
+  }
 };
+
 export const deleteClasse = async (id: number) => {
   const data = await db.classe.delete({
     where: {
@@ -576,10 +564,11 @@ export const updateUserInClasse = async (
   });
 };
 
-export const deleteUserInClasse = async (id: string) => {
+export const deleteUserInClasse = async (user_id: string, classe_id: string) => {
+  console.log(user_id, classe_id);
   const data = await db.user.delete({
     where: {
-      id: id,
+      id: user_id,
     },
   });
   return { data: data, error: undefined };

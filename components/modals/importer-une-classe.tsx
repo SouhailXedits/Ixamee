@@ -16,6 +16,7 @@ import { Label } from '../ui/label';
 import csvtojson from 'csvtojson';
 import { useCreateManyUserInClass } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteManyUser';
 import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 interface ImportUneClasseProps {
   children: React.ReactNode;
@@ -27,9 +28,10 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
   const [file, setFile] = useState<File | null>(null);
   const { createManyUser, isPending, error } = useCreateManyUserInClass();
   const queryClient = useQueryClient();
+  console.log(isPending);
 
   const user = queryClient.getQueryData(['user']) as any;
-  console.log(user);
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -83,7 +85,7 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] ">
         <DialogHeader>
-          <DialogTitle className="text-[#1B8392] text-xl font-medium ">
+          <DialogTitle className="text-xl font-medium text-[#1B8392] ">
             Importer une classe
           </DialogTitle>
         </DialogHeader>
@@ -94,23 +96,23 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
                 id="picture"
                 type="file"
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                className="opacity-0 absolute w-[210px] h-[180px] bg-black cursor-pointer  "
+                className="absolute h-[180px] w-[210px] cursor-pointer bg-black opacity-0  "
                 onChange={handleFileChange}
               />
-              <div className="border-dashed border border-[#177C9A] w-[210px] h-[180px] rounded-xl items-center flex  justify-center flex-col gap-1 ">
+              <div className="flex h-[180px] w-[210px] flex-col items-center justify-center gap-1 rounded-xl  border border-dashed border-[#177C9A] ">
                 <Image src={'/csvfile.svg'} alt="csvfile" width={100} height={100} />
-                <span className="text-[#959595] text-sm">Sélectionnez un fichier CSV</span>
+                <span className="text-sm text-[#959595]">Sélectionnez un fichier CSV</span>
               </div>
             </div>
           ) : (
-            <div className="p-2 bg-[#F0F6F8] rounded-lg text-[#1B8392] flex items-center gap-3 w-full justify-between">
+            <div className="flex w-full items-center justify-between gap-3 rounded-lg bg-[#F0F6F8] p-2 text-[#1B8392]">
               <div className="flex items-center gap-2">
                 <Image
                   src={'/filesvc2.svg'}
                   alt="csvfile"
                   width={30}
                   height={30}
-                  className="text-[#1B8392]   stroke-black"
+                  className="stroke-black   text-[#1B8392]"
                 />
 
                 <span>{file?.name}</span>
@@ -121,7 +123,7 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
                 alt="csvfile"
                 width={20}
                 height={20}
-                className="text-[#1B8392]   stroke-black flex cursor-pointer justify-end items-end"
+                className="flex   cursor-pointer items-end justify-end stroke-black text-[#1B8392]"
                 onClick={() => {
                   setFile(null);
                 }}
@@ -135,7 +137,7 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
             <Button
               type="button"
               onClick={() => setFile(null)}
-              className="w-full bg-white text-[#177C9A] border border-[#177C9A] hover:opacity-80"
+              className="w-full border border-[#177C9A] bg-white text-[#177C9A] hover:opacity-80"
             >
               Annuler
             </Button>
@@ -144,7 +146,7 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
             <Button
               type="button"
               onClick={handleImport}
-              className="w-full text-white bg-[#1B8392] hover:opacity-80"
+              className="w-full bg-[#1B8392] text-white hover:opacity-80"
             >
               Importer
             </Button>

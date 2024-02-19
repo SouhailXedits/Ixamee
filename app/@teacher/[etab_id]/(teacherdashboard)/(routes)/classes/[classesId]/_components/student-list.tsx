@@ -113,25 +113,28 @@ const Status = ({ row }: any) => {
 };
 
 const Action = ({ row }: any) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
+  console.log(row?.original);
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
   console.log(correctionExamOfUser);
   // if (!correctionExamOfUser) return;
-
+  console.log(row?.original?.classe?.id, 'row?.original.class_id');
+  const classe_id = row?.original?.classe?.id;
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
-      <ModifierUnEtudiant data={row.original}>
-        <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
-      </ModifierUnEtudiant>
       {correctionExamOfUser ? (
-        <CorrectExam userContent={correctionExamOfUser} user_id={row.original.id}>
+        <CorrectExam
+          userContent={correctionExamOfUser}
+          user_id={row.original.id}
+          userDetails={row?.original}
+        >
           <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
         </CorrectExam>
       ) : (
-        <Skeleton className="w-[20px] h-[20px] bg-1" />
+        <Skeleton className="w-[40px] h-[40px] text-[#000000] bg-[#000000]" />
       )}
+      <ModifierUnEtudiant data={row.original}>
+        <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
+      </ModifierUnEtudiant>
 
       {!row.original.emailVerified ? (
         calculateDateDifference(row.original.invited_at, row.original.invited_at) == 0 ? (
@@ -155,7 +158,7 @@ const Action = ({ row }: any) => {
           </InviterUnEtudiant>
         )
       ) : null}
-      <SupprimerUserInClasse user_id={row?.original?.id}>
+      <SupprimerUserInClasse user_id={row?.original?.id} classe_id={classe_id}>
         <Image
           src={'/trashicon.svg'}
           alt="trashicon.svg"

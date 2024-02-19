@@ -4,6 +4,7 @@ import Sidebar from './_components/sidebar';
 import { cn } from '@/lib/utils';
 import Navbar from '../../../../components/shared-components/navbar';
 import { useQueryClient } from '@tanstack/react-query';
+import MobileSideBar from './(routes)/examens/[examenId]/_components/MobileSideBar';
 
 type DashboardLayoutProps = {
   params?: {
@@ -31,14 +32,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   // });
 
   const { collapsed } = useSidebar((state) => state);
-
+  console.log(collapsed);
   return (
-    <div
-      className={cn(
-        'h-full grid grid-cols-[260px,1fr] grid-rows-[260px,1fr]',
-        collapsed && 'grid-cols-[65px,1fr]'
-      )}
-    >
+    <div className={cn('h-full flex', collapsed && 'grid-cols-[65px,1fr]')}>
       <>
         <div
           className={cn(
@@ -48,13 +44,24 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
         >
           <Sidebar isOpen={collapsed} />
         </div>
+        <div
+          className={cn(
+            'fixed inset-y-0 z-50 flex-col  h-full w-[260px] md:hidden  transition-width duration-300',
+            collapsed && 'w-[60px]'
+          )}
+        >
+          <MobileSideBar />
+        </div>
+
         <div>
           <Navbar />
         </div>
         <main
           className={cn(
-            !collapsed ? 'transition-all duration-500 ' : ' transition-all duration-500',
-            ' pt-[60px] w-full overflow-auto h-screen '
+            !collapsed
+              ? 'transition-all duration-500 md:pl-[260px]'
+              : ' transition-all duration-500 pl-[55px]',
+            ' pt-[60px]  w-full overflow-auto h-screen '
           )}
         >
           {children}

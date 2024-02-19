@@ -28,20 +28,38 @@ interface CorrectExamProps {
   children: React.ReactNode;
   userContent: any;
   user_id: string;
+  userDetails: any;
 }
 
-export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent, user_id }) => {
+export const CorrectExam: React.FC<CorrectExamProps> = ({
+  children,
+  userContent,
+  user_id,
+  userDetails,
+}) => {
+  console.log(userDetails, 'userDetails');
+  const exam_id = userDetails?.exam;
+  console.log(exam_id, 'exam_id');
   const [note, setNote] = useState<string>('0');
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  let data = userContent ? (userContent as any) : [];
+  if (data.length === 0) {
+    data = userDetails.classe.exam_classe?.map((item: any) => {
+      console.log(item);
+      if (item.id == exam_id) {
+        return item;
+      }
+    });
+  }
 
-  const data = userContent ? (userContent as any) : [];
-  console.log(data);
   if (!data) {
     return <Loading />;
   }
-  const new_total_mark = data[0]?.exam?.total_mark || 0;
+
+  const new_total_mark = data[0]?.total_mark || data[0]?.exam?.total_mark || 0;
+
   console.log(new_total_mark);
 
   useEffect(() => {
@@ -52,7 +70,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent,
   }, [data]);
 
   const handelCorrectExam = () => {
-    const examanId = data[0]?.exam_id;
+    const examanId = data[0]?.exam_id || exam_id;
     router.push(`${pathname}/student/${user_id}/correction/${examanId}`);
   };
 
@@ -71,14 +89,15 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent,
   const handelSubmit = () => {
     if (!item) {
       const obj = {
-        exam_id: data?.exam_id,
+        exam_id: data[0]?.exam_id,
         mark_obtained: note,
         user_id: user_id,
       };
+      console.log(obj);
       createExamCorrectionn(obj);
     } else {
       const obj = {
-        exam_id: data?.exam_id,
+        exam_id: data[0]?.exam_id,
         user_id: user_id,
         status: item as 'notClassified' | 'absent',
       };
@@ -168,8 +187,8 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent,
             </div>
           </RadioGroup>
         </div>
-        <DialogFooter className="mt-4">
-          <DialogClose asChild>
+        <DialogFooter className="w-full mt-4 ">
+          <DialogClose asChild className="w-[50%]">
             <Button
               type="submit"
               className="w-full bg-white
@@ -179,8 +198,8 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent,
             </Button>
           </DialogClose>
           {isPending ? (
-            <DialogClose>
-              <Button type="submit" className="w-full text-white bg-[#177C9A] hover:opacity-80">
+            <DialogClose className="w-[50%]">
+              <Button type="submit" className="w-full   text-white bg-[#177C9A] hover:opacity-80">
                 <div
                   className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
                   role="status"
@@ -189,10 +208,10 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({ children, userContent,
               </Button>
             </DialogClose>
           ) : (
-            <DialogClose>
+            <DialogClose asChild className="w-[50%]">
               <Button
                 type="submit"
-                className="w-full text-white bg-[#177C9A] hover:opacity-80"
+                className="w-full text-white  bg-[#177C9A] hover:opacity-80"
                 onClick={handelSubmit}
               >
                 Enregistrer

@@ -274,7 +274,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
               value={data?.mark}
               onChange={(e) => {
                 if (+e.target.value <= 0) {
-                  toast.error('la note ne doit pas etre inferieur a 0');
+                  // toast.error('la note ne doit pas etre inferieur a 0');
                   return;
                 }
                 updateSubSubQuestion(e, data);

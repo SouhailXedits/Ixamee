@@ -14,11 +14,14 @@ import {
 interface SupprimerUneClasse {
   children: React.ReactNode;
   user_id: string;
+  classe_id: string;
 }
-export const SupprimerUserInClasse = ({ children, user_id }: SupprimerUneClasse) => {
+export const SupprimerUserInClasse = ({ children, user_id, classe_id }: SupprimerUneClasse) => {
+  console.log(classe_id);
   const { deleteUser } = useDeleteUserInClasse();
   const handelDeleteExa = () => {
-    deleteUser(user_id);
+    console.log(classe_id, user_id);
+    deleteUser({ user_id, classe_id });
   };
   return (
     <Dialog>
