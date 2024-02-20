@@ -9,7 +9,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 const Etablissement = () => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
-  const teacherEstab = queryClient.getQueryData(['AllEstabOfUser']) as any;
+  // const teacherEstab = queryClient.getQueryData(['AllEstabOfUser']) as any;
+
+  const { data: teacherEstab, isLoading } = useQuery({
+    queryKey: ['AllEstabOfUser'],
+    queryFn: () => getEstablishmentOfUser(user?.id),
+  });
 
   const { collapsed } = useSidebar((state) => state);
 

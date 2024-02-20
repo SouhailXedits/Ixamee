@@ -77,7 +77,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
   const handelSubmitCorrectionExam = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (Number(value) > new_total_mark) {
-      toast.error('la note ne doit pas depasser le total de la classe');
+      // toast.error('la note ne doit pas depasser le total de la classe');
       return;
     }
     setNote(value);
@@ -118,7 +118,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
           <div>
             <span className="text-[#959595] text-[15px]">Accorder une note</span>
             <div className="flex items-center gap-2">
-              <div className=" relative w-[170px]  h-[54px] pr-10 rounded-lg bg-[#F0F6F8] text-2 flex items-center justify-center ">
+              <div className=" relative w-[170px] overflow-hidden h-[54px] pr-10 rounded-lg bg-[#F0F6F8] text-2 flex items-center justify-center ">
                 <Input
                   type="number"
                   placeholder="--"

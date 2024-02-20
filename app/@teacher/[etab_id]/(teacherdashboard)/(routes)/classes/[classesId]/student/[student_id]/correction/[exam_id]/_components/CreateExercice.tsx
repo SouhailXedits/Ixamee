@@ -2,7 +2,11 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { CreateQuestion } from './CreateQuestion';
 import { cn } from '@/lib/utils';
-import { calculateChildrenMarks, calculerExerciceMark } from './calculateChildrenMarks';
+import {
+  calculateChildrenMarks,
+  calculerExerciceMark,
+  getMarkOfExerciceWithId,
+} from './calculateChildrenMarks';
 
 export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, isArabic }: any) => {
   if (!data) return;
@@ -39,11 +43,18 @@ export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, is
           <div className="flex items-center gap-3 ">
             <div
               className={cn(
-                'flex w-[100px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
+                'flex w-[100px] pr-[55px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
               )}
             >
               <div className="flex items-center justify-center">
-                <Input
+                <div className="w-[160px]  bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
+                  <span>
+                    <span>{Number(calculerExerciceMark(data)).toFixed(2)}</span>
+                  </span>
+                  <span>/</span>
+                  <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
+                </div>
+                {/* <Input
                   className={cn(
                     'bg-transparent border-none text-[#1B8392] w-[90px] text-xl  placeholder:text-mainGreen p-3 border border-[#1B8392] text-center'
                   )}
@@ -52,7 +63,7 @@ export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, is
                   disabled
                   value={Number(calculerExerciceMark(data)).toFixed(2)}
                   // defaultValue={}
-                />
+                /> */}
                 {/* <span className="text-xl">/ 20.00</span> */}
               </div>
             </div>
@@ -67,7 +78,7 @@ export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, is
           )} */}
           {data.children.map((item: any) => (
             <CreateQuestion
-            key={item.id}
+              key={item.id}
               data={item}
               allData={data}
               fakeData={allData}

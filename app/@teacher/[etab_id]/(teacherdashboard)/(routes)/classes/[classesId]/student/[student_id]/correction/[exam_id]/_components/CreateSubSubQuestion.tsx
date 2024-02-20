@@ -121,7 +121,7 @@ export const CreateSubSubQuestion = ({
   };
   const updateSubSubQuestion = (e: any, data: any) => {
     const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
-
+    console.log(mark);
     if (+e.target.value > +mark) {
       // toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
@@ -135,9 +135,11 @@ export const CreateSubSubQuestion = ({
         if (item.id === allData.id) {
           return {
             ...item,
+
             children: item.children.map((subItem: any) => {
               return {
                 ...subItem,
+
                 children: subItem.children.map((subSubItem: any, index: number) => {
                   return {
                     ...subSubItem,
@@ -166,8 +168,10 @@ export const CreateSubSubQuestion = ({
                 ...subItem,
 
                 children: subItem.children.map((subSubItem: any, index: number) => {
+                  console.log(calcSumOfMarks(subSubItem));
                   return {
                     ...subSubItem,
+
                     mark: calcSumOfMarks(subSubItem),
                   };
                 }),
@@ -211,6 +215,7 @@ export const CreateSubSubQuestion = ({
     calculerExerciceMark(allData);
   };
   console.log(data);
+  console.log(allData);
   return (
     <>
       <div

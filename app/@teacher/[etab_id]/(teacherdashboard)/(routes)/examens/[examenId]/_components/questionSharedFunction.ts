@@ -1,5 +1,3 @@
-
-
 // Function to handle rendering questions and updating their names
 export const handeRenderQuestion = (setFakeData: any) => {
   // 🚨 Logging the previous data for debugging purposes
@@ -20,7 +18,7 @@ export const handeRenderQuestion = (setFakeData: any) => {
     });
   });
 };
-export const handelDeleteQuestion = (setFakeData :any ,data: any, allData: any) => {
+export const handelDeleteQuestion = (setFakeData: any, data: any, allData: any) => {
   // 🚨 Logging the previous data for debugging purposes
   setFakeData((prevData: any) => {
     // Mapping over the previous data to create a new updatedData array
@@ -62,7 +60,7 @@ export const calculateMark = (data: any) => {
   return data.mark;
 };
 
-export const updateContetn = (contetn: string, data: any ,setFakeData: any) => {
+export const updateContetn = (contetn: string, data: any, setFakeData: any) => {
   // Using setFakeData to update the state based on previous data
   setFakeData((prevData: any) => {
     // Mapping over the previous data to create a new updatedData array
@@ -84,8 +82,8 @@ export const updateContetn = (contetn: string, data: any ,setFakeData: any) => {
 };
 
 // Function to update a question's mark in the fake data
-export const updateQuestion = (e: any, data: any , setFakeData: any) => {
-  if (+e < 1) {
+export const updateQuestion = (e: any, data: any, setFakeData: any) => {
+  if (+e < 0) {
     // toast.error('la note ne doit pas etre inferieur a 0');
     return;
   }

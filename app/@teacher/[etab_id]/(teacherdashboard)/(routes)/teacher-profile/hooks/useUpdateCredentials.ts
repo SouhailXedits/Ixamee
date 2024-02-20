@@ -9,9 +9,9 @@ export function useUpdateCredentials() {
     mutationFn: (values: any) => updateTeacherCredentials(values),
     onSuccess: (data) => {
       if (data?.success) {
+        queryClient.invalidateQueries({ queryKey: ['AllEstabOfUser'] });
         queryClient.invalidateQueries({ queryKey: ['user'] });
         queryClient.invalidateQueries({ queryKey: ['teacherSubjects'] });
-        queryClient.invalidateQueries({ queryKey: ['AllEstabOfUser'] });
         toast.success(data.success + '');
       }
       if (data?.error) {

@@ -351,7 +351,7 @@ export const CreateSubQuestion = ({
             {data.children && data.children.length > 0 ? (
               <div className="w-[160px] bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
                 <span>
-                  <span>{data.mark.toFixed(2)}</span>
+                  <span>{data.mark}</span>
                 </span>
                 <span>/</span>
                 <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
@@ -376,7 +376,7 @@ export const CreateSubQuestion = ({
       </div>
       {data.children.map((item: any) => (
         <CreateSubSubQuestion
-        key={item.id}
+          key={item.id}
           data={item}
           setFakeData={setFakeData}
           isArabic={isArabic}
