@@ -17,6 +17,39 @@ import dayjs from 'dayjs';
 import useValidationscategorySchema from './eventSchema';
 import AsyncSelect from '../components/asyncSelect/AsyncSelect';
 import { Button } from '@/components/ui/button';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import { getSubjectOfUser } from '@/actions/examens';
+
+
+
+
+// function useSubjectOptions(classes, user_id) {
+//   const queryClient = useQueryClient();
+//   const [options, setOptions] = useState([]);
+
+//   useEffect(() => {
+//     const fetchSubjects = async () => {
+//       const { data: subjects } = await queryClient.fetchQuery({queryKey : ['selectSubjects', classes], queryFn: () =>
+//        getSubjectOfUser(user_id, classes)}
+//       );
+//       if (subjects) {
+//         setOptions(
+//           subjects?.data?.subjects?.map((item) => ({
+//             value: item.id,
+//             label: item.name,
+//           })) || []
+//         );
+//       }
+//     };
+
+//     fetchSubjects();
+//   }, [queryClient, classes, user_id]);
+//   console.log(options)
+
+//   return options;
+// }
+
 
 function CalendarForm({
   eventId,
@@ -28,35 +61,60 @@ function CalendarForm({
   colorOptions,
   topMenu = false,
 }: any) {
+  const queryClient = useQueryClient();
+  const params = useParams();
+  const { etab_id } = params;
+  const [classes, setClasses] = useState([]);
+  const e = null;
+  const user = queryClient.getQueryData(['user']);
+  const user_id = user.id;
+  // const options = useSubjectOptions(classes, user_id);
+  const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
+    queryKey: ['teachersubject', classes],
+    queryFn: async () => await getSubjectOfUser(user_id, classes),
+  });
+
+
+  const options = Teachersubject?.map((item: SubjectOutputProps) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+
+
+  // const AllSubjects = queryClient.getQueryData(["teacherSubject"])
+  // console.log(AllSubjects)
   // const event = useAppSelector((state) => state.calendar.events).find(
   //   (event) => event.id === eventId
   // );
-  const event = {
-    id: 1,
-    title: 'event 1',
-    start: '2024-02-05',
-    end: '2024-02-05',
-    color: 'purple',
-    textColor: 'white',
-    classes: [{ name: 'class 1', _id: '1' }],
-    subject: { name: 'subject 1', _id: '1' },
-    studentsVisibility: true,
-    establishment: '1',
-  };
+
+  // const e = {
+  //   id: 1,
+  //   title: 'event 1',
+  //   start: '2024-02-05',
+  //   end: '2024-02-05',
+  //   color: 'purple',
+  //   textColor: 'white',
+  //   classes: [{ name: 'class 1', _id: '1' }],
+  //   subject: { name: 'subject 1', _id: '1' },
+  //   studentsVisibility: true,
+  //   establishment: '1',
+  // };
 
   // const dispatch = useAppDispatch();
   const eventValidation = useValidationscategorySchema();
 
   const initialValues = {
-    title: event ? event?.title : '',
-    start: event ? event?.start : range?.start.toISOString(),
-    end: event ? event?.end : dayjs(range?.start).add(2, 'hour').toISOString(),
-    color: event ? event?.color : '',
-    classes: event ? event?.classes?.map((el: any) => ({ label: el?.name, value: el?._id })) : [],
-    subject: event ? { label: event?.subject?.name, value: event?.subject?._id } : '',
-    description: event ? event?.description : '',
-    studentsVisibility: event ? event?.studentsVisibility : false,
-    establishment: event ? event?.establishment : '',
+    title: e ? e?.title : '',
+    start: e ? e?.start : range?.start.toISOString(),
+    end: e ? e?.end : dayjs(range?.start).add(2, 'hour').toISOString(),
+    color: e ? e?.color : '',
+    classes: e ? e?.classes?.map((el: any) => ({ label: el?.name, value: el?._id })) : [],
+    subject: e ? { label: e?.subject?.name, value: e?.subject?._id } : '',
+    description: e ? e?.description : '',
+    studentsVisibility: e ? e?.studentsVisibility : false,
+    establishment: e ? e?.establishment : '',
   };
   const submitHandler = async (values: any) => {
     // const activeEstablishmentId = localStorage.getItem('activeEstablishmentId');
@@ -71,27 +129,31 @@ function CalendarForm({
   const handleInputSelect = (e: any, formik: any) => {
     formik.setFieldValue('studentsVisibility', e.target.value);
   };
+
   const loadPageClasses = async (q: any, prevOptions: any, { page }: any) => {
-    // const response = await dispatch(fetchClassList({ limit: 10, page: page, name: q })).then(
-    //   (response: any) => response
-    // );
-    // return {
-    //   options: response.payload?.payload?.map((item: any) => ({
-    //     value: item._id,
-    //     label: item.name,
-    //   })),
-    //   hasMore: response?.payload?.meta?.hasNextPage,
-    //   additional: {
-    //     page: response?.payload?.meta?.page + 1,
-    //   },
-    // };
+    const classes = queryClient.getQueryData(['classe', etab_id]);
+    console.log(classes);
+    return {
+      options: classes?.data?.map((item: any) => ({
+        value: item.id,
+        label: item.name,
+      })),
+    };
   };
+
+  // console.log(Formik.values);
+
+  // useEffect(() => {
+  //   // This function will run whenever Formik values change
+  //   console.log(formik.values);
+  // }, [formik.values]);
+
   useEffect(() => {
     const getSubjects = async () => {
-      if (event?.classes?.length > 0) {
+      if (e?.classes?.length > 0) {
         // const response = await dispatch(
         //   fetchSubjectsByClasses({
-        //     classesId: event?.classes?.map((el: { value: string; label: string }) => el?._id),
+        //     classesId: e?.classes?.map((el: { value: string; label: string }) => el?._id),
         //   })
         // ).then((response: any) => response);
         // setOptions(
@@ -103,9 +165,12 @@ function CalendarForm({
       }
     };
     getSubjects();
-  }, [event]);
-  const [options, setOptions] = useState([]);
-  console.log(options);
+  }, [e]);
+  // const [options, setOptions] = useState([{ label: 'subject 1', value: '1' }]);
+  console.log('subjects 🇹🇳',options);
+
+  
+
   return (
     <Formik
       initialValues={initialValues}
@@ -125,13 +190,13 @@ function CalendarForm({
               label="Classe(s)"
               height={'46px'}
               required={true}
-              options={[{label: "classe", value: "classe"}]}
+              options={[{ label: 'classe', value: 'classe' }]}
               className="exam-scheduler-classes"
               formik={formik}
               name="classes"
               defaultValue={
-                event
-                  ? formik.values.classes.map((el: any) => ({
+                e
+                  ? formik.values.classes?.map((el: any) => ({
                       label: el?.name || el?.label,
                       value: el?._id || el?.value,
                     }))
@@ -139,24 +204,9 @@ function CalendarForm({
               }
               placeholder="Sélectionner les classes"
               loadPageOptions={loadPageClasses}
-              handleChange={async (value: any) => {
-                if (value) {
-                  // const response = await dispatch(
-                  //   fetchSubjectsByClasses({
-                  //     classesId: value?.map((el: { value: string; label: string }) => el?.value),
-                  //   })
-                  // ).then((response: any) => response);
-                  formik.setFieldValue('subject', '');
-                  // setOptions(
-                  //   response.payload?.data?.subjects?.map((item: any) => ({
-                  //     value: item._id,
-                  //     label: item.name,
-                  //   }))
-                  // );
-                } else {
-                  formik.setFieldValue('subject', '');
-                  setOptions([]);
-                }
+              handleChange={(value: any) => {
+                formik.setFieldValue('subject', '');
+                setClasses(value || []);
               }}
               onlyId={false}
               error={true}
@@ -310,7 +360,7 @@ function CalendarForm({
                   // label={loading ? t('loading') : t('btn')}
                   className="btn-primary category_form_button"
                 >
-                  {event ? 'Modifier' : 'Planifier'}
+                  {e ? 'Modifier' : 'Planifier'}
                 </Button>
               </div>
             </div>
