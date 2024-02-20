@@ -30,7 +30,7 @@ const AsyncSelect = ({
   topMenu = false,
   error = false,
 }: any) => {
-  console.log(options);
+  // console.log(options);
   
   // const theme = useSelector((state) => state?.theme?.mode);
   const theme = 'light';
@@ -248,7 +248,7 @@ const AsyncSelect = ({
             placeholder="Sélectionner la matière"
             name={name}
             value={value}
-            options={[{label: 'souhail' , value: 'souhail'}]}
+            options={options}
             onChange={(value: any) => {
               if (setState) setState(value.value);
               if (handleChange) handleChange(value);

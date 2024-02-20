@@ -116,12 +116,15 @@ export default function Calendar() {
   const [openEventDet, setOpenEventDet] = useState(false);
 
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  console.log(selectedEventId)
 
   const [selectedRange, setSelectedRange] = useState<{
     start: Date;
     end: Date;
   } | null>(null);
-
+  const selectedEvent = events.find((event: any) => event.id === selectedEventId) as any;
+  console.log(selectedEvent);
+  
   // const selectedEvent = useAppSelector(() => {
   //   if (selectedEventId) {
   //     return events.find((event: any) => event.id === selectedEventId);
@@ -262,6 +265,7 @@ export default function Calendar() {
   const handleDropEvent = ({ event }: EventDropArg) => {
     try {
       const selectedEvent = events.find((el: any) => el.id === event._def.publicId) as any;
+      console.log(selectedEvent)
       const startDate = dayjs(event._instance?.range.start).get('date');
       const startMonth = dayjs(event._instance?.range.start).get('month');
       const startYear = dayjs(event._instance?.range.start).get('year');
@@ -542,7 +546,7 @@ export default function Calendar() {
           >
             <DialogTitle padding={'16px 24px 5px 24px !important'}>
               <div className="dialog-title">
-                <h2> {'Planifier un examen'}</h2>
+                <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2>
                 {/* <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2> */}
                 <button onClick={handleCloseModal}>{/* <Cancel /> */}X</button>
               </div>
