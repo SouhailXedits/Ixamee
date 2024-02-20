@@ -42,7 +42,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
       }
       setSum(calcAllMark(fakeData));
     }
-  }, [isPending, getCorrigeExamOfUser, data, fakeData]);
+  }, [isPending, getCorrigeExamOfUser]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
