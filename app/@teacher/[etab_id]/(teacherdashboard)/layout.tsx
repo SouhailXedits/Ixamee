@@ -32,13 +32,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   // });
 
   const { collapsed } = useSidebar((state) => state);
-  console.log(collapsed);
+
   return (
     <div className={cn('h-full flex', collapsed && 'grid-cols-[65px,1fr]')}>
       <>
         <div
           className={cn(
-            'fixed inset-y-0 z-50 flex-col hidden h-full w-[260px] md:flex transition-width duration-300',
+            'fixed inset-y-0 z-50 flex-col  hidden h-full w-[260px] md:flex transition-width duration-300',
             collapsed && 'w-[60px]'
           )}
         >

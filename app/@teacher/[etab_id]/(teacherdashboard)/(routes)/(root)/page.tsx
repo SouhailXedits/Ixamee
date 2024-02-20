@@ -43,7 +43,7 @@ export default function Home() {
     queryFn: async () => await getAllClassesNameAndId({ user_id: user?.id, etab_id }),
   });
 
-  console.log(classes);
+
   return isPendingStudentClasse ? (
     <Loading />
   ) : (

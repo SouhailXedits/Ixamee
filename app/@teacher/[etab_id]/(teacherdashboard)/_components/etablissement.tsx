@@ -19,7 +19,7 @@ const Etablissement = () => {
   const { collapsed } = useSidebar((state) => state);
 
   return (
-    <div className="border-t border-[#99C6D3] max-h-50">
+    <div className="border-t border-[#99C6D3] max-h-50 ">
       <div className="flex items-center gap-3 p-4">
         <Image src="/bankicon.svg" alt="bankicon" width={18} height={18} />
         <span className={cn('text-[#99C6D3]', collapsed && 'hidden')}>Établissements</span>
@@ -31,7 +31,7 @@ const Etablissement = () => {
           <Skeleton className="w-full h-[20px]" />
         </div>
       ) : (
-        <div className="overflow-x-auto max-h-52">
+        <div className="pb-20 overflow-x-auto max-h-52">
           <SideBarRadioItem data={teacherEstab} />
         </div>
       )}

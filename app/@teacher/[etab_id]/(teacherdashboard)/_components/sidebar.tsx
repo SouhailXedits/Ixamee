@@ -45,7 +45,7 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <div
       className={cn(
-        'w-full h-full  border-r shadow-sm felx flex:col bg-mainGreen',
+        'w-full h-full  border-r shadow-sm felx flex:col  bg-mainGreen',
         isOpen && ' bg-mainGreen'
       )}
     >
@@ -53,7 +53,7 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
         <Logo />
       </div>
 
-      <div className="flex flex-col h-full p-1 font-normal text-white ">
+      <div className="flex flex-col justify-end h-full p-1 font-normal text-white item-end ">
         <SidebarRoutes guestRoutes={guestRoutes} />
       </div>
     </div>
