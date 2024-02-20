@@ -1,15 +1,26 @@
 'use client';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useTheme } from 'next-themes';
-import { BlockNoteEditor, PartialBlock } from '@blocknote/core';
+import {
+  Block,
+  BlockNoteEditor,
+  BlockSchemaFromSpecs,
+  DefaultProps,
+  InlineContent,
+  PartialBlock,
+} from '@blocknote/core';
 import { BlockNoteView, useBlockNote } from '@blocknote/react';
 import '@blocknote/core/style.css';
 import { uploadToTmpFilesDotOrg_DEV_ONLY } from '@blocknote/core';
+import Image from 'next/image';
+import { useState } from 'react';
 interface EditorProps {
   onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
 }
+
 const handleUpload = async (file: File) => {
   const form = new FormData();
   form.append('file', file);
@@ -27,8 +38,7 @@ const handleUpload = async (file: File) => {
 };
 const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   const { resolvedTheme } = useTheme();
-  console.log(resolvedTheme);
-
+  const [file, SetFile] = useState('');
   const editor: BlockNoteEditor = useBlockNote({
     editable,
     initialContent: initialContent ? JSON.parse(initialContent) : undefined,
@@ -38,9 +48,64 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
     uploadFile: handleUpload,
   });
 
+  const handlePaste = async (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file' && item.type.includes('image')) {
+        const file = item.getAsFile();
+        if (!file) continue;
+
+        const selection = editor.getTextCursorPosition();
+        const id = uuidv4();
+        const fakeImageUrl = URL.createObjectURL(file);
+
+        if (fakeImageUrl) {
+          // If imageUrl is available, insert the image block with the correct URL
+          const imageBlock: any = {
+            id: id,
+            type: 'image',
+            props: {
+              url: fakeImageUrl,
+              caption: '',
+              width: 512,
+            },
+            content: [],
+            children: [],
+          };
+          editor.insertBlocks([imageBlock], selection.block.id, 'before');
+        }
+        const imageUrl = await handleUpload(file);
+        if (imageUrl) {
+          const imageBlock: any = {
+            id: id,
+            type: 'image',
+            props: {
+              url: imageUrl,
+              caption: '',
+              width: 512,
+            },
+            content: [],
+            children: [],
+          };
+          editor.updateBlock(id, imageBlock);
+        }
+      }
+    }
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full" onPaste={(e) => handlePaste(e)}>
       <BlockNoteView editor={editor} theme={resolvedTheme === 'dark' ? 'dark' : 'light'} />
+      {/* <Image
+        src={file && URL?.createObjectURL(file)}
+        width={100}
+        height={100}
+        alt="1111dsd"
+        className="test"
+      /> */}
     </div>
   );
 };
