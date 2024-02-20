@@ -98,6 +98,7 @@ model Establishment {
   name               String
   user_establishment User[]   @relation("UserEstablishmentToUser")
   classes            Classe[] @relation("EstablishmentToClasse")
+  exam_plans         ExamPlans[]
 }
 model UserClasseInfos{
   id            Int @id @default(autoincrement())
@@ -120,6 +121,7 @@ model Classe {
   archived_at   DateTime?
   createdAt          DateTime?       @default(now())
   exam_classe   Exam[]          @relation("ExamClasseToUser")
+  exam_plans    ExamPlans[]
 }
  
 // Subject Table
@@ -132,6 +134,7 @@ model Subject {
   exams          Exam[]
   is_archived    Boolean? @default(false)
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
+  exam_plans     ExamPlans[]
 }
  
 model Exam {
@@ -183,3 +186,18 @@ enum Status {
   notCorrected
 }
  
+
+model ExamPlans {
+  id                  Int             @id @default(autoincrement())
+  name                String?
+  subject             Subject?         @relation(fields: [subject_id], references: [id] )
+  subject_id          Int?
+  establishment       Establishment?         @relation(fields: [estab_id], references: [id] )
+  estab_id            Int?
+  studentVisibility   Boolean?        @default(false)
+  start               DateTime?
+  end                 DateTime?
+  description         String?
+  color               Json?
+  classes             Classe[]     
+}
