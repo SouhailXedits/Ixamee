@@ -86,13 +86,13 @@ const COLOR_OPTIONS = [
 export default function Calendar() {
   const events = [
     {
-      id: '1',
-      title: 'Event 1',
+      id: '11',
+      title: 'Eventt 1',
       start: '2024-02-05T08:00:00',
       end: '2024-02-08T10:00:00',
       color: '#FF2C6E',
       textColor: '#FFEBE9',
-      subject: { _id: 1, name: 'souhail' },
+      subject: { _id: 1, name: 'souuhail' },
     },
     {
       id: '2',
