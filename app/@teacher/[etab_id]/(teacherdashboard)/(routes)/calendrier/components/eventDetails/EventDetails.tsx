@@ -6,6 +6,7 @@ import { Dropdown, Menu, MenuProps, Modal, message } from 'antd';
 import dayjs from 'dayjs';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
 function EventDetails({
   setSelectedRange,
   setSelectedEventId,
@@ -22,10 +23,10 @@ function EventDetails({
   const queryClient = useQueryClient()
   const events = queryClient.getQueryData(['events']) as any; 
   const event = events?.find((event:any) => event.id === +eventId)
-  console.log(eventId);
-  console.log(events);
-  console.log(event);
-  console.log(current);
+  // console.log(eventId);
+  // console.log(events);
+  // console.log(event);
+  // console.log(current);
 
   // const event = {
   //   title: 'event',
@@ -144,7 +145,8 @@ function EventDetails({
                 }}
               >
                 {/* <Dots /> */}
-                dots
+                {/* dots */}
+                <Image src="/burrgermenuicon.svg" height={20} width={20} alt="dots" />
               </button>
             </Dropdown>
           </div>
