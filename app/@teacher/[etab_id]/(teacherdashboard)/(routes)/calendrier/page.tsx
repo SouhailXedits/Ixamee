@@ -40,7 +40,6 @@ import useMediaMatch from '@rooks/use-media-match';
 // } from '../../data/slices/calendarSlice';
 import dayjs from 'dayjs';
 
-import { message } from 'antd';
 // import Button from '../Bulletin/components/StudentBulletin/components/button/Button';
 import EventDetails from './components/eventDetails/EventDetails';
 import 'dayjs/locale/fr';

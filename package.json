@@ -12,6 +12,7 @@
     "test:watch": "jest --watchAll"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.0",
     "@auth/prisma-adapter": "^1.0.14",
     "@babel/plugin-syntax-jsx": "^7.23.3",
     "@blocknote/core": "^0.10.1",
@@ -51,6 +52,7 @@
     "@tanstack/react-query-devtools": "^5.17.9",
     "@tanstack/react-table": "^8.11.2",
     "@types/bcryptjs": "^2.4.6",
+    "antd": "^5.14.1",
     "apexcharts": "^3.45.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
