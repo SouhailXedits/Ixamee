@@ -46,6 +46,9 @@ import EventDetails from './components/eventDetails/EventDetails';
 import 'dayjs/locale/fr';
 import { Button } from '@/components/ui/button';
 import Loading from '@/app/loading';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getExamPlansByUserId } from '@/actions/exam-plans';
+import { useParams } from 'next/navigation';
 
 // ----------------------------------------------------------------------
 
@@ -108,23 +111,32 @@ export default function Calendar() {
   // const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaMatch('(min-width: 575px)');
-
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(['user']) as any;
+  const params = useParams();
+  const { etab_id } = params;
+  const user_id = user?.id;
   const calendarRef = useRef<FullCalendar>(null);
   // let events: any = useGetEvents(setLoading);
+  const { data: events2, isPending } = useQuery({
+    queryKey: ['events'],
+    queryFn: async () => await getExamPlansByUserId(user_id, +etab_id),
+  });
+  console.log(events2);
 
   const [openForm, setOpenForm] = useState(false);
   const [openEventDet, setOpenEventDet] = useState(false);
 
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  console.log(selectedEventId)
+  console.log(selectedEventId);
 
   const [selectedRange, setSelectedRange] = useState<{
     start: Date;
     end: Date;
   } | null>(null);
-  const selectedEvent = events.find((event: any) => event.id === selectedEventId) as any;
+  const selectedEvent = events?.find((event: any) => event.id === selectedEventId) as any;
   console.log(selectedEvent);
-  
+
   // const selectedEvent = useAppSelector(() => {
   //   if (selectedEventId) {
   //     return events.find((event: any) => event.id === selectedEventId);
@@ -265,7 +277,7 @@ export default function Calendar() {
   const handleDropEvent = ({ event }: EventDropArg) => {
     try {
       const selectedEvent = events.find((el: any) => el.id === event._def.publicId) as any;
-      console.log(selectedEvent)
+      console.log(selectedEvent);
       const startDate = dayjs(event._instance?.range.start).get('date');
       const startMonth = dayjs(event._instance?.range.start).get('month');
       const startYear = dayjs(event._instance?.range.start).get('year');
@@ -423,7 +435,7 @@ export default function Calendar() {
 
   function renderEventContent(eventInfo: any) {
     console.log(eventInfo);
-    
+
     const event = eventInfo.event._context.options.events.find(
       (event: any) => event.id === eventInfo.event.id
     );
