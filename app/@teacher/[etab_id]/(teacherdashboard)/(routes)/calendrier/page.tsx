@@ -87,27 +87,27 @@ const COLOR_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function Calendar() {
-  const events = [
-    {
-      id: '11',
-      title: 'Eventt 1',
-      start: '2024-02-05T08:00:00',
-      end: '2024-02-08T10:00:00',
-      color: '#FF2C6E',
-      textColor: '#FFEBE9',
-      subject: { _id: 1, name: 'souuhail' },
-    },
-    {
-      id: '2',
-      title: 'Event 2',
-      start: '2024-02-02T10:00:00',
-      end: '2024-02-02T12:00:00',
-      color: '#FF8743',
-      textColor: '#FFF5D8',
-      subject: { _id: 1, name: 'souhail' },
-    },
-    // Add more events as needed
-  ];
+  // const events = [
+  //   {
+  //     id: '11',
+  //     title: 'Eventt 1',
+  //     start: '2024-02-05T08:00:00',
+  //     end: '2024-02-08T10:00:00',
+  //     color: '#FF2C6E',
+  //     textColor: '#FFEBE9',
+  //     subject: { _id: 1, name: 'souuhail' },
+  //   },
+  //   {
+  //     id: '2',
+  //     title: 'Event 2',
+  //     start: '2024-02-02T10:00:00',
+  //     end: '2024-02-02T12:00:00',
+  //     color: '#FF8743',
+  //     textColor: '#FFF5D8',
+  //     subject: { _id: 1, name: 'souhail' },
+  //   },
+  //   // Add more events as needed
+  // ];
   // const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaMatch('(min-width: 575px)');
@@ -118,11 +118,11 @@ export default function Calendar() {
   const user_id = user?.id;
   const calendarRef = useRef<FullCalendar>(null);
   // let events: any = useGetEvents(setLoading);
-  const { data: events2, isPending } = useQuery({
+  const { data: events, isPending } = useQuery({
     queryKey: ['events'],
     queryFn: async () => await getExamPlansByUserId(user_id, +etab_id),
   });
-  console.log(events2);
+  console.log(events);
 
   const [openForm, setOpenForm] = useState(false);
   const [openEventDet, setOpenEventDet] = useState(false);
@@ -276,7 +276,7 @@ export default function Calendar() {
 
   const handleDropEvent = ({ event }: EventDropArg) => {
     try {
-      const selectedEvent = events.find((el: any) => el.id === event._def.publicId) as any;
+      const selectedEvent = events?.find((el: any) => el.id === event._def.publicId) as any;
       console.log(selectedEvent);
       const startDate = dayjs(event._instance?.range.start).get('date');
       const startMonth = dayjs(event._instance?.range.start).get('month');

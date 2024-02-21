@@ -5,6 +5,7 @@ import { Dropdown, Menu, MenuProps, Modal, message } from 'antd';
 // import DropdownButton from 'antd/es/dropdown/dropdown-button';
 import dayjs from 'dayjs';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 function EventDetails({
   setSelectedRange,
   setSelectedEventId,
@@ -18,17 +19,24 @@ function EventDetails({
   // const event = useAppSelector((state) => state.calendar.events).find(
   //   (event: any) => event.id === eventId
   // );
+  const queryClient = useQueryClient()
+  const events = queryClient.getQueryData(['events']) as any; 
+  const event = events?.find((event:any) => event.id === +eventId)
+  console.log(eventId);
+  console.log(events);
+  console.log(event);
+  console.log(current);
 
-  const event = {
-    title: 'event',
-    start: '2024-02-05',
-    end: '2024-02-06',
-    color: { light: 'pink', dark: 'blue' },
-    studentsVisibility: true,
-    description: 'souhail brahmi',
-    classes: ["3 eme info", "bac"],
-    subject: {name: 'math'},
-  };
+  // const event = {
+  //   title: 'event',
+  //   start: '2024-02-05',
+  //   end: '2024-02-06',
+  //   color: { light: 'pink', dark: 'blue' },
+  //   studentsVisibility: true,
+  //   description: 'souhail brahmi',
+  //   classes: ["3 eme info", "bac"],
+  //   subject: {name: 'math'},
+  // };
   const [deleteForm, setDeleteForm] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpenChange = () => {
@@ -136,6 +144,7 @@ function EventDetails({
                 }}
               >
                 {/* <Dots /> */}
+                dots
               </button>
             </Dropdown>
           </div>
