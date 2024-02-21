@@ -120,7 +120,7 @@ export const createUserInClasse = async (
       },
     },
   });
-  console.log(nameExiste);
+  // console.log(nameExiste);
   if (nameExiste?.length > 0) {
     throw new Error('Name already exists');
     return;
@@ -198,7 +198,7 @@ export const createUserWithImportInClasse = async (data: any) => {
       // },
     });
 
-    console.log(res);
+    // console.log(res);
     if (res.length === 0) {
       const data = await db.user.create({
         data: {
@@ -219,7 +219,7 @@ export const createUserWithImportInClasse = async (data: any) => {
           },
         },
       });
-      console.log(data);
+      // console.log(data);
     } else {
       const data = await db.user.update({
         where: {
@@ -233,7 +233,7 @@ export const createUserWithImportInClasse = async (data: any) => {
           },
         },
       });
-      console.log(data);
+      // console.log(data);
     }
   });
 };
@@ -523,7 +523,7 @@ export const getStudentOfClasse = async (classe_id: number) => {
       name: 'asc',
     },
   });
-  console.log(res);
+  // console.log(res);
   return res;
 };
 
@@ -712,8 +712,8 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
   return data;
 };
 export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
-  console.log(exam_id);
-  console.log(userData);
+  // console.log(exam_id);
+  // console.log(userData);
   if(!exam_id || !userData) return null
 
   // if (exam_id === 'undefined') return null;

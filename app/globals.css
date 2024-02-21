@@ -155,7 +155,7 @@ body {
 }
 
 .calendar-todayBtn {
-  color: 'green';
+  color: 'rgba(27, 131, 146, 1)';
   /* font-size: 2rem !important; */
   font-weight: 400;
 }
@@ -163,7 +163,7 @@ body {
 .calendar .MuiStack-root .MuiButton-root:first-child {
   /* font-size: 2rem !important; */
   font-weight: 400;
-  color: 'green';
+  color: 'rgba(27, 131, 146, 1)';
 }
 
 .MuiButtonBase-root .MuiMenuItem-root .MuiMenuItem-gutters .MuiMenuItem-root .MuiMenuItem-gutters {
@@ -178,7 +178,7 @@ body {
 .dialog-title h2 {
   /* font-size: 2rem; */
   font-weight: 500;
-  color: 'green';
+  color: 'rgba(27, 131, 146, 1)';
   text-align: left;
 }
 
@@ -456,7 +456,7 @@ body {
 .MuiMenuItem-root.MuiMenuItem-gutters {
   /* font-size: 2rem !important; */
   font-weight: 400;
-  color: 'green';
+  color: 'rgba(27, 131, 146, 1)';
 }
 
 .fc-scrollgrid.fc-scrollgrid-liquid {
@@ -540,7 +540,7 @@ tbody,
 .toolbar_time_picker-time {
   font-weight: 500;
   /* font-size: 1.5rem; */
-  color: green;
+  color: rgba(27, 131, 146, 1);
 }
 
 .MuiPickersLayout-root {
@@ -611,7 +611,7 @@ tbody,
   z-index: 2;
   /* font-size: 1.5rem; */
   font-weight: 400;
-  color: pink;
+  color: #000;
 }
 
 .duration-picker .suffix-hours {
@@ -644,7 +644,7 @@ tbody,
 .details-event-date {
   /* font-size: 1.3rem; */
   font-weight: 500;
-  color: pink;
+  color: #000;
 }
 
 .details-event-det {
@@ -653,7 +653,7 @@ tbody,
   gap: 0.2rem;
   /* font-size: 1.5rem; */
   font-weight: 500;
-  color: green;
+  color: rgba(27, 131, 146, 1);
 }
 
 .dialog-title {

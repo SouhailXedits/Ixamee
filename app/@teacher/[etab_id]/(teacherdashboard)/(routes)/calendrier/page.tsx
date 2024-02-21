@@ -49,6 +49,8 @@ import Loading from '@/app/loading';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getExamPlansByUserId } from '@/actions/exam-plans';
 import { useParams } from 'next/navigation';
+import { useDeleteExamPlan } from './hooks/useDeleteExamPlan';
+import { useUpdateExamPlan } from './hooks/useUpdateExamPlan';
 
 // ----------------------------------------------------------------------
 
@@ -118,7 +120,7 @@ export default function Calendar() {
   const user_id = user?.id;
   const calendarRef = useRef<FullCalendar>(null);
   // let events: any = useGetEvents(setLoading);
-  const { data: events, isPending } = useQuery({
+  const { data: events, isPending } = useQuery<any>({
     queryKey: ['events'],
     queryFn: async () => await getExamPlansByUserId(user_id, +etab_id),
   });
@@ -152,6 +154,9 @@ export default function Calendar() {
   const [filterEventColor, setFilterEventColor] = useState<string[]>([]);
 
   const [view, setView] = useState<ICalendarViewValue>('dayGridMonth');
+  const { deleteExamPlan } = useDeleteExamPlan();
+  const { updateExamPlan } = useUpdateExamPlan();
+
   // useEffect(() => {
   //   return () => dispatch(emptyEvents());
   // }, []);
@@ -276,8 +281,10 @@ export default function Calendar() {
 
   const handleDropEvent = ({ event }: EventDropArg) => {
     try {
-      const selectedEvent = events?.find((el: any) => el.id === event._def.publicId) as any;
+      console.log(event);
+      const selectedEvent = events?.find((el: any) => el.id === +event._def.publicId) as any;
       console.log(selectedEvent);
+
       const startDate = dayjs(event._instance?.range.start).get('date');
       const startMonth = dayjs(event._instance?.range.start).get('month');
       const startYear = dayjs(event._instance?.range.start).get('year');
@@ -294,15 +301,19 @@ export default function Calendar() {
         .set('year', endYear);
       selectedEvent.start = newStartDate.toISOString();
       selectedEvent.end = newEndDate.toISOString();
-      selectedEvent.subject = selectedEvent?.subject._id;
+      selectedEvent.subject = selectedEvent?.subject.id;
 
-      const color = {
-        dark: selectedEvent?.color,
-        light: selectedEvent?.textColor,
-      };
+      const color = selectedEvent?.color
 
       selectedEvent.color = color;
       delete selectedEvent.textColor;
+      console.log(selectedEvent);
+      const selectedId = selectedEvent.id;
+      console.log(selectedId);
+      const classesIds = selectedEvent.classes.map((classe:any) => classe.id);
+      selectedEvent.classes = classesIds
+
+      updateExamPlan(selectedEvent);
 
       // dispatch(
       //   patchEvent({
@@ -410,9 +421,7 @@ export default function Calendar() {
     try {
       if (selectedEventId) {
         handleCloseModal();
-        // dispatch(deleteEvent(selectedEventId));
-        // dispatch(deleteEvents(selectedEventId));
-        message.success('événement supprimé avec succès');
+        deleteExamPlan(+selectedEventId);
       }
     } catch (error) {
       console.error(error);
@@ -517,7 +526,7 @@ export default function Calendar() {
                 eventDisplay="block"
                 events={dataFiltered}
                 headerToolbar={false}
-                initialEvents={events}
+                // initialEvents={events}
                 select={handleSelectRange}
                 eventDrop={handleDropEvent}
                 dayHeaderFormat={{ weekday: isDesktop ? 'long' : 'narrow' }}
