@@ -120,7 +120,7 @@ export const createUserInClasse = async (
       },
     },
   });
-  console.log(nameExiste);
+  // console.log(nameExiste);
   if (nameExiste?.length > 0) {
     throw new Error('Name already exists');
     return;
@@ -511,7 +511,7 @@ export const getStudentOfClasse = async (classe_id: number) => {
       name: 'asc',
     },
   });
-  console.log(res);
+  // console.log(res);
   return res;
 };
 

@@ -260,7 +260,6 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
           height={25}
           alt="Layer"
           src="/logo.svg"
-        
         />
       </div>
     </div>

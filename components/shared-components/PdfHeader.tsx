@@ -342,33 +342,64 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
           >
             {meta.heading}
           </div>
-          <p
-            style={{
-              alignSelf: 'stretch',
-              color: 'var(--x-1)',
-              flex: '1',
-              fontFamily: '"Poppins", Helvetica',
-              fontSize: '12px',
-              fontWeight: '400',
-              letterSpacing: '0',
-              lineHeight: '20px',
-              position: 'relative',
-            }}
-          >
-            <span style={{ fontWeight: '500' }}>Matiere : </span>
-            <span
+          {type === 'MSStudent' && (
+            <p
               style={{
-                color: '#102528',
+                alignSelf: 'stretch',
+                color: 'var(--x-1)',
+                flex: '1',
                 fontFamily: '"Poppins", Helvetica',
                 fontSize: '12px',
                 fontWeight: '400',
                 letterSpacing: '0',
                 lineHeight: '20px',
+                position: 'relative',
               }}
             >
-              {meta.subject}
-            </span>
-          </p>
+              <span style={{ fontWeight: '500' }}>Matiere : </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '20px',
+                }}
+              >
+                {meta.subject}
+              </span>
+            </p>
+          )}
+          {type === 'MSTeach' && (
+            <p
+              style={{
+                alignSelf: 'stretch',
+                color: 'var(--x-1)',
+                flex: '1',
+                fontFamily: '"Poppins", Helvetica',
+                fontSize: '12px',
+                fontWeight: '400',
+                letterSpacing: '0',
+                lineHeight: '20px',
+                position: 'relative',
+              }}
+            >
+              <span style={{ fontWeight: '500' }}>{meta.term.type} : </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '20px',
+                }}
+              >
+                {meta.term.number}
+              </span>
+            </p>
+          )}
         </div>
         <div
           style={{
