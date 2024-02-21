@@ -20,9 +20,7 @@ import { Button } from '@/components/ui/button';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { getSubjectOfUser } from '@/actions/examens';
-
-
-
+import { useCreateExamPlan } from '../hooks/useCreateExamPlan';
 
 // function useSubjectOptions(classes, user_id) {
 //   const queryClient = useQueryClient();
@@ -50,7 +48,6 @@ import { getSubjectOfUser } from '@/actions/examens';
 //   return options;
 // }
 
-
 function CalendarForm({
   eventId,
   range,
@@ -74,14 +71,13 @@ function CalendarForm({
     queryFn: async () => await getSubjectOfUser(user_id, classes),
   });
 
-
   const options = Teachersubject?.map((item: SubjectOutputProps) => {
     return {
       value: item.id,
       label: item.name,
     };
   });
-
+  const { creatExamPlan, isPending } = useCreateExamPlan();
 
   // const AllSubjects = queryClient.getQueryData(["teacherSubject"])
   // console.log(AllSubjects)
@@ -117,6 +113,14 @@ function CalendarForm({
     establishment: e ? e?.establishment : '',
   };
   const submitHandler = async (values: any) => {
+    console.log(values);
+    const classesIds = values.classes.map((el: any) => el.value);
+    const subjectId = values.subject.value;
+    const values2 = {...values, classes: classesIds, subject: subjectId, estab: etab_id, user_id};
+    console.log(values2);
+    creatExamPlan(values2);
+    
+
     // const activeEstablishmentId = localStorage.getItem('activeEstablishmentId');
     // values.establishment = activeEstablishmentId;
     // try {
@@ -167,9 +171,7 @@ function CalendarForm({
     getSubjects();
   }, [e]);
   // const [options, setOptions] = useState([{ label: 'subject 1', value: '1' }]);
-  console.log('subjects 🇹🇳',options);
-
-  
+  console.log('subjects 🇹🇳', options);
 
   return (
     <Formik
@@ -341,13 +343,14 @@ function CalendarForm({
                 </label>
               </div>
             </div>
-            <div className={'confirm-vbtn'}>
-              <div className="pop-up-delete-btns">
+            <div className={'confirm-vbtn mt-5'}>
+              <div className="pop-up-delete-btns justify-between flex gap-2">
                 <Button
                   type="button"
                   onClick={() => {
                     onCancel();
                   }}
+                  className=' bg-transparent border border-2 text-2 w-full'
                   // backgroundColor={0}
                   // color={25}
                   // borderColor={25}
@@ -358,7 +361,7 @@ function CalendarForm({
                   type="submit"
                   // disabled={loading}
                   // label={loading ? t('loading') : t('btn')}
-                  className="btn-primary category_form_button"
+                  className="btn-primary category_form_button bg-2 w-full"
                 >
                   {e ? 'Modifier' : 'Planifier'}
                 </Button>
