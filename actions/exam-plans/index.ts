@@ -93,6 +93,7 @@ export const getExamPlansByUserId = async (user_id: string, estab_id: number) =>
       title: plan.name,
       studentsVisibility: plan.studentVisibility,
       studentVisibility: undefined,
+      textColor: plan.color.dark,
       name: undefined,
     }));
     return renamedExamPlans;
