@@ -6,7 +6,7 @@ import { createExamPlan as createExamPlanApi } from '@/actions/exam-plans';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 
 export function useCreateExamPlan() {
-//   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 //   const params = useParams();
 //   const pathName = usePathname();
 //   const router = useRouter();
@@ -14,7 +14,7 @@ export function useCreateExamPlan() {
     mutationFn: ( data : { data: any;}) =>
       createExamPlanApi(data),
     onSuccess: (data: any) => {
-    //   queryClient.invalidateQueries({ queryKey: ['examens'] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
     //   queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
       toast.success('Exam planification ajouté avec succès.');
     //   if (pathName.includes('/examens')) {
