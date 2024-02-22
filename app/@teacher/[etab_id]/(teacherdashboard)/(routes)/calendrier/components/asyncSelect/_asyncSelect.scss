@@ -1,0 +1,29 @@
+.select-container {
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+
+    &-error {
+        border-color: $color-13;
+    }
+
+    &-borderless {
+        border: none;
+    }
+}
+
+.select-async {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.teacher-profile-form {
+    .select-async {
+        width: 100%;
+    }
+}

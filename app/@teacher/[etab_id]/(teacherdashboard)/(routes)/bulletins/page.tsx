@@ -16,6 +16,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
 import { getMarkSheets } from '@/actions/mark-sheets/actions';
 import Loading from '@/app/loading';
+import PDFExport from '@/app/_utils/ExportAsPdf';
+import { MarkSheetPdfClass } from './components/MarkSheetTeacher';
 
 const Student = () => {
   const params = useParams();
@@ -26,12 +28,14 @@ const Student = () => {
   const etab_id = Number(params.etab_id);
 
   const { data: classes } = useQuery({
-    queryKey: ['classe'],
+    queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
 
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
   const subjects = queryClient.getQueryData(['teacherSubject']) as any;
+  const userEstab = queryClient.getQueryData(['teacherEstab']) as any;
+  console.log(userEstab)
 
   const defaultSubject = subjects?.length && subjects[0]?.id;
 
@@ -62,7 +66,6 @@ const Student = () => {
   }, {});
 
   if (!groupedData && isPending) return <Loading />;
-  console.log(groupedData);
 
   let maxCoefficient = 0;
 
@@ -128,6 +131,9 @@ const Student = () => {
 
   const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
+  console.log(classes);
+
+  
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -146,7 +152,15 @@ const Student = () => {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-start justify-end gap-3 pt-4 h-14 cursor-pointe">
+        <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+          <PDFExport pdfName="bulletins">
+            <MarkSheetPdfClass
+              StudentsData={rankedData}
+              classe={classes?.data.find((classe: any) => classe.id === filters.classe_id)?.name}
+              term={filters.term}
+              estab={userEstab?.find((estab:any) => estab.id === etab_id)?.name}
+            />
+          </PDFExport>
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 

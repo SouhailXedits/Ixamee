@@ -1,0 +1,55 @@
+.ant-dropdown {
+  z-index: 10000;
+}
+
+.dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.details-event {
+  padding: 16px 24px 20px 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  &-date {
+
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: $color-11
+  }
+
+  &-det {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $color-2
+  }
+}
+
+.dialog-title {
+  min-width: 40rem;
+}
+
+.btn-delete {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  width: 100%;
+  background: #f04438;
+  border-radius: 8px;
+  border: 0 !important;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: white;
+}
