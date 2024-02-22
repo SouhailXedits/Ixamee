@@ -146,13 +146,13 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
               Annuler
             </button>
           </div>
-
+          {/* 
           <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
             <div className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center">
               <Image src="/importerIcon.svg" alt="icons" width={20} height={20} />
               Importer
             </div>
-          </div>
+          </div> */}
 
           <div
             className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 "

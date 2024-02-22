@@ -13,10 +13,12 @@ export default function Classes() {
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
   const user_id = user?.id;
+
   const { data, isPending } = useQuery({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id, etab_id }),
   });
+  console.log(data);
 
   // to DO Scelton
   const filteredData = data?.data?.filter((classe: any) => {

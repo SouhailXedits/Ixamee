@@ -11,12 +11,13 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import { use, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { Label } from '../ui/label';
 import csvtojson from 'csvtojson';
 import { useCreateManyUserInClass } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteManyUser';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import Loading from '@/app/loading';
 
 interface ImportUneClasseProps {
   children: React.ReactNode;
@@ -26,12 +27,14 @@ interface ImportUneClasseProps {
 
 export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasseProps) => {
   const [file, setFile] = useState<File | null>(null);
+  const [open, setOpen] = useState(false);
+
   const { createManyUser, isPending, error } = useCreateManyUserInClass();
+
   const queryClient = useQueryClient();
   console.log(isPending);
 
   const user = queryClient.getQueryData(['user']) as any;
-
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -54,6 +57,13 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
 
       // jsonData.map((item: { name: string; email: string }) => {
       createManyUser(newData);
+
+      if (isPending === false) {
+        setTimeout(() => {
+          setOpen((open) => !open); // Close the dialog after 5 seconds
+        }, 3000);
+      }
+
       // });
     }
   };
@@ -67,8 +77,16 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
           const csvData = event.target?.result as string;
           const lines = csvData.trim().split('\n'); // Trim and split the CSV data into lines
           const jsonData = lines.map((line) => {
-            const [name, email] = line.split(';'); // Split each line into name and email
-            return { name, email };
+            console.log('Item', line);
+
+            if (line.includes(',')) {
+              const [name, email] = line.split(',');
+              return { name, email };
+            }
+            if (line.includes(';')) {
+              const [name, email] = line.split(';');
+              return { name, email };
+            }
           });
           resolve(jsonData);
         } catch (error) {
@@ -79,9 +97,8 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
       reader.readAsText(csvFile);
     });
   };
-
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px] ">
         <DialogHeader>
@@ -96,7 +113,7 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
                 id="picture"
                 type="file"
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                className="absolute h-[180px] w-[210px] cursor-pointer bg-black opacity-0  "
+                className="absolute h-[180px] w-[210px] cursor-pointer bg-black opacity-0"
                 onChange={handleFileChange}
               />
               <div className="flex h-[180px] w-[210px] flex-col items-center justify-center gap-1 rounded-xl  border border-dashed border-[#177C9A] ">
@@ -104,7 +121,7 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
                 <span className="text-sm text-[#959595]">Sélectionnez un fichier CSV</span>
               </div>
             </div>
-          ) : (
+          ) : !isPending ? (
             <div className="flex w-full items-center justify-between gap-3 rounded-lg bg-[#F0F6F8] p-2 text-[#1B8392]">
               <div className="flex items-center gap-2">
                 <Image
@@ -129,6 +146,16 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
                 }}
               />
             </div>
+          ) : (
+            <div className="flex items-center justify-center w-full">
+              <Image
+                src="/loadingbgWite.svg"
+                alt="bankicon"
+                width={200}
+                height={200}
+                className="text-center bg-transparent fill-white"
+              />
+            </div>
           )}
         </div>
 
@@ -142,15 +169,15 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
               Annuler
             </Button>
           </DialogClose>
-          <DialogClose asChild>
-            <Button
-              type="button"
-              onClick={handleImport}
-              className="w-full bg-[#1B8392] text-white hover:opacity-80"
-            >
-              Importer
-            </Button>
-          </DialogClose>
+          {/* <DialogClose asChild> */}
+          <Button
+            type="button"
+            onClick={handleImport}
+            className="w-full bg-[#1B8392] text-white hover:opacity-80"
+          >
+            Importer
+          </Button>
+          {/* </DialogClose> */}
         </DialogFooter>
       </DialogContent>
     </Dialog>

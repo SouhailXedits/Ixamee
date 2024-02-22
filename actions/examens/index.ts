@@ -204,7 +204,7 @@ export const getMe = async () => {
 };
 
 export const getClasseOfUser = async (user_id: string, userEstablishments: any) => {
-  if(!user_id || !userEstablishments) return;
+  if (!user_id || !userEstablishments) return;
   const findOneClasse = async (user_id: string, establishmentId: string) => {
     const classe = await db.classe.findMany({
       where: {
@@ -257,8 +257,8 @@ const getIntersectionOfArrays = (arrays: any) => {
   return intersection;
 };
 export const getSubjectOfUser = async (user_id: string, data: any) => {
-  console.log('user id 😉',user_id, data)
-  if(!user_id || !data) return;
+  console.log('user id 😉', user_id, data);
+  if (!user_id || !data) return;
   const findOneSubject = async (user_id: string, classe: any) => {
     const subject = await db.subject.findMany({
       where: {
@@ -325,6 +325,7 @@ export const getEstablishmentOfUser = async (user_id: string) => {
       },
     },
   });
+  console.log(data);
 
   return data;
 };
@@ -347,8 +348,10 @@ export const getOneExamByIdForCorrection = async ({ id }: { id: string }) => {
     },
   });
   const newData = exam?.content;
+  console.log(newData, 'newData⚡️⚡️⚡️⚡️⚡️⚡️⚡️');
 
   transferAllMarkToNull(newData);
+  console.log(exam, 'exam✨✨✨✨');
 
   return exam;
 };

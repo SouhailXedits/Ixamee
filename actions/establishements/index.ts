@@ -15,7 +15,22 @@ export const createEstablishement = async (name: string) => {
     };
   }
 };
+export const getAllEstabsWithNoPagination = async () => {
+  try {
 
+
+    const estabs = await db.establishment.findMany({});
+
+    const totalCount = await db.establishment.count();
+
+    return { data: { estabs, totalCount }, error: undefined };
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get establishment.',
+    };
+  }
+};
 export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
   try {
     const skip = (page - 1) * pageSize;
@@ -73,27 +88,22 @@ export const deleteEstablishement = async (id: number) => {
   }
 };
 
-
 export const getNameEstabByClasseId = async (classe_id: number) => {
   try {
-
-
     const data = await db.establishment.findFirst({
       where: {
         classes: {
           some: {
-            id: classe_id
-          }
+            id: classe_id,
+          },
         },
       },
       select: {
-        name: true
-      }
+        name: true,
+      },
     });
 
-
-
-    return data 
+    return data;
   } catch (error: any) {
     return {
       data: undefined as any,
@@ -101,5 +111,3 @@ export const getNameEstabByClasseId = async (classe_id: number) => {
     };
   }
 };
-
-

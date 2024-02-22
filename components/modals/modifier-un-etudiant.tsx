@@ -110,6 +110,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
       //   // class_id: class_id,
       //   // establishmentId: etab_id,
       // });id: string, name: string, email: string, image: string
+    
       updateUserInClasse({
         id: data.id,
         name: formatData.name,
