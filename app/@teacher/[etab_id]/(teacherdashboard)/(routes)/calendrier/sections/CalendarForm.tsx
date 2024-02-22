@@ -21,6 +21,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { getSubjectOfUser } from '@/actions/examens';
 import { useCreateExamPlan } from '../hooks/useCreateExamPlan';
+import { useUpdateExamPlan } from '../hooks/useUpdateExamPlan';
 
 // function useSubjectOptions(classes, user_id) {
 //   const queryClient = useQueryClient();
@@ -62,7 +63,7 @@ function CalendarForm({
   const params = useParams();
   const { etab_id } = params;
   const [classes, setClasses] = useState([]);
-  const e = null;
+  // const e = null;
   const user = queryClient.getQueryData(['user']);
   const user_id = user.id;
   // const options = useSubjectOptions(classes, user_id);
@@ -78,12 +79,11 @@ function CalendarForm({
     };
   });
   const { creatExamPlan, isPending } = useCreateExamPlan();
-
-  // const AllSubjects = queryClient.getQueryData(["teacherSubject"])
-  // console.log(AllSubjects)
-  // const event = useAppSelector((state) => state.calendar.events).find(
-  //   (event) => event.id === eventId
-  // );
+  const allEvents = queryClient.getQueryData(['events']);
+  console.log(eventId);
+  const e = allEvents.find((event) => event.id === +eventId);
+  console.log(e);
+  const {updateExamPlan} = useUpdateExamPlan()
 
   // const e = {
   //   id: 1,
@@ -106,8 +106,8 @@ function CalendarForm({
     start: e ? e?.start : range?.start.toISOString(),
     end: e ? e?.end : dayjs(range?.start).add(2, 'hour').toISOString(),
     color: e ? e?.color : '',
-    classes: e ? e?.classes?.map((el: any) => ({ label: el?.name, value: el?._id })) : [],
-    subject: e ? { label: e?.subject?.name, value: e?.subject?._id } : '',
+    classes: e ? e?.classes?.map((el: any) => ({ label: el?.name, value: el?.id })) : [],
+    subject: e ? { label: e?.subject?.name, value: e?.subject?.id } : '',
     description: e ? e?.description : '',
     studentsVisibility: e ? e?.studentsVisibility : false,
     establishment: e ? e?.establishment : '',
@@ -115,11 +115,23 @@ function CalendarForm({
   const submitHandler = async (values: any) => {
     console.log(values);
     const classesIds = values.classes.map((el: any) => el.value);
+    console.log(classesIds);
     const subjectId = values.subject.value;
-    const values2 = {...values, classes: classesIds, subject: subjectId, estab: etab_id, user_id};
+    console.log(subjectId);
+    const values2 = {
+      ...values,
+      classes: classesIds,
+      subject: subjectId,
+      estab: etab_id,
+      user_id,
+      id: eventId ? +eventId : null,
+    };
+
     console.log(values2);
-    creatExamPlan(values2);
-    
+    if (!eventId) creatExamPlan(values2);
+    else {
+      updateExamPlan(values2);
+    }
 
     // const activeEstablishmentId = localStorage.getItem('activeEstablishmentId');
     // values.establishment = activeEstablishmentId;
@@ -350,7 +362,7 @@ function CalendarForm({
                   onClick={() => {
                     onCancel();
                   }}
-                  className=' bg-transparent border border-2 text-2 w-full'
+                  className=" bg-transparent border border-2 text-2 w-full"
                   // backgroundColor={0}
                   // color={25}
                   // borderColor={25}

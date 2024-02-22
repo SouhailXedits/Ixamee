@@ -473,6 +473,10 @@ body {
   margin-bottom: 2rem;
 }
 
+[data-radix-popper-content-wrapper] {
+  z-index: 2000 !important;
+}
+
 .MuiMenuItem-root.MuiMenuItem-gutters {
   /* font-size: 2rem !important; */
   font-weight: 400;
