@@ -208,6 +208,23 @@ body {
   /* padding: 1.5rem; */
 }
 
+[class$="multiValue"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+[class$="ValueContainer"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+[class$="MultiValueGeneric"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+[class$="-menu"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+
 .exam-scheduler-classes [id^='react-select-'][id$='-placeholder'] {
   /* font-size: 1.8rem !important; */
   font-weight: 400;
@@ -225,7 +242,7 @@ body {
 }
 
 .options__placeholder {
-  font-size: 1.8rem !important;
+  font-size: 1rem !important;
   font-weight: 400 !important;
   color: #bfbfbf !important;
 }
@@ -241,17 +258,18 @@ body {
 }
 
 .color-picker-color {
-
+  position: relative;
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 50%;
 }
 
+
 .color-picker-color.selected::after {
-  content: 'tick icon ';
+  content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkiIGhlaWdodD0iMTciIHZpZXdCb3g9IjAgMCAxOSAxNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMTAuMzMzM0w3LjE4MTgyIDE1TDE4IDEiIHN0cm9rZT0iI0ZGODc0MyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPC9zdmc+Cg==");
   position: absolute;
-  top: -0.3rem;
-  right: -0.8rem;
+  top: 0.2rem;
+  right: 0.15rem;
 }
 
 .student-visibilty {
@@ -573,10 +591,13 @@ tbody,
 }
 
 .select-async {
-  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.options__menu {
+  font-size: 1rem !important;
 }
 
 .teacher-profile-form .select-async {
