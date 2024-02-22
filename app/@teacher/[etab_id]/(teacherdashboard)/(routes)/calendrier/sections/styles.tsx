@@ -28,7 +28,7 @@ const StyledCalendar = styled('div')(({ theme }) => ({
     '& .fc-col-header-cell-cushion': {
       ...theme.typography.subtitle2,
       fontFamily: 'Poppins',
-      fontSize: '2rem',
+      fontSize: '1rem',
       padding: '13px 0',
     },
   },
@@ -74,7 +74,7 @@ const StyledCalendar = styled('div')(({ theme }) => ({
     },
   },
   '& .fc .fc-event .fc-event-main-frame': {
-    fontSize: 13,
+    fontSize: '0.5rem',
     lineHeight: '20px',
     filter: 'brightness(0.24)',
   },
@@ -100,7 +100,7 @@ const StyledCalendar = styled('div')(({ theme }) => ({
   '& .fc .fc-popover-header': {
     ...theme.typography.subtitle2,
     fontFamily: 'Poppins',
-    fontSize: '2rem',
+    fontSize: '1rem',
     padding: theme.spacing(1),
     backgroundColor: alpha(theme.palette.grey[500], 0.12),
     borderBottom: `solid 1px ${theme.palette.divider}`,
@@ -134,7 +134,7 @@ const StyledCalendar = styled('div')(({ theme }) => ({
   '& .fc .fc-daygrid-day-number': {
     ...theme.typography.body2,
     fontFamily: 'Poppins',
-    fontSize: '2rem',
+    fontSize: '1rem',
     padding: theme.spacing(1, 1, 0),
   },
   '& .fc .fc-daygrid-event': {
@@ -163,7 +163,7 @@ const StyledCalendar = styled('div')(({ theme }) => ({
     {
       ...theme.typography.subtitle2,
       fontFamily: 'Poppins',
-      fontSize: '2rem',
+      fontSize: '1rem',
     },
   '& .fc .fc-list-event': {
     ...theme.typography.body2,

@@ -474,10 +474,10 @@ export default function Calendar() {
 
   return (
     <>
-      <div className="calendar">
+      <div className="calendar flex flex-col w-full overflow-auto p-9">
         <div className="page__header">
           <div className="page__header-left">
-            <h2 className="page-title">Calendrier</h2>
+            <h2 className="page-title text-2xl text-2 font-semibold">Calendrier</h2>
             <Button
               onClick={() => {
                 handleSelectRange({
@@ -485,7 +485,7 @@ export default function Calendar() {
                   end: new Date(),
                 });
               }}
-              className="btn"
+              className="btn bg-2"
               type="button"
             >
               Planifier un examen
@@ -566,7 +566,10 @@ export default function Calendar() {
           >
             <DialogTitle padding={'16px 24px 5px 24px !important'}>
               <div className="dialog-title">
-                <h2 className=' text-2'> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2>
+                <h2 className=" text-2">
+                  {' '}
+                  {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}
+                </h2>
                 {/* <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2> */}
                 <button onClick={handleCloseModal}>{/* <Cancel /> */}X</button>
               </div>
