@@ -39,6 +39,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
 
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', filters.exam_id, filters.classe_id],
+    enabled: filters.exam_id !== undefined || filters.classe_id !== undefined,
     queryFn: async () => await getCorrectionOfUser(filters.classe_id, data, filters.exam_id),
     retry: 0,
   });
@@ -56,6 +57,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
 
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', filters.exam_id],
+    enabled: filters.exam_id !== undefined,
     queryFn: async () =>
       await getCorigeExameContentOfAllUser(filters.exam_id, getIdOfUserInTheClasse),
   });
@@ -78,7 +80,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
               value={filters.classe_id}
               onValueChange={(value) => setFilters({ ...filters, classe_id: value })}
             >
-              <SelectTrigger className="w-1/4 rounded-xl text-11">
+              <SelectTrigger className="w-1/4 rounded-xl text-11 max-md:w-full">
                 <SelectValue className="text-sm" placeholder="Classe" />
               </SelectTrigger>
               <SelectContent>
@@ -97,7 +99,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
               onValueChange={(value) => setFilters({ ...filters, exam_id: value })}
               disabled={!filters.classe_id}
             >
-              <SelectTrigger className="w-1/4 rounded-xl text-11">
+              <SelectTrigger className="max-md:w-full rounded-xl text-11">
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>
@@ -115,7 +117,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
             <Rien
               image="/dashboard/books.svg"
               className="flex flex-col justify-center gap-6"
-              message="Pas de bulletins pour le moment"
+              message="Pas de Corrections pour le moment"
             />
           </div>
         </>
@@ -160,7 +162,9 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
               </SelectContent>
             </Select>
           </div>
-            <div className="w-full overflow-auto border rounded-xl"><ExamCorrectionList data={newData} /></div>
+          <div className="w-full overflow-auto border rounded-xl">
+            <ExamCorrectionList data={newData} />
+          </div>
         </div>
       )}
     </>

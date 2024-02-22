@@ -93,70 +93,73 @@ export const calcSumOfMarks = (data: any) => {
   return sum;
 };
 
-
-export const updateSubQuestion = (e: any, data: any ,setFakeData: any, allData: any) => {
-    if (+e.target.value < 0) {
-      // toast.error('la note ne doit pas etre inferieur a 0');
-      return;
-    }
-    // Updating the mark of the specific subquestion
-    setFakeData((prevData: any) => {
-      return prevData.map((item: any) => {
-        // Checking if the current item's id matches the id of the parent question
-        if (item.id === allData.id) {
-          // Updating 👍 the children array of the parent question
-          return {
-            ...item,
-            children: item.children.map((subItem: any) => {
-              // Updating the children array of the parent subquestion
-              return {
-                ...subItem,
-                children: subItem.children.map((subSubItem: any) => {
-                  // Checking if the current subsubitem's id matches the id of the subquestion to be updated
-                  if (subSubItem.id === data.id) {
-                    // Updating the mark of the subquestion with the new value
-                    subSubItem.mark = +e.target.value;
-                  }
-                  // Returning unchanged subsubitems
-                  return subSubItem;
-                }),
-              };
-            }),
-          };
-        }
-        // Returning unchanged items
-        return item;
-      });
+export const updateSubQuestion = (e: any, data: any, setFakeData: any, allData: any) => {
+  if (+e.target.value < 0) {
+    // toast.error('la note ne doit pas etre inferieur a 0');
+    return;
+  }
+  console.log(e.target.value);
+  console.log(data);
+  console.log(allData);
+  // Updating the mark of the specific subquestion
+  setFakeData((prevData: any) => {
+    return prevData.map((item: any) => {
+      // Checking if the current item's id matches the id of the parent question
+      console.log(item.id, allData.id);
+      if (item.id === allData.id) {
+        // Updating 👍 the children array of the parent question
+        return {
+          ...item,
+          children: item.children.map((subItem: any) => {
+            // Updating the children array of the parent subquestion
+            return {
+              ...subItem,
+              children: subItem.children.map((subSubItem: any) => {
+                // Checking if the current subsubitem's id matches the id of the subquestion to be updated
+                if (subSubItem.id === data.id) {
+                  // Updating the mark of the subquestion with the new value
+                  subSubItem.mark = +e.target.value;
+                }
+                // Returning unchanged subsubitems
+                return subSubItem;
+              }),
+            };
+          }),
+        };
+      }
+      // Returning unchanged items
+      return item;
     });
+  });
 
-    // Recalculating marks in the hierarchy
-    setFakeData((prevData: any) => {
-      return prevData.map((item: any) => {
-        // Checking if the current item's id matches the id of the parent question and it has children
-        if (item.id === allData.id && item.children.length > 0) {
-          // Updating the children array of the parent question
-          return {
-            ...item,
-            children: item.children.map((subItem: any) => {
-              // Updating the children array of the parent subquestion
-              return {
-                ...subItem,
-                mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
-                children: subItem.children.map((subSubItem: any) => {
-                  // Returning unchanged subsubitems
-                  return subSubItem;
-                }),
-              };
-            }),
-          };
-        }
-        // Returning unchanged items
-        return item;
-      });
+  // Recalculating marks in the hierarchy
+  setFakeData((prevData: any) => {
+    return prevData.map((item: any) => {
+      // Checking if the current item's id matches the id of the parent question and it has children
+      if (item.id === allData.id && item.children.length > 0) {
+        // Updating the children array of the parent question
+        return {
+          ...item,
+          children: item.children.map((subItem: any) => {
+            // Updating the children array of the parent subquestion
+            return {
+              ...subItem,
+              mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
+              children: subItem.children.map((subSubItem: any) => {
+                // Returning unchanged subsubitems
+                return subSubItem;
+              }),
+            };
+          }),
+        };
+      }
+      // Returning unchanged items
+      return item;
     });
+  });
 };
-  
-export const createSubQuestion = (data :any ,setFakeData: any, allData: any) => {
+
+export const createSubQuestion = (data: any, setFakeData: any, allData: any) => {
   // Generating a new subquestion with a random id, name, initial mark, and an empty children array
   const newSubQuestion = {
     id: Math.random().toString(36).substring(7),
@@ -196,4 +199,3 @@ export const createSubQuestion = (data :any ,setFakeData: any, allData: any) => 
     });
   });
 };
-

@@ -4,7 +4,7 @@ import { ApexOptions } from 'apexcharts';
 interface PieChartItemProps {
   series: number[];
   colors: string[];
-  numberOfStudent: number | "-";
+  numberOfStudent: number | '-';
 }
 const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStudent }) => {
   // const series = [11, 11, 13, 8]
@@ -70,7 +70,7 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
 
   return (
     <div>
-      <div className="chart-wrap relative">
+      <div className="chart-wrap relative min-w-[230]">
         <div id="chart">
           <ReactApexChart options={options} series={series} type="donut" width={230} />
         </div>

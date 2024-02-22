@@ -1,10 +1,13 @@
-'use server'
+'use server';
 
-import { db } from "@/lib/db";
+import { db } from '@/lib/db';
 
-
-export const getMarkSheets = async (filters: {term: string, classe_id: number | undefined, subject_id: number | undefined}) => {
-    if(!filters.term || !filters.classe_id) return
+export const getMarkSheets = async (filters: {
+  term: string;
+  classe_id: number | undefined;
+  subject_id: number | undefined;
+}) => {
+  if (!filters.term || !filters.classe_id) return;
   try {
     const markSheets = await db.examCorrection.findMany({
       where: {
@@ -52,9 +55,7 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
       },
     });
 
-
-
-    return { data: markSheets , error: undefined };
+    return { data: markSheets, error: undefined };
   } catch (error: any) {
     return {
       data: undefined as any,
@@ -63,12 +64,13 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
   }
 };
 
-
-
 // getMarksheetByUserId()
 
-export const getMarksheetByUserId = async (classeId: number, userId: string, subject_id: number) => {
-
+export const getMarksheetByUserId = async (
+  classeId: number,
+  userId: string,
+  subject_id: number
+) => {
   if (!classeId) return;
   try {
     const markSheets = await db.examCorrection.findMany({
@@ -116,8 +118,6 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
       },
     });
 
-
-
     return { data: markSheets, error: undefined };
   } catch (error: any) {
     return {
@@ -127,10 +127,9 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
   }
 };
 
-
-
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
   if (exam_id === 'undefined') return null;
+  console.log('dsdsd');
   const res = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,

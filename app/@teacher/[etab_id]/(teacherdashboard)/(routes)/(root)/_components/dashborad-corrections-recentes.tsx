@@ -8,7 +8,7 @@ const DashboradCorrectionsRecentes = ({ etabId, classes }: any) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between w-full">
+      <div className="flex justify-between max-md:flex-wrap">
         <div className="flex items-center gap-4">
           <Image
             src="dashboard/correctexamp/corectionsRecentes.svg"

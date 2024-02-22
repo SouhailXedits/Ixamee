@@ -10,6 +10,7 @@ import {
 import { DeleteExame } from './DeleteExame';
 import { ArchiveExame } from './ArchiveExame';
 import { EditeExame } from './EditeExame';
+import { Addascal } from './Addascale';
 
 interface DropdownMenuItemSelectProps {
   children: React.ReactNode;
@@ -41,6 +42,12 @@ export const DropdownMenuItemSelect = ({ children, exam }: DropdownMenuItemSelec
               <span>Archiver</span>
             </DropdownMenuLabel>
           </ArchiveExame>
+
+          <Addascal exam={exam}>
+            <DropdownMenuLabel className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor">
+              <span>Ajouter un barème</span>
+            </DropdownMenuLabel>
+          </Addascal>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

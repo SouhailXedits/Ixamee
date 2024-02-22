@@ -5,13 +5,14 @@ import { AjouterUneClasse } from '@/components/modals/ajouter-une-classe';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllClasse } from '@/actions/classe';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function Classes() {
   const [value, setValue] = useState('');
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   const user = queryClient.getQueryData(['user']) as any;
-  const user_id = user.id;
+  const user_id = user?.id;
   const { data, isPending } = useQuery({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id, etab_id }),
@@ -24,8 +25,8 @@ export default function Classes() {
   });
 
   return (
-    <main className="flex flex-col gap-6 p-10">
-      <nav className="flex w-full justify-between ">
+    <main className="flex flex-col gap-6 p-10 ">
+      <nav className="flex justify-between w-full max-md:flex-col">
         <div className="flex flex-col gap-4">
           <div className="text-2xl font-semibold text-[#1B8392] ">Classes</div>
           <div className="flex items-center text-[#727272]">
@@ -35,8 +36,8 @@ export default function Classes() {
           </div>
         </div>
 
-        <div className="flex h-14 cursor-pointer gap-3 pt-4">
-          <div className="flex cursor-pointer items-center gap-3 rounded-lg border border-[#99C6D3] p-2 hover:opacity-80 ">
+        <div className="flex gap-3 pt-4 cursor-pointer max-md:flex-wrap h-14">
+          <div className="flex cursor-pointer items-center gap-3 rounded-lg border border-[#99C6D3]  max-md:w-full p-2 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
             <input
@@ -48,16 +49,16 @@ export default function Classes() {
             />
           </div>
           <AjouterUneClasse user_id={user?.id} estab={etab_id}>
-            <div className="flex cursor-pointer items-center gap-3 rounded-lg border bg-[#1B8392] p-2 text-white hover:opacity-80 ">
-              <div className="pl-2 pr-2 text-center text-sm font-semibold leading-tight ">
+            <Button className="flex cursor-pointer items-center gap-3 rounded-lg border max-md:w-full bg-[#1B8392] p-2 text-white ">
+              <div className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
                 Ajouter une classe
               </div>
-            </div>
+            </Button>
           </AjouterUneClasse>
         </div>
       </nav>
 
-      <div>
+      <div className="max-md:pt-10">
         <ClasseCardContainer
           data={filteredData}
           user_id={user?.id}

@@ -9,13 +9,10 @@ import {
   handleDeleteSubQuestion,
   renderSubSubQuestion,
   updateSubQuestion,
-
 } from './sharedFunction';
 import { createSubSubQuestion, updateContentSubQuestion } from './subQuestionSharedFunction';
 
 export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeData }: any) => {
-  
-
   return (
     <>
       <div
@@ -60,6 +57,8 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
                   // toast.error('la note ne doit pas etre inferieur a 0');
                   return;
                 }
+                console.log(data);
+                console.log(allData);
                 updateSubQuestion(e, data, setFakeData, allData);
               }}
             />

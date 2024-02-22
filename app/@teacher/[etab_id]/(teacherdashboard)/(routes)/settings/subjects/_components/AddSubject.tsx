@@ -74,7 +74,7 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
     // validationSchema: validationSchema,
     onSubmit: (values) => {
       createSubject(values);
-
+      formik.resetForm();
       //alert(JSON.stringify(values, null, 2));
     },
   });
@@ -90,7 +90,7 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-6 placeholder:text-[#727272] items-center">
-            <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col w-full gap-2">
               <Input
                 type="text"
                 name="name"
@@ -100,9 +100,10 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
                 className="placeholder:text-[#727272]"
               />
             </div>
-            <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col w-full gap-2">
               <Input
                 type="number"
+                min={0}
                 name="coefficient"
                 value={formik.values.coefficient}
                 onChange={formik.handleChange}
@@ -121,8 +122,8 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
               ))}
             </div>
           </div>
-          <DialogFooter className=" mt-3">
-            <DialogClose className=" w-full">
+          <DialogFooter className="mt-3 ">
+            <DialogClose className="w-full ">
               <Button
                 // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
                 type="submit"

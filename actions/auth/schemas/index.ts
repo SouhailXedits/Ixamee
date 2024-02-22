@@ -13,12 +13,22 @@ export const LoginSchema = z.object({
 export const RegisterEtudSchema = z
   .object({
     role: z.string().default('TEACHER'),
-    nom: z.string().min(3, {
-      message: 'le nom est requis (3 lettre au minimum)',
-    }),
-    prenom: z.string().min(3, {
-      message: 'le prenom est requis (3 lettre au minimum)',
-    }),
+    nom: z
+      .string()
+      .min(3, {
+        message: 'Le nom est requis (3 lettres au minimum)',
+      })
+      .regex(/^[a-zA-Z]+$/, {
+        message: 'Le nom ne peut contenir que des lettres',
+      }),
+    prenom: z
+      .string()
+      .min(3, {
+        message: 'Le prénom est requis (3 lettres au minimum)',
+      })
+      .regex(/^[a-zA-Z]+$/, {
+        message: 'Le prénom ne peut contenir que des lettres',
+      }),
     email: z.string().email({
       message: "L'email est requis",
     }),
@@ -66,12 +76,22 @@ export const RegisterEtudSchema = z
 
 export const RegisterProfSchema = z.object({
   role: z.string().default('TEACHER'),
-  nom: z.string().min(3, {
-    message: 'le nom est requis (3 lettre au minimum)',
-  }),
-  prenom: z.string().min(3, {
-    message: 'le prenom est requis (3 lettre au minimum)',
-  }),
+  nom: z
+    .string()
+    .min(3, {
+      message: 'Le nom est requis (3 lettres au minimum)',
+    })
+    .regex(/^[a-zA-Z]+$/, {
+      message: 'Le nom ne peut contenir que des lettres',
+    }),
+  prenom: z
+    .string()
+    .min(3, {
+      message: 'Le prénom est requis (3 lettres au minimum)',
+    })
+    .regex(/^[a-zA-Z]+$/, {
+      message: 'Le prénom ne peut contenir que des lettres',
+    }),
   email: z.string().email({
     message: "L'email est requis",
   }),

@@ -11,6 +11,8 @@ export function useEditExamContent() {
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ['examenById']   });
       queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
+      queryClient.invalidateQueries({ queryKey: ['examens'] });
+
       toast.success('Exame Enregistre avec succès.');
     },
     onError: (err) => {

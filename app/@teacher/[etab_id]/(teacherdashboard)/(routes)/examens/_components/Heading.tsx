@@ -13,7 +13,7 @@ function Heading({ data, setData }: { data: string; setData: any }) {
     setData(e.target.value);
   };
   return (
-    <nav className="flex justify-between w-full ">
+    <nav className="flex justify-between w-full max-md:pb-10 max-md:flex-col max-md:gap-3">
       <div className="flex flex-col gap-4">
         <div className="text-[#1B8392] text-2xl font-semibold ">Examens</div>
         <div className="flex items-center text-[#727272]">
@@ -22,7 +22,7 @@ function Heading({ data, setData }: { data: string; setData: any }) {
         </div>
       </div>
 
-      <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+      <div className="flex gap-3 pt-4 h-14 cursor-pointe max-md:flex-col ">
         <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
           <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
@@ -33,27 +33,6 @@ function Heading({ data, setData }: { data: string; setData: any }) {
             onChange={(e) => handelRecherche(e)}
           />
         </div>
-        {/* <Select>
-          <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
-            <SelectValue
-              placeholder={
-                <div className="flex items-center">
-                  <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
-                  <span className="ml-2 text-[#1B8392] text-base  ">Filter</span>
-                </div>
-              }
-            />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="corrige" className="">
-              Corrigé
-            </SelectItem>
-            <SelectItem value="en-cours">En cours</SelectItem>
-            <SelectItem value="non-corrigé">Non corrigé</SelectItem>
-            <SelectItem value="non-classé">Non classé</SelectItem>
-            <SelectItem value="absent">Absent</SelectItem>
-          </SelectContent>
-        </Select> */}
 
         <AddExameModal>
           <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">

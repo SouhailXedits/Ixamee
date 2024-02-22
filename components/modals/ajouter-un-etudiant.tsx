@@ -155,6 +155,9 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
         name: '',
         email: '',
       });
+      setSelectedFileUrl("")
+      setSelectedFileUrl1('');
+
       if (!error) setIsFirstModalOpen(!isFirstModalOpen);
 
       // setIsFirstModalOpen(!isFirstModalOpen);
@@ -230,7 +233,7 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
             </Label>
             <Input
               type="email"
-              placeholder="Entrez l'email de l'étudiant."
+              placeholder="Entrer l'email de l'étudiant."
               value={formatData.email}
               onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
               className="placeholder:text-[#727272]"

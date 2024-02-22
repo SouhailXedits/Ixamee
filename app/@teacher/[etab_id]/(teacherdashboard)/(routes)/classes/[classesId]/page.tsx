@@ -36,11 +36,10 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   /// get the classse Id
   const { classesId } = params;
   /// get the Etab Id
-  const etab_id = queryClient.getQueryData(['etab_id']) as number; 
-  //get The list of Id in the classe 
-  ;
+  const etab_id = queryClient.getQueryData(['etab_id']) as number;
+  //get The list of Id in the classe
   const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
-  
+
   // get the teacher establishment  with hydration
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   // get the teacher establishment name
@@ -65,11 +64,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getClasseById(+params.classesId),
   });
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
+  console.log(exam);
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
+    enabled: exam !== undefined && exam !== '',
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
+  console.log(userCorrection);
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
@@ -181,7 +183,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       (user: any) => user?.status === 'notCorrected' || user?.status === 'pending'
     );
   }
-    
+
   const userNotCorrected = notCorrected(userCorrection);
   console.log(newData);
   return (

@@ -35,7 +35,6 @@ const Student = () => {
 
   const defaultSubject = subjects?.length && subjects[0]?.id;
 
-
   const [filters, setFilters] = useState({
     term: defaultTerm,
     classe_id: classes?.data?.length && classes?.data[0]?.id,
@@ -47,13 +46,10 @@ const Student = () => {
     classes?.data?.length && setFilters({ ...filters, classe_id: classes?.data[0]?.id });
   }, [classes?.data]);
 
-
   const { data: markSheets, isPending } = useQuery({
     queryKey: ['mark-sheets', filters.classe_id, filters.term, filters.subject_id],
     queryFn: async () => await getMarkSheets(filters),
   });
-
-
 
   const groupedData = markSheets?.data.reduce((acc: any, item: any) => {
     const userId = item.user.id;
@@ -66,7 +62,7 @@ const Student = () => {
   }, {});
 
   if (!groupedData && isPending) return <Loading />;
-  console.log(groupedData)
+  console.log(groupedData);
 
   let maxCoefficient = 0;
 
@@ -74,7 +70,7 @@ const Student = () => {
   for (const userId in groupedData) {
     const userMarks = groupedData[userId];
 
-    const weightedCoef = userMarks.reduce((sum:any, entry:any) => {
+    const weightedCoef = userMarks.reduce((sum: any, entry: any) => {
       const weightedMark = entry.exam.coefficient;
       return sum + weightedMark;
     }, 0);
@@ -85,11 +81,8 @@ const Student = () => {
     }
   }
 
-
-
-
   let resultArray = [] as any;
-  if(groupedData) {
+  if (groupedData) {
     resultArray = Object?.keys(groupedData).map((userId) => {
       const userData = groupedData[userId];
 
@@ -131,17 +124,14 @@ const Student = () => {
       };
     });
   }
-  console.log(resultArray)
-
-
+  console.log(resultArray);
 
   const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
 
-
   return (
     <main className="flex flex-col gap-6 p-10">
-      <nav className="flex justify-between w-full ">
+      <nav className="flex items-center justify-between w-full max-md:justify-normal">
         <div className="flex flex-col gap-4">
           <div className="text-[#1B8392] text-2xl font-semibold ">Bulletins</div>
           <div className="flex items-center text-[#727272]">
@@ -156,7 +146,7 @@ const Student = () => {
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+        <div className="flex flex-wrap items-start justify-end gap-3 pt-4 h-14 cursor-pointe">
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
@@ -266,7 +256,7 @@ const Student = () => {
         </div>
       </nav>
 
-      <div>
+      <div className="pt-[4rem] max-md:pt-[6rem]">
         <MarkSheetStudentList data={rankedData} filters={filters} />
       </div>
     </main>

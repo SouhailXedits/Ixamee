@@ -48,19 +48,19 @@ import Rien from './Rien';
 
 const ExamCorrectionList = ({ data }: any) => {
   console.log(data);
-  if (!data?.length) return <div className="w-full border h-full rounded-xl flex items-center justify-center p-10">
+  if (!data?.length) return <div className="flex items-center justify-center w-full h-full p-10 border rounded-xl">
     <Rien
       image="/dashboard/books.svg"
-      className="flex flex-col gap-6 justify-center"
+      className="flex flex-col justify-center gap-6"
       message="Pas de bulletins pour le moment"
     />
   </div>;
   return (
-    <div className="p-3 flex flex-col gap-10">
-      <div className=" flex gap-4 items-center">
+    <div className="flex flex-col gap-10 p-3">
+      <div className="flex items-center gap-4 ">
         <Image src={data[0].exam?.subject.icon} alt="subject icon" width={50} height={50} />
         <div className=" text-2">
-          <p className=" text-xl font-semibold">{data[0].exam?.subject.name}</p>
+          <p className="text-xl font-semibold ">{data[0].exam?.subject.name}</p>
           <p>Coefficient : {data[0].exam?.subject.coefficient}</p>
         </div>
       </div>

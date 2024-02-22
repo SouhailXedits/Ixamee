@@ -1,13 +1,27 @@
-export const updateContentSubQuestion = (contetn: any, data: any, setFakeData: any, allData: any) => {
+export const updateContentSubQuestion = (
+  contetn: any,
+  data: any,
+  setFakeData: any,
+  allData: any
+) => {
   // Updating the mark of the specific subquestion
   setFakeData((prevData: any) => {
     return prevData.map((item: any) => {
+      console.log(item);
+      console.log(contetn);
+      console.log(data);
+      
+
+
+
       // Checking if the current item's id matches the id of the parent question
+
       if (item.id === allData.id) {
         // Updating 👍 the children array of the parent question
         return {
           ...item,
           children: item.children.map((subItem: any) => {
+            console.log(subItem);
             // Updating the children array of the parent subquestion
             return {
               ...subItem,

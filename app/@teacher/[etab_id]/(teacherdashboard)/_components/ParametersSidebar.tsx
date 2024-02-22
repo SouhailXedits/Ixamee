@@ -56,7 +56,7 @@ function ParametersSidebar() {
   if (!user || user.role !== 'ADMIN') return null;
 
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible className="w-full ">
       <AccordionItem value="item-1">
         <AccordionTrigger onClick={onClick} className={cn(collapsed && 'flex-col')}>
           <SettingsBtn isActive={isActive} onClick={onClick} />

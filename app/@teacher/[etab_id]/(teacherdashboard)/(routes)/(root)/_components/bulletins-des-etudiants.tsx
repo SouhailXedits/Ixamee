@@ -47,13 +47,13 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
     <>
       {!tableData?.length ? (
         <>
-          <div className="flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end gap-3 max-md:w-full">
             {/* Devoir */}
             <Select
               value={filters.classe_id}
               onValueChange={(value) => setFilters({ ...filters, classe_id: value })}
             >
-              <SelectTrigger className="w-1/4 rounded-xl text-11">
+              <SelectTrigger className="w-1/4 rounded-xl text-11 max-md:w-full">
                 <SelectValue className="text-sm" placeholder="Classe" />
               </SelectTrigger>
               <SelectContent>
@@ -71,7 +71,7 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
               value={filters.exam_id}
               onValueChange={(value) => setFilters({ ...filters, exam_id: value })}
             >
-              <SelectTrigger className="w-1/4 rounded-xl text-11">
+              <SelectTrigger className="w-1/4 rounded-xl text-11 max-md:w-full">
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>

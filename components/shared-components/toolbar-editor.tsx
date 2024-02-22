@@ -97,7 +97,7 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   };
 
   return (
-    <div className="w-full" onPaste={(e) => handlePaste(e)}>
+    <div className="w-full h-full" onPaste={(e) => handlePaste(e)}>
       <BlockNoteView editor={editor} theme={resolvedTheme === 'dark' ? 'dark' : 'light'} />
       {/* <Image
         src={file && URL?.createObjectURL(file)}

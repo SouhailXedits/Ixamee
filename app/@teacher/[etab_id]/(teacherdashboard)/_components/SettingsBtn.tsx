@@ -15,8 +15,8 @@ function SettingsBtn({ onClick, isActive }: settingBtnProps) {
     <p
       className={cn(
         'flex items-start w-full  text-slate-500 text-sm font-[400] pl-3 transition-all',
-        !isActive && 'hover:bg-slate-300/20  hover:rounded-lg duration-300',
-        isActive && ' w-full text-mainGreen rounded-lg'
+        !isActive && '  hover:bg-slate-300/20  hover:rounded-lg duration-300',
+        isActive && ' w-[190px] text-mainGreen rounded-lg'
       )}
     >
       <span className={cn('flex items-center w-full text-lg w gap-x-3 p-1')}>
@@ -29,7 +29,7 @@ function SettingsBtn({ onClick, isActive }: settingBtnProps) {
           className={cn('relative ', isActive && 'text-white  ')}
         />
 
-        {collapsed ? '' : <span className=' font-[400]'>Paramètres</span>}
+        {collapsed ? '' : <span className=" font-[400]">Paramètres</span>}
       </span>
     </p>
   );

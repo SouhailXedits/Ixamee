@@ -49,7 +49,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
   return (
     /* Container div for the exam card */
     <div
-      className=" h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2 cursor-pointer"
+      className=" min-w-[180px] h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2 cursor-pointer"
       onClick={() => onClick(exam?.id)}
     >
       {/* Header section with exam name and dropdown menu */}
@@ -68,7 +68,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       </div>
 
       {/* Date information */}
-      <div className="w-[293px] text-[#D2D1D1] text-sm font-normal leading-snug text-lg">
+      <div className=" text-[#D2D1D1] text-sm font-normal leading-snug text-lg">
         Créé le: {exam.create_at.toISOString().slice(0, 10)}
       </div>
 

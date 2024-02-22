@@ -18,7 +18,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   const [sum, setSum] = useState(0);
   const pathname = usePathname();
   const confetti = useConfettiStore();
-  
+
   const router = useRouter();
   const { examenId } = params;
 
@@ -91,7 +91,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
     confetti.onOpen();
   };
   return (
-    <div className="flex flex-col gap-6 p-10 overflow-auto">
+    <div className="flex h-[100vh] flex-col gap-6 p-10 overflow-auto">
       <nav className="flex justify-between w-full ">
         <div className="flex flex-col gap-4">
           {/* {isPending ? (
@@ -142,7 +142,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
               onClick={() => handleCancel()}
               className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
             >
-              <Image src="/redcloseicon2.svg" alt="icons" width={10} height={10} />
+              <Image src="/redClose.svg" alt="icons" width={10} height={10} />
               Annuler
             </button>
           </div>
@@ -167,7 +167,11 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
       </nav>
       {/* <CreateExam examId={examenId} /> */}
       {/* <EmailSend /> */}
-      {isPending ? <Skeleton /> : <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />}
+      {isPending ? (
+        <Skeleton />
+      ) : (
+        <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />
+      )}
     </div>
   );
 }

@@ -83,13 +83,12 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   );
 
   return (
-    <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px] ">
+    <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px]  max-2xl:h-[400px]  overflow-y-scroll">
       <PieChartItem series={series} colors={colors} numberOfStudent={finalCount || '-'} />
-
-      <div className="flex  ">
+      <div className="flex min-w-[600px]">
         {items.length
           ? items.map((item: OutputItem | any) => (
-              <div key={item.color} className="flex  gap-2 pl-6">
+              <div key={item.color} className="flex gap-2 pl-6">
                 <div
                   className={`w-[5.08px] h-full rounded-[126.89px]  `}
                   style={{ backgroundColor: item.color }}
@@ -105,7 +104,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
           : ''}
         {(!items.length && classeExam) || !classeExam
           ? defaultItems.map((item: OutputItem | any) => (
-              <div key={item.color} className="flex  gap-2 pl-6">
+              <div key={item.color} className="flex gap-2 pl-6">
                 <div
                   className={`w-[5.08px] h-full rounded-[126.89px]  `}
                   style={{ backgroundColor: item.color }}

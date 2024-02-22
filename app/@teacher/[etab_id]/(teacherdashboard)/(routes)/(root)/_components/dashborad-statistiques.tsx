@@ -32,7 +32,7 @@ const DashboradStatistiques = ({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex justify-between">
+      <div className="flex justify-between max-md:flex-col max-md:gap-3">
         <div className="flex items-center gap-4 ">
           <Image
             alt="state img"
@@ -44,7 +44,7 @@ const DashboradStatistiques = ({
             Statistiques Examens
           </span>
         </div>
-        <div className="flex items-end justify-end w-full gap-3">
+        <div className="flex items-end justify-end w-full gap-3 max-md:w-full">
           {/* Classe */}
 
           <Select
@@ -58,7 +58,7 @@ const DashboradStatistiques = ({
             }}
             disabled={isPendingClasses}
           >
-            <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80">
+            <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full">
               <SelectValue placeholder={'classe'} />
             </SelectTrigger>
             <SelectContent>
@@ -78,12 +78,11 @@ const DashboradStatistiques = ({
                 value
               )) as any;
 
-
               setUserCorrection(userCorrec);
             }}
             disabled={disable}
           >
-            <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
+            <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full ">
               <SelectValue placeholder={'Devoir'} />
             </SelectTrigger>
 

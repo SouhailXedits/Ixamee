@@ -202,7 +202,7 @@ export default function Page({
               onClick={() => handleCancel()}
               className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center"
             >
-              <Image src="/redcloseicon2.svg" alt="icons" width={10} height={10} />
+              <Image src="/redClose.svg" alt="icons" width={10} height={10} />
               Annuler
             </button>
           </div>

@@ -125,14 +125,18 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
             setSelectedFileUrl(data.url);
             setSelectedFileUrl1(URL.createObjectURL(selectedFile));
           } else {
-            setError('Error uploading the file. Please try again.');
+            setError('Erreur lors du téléchargement du fichier. Veuillez réessayer.');
           }
         } catch (error) {
-          setError('An error occurred during file upload. Please try again.');
+          setError(
+            'Une erreur est survenue lors du téléchargement du fichier. Veuillez réessayer.'
+          );
           console.error(error);
         }
       } else {
-        setError('Invalid file format or size. Please choose a valid image file (max 2MB).');
+        setError(
+          'Format ou taille de fichier invalide. Veuillez choisir un fichier image valide (max 2 Mo).'
+        );
       }
     }
   };
@@ -173,7 +177,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
                   alt="uplodImage"
                   width={100}
                   height={100}
-                  className="rounded-full cursor-pointer hover:opacity-75 object-cover"
+                  className="object-cover rounded-full cursor-pointer hover:opacity-75"
                 />
               </div>
 
