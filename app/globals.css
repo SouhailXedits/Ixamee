@@ -114,13 +114,13 @@ body {
 @import './components/duationPicker/durationPicker.css';
 @import './components/eventDetails/eventDetails.css'; */
 
-.calendar {
+/* .calendar {
   padding: 1rem 3rem 0rem 3rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   height: 100%;
-}
+} */
 
 .calendar * {
   text-transform: capitalize;
@@ -167,7 +167,7 @@ body {
 }
 
 .MuiButtonBase-root .MuiMenuItem-root .MuiMenuItem-gutters .MuiMenuItem-root .MuiMenuItem-gutters {
-  /* font-size: 1.5rem; */
+  font-size: 1rem;
 }
 
 .dialog-title {
@@ -208,6 +208,23 @@ body {
   /* padding: 1.5rem; */
 }
 
+[class$="multiValue"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+[class$="ValueContainer"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+[class$="MultiValueGeneric"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+[class$="-menu"] {
+  font-size: 1rem !important;
+  /* Add any other styles you want */
+}
+
 .exam-scheduler-classes [id^='react-select-'][id$='-placeholder'] {
   /* font-size: 1.8rem !important; */
   font-weight: 400;
@@ -225,7 +242,7 @@ body {
 }
 
 .options__placeholder {
-  font-size: 1.8rem !important;
+  font-size: 1rem !important;
   font-weight: 400 !important;
   color: #bfbfbf !important;
 }
@@ -241,17 +258,18 @@ body {
 }
 
 .color-picker-color {
-
+  position: relative;
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 50%;
 }
 
+
 .color-picker-color.selected::after {
-  content: 'tick icon ';
+  content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkiIGhlaWdodD0iMTciIHZpZXdCb3g9IjAgMCAxOSAxNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMTAuMzMzM0w3LjE4MTgyIDE1TDE4IDEiIHN0cm9rZT0iI0ZGODc0MyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPC9zdmc+Cg==");
   position: absolute;
-  top: -0.3rem;
-  right: -0.8rem;
+  top: 0.2rem;
+  right: 0.15rem;
 }
 
 .student-visibilty {
@@ -339,6 +357,7 @@ body {
 }
 
 .date-time-picker input {
+  padding: 9px;
   /* padding: 1.5rem; */
   /* font-size: 1.5rem !important; */
 }
@@ -347,7 +366,7 @@ body {
   width: 100% !important;
   position: relative !important;
   border-radius: 12px;
-  border: 1px solid red;
+  border: 1px solid #e4e4e4 !important;
 }
 
 .date-time-picker .MuiFormControl-root.MuiTextField-root:hover {
@@ -357,10 +376,10 @@ body {
 
 .date-time-picker .MuiFormControl-root.MuiTextField-root::after {
   position: absolute;
-  content: url('/public/calendriericon.svg');
+  content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzcxNDRfNzk1NCkiPgo8cGF0aCBkPSJNMTcuNDE2NyAxLjgzMzMzSDE2LjVWMC45MTY2NjdDMTYuNSAwLjY3MzU1MiAxNi40MDM0IDAuNDQwMzk0IDE2LjIzMTUgMC4yNjg0ODVDMTYuMDU5NiAwLjA5NjU3NzEgMTUuODI2NCAwIDE1LjU4MzMgMEMxNS4zNDAyIDAgMTUuMTA3MSAwLjA5NjU3NzEgMTQuOTM1MiAwLjI2ODQ4NUMxNC43NjMyIDAuNDQwMzk0IDE0LjY2NjcgMC42NzM1NTIgMTQuNjY2NyAwLjkxNjY2N1YxLjgzMzMzSDcuMzMzMzNWMC45MTY2NjdDNy4zMzMzMyAwLjY3MzU1MiA3LjIzNjc2IDAuNDQwMzk0IDcuMDY0ODUgMC4yNjg0ODVDNi44OTI5NCAwLjA5NjU3NzEgNi42NTk3OCAwIDYuNDE2NjcgMEM2LjE3MzU1IDAgNS45NDAzOSAwLjA5NjU3NzEgNS43Njg0OSAwLjI2ODQ4NUM1LjU5NjU4IDAuNDQwMzk0IDUuNSAwLjY3MzU1MiA1LjUgMC45MTY2NjdWMS44MzMzM0g0LjU4MzMzQzMuMzY4MiAxLjgzNDc5IDIuMjAzMjYgMi4zMTgxNCAxLjM0NDAzIDMuMTc3MzdDMC40ODQ4MDggNC4wMzY1OSAwLjAwMTQ1NTU0IDUuMjAxNTQgMCA2LjQxNjY3TDAgMTcuNDE2N0MwLjAwMTQ1NTU0IDE4LjYzMTggMC40ODQ4MDggMTkuNzk2NyAxLjM0NDAzIDIwLjY1NkMyLjIwMzI2IDIxLjUxNTIgMy4zNjgyIDIxLjk5ODUgNC41ODMzMyAyMkgxNy40MTY3QzE4LjYzMTggMjEuOTk4NSAxOS43OTY3IDIxLjUxNTIgMjAuNjU2IDIwLjY1NkMyMS41MTUyIDE5Ljc5NjcgMjEuOTk4NSAxOC42MzE4IDIyIDE3LjQxNjdWNi40MTY2N0MyMS45OTg1IDUuMjAxNTQgMjEuNTE1MiA0LjAzNjU5IDIwLjY1NiAzLjE3NzM3QzE5Ljc5NjcgMi4zMTgxNCAxOC42MzE4IDEuODM0NzkgMTcuNDE2NyAxLjgzMzMzWk0xLjgzMzMzIDYuNDE2NjdDMS44MzMzMyA1LjY4NzMyIDIuMTIzMDYgNC45ODc4NSAyLjYzODc5IDQuNDcyMTJDMy4xNTQ1MSAzLjk1NjQgMy44NTM5OSAzLjY2NjY3IDQuNTgzMzMgMy42NjY2N0gxNy40MTY3QzE4LjE0NiAzLjY2NjY3IDE4Ljg0NTUgMy45NTY0IDE5LjM2MTIgNC40NzIxMkMxOS44NzY5IDQuOTg3ODUgMjAuMTY2NyA1LjY4NzMyIDIwLjE2NjcgNi40MTY2N1Y3LjMzMzMzSDEuODMzMzNWNi40MTY2N1pNMTcuNDE2NyAyMC4xNjY3SDQuNTgzMzNDMy44NTM5OSAyMC4xNjY3IDMuMTU0NTEgMTkuODc2OSAyLjYzODc5IDE5LjM2MTJDMi4xMjMwNiAxOC44NDU1IDEuODMzMzMgMTguMTQ2IDEuODMzMzMgMTcuNDE2N1Y5LjE2NjY3SDIwLjE2NjdWMTcuNDE2N0MyMC4xNjY3IDE4LjE0NiAxOS44NzY5IDE4Ljg0NTUgMTkuMzYxMiAxOS4zNjEyQzE4Ljg0NTUgMTkuODc2OSAxOC4xNDYgMjAuMTY2NyAxNy40MTY3IDIwLjE2NjdaIiBmaWxsPSIjMUI4MzkyIi8+CjxwYXRoIGQ9Ik0xMSAxNS4xMjVDMTEuNzU5NCAxNS4xMjUgMTIuMzc1IDE0LjUwOTQgMTIuMzc1IDEzLjc1QzEyLjM3NSAxMi45OTA2IDExLjc1OTQgMTIuMzc1IDExIDEyLjM3NUMxMC4yNDA2IDEyLjM3NSA5LjYyNSAxMi45OTA2IDkuNjI1IDEzLjc1QzkuNjI1IDE0LjUwOTQgMTAuMjQwNiAxNS4xMjUgMTEgMTUuMTI1WiIgZmlsbD0iIzFCODM5MiIvPgo8cGF0aCBkPSJNNi40MTY1IDE1LjEyNUM3LjE3NTkgMTUuMTI1IDcuNzkxNSAxNC41MDk0IDcuNzkxNSAxMy43NUM3Ljc5MTUgMTIuOTkwNiA3LjE3NTkgMTIuMzc1IDYuNDE2NSAxMi4zNzVDNS42NTcxMSAxMi4zNzUgNS4wNDE1IDEyLjk5MDYgNS4wNDE1IDEzLjc1QzUuMDQxNSAxNC41MDk0IDUuNjU3MTEgMTUuMTI1IDYuNDE2NSAxNS4xMjVaIiBmaWxsPSIjMUI4MzkyIi8+CjxwYXRoIGQ9Ik0xNS41ODM1IDE1LjEyNUMxNi4zNDI5IDE1LjEyNSAxNi45NTg1IDE0LjUwOTQgMTYuOTU4NSAxMy43NUMxNi45NTg1IDEyLjk5MDYgMTYuMzQyOSAxMi4zNzUgMTUuNTgzNSAxMi4zNzVDMTQuODI0MSAxMi4zNzUgMTQuMjA4NSAxMi45OTA2IDE0LjIwODUgMTMuNzVDMTQuMjA4NSAxNC41MDk0IDE0LjgyNDEgMTUuMTI1IDE1LjU4MzUgMTUuMTI1WiIgZmlsbD0iIzFCODM5MiIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzcxNDRfNzk1NCI+CjxyZWN0IHdpZHRoPSIyMiIgaGVpZ2h0PSIyMiIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4KCg==");
   filter: invert(68%) sepia(9%) saturate(7%) hue-rotate(321deg) brightness(89%) contrast(84%) !important;
-  right: 2rem;
-  top: 20%;
+  right: 1rem;
+  top: 22%;
   background-repeat: no-repeat;
 }
 
@@ -448,9 +467,14 @@ body {
 
 .calendar .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root {
   border-radius: 5px !important;
-  border: 1px solid blue;
+  border: 1px solid #e4e4e4;
   box-shadow: none !important;
   overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+[data-radix-popper-content-wrapper] {
+  z-index: 2000 !important;
 }
 
 .MuiMenuItem-root.MuiMenuItem-gutters {
@@ -486,7 +510,7 @@ body {
 
 .toolbar-cont {
   gap: 2rem;
-  flex-direction: column !important;
+  flex-direction: row !important;
 }
 
 .fc-scroller,
@@ -573,10 +597,13 @@ tbody,
 }
 
 .select-async {
-  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.options__menu {
+  font-size: 1rem !important;
 }
 
 .teacher-profile-form .select-async {
@@ -593,7 +620,7 @@ tbody,
 
 .duration-picker .duration-input {
   border: none !important;
-  width: 6rem !important;
+  /* width: 6rem !important; */
   /* padding: 1.5rem 0rem !important; */
 }
 
@@ -615,13 +642,13 @@ tbody,
 }
 
 .duration-picker .suffix-hours {
-  right: 35%;
-  top: 30%;
+  right: 4%;
+  top: 20%;
 }
 
 .duration-picker .suffix-minutes {
-  right: 30%;
-  top: 28%;
+  right: 45%;
+  top: 20%;
 }
 
 .ant-dropdown {
@@ -703,4 +730,10 @@ tbody,
   width: 100%;
   padding: 0.5rem;
   /* padding: 1.5rem; */
+}
+
+
+
+.error {
+  color: red;
 }

@@ -1,12 +1,17 @@
-import { Dialog, DialogTitle, Switch } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Switch } from '@mui/material';
 import React, { useState } from 'react';
-import { Dropdown, Menu, MenuProps, Modal, message } from 'antd';
-// import Item from 'antd/es/list/Item';
-// import DropdownButton from 'antd/es/dropdown/dropdown-button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import dayjs from 'dayjs';
-import { CloseCircleOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { MoreHorizontal } from 'lucide-react';
+import { DialogHeader } from '@/components/ui/dialog';
+import { useUpdateExamPlan } from '../../hooks/useUpdateExamPlan';
 function EventDetails({
   setSelectedRange,
   setSelectedEventId,
@@ -20,81 +25,23 @@ function EventDetails({
   // const event = useAppSelector((state) => state.calendar.events).find(
   //   (event: any) => event.id === eventId
   // );
-  const queryClient = useQueryClient()
-  const events = queryClient.getQueryData(['events']) as any; 
-  const event = events?.find((event:any) => event.id === +eventId)
-  // console.log(eventId);
-  // console.log(events);
-  // console.log(event);
-  // console.log(current);
+  const queryClient = useQueryClient();
+  const events = queryClient.getQueryData(['events']) as any;
+  const event = events?.find((event: any) => event.id === +eventId);
+  console.log(event);
+  const { updateExamPlan } = useUpdateExamPlan();
 
-  // const event = {
-  //   title: 'event',
-  //   start: '2024-02-05',
-  //   end: '2024-02-06',
-  //   color: { light: 'pink', dark: 'blue' },
-  //   studentsVisibility: true,
-  //   description: 'souhail brahmi',
-  //   classes: ["3 eme info", "bac"],
-  //   subject: {name: 'math'},
-  // };
   const [deleteForm, setDeleteForm] = useState(false);
   const [open, setOpen] = useState(false);
-  const handleOpenChange = () => {
-    setOpen(!open);
-  };
-  const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: (
-        <button
-          onClick={() => {
-            setOpenEventDet(false);
-            setOpen(false);
-            setOpenForm(true);
-          }}
-        >
-          Modifier
-        </button>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <button
-          onClick={() => {
-            setOpenEventDet(false);
-            setOpen(false);
-            setDeleteForm(true);
-          }}
-        >
-          Supprimer
-        </button>
-      ),
-    },
-  ];
+  // const handleOpenChange = () => {
+  //   setOpen(!open);
+  // };
+
   const switchChange = (checked: any) => {
-    // dispatch(patchEvent({ id: event.id, body: { studentsVisibility: checked.target.checked } }))
-    //   .unwrap()
-    //   .then(() => {
-    //     dispatch(
-    //       getEvents({
-    //         //@ts-ignore
-    //         startDate: dayjs(current).startOf('month').toISOString(),
-    //         //@ts-ignore
-    //         endDate: dayjs(current).endOf('month').toISOString(),
-    //       })
-    //     );
-    //     message.success(
-    //       checked.target.checked
-    //         ? "la date de l'examen est désormais visible pour les étudiants"
-    //         : "la date de l'examen est désormais invisible pour les étudiants"
-    //     );
-    //   })
-    //   .catch((err: any) => {
-    //     console.error(err);
-    //     message.error("la visibilité n'est pas mis à jour");
-    //   });
+    const classesIds = event?.classes.map((el: any) => el.id);
+    const subjectId = event?.subject.id;
+    const newEvent = { ...event, studentsVisibility: checked.target.checked , classes: classesIds, subject: subjectId };
+    updateExamPlan(newEvent);
   };
   const date1 = dayjs(event?.start);
   const date2 = dayjs(event?.end);
@@ -128,27 +75,38 @@ function EventDetails({
               }}
             >
               {/* <i className="event-cont-text" style={{ color: event?.color }}> */}
-              <i className="event-cont-text" >
-                {event?.title}
-              </i>
+              <i className="event-cont-text">{event?.title}</i>
             </div>
-            <Dropdown
-              placement="bottomLeft"
-              onOpenChange={handleOpenChange}
-              open={open}
-              menu={{ items }}
-              trigger={['click']}
-            >
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                {/* <Dots /> */}
-                {/* dots */}
-                <Image src="/burrgermenuicon.svg" height={20} width={20} alt="dots" />
-              </button>
-            </Dropdown>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => {
+                    setOpenEventDet(false);
+                    setOpen(false);
+                    setDeleteForm(true);
+                  }}
+                >
+                  <p>Supprimer</p>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setOpenEventDet(false);
+                    setOpen(false);
+                    setOpenForm(true);
+                  }}
+                >
+                  Modifier
+                </DropdownMenuItem>
+
+
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </DialogTitle>
         <div className="details-event">
@@ -180,50 +138,42 @@ function EventDetails({
           </p>
         </div>
       </Dialog>
-      <Modal
+
+      <Dialog
         title="Supprimer cet examen"
         open={deleteForm}
-        onCancel={() => {
-          setDeleteForm(false);
-        }}
-        footer={null}
-        closeIcon={<CloseCircleOutlined width="26.49px !important" height="26.49px !important" />}
-        style={{
-          height: '265px',
-          zIndex: '9999',
-          padding: ' 30px 40px',
-          gap: '45px',
-          borderRadius: '12px',
-        }}
       >
-        <div className="archive-exam-popup-content">
-          <div className="archive-exam-popup-message">
-            Êtes-vous sûr de vouloir supprimer cet examen ? Il sera définitivement invisible pour
-            vous et vos étudiants.
+        <DialogContent className=" flex flex-col gap-4">
+          <DialogHeader className=" text-xl text-2">Supprimer cet examen</DialogHeader>
+          <div className="archive-exam-popup-content flex flex-col gap-4">
+            <div className="archive-exam-popup-message">
+              Êtes-vous sûr de vouloir supprimer cet examen ? Il sera définitivement invisible pour
+              vous et vos étudiants.
+            </div>
+            <div className="archive-exam-popup-buttons flex gap-2">
+              <button
+                className="btn white-btn btn-cancel w-full border rounded-lg"
+                onClick={() => {
+                  setDeleteForm(false);
+                }}
+              >
+                Annuler
+              </button>
+              <button
+                className="btn  red btn-delete w-full "
+                onClick={() => {
+                  onDeleteEvent();
+                  setDeleteForm(false);
+                  setSelectedRange(null);
+                  setSelectedEventId(null);
+                }}
+              >
+                Supprimer
+              </button>
+            </div>
           </div>
-          <div className="archive-exam-popup-buttons">
-            <button
-              className="btn white-btn btn-cancel"
-              onClick={() => {
-                setDeleteForm(false);
-              }}
-            >
-              Annuler
-            </button>
-            <button
-              className="btn  red btn-delete "
-              onClick={() => {
-                onDeleteEvent();
-                setDeleteForm(false);
-                setSelectedRange(null);
-                setSelectedEventId(null);
-              }}
-            >
-              Supprimer
-            </button>
-          </div>
-        </div>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

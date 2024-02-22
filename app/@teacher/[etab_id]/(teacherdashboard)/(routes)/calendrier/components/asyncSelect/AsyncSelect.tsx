@@ -41,13 +41,13 @@ const AsyncSelect = ({
         ...styles,
         marginRight: '3px',
         color: '#333',
-        fontSize: '2rem',
+        fontSize: '1rem',
       };
     },
     multiValue: (styles: any) => {
       return {
         ...styles,
-        fontSize: '2rem',
+        fontSize: '1rem',
         padding: '4px',
         backgroundColor: '#E7E8EA',
         borderRadius: '8px',
@@ -77,7 +77,7 @@ const AsyncSelect = ({
       return {
         ...styles,
         color: `${theme === 'dark' ? '#8b949e !important' : '#333 !important'}`,
-        fontSize: '2rem',
+        fontSize: '1rem',
       };
     },
     control: (styles, { isFocused, isSelected, ...rest }) => {
@@ -91,21 +91,21 @@ const AsyncSelect = ({
         borderColor: `${theme === 'dark' ? '#8B949E !important' : '#cbd5e1 !important'}`,
         borderRadius: '10px !important',
         ...(height ? { minHeight: `${height} !important` } : { minHeight: '50px !important' }),
-        fontSize: '2rem',
+        fontSize: '1rem',
       };
     },
     menuList: (styles) => ({
       ...styles,
       background: `${theme === 'dark' ? '#0d1117 !important' : 'white !important'}`,
       borderRadius: '10px !important',
-      fontSize: '2rem',
+      fontSize: '1rem',
     }),
     option: (styles, { isFocused, isSelected }) => {
       return isSelected
         ? {
             ...styles,
             background: '#99C6D3',
-            fontSize: '2rem',
+            fontSize: '1rem',
             height: '30px',
             display: 'flex',
             alignItems: 'center',
@@ -115,7 +115,7 @@ const AsyncSelect = ({
         ? {
             ...styles,
             background: '#F0F6F8',
-            fontSize: '2rem',
+            fontSize: '1rem',
             height: '30px',
             display: 'flex',
             alignItems: 'center',
@@ -126,7 +126,7 @@ const AsyncSelect = ({
             color: `${theme === 'dark' ? '#8b949e !important' : '#727272 !important'}`,
             zIndex: 1,
             cursor: 'pointer',
-            fontSize: '2remrem',
+            fontSize: '1rem',
             height: '30px',
             display: 'flex',
             alignItems: 'center',
@@ -136,7 +136,7 @@ const AsyncSelect = ({
     menu: (base) => ({
       ...base,
       zIndex: 1000,
-      fontSize: '2rem',
+      fontSize: '1rem',
       background: 'white',
       borderRadius: '8px',
 
@@ -157,20 +157,20 @@ const AsyncSelect = ({
     indicatorSeparator: (base) => ({
       ...base,
       display: 'none',
-      fontSize: '2rem',
+      fontSize: '1rem',
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
       svg: {
         fill: `${theme === 'dark' ? '#8b949e !important' : '#333 !important'}`,
       },
-      fontSize: '2rem',
+      fontSize: '1rem',
     }),
     loadingIndicator: (styles) => {
       return {
         ...styles,
         filter: `${theme === 'dark' ? 'invert(50%)' : 'invert(0%)'}`,
-        fontSize: '2rem',
+        fontSize: '1rem',
         display: 'none',
       };
     },
@@ -238,7 +238,7 @@ const AsyncSelect = ({
         ) : (
           <Select
             styles={colourStyles}
-            className={className ? className : ''}
+            // className={className ? className : ''}
             classNamePrefix={classNamePrefix}
             defaultValue={defaultValue || value}
             isDisabled={disabled}

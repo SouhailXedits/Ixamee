@@ -86,7 +86,7 @@ export default function CalendarToolbar({
           </Button>
         )} */}
         <div></div>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" alignItems="center" spacing={1} className=' !text-11'>
           <IconButton onClick={onPrevDate}>
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
@@ -99,7 +99,7 @@ export default function CalendarToolbar({
         </Stack>
 
         <Stack direction="row" className="calendar-filter-cont" alignItems="center" spacing={2}>
-          <button className="calendar-todayBtn" onClick={onToday}>
+          <button className="calendar-todayBtn text-2 " onClick={onToday}>
             Aujourd’hui
           </button>
           {/* <div className="calendar-filter-btn">
