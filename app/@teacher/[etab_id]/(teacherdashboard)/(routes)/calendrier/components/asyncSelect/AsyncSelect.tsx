@@ -77,7 +77,7 @@ const AsyncSelect = ({
       return {
         ...styles,
         color: `${theme === 'dark' ? '#8b949e !important' : '#333 !important'}`,
-        fontSize: '2rem',
+        fontSize: '1rem',
       };
     },
     control: (styles, { isFocused, isSelected, ...rest }) => {

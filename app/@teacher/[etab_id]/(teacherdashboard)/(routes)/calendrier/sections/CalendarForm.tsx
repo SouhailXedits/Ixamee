@@ -257,7 +257,7 @@ function CalendarForm({
                           ampm={false}
                           class="date-time-picker"
                           // localeText={"fr"}
-                          className="date-timer-picker-calendar"
+                          className="date-timer-picker-calendar !text-8"
                           value={dayjs(formik.values.start)}
                           slots={{
                             toolbar: (value: any) => (

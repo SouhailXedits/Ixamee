@@ -566,7 +566,7 @@ export default function Calendar() {
           >
             <DialogTitle padding={'16px 24px 5px 24px !important'}>
               <div className="dialog-title">
-                <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2>
+                <h2 className=' text-2'> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2>
                 {/* <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2> */}
                 <button onClick={handleCloseModal}>{/* <Cancel /> */}X</button>
               </div>
