@@ -7,11 +7,14 @@ import {
 } from '@/components/ui/accordion';
 import { SidebarItem } from '../../../../../components/shared-components/sidebar-item';
 import SettingsBtn from './SettingsBtn';
+import { useEffect, useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
+import { auth } from '@/auth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getMe } from '@/actions/examens';
-import { useState } from 'react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 // }
 
@@ -54,24 +57,50 @@ function ParametersSidebar() {
   if (!user || user.role !== 'ADMIN') return null;
 
   return (
-    <Accordion type="single" collapsible className="w-full ">
-      <AccordionItem value="item-1">
-        <AccordionTrigger onClick={onClick} className={cn('px-2',collapsed && 'flex-col')}>
-          <SettingsBtn isActive={isActive} onClick={onClick} />
-        </AccordionTrigger>
-        <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
-          {paramroutes.map((route) => (
-            <SidebarItem
-              key={route.href}
-              Clickedicon={route.Clickedicon}
-              Defaulticon={route.Defaulticon}
-              label={route.label}
-              href={route.href}
-            />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className={cn(!collapsed && 'w-full', '')}>
+      {collapsed ? (
+        <Popover open={isActive}>
+          <PopoverTrigger onClick={onClick}>
+            <SettingsBtn isActive={isActive} onClick={onClick} isParameters={true} />
+          </PopoverTrigger>
+          <PopoverContent className=" -top-7 left-9 absolute flex flex-col gap-2 text-2">
+            {paramroutes.map((route) => (
+              <SidebarItem
+                key={route.href}
+                Clickedicon={route.Clickedicon}
+                Defaulticon={route.Defaulticon}
+                label={route.label}
+                href={route.href}
+                isParameters={true}
+                onClick={onClick}
+              />
+            ))}
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger
+              onClick={onClick}
+              className={cn(collapsed && 'flex-col', !collapsed && 'px-2', 'accordion-settings')}
+            >
+              <SettingsBtn isActive={isActive} onClick={onClick} />
+            </AccordionTrigger>
+            <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
+              {paramroutes.map((route) => (
+                <SidebarItem
+                  key={route.href}
+                  Clickedicon={route.Clickedicon}
+                  Defaulticon={route.Defaulticon}
+                  label={route.label}
+                  href={route.href}
+                />
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
+    </div>
   );
 }
 
