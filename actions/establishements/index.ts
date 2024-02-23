@@ -46,8 +46,15 @@ export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
       take: pageSize,
     });
 
-    // const totalCount = await db.establishment.count();
-    const totalCount = estabs.length;
+    const totalCount = await db.establishment.count({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      }
+    });
+    // const totalCount = estabs.length;
 
     return { data: { estabs, totalCount }, error: undefined };
   } catch (error: any) {
@@ -112,3 +119,27 @@ export const getNameEstabByClasseId = async (classe_id: number) => {
     };
   }
 };
+
+
+
+export const getIsEstabNameUnique = async (name: string) => {
+  try {
+    const data = await db.establishment.findFirst({
+      where: {
+        name:name,
+      },
+      select: {
+        name: true,
+      },
+    });
+    console.log(data)
+
+    return data;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get establishment.',
+    };
+  }
+};
+
