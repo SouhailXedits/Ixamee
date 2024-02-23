@@ -99,7 +99,7 @@ export default function Page({
   useEffect(() => {
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
-
+  
   if (isPending) return <Loading />;
 
   function handleCancel() {
