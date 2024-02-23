@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/accordion';
 import { SidebarItem } from '../../../../../components/shared-components/sidebar-item';
 import SettingsBtn from './SettingsBtn';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
 import { auth } from '@/auth';
@@ -44,10 +44,32 @@ function ParametersSidebar() {
   const { collapsed } = useSidebar((state) => state);
 
   const [isActive, setIsActive] = useState<boolean>(false);
+  const popoverRef = useRef<any>(null);
+  const triggerButtonRef = useRef<any>(null);
   function onClick() {
     setIsActive((prev) => !prev);
   }
   const paramroutes = parametersRoutes;
+
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      // Check if the clicked element is the trigger button or its children
+      if (
+        popoverRef.current &&
+        !popoverRef.current.contains(event.target) &&
+        event.target !== triggerButtonRef.current &&
+        !triggerButtonRef.current.contains(event.target)
+      ) {
+        setIsActive(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -59,11 +81,11 @@ function ParametersSidebar() {
   return (
     <div className={cn(!collapsed && 'w-full', '')}>
       {collapsed ? (
-        <Popover open={isActive}>
-          <PopoverTrigger onClick={onClick}>
+        <Popover open={isActive} >
+          <PopoverTrigger onClick={onClick} ref={triggerButtonRef}>
             <SettingsBtn isActive={isActive} onClick={onClick} isParameters={true} />
           </PopoverTrigger>
-          <PopoverContent className=" -top-7 left-9 absolute flex flex-col gap-2 text-2">
+          <PopoverContent className=" -top-7 left-9 absolute flex flex-col gap-2 text-2" ref={popoverRef}>
             {paramroutes.map((route) => (
               <SidebarItem
                 key={route.href}
