@@ -10,14 +10,9 @@ import SettingsBtn from './SettingsBtn';
 import { useEffect, useRef, useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
-import { auth } from '@/auth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Skeleton } from '@/components/ui/skeleton';
 import { getMe } from '@/actions/examens';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-
-// }
-
 const parametersRoutes = [
   {
     Clickedicon: '/teacherbag-fill.svg',
