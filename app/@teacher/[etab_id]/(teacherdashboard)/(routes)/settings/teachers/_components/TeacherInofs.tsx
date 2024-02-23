@@ -51,7 +51,7 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
         <div className="flex flex-col gap-6 placeholder:text-[#727272]">
           <div className="flex flex-col gap-2 p-3">
             <p className=" gap-2 text-[#959595] text-sm flex">
-              <span className=" text-mainGreen"> établissement(s):</span>
+              <span className=" text-mainGreen"> Établissement(s):</span>
               <div>
                 {currentUser?.user_establishment?.map((estab: any) => (
                   <p key={estab.id}>{estab.name}</p>

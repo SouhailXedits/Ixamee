@@ -7,13 +7,11 @@ import {
 } from '@/components/ui/accordion';
 import { SidebarItem } from '../../../../../components/shared-components/sidebar-item';
 import SettingsBtn from './SettingsBtn';
-import { useEffect, useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
-import { auth } from '@/auth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Skeleton } from '@/components/ui/skeleton';
 import { getMe } from '@/actions/examens';
+import { useState } from 'react';
 
 // }
 
@@ -58,7 +56,7 @@ function ParametersSidebar() {
   return (
     <Accordion type="single" collapsible className="w-full ">
       <AccordionItem value="item-1">
-        <AccordionTrigger onClick={onClick} className={cn(collapsed && 'flex-col')}>
+        <AccordionTrigger onClick={onClick} className={cn('px-2',collapsed && 'flex-col')}>
           <SettingsBtn isActive={isActive} onClick={onClick} />
         </AccordionTrigger>
         <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
