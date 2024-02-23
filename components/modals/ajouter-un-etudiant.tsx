@@ -155,7 +155,7 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
         name: '',
         email: '',
       });
-      setSelectedFileUrl("")
+      setSelectedFileUrl('');
       setSelectedFileUrl1('');
 
       if (!error) setIsFirstModalOpen(!isFirstModalOpen);
@@ -193,7 +193,13 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
                   className="object-cover rounded-full"
                 />
               ) : (
-                <Image src={'/uploadimageicon.svg'} alt="upload" width={55} height={55} />
+                <Image
+                  src={'/uploadimageicon.svg'}
+                  alt="upload"
+                  width={55}
+                  height={55}
+                  className="w-[55px] h-[55px]"
+                />
               )}
               <div className="flex flex-col items-start justify-start text-[#727272] gap-2">
                 <span className="text-sm">Ajoutez une photo</span>

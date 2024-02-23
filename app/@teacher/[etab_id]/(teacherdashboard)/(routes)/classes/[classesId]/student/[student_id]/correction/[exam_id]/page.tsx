@@ -9,7 +9,12 @@ import { useRouter } from 'next/navigation';
 // import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
-import { calcAllMark, transferAllMarkToNull } from './_components/calculateChildrenMarks';
+import {
+  calcAllMark,
+  hasNullMark,
+  statusOf,
+  transferAllMarkToNull,
+} from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
@@ -51,7 +56,7 @@ export default function Page({
     queryKey: ['CorigeExameContent'],
     queryFn: async () => await getCorigeExameContent(+exam_id, student_id),
   });
-
+  const MarkObtined = (getCorrigeExamOfUser && getCorrigeExamOfUser[0]?.mark_obtained) || null;
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
@@ -60,7 +65,9 @@ export default function Page({
   // console.log(getCorrigeExamOfUser);
 
   // console.log(isFullMarks)
-
+  // useEffect(() => {
+  //   setSum(MarkObtined);
+  // },[])
   useEffect(() => {
     if (isFullMarks) {
       const copiedData = JSON.parse(JSON.stringify(examContent?.content));
@@ -92,31 +99,16 @@ export default function Page({
   useEffect(() => {
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
-
+  
   if (isPending) return <Loading />;
 
   function handleCancel() {
     router.back();
   }
-  const hasNullMark = (content: any) => {
-    for (const item of content) {
-      if (item.mark === null) {
-        return true;
-      }
-      if (item.children && hasNullMark(item.children)) {
-        return true;
-      }
-    }
-    return false;
-  };
+
   const arabic = data?.language === 'ar' ? true : false;
-  // const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
-  const statusOf = (data: any) => {
-    const hasPending = hasNullMark(data);
-    console.log(hasPending, 'hasPending');
-    const status = hasPending ? 'pending' : 'done';
-    return status;
-  };
+  const sumToSave = sum > 0 ? sum : MarkObtined;
+  console.log(sumToSave, 'sumToSave');
   const handleSaveData = async () => {
     try {
       console.log(data?.total_mark);
@@ -129,9 +121,10 @@ export default function Page({
       const stataus = statusOf(fakeData);
 
       // Assuming you have the necessary data
+      console.log(sum);
       const dataToSave = {
         exam_id: parseInt(exam_id),
-        mark_obtained: sum, // or any other value you want to use
+        mark_obtained: sumToSave,
         user_id: student_id,
         correction_exam_content: fakeData,
         status: stataus,
@@ -150,7 +143,7 @@ export default function Page({
 
   if (!examContent) return <Loading />;
   console.log(fakeData);
-
+  console.log(MarkObtined, 'MarkObtined');
   return (
     <div className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
@@ -203,7 +196,7 @@ export default function Page({
                 'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
               )}
             >
-              {sum} / {data?.total_mark}
+              {sum > 0 ? sum : MarkObtined} / {data?.total_mark}
             </button>
           </div>
           <div className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer border-[#F04438] text-[#F04438] hover:opacity-80 ">

@@ -5,6 +5,7 @@ import { CreateExercice } from './CreateExercice';
 import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
 
 function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
+  console.log(fakeData, 'fakeData');
   // function calculateTotalMark(data: any) {
   //   let totalMark = 0;
 
