@@ -13,7 +13,7 @@ import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
 import { AddSubject } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/subjects/_components/AddSubject';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllSubjectsByPage } from '@/actions/subjects';
 import { SearchModal } from '@/components/modals/SearchModal';
@@ -37,8 +37,14 @@ const Establishement = ({ params }: { params: { classesId: string } }) => {
     queryKey: ['subjects', currentPage, searchQuery],
     queryFn: async () => await getAllSubjectsByPage(currentPage, 10, searchQuery),
   });
+
+  useEffect(() => {
+    setCurrentPage(1); 
+  }, [searchQuery]);
+
   const data = subjects?.data?.estabs || [];
   const totalCount = subjects?.data?.totalCount;
+
 
   // const { classesId } = params;
   // const handleImportedData = (jsonData: any) => {
