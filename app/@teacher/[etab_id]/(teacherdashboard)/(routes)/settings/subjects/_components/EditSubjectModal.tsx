@@ -20,10 +20,10 @@ import SubjectIcon, {
 } from '../../../../../../../../components/ui/SubjectIcon';
 
 import { useFormik } from 'formik';
-import { useCreateSubject } from '../hooks/useCreateSubject';
 import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
 import { useEditSubject } from '../hooks/useEditSubject';
 import { icons } from '../assets/subjectsIcons';
+import * as Yup from 'yup';
 interface AjouterUneClasse {
   children: React.ReactNode;
   currentSubject: SubjectOutputProps;
@@ -35,10 +35,19 @@ interface AjouterUneClasse {
 //   alt: string;
 // }
 
+const YupValidationSchema = Yup.object({
+  name: Yup.string()
+    .min(3, 'Le nom doit comporter au moins 3 caractères')
+    .required('Le nom est requis'),
+  coefficient: Yup.number().positive().required('Le coefficient est requis'),
+  icon: Yup.string().required("L'icône est requise"),
+});
+
+
 export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
+  // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const { editSubject, isPending } = useEditSubject();
   const [selectedIcon, setSelectedIcon] = useState<string>(currentSubject.icon);
 
@@ -65,14 +74,14 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
       coefficient: currentSubject.coefficient,
       icon: currentSubject.icon,
     },
-    // validationSchema: validationSchema,
-    onSubmit: (values) => {
-      //createSubject(values);
+    validationSchema: YupValidationSchema,
+    onSubmit: async (values) => {
       editSubject({ id: currId, data: values });
-
-      //alert(JSON.stringify(values, null, 2));
+      formik.resetForm();
     },
   });
+
+
 
   return (
     <Dialog>
@@ -93,9 +102,13 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
                   name="name"
                   value={formik.values.name}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder="Entrer le nom de la matière"
                   className="placeholder:text-[#727272]"
                 />
+                {formik.touched.name && formik.errors.name ? ( // Show error message if touched and there's an error
+                  <div className="text-7">{formik.errors.name}</div>
+                ) : null}
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <Input
@@ -103,10 +116,14 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
                   name="coefficient"
                   value={formik.values.coefficient}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   placeholder="Saisir le coefficient de la matière"
                   className="placeholder:text-[#727272]"
                 />
               </div>
+              {formik.touched.coefficient && formik.errors.coefficient ? ( // Show error message if touched and there's an error
+                <div className="text-7">{formik.errors.coefficient}</div>
+              ) : null}
               <div className=" flex gap-[0.8rem] max-w-[450px] border rounded p-3 flex-wrap">
                 {icons.map((icon) => (
                   <SubjectIcon
@@ -135,15 +152,26 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
           )}
 
           <DialogFooter className=" mt-3">
-            <DialogClose className=" w-full">
+            {!formik.isValid ? <Button
+                // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
+                type="submit"
+                className="w-full bg-[#1B8392] hover:opacity-80 "
+                disabled={!formik.isValid || isPending}
+              >
+                Modifier
+              </Button> : 
+              <DialogClose className=" w-full">
               <Button
                 // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
                 type="submit"
                 className="w-full bg-[#1B8392] hover:opacity-80 "
+                disabled={!formik.isValid || isPending}
               >
                 Modifier
               </Button>
             </DialogClose>
+            }
+            
           </DialogFooter>
         </form>
       </DialogContent>
