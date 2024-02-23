@@ -737,3 +737,19 @@ tbody,
 .error {
   color: red;
 }
+
+
+.accordion-settings[aria-expanded="true"] {
+  background-color: white !important;
+  color: #1B8392;
+}
+
+/* Style for when aria-expanded is false */
+.accordion-settings[aria-expanded="false"] {
+  background-color: #1B8392 !important;
+  color: white !important;
+   border-radius: 10px !important;
+}
+.accordion-settings[aria-expanded="false"]:hover {
+  background-color: rgba(39, 185, 207, 0.351) !important;
+}
