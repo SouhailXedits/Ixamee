@@ -40,7 +40,6 @@ import useMediaMatch from '@rooks/use-media-match';
 // } from '../../data/slices/calendarSlice';
 import dayjs from 'dayjs';
 
-
 // import Button from '../Bulletin/components/StudentBulletin/components/button/Button';
 import EventDetails from './components/eventDetails/EventDetails';
 import 'dayjs/locale/fr';
@@ -449,10 +448,25 @@ export default function Calendar() {
       (event: any) => event.id === eventInfo.event.id
     );
 
-function page() {
     return (
-        <div>
-            <Calendar/>
+      <Tooltip title={eventInfo.event.title}>
+        <div
+          className="event-cont"
+          style={{
+            backgroundColor: event?.textColor,
+            borderLeft: event?.borderLeft,
+          }}
+        >
+          <i
+            className="event-cont-text"
+            style={{
+              display: 'block',
+              overflow: 'hidden',
+              color: event?.color,
+            }}
+          >
+            {shortenString(eventInfo.event.title)}
+          </i>
         </div>
       </Tooltip>
     );
@@ -460,10 +474,10 @@ function page() {
 
   return (
     <>
-      <div className="calendar">
+      <div className="calendar flex flex-col w-full overflow-auto p-9">
         <div className="page__header">
           <div className="page__header-left">
-            <h2 className="page-title">Calendrier</h2>
+            <h2 className="page-title text-2xl text-2 font-semibold">Calendrier</h2>
             <Button
               onClick={() => {
                 handleSelectRange({
@@ -471,7 +485,7 @@ function page() {
                   end: new Date(),
                 });
               }}
-              className="btn"
+              className="btn bg-2"
               type="button"
             >
               Planifier un examen
@@ -552,7 +566,10 @@ function page() {
           >
             <DialogTitle padding={'16px 24px 5px 24px !important'}>
               <div className="dialog-title">
-                <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2>
+                <h2 className=" text-2">
+                  {' '}
+                  {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}
+                </h2>
                 {/* <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2> */}
                 <button onClick={handleCloseModal}>{/* <Cancel /> */}X</button>
               </div>
@@ -574,42 +591,42 @@ function page() {
 
 // ----------------------------------------------------------------------
 
-const useGetEvents = (setLoading: any) => {
-  // const dispatch = useAppDispatch();
+// const useGetEvents = (setLoading: any) => {
+//   // const dispatch = useAppDispatch();
 
-  // const { events: data } = useAppSelector((state) => state?.calendar);
+//   // const { events: data } = useAppSelector((state) => state?.calendar);
 
-  const getAllEvents = useCallback(async () => {
-    // setLoading(true);
-    // await dispatch(
-    //   getEvents({
-    //     //@ts-ignore
-    //     startDate: dayjs(new Date()).startOf('month').toISOString(),
-    //     //@ts-ignore
-    //     endDate: dayjs(new Date()).endOf('month').toISOString(),
-    //   })
-    // ).then(() => {
-    //   setLoading(false);
-    // });
-  }, []);
+//   const getAllEvents = useCallback(async () => {
+//     // setLoading(true);
+//     // await dispatch(
+//     //   getEvents({
+//     //     //@ts-ignore
+//     //     startDate: dayjs(new Date()).startOf('month').toISOString(),
+//     //     //@ts-ignore
+//     //     endDate: dayjs(new Date()).endOf('month').toISOString(),
+//     //   })
+//     // ).then(() => {
+//     //   setLoading(false);
+//     // });
+//   }, []);
 
-  useEffect(() => {
-    getAllEvents();
-  }, [getAllEvents]);
+//   useEffect(() => {
+//     getAllEvents();
+//   }, [getAllEvents]);
 
-  const events = [
-    { title: 'event 1', date: '2024-02-05' },
-    { title: 'event 2', date: '2024-02-02' },
-  ];
-  // const events = data?.map((event: any) => ({
-  //   ...event,
-  //   textColor: event?.color?.light,
-  //   color: event?.color?.dark,
-  //   borderLeft: ` 6px solid ${event?.color?.dark}`,
-  // }));
+//   const events = [
+//     { title: 'event 1', date: '2024-02-05' },
+//     { title: 'event 2', date: '2024-02-02' },
+//   ];
+//   // const events = data?.map((event: any) => ({
+//   //   ...event,
+//   //   textColor: event?.color?.light,
+//   //   color: event?.color?.dark,
+//   //   borderLeft: ` 6px solid ${event?.color?.dark}`,
+//   // }));
 
-  return events;
-};
+//   return events;
+// };
 
 // ----------------------------------------------------------------------
 

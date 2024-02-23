@@ -53,7 +53,6 @@ function CalendarForm({
   eventId,
   range,
   onCancel,
-  onCreateUpdateEvent,
   Prefix,
   height = '46px',
   colorOptions,
@@ -128,9 +127,12 @@ function CalendarForm({
     };
 
     console.log(values2);
-    if (!eventId) creatExamPlan(values2);
+    if (!eventId) {creatExamPlan(values2) 
+      onCancel()
+    }
     else {
       updateExamPlan(values2);
+      onCancel()
     }
 
     // const activeEstablishmentId = localStorage.getItem('activeEstablishmentId');
@@ -356,13 +358,13 @@ function CalendarForm({
               </div>
             </div>
             <div className={'confirm-vbtn mt-5'}>
-              <div className="flex justify-between gap-2 pop-up-delete-btns">
+              <div className="pop-up-delete-btns justify-between flex gap-2">
                 <Button
                   type="button"
                   onClick={() => {
                     onCancel();
                   }}
-                  className="w-full bg-transparent border border-2 text-2"
+                  className=" bg-transparent border border-2 text-2 w-full"
                   // backgroundColor={0}
                   // color={25}
                   // borderColor={25}
@@ -373,7 +375,7 @@ function CalendarForm({
                   type="submit"
                   // disabled={loading}
                   // label={loading ? t('loading') : t('btn')}
-                  className="w-full btn-primary category_form_button bg-2"
+                  className="btn-primary category_form_button bg-2 w-full"
                 >
                   {e ? 'Modifier' : 'Planifier'}
                 </Button>
