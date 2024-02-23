@@ -132,9 +132,6 @@ const Student = () => {
   const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
   console.log(classes);
-
-  
-
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full max-md:justify-normal">

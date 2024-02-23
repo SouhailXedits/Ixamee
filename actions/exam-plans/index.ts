@@ -134,17 +134,16 @@ interface UpdateEventProps {
 
 export const updateExamPlan = async (data: UpdateEventProps) => {
   console.log('‼️ update 🚀', data);
- 
   // if(!id || !data) return;
   const {
     start,
     end,
     title: name,
     description,
-    classes ,
+    classes,
     studentsVisibility: studentVisibility,
     color,
-    subject ,
+    subject,
   } = data;
   await db.examPlans.update({
     where: {

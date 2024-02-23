@@ -143,16 +143,16 @@ function EventDetails({
         title="Supprimer cet examen"
         open={deleteForm}
       >
-        <DialogContent className=" flex flex-col gap-4">
-          <DialogHeader className=" text-xl text-2">Supprimer cet examen</DialogHeader>
-          <div className="archive-exam-popup-content flex flex-col gap-4">
+        <DialogContent className="flex flex-col gap-4 ">
+          <DialogHeader className="text-xl text-2">Supprimer cet examen</DialogHeader>
+          <div className="flex flex-col gap-4 archive-exam-popup-content">
             <div className="archive-exam-popup-message">
               Êtes-vous sûr de vouloir supprimer cet examen ? Il sera définitivement invisible pour
               vous et vos étudiants.
             </div>
-            <div className="archive-exam-popup-buttons flex gap-2">
+            <div className="flex gap-2 archive-exam-popup-buttons">
               <button
-                className="btn white-btn btn-cancel w-full border rounded-lg"
+                className="w-full border rounded-lg btn white-btn btn-cancel"
                 onClick={() => {
                   setDeleteForm(false);
                 }}
@@ -160,7 +160,7 @@ function EventDetails({
                 Annuler
               </button>
               <button
-                className="btn  red btn-delete w-full "
+                className="w-full btn red btn-delete "
                 onClick={() => {
                   onDeleteEvent();
                   setDeleteForm(false);

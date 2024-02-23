@@ -40,6 +40,7 @@ import useMediaMatch from '@rooks/use-media-match';
 // } from '../../data/slices/calendarSlice';
 import dayjs from 'dayjs';
 
+
 // import Button from '../Bulletin/components/StudentBulletin/components/button/Button';
 import EventDetails from './components/eventDetails/EventDetails';
 import 'dayjs/locale/fr';
@@ -474,10 +475,10 @@ export default function Calendar() {
 
   return (
     <>
-      <div className="calendar flex flex-col w-full overflow-auto p-9">
+      <div className="calendar">
         <div className="page__header">
           <div className="page__header-left">
-            <h2 className="page-title text-2xl text-2 font-semibold">Calendrier</h2>
+            <h2 className="page-title">Calendrier</h2>
             <Button
               onClick={() => {
                 handleSelectRange({
@@ -485,7 +486,7 @@ export default function Calendar() {
                   end: new Date(),
                 });
               }}
-              className="btn bg-2"
+              className="btn"
               type="button"
             >
               Planifier un examen
@@ -566,10 +567,7 @@ export default function Calendar() {
           >
             <DialogTitle padding={'16px 24px 5px 24px !important'}>
               <div className="dialog-title">
-                <h2 className=" text-2">
-                  {' '}
-                  {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}
-                </h2>
+                <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2>
                 {/* <h2> {selectedEvent ? 'Modifier un examen' : 'Planifier un examen'}</h2> */}
                 <button onClick={handleCloseModal}>{/* <Cancel /> */}X</button>
               </div>
@@ -591,42 +589,42 @@ export default function Calendar() {
 
 // ----------------------------------------------------------------------
 
-// const useGetEvents = (setLoading: any) => {
-//   // const dispatch = useAppDispatch();
+const useGetEvents = (setLoading: any) => {
+  // const dispatch = useAppDispatch();
 
-//   // const { events: data } = useAppSelector((state) => state?.calendar);
+  // const { events: data } = useAppSelector((state) => state?.calendar);
 
-//   const getAllEvents = useCallback(async () => {
-//     // setLoading(true);
-//     // await dispatch(
-//     //   getEvents({
-//     //     //@ts-ignore
-//     //     startDate: dayjs(new Date()).startOf('month').toISOString(),
-//     //     //@ts-ignore
-//     //     endDate: dayjs(new Date()).endOf('month').toISOString(),
-//     //   })
-//     // ).then(() => {
-//     //   setLoading(false);
-//     // });
-//   }, []);
+  const getAllEvents = useCallback(async () => {
+    // setLoading(true);
+    // await dispatch(
+    //   getEvents({
+    //     //@ts-ignore
+    //     startDate: dayjs(new Date()).startOf('month').toISOString(),
+    //     //@ts-ignore
+    //     endDate: dayjs(new Date()).endOf('month').toISOString(),
+    //   })
+    // ).then(() => {
+    //   setLoading(false);
+    // });
+  }, []);
 
-//   useEffect(() => {
-//     getAllEvents();
-//   }, [getAllEvents]);
+  useEffect(() => {
+    getAllEvents();
+  }, [getAllEvents]);
 
-//   const events = [
-//     { title: 'event 1', date: '2024-02-05' },
-//     { title: 'event 2', date: '2024-02-02' },
-//   ];
-//   // const events = data?.map((event: any) => ({
-//   //   ...event,
-//   //   textColor: event?.color?.light,
-//   //   color: event?.color?.dark,
-//   //   borderLeft: ` 6px solid ${event?.color?.dark}`,
-//   // }));
+  const events = [
+    { title: 'event 1', date: '2024-02-05' },
+    { title: 'event 2', date: '2024-02-02' },
+  ];
+  // const events = data?.map((event: any) => ({
+  //   ...event,
+  //   textColor: event?.color?.light,
+  //   color: event?.color?.dark,
+  //   borderLeft: ` 6px solid ${event?.color?.dark}`,
+  // }));
 
-//   return events;
-// };
+  return events;
+};
 
 // ----------------------------------------------------------------------
 

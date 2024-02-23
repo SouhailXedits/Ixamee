@@ -1,0 +1,44 @@
+.duration-picker {
+  display: flex;
+       border-radius: 12px;
+        border: 1px solid #E4E4E4;
+        width: 100%;
+      padding: 0 1rem;
+  .duration-input {
+    border: none !important;
+    width: 6rem !important;
+    padding: 1.5rem 0rem !important ;
+    &.minutes{
+         width: 7.6rem !important;
+    }
+  }
+
+  .duration-field {
+    position: relative;
+
+    .suffix {
+
+      &-hours,
+      &-minutes {
+        position: absolute;
+        z-index: 2;
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: $color-11;
+      }
+
+      &-hours {
+        right: 35%;
+        top: 30%;
+      }
+
+      &-minutes {
+        right:30%;
+        top: 28%;
+      }
+
+
+
+    }
+  }
+}

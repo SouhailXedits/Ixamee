@@ -238,7 +238,7 @@ const AsyncSelect = ({
         ) : (
           <Select
             styles={colourStyles}
-            // className={className ? className : ''}
+            className={className ? className : ''}
             classNamePrefix={classNamePrefix}
             defaultValue={defaultValue || value}
             isDisabled={disabled}

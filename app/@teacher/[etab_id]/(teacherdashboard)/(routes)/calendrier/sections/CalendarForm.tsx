@@ -356,13 +356,13 @@ function CalendarForm({
               </div>
             </div>
             <div className={'confirm-vbtn mt-5'}>
-              <div className="pop-up-delete-btns justify-between flex gap-2">
+              <div className="flex justify-between gap-2 pop-up-delete-btns">
                 <Button
                   type="button"
                   onClick={() => {
                     onCancel();
                   }}
-                  className=" bg-transparent border border-2 text-2 w-full"
+                  className="w-full bg-transparent border border-2 text-2"
                   // backgroundColor={0}
                   // color={25}
                   // borderColor={25}
@@ -373,7 +373,7 @@ function CalendarForm({
                   type="submit"
                   // disabled={loading}
                   // label={loading ? t('loading') : t('btn')}
-                  className="btn-primary category_form_button bg-2 w-full"
+                  className="w-full btn-primary category_form_button bg-2"
                 >
                   {e ? 'Modifier' : 'Planifier'}
                 </Button>
