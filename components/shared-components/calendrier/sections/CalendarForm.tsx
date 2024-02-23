@@ -53,7 +53,6 @@ function CalendarForm({
   eventId,
   range,
   onCancel,
-  onCreateUpdateEvent,
   Prefix,
   height = '46px',
   colorOptions,
@@ -128,9 +127,12 @@ function CalendarForm({
     };
 
     console.log(values2);
-    if (!eventId) creatExamPlan(values2);
+    if (!eventId) {creatExamPlan(values2) 
+      onCancel()
+    }
     else {
       updateExamPlan(values2);
+      onCancel()
     }
 
     // const activeEstablishmentId = localStorage.getItem('activeEstablishmentId');
