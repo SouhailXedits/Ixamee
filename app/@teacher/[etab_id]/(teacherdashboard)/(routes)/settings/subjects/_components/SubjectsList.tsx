@@ -215,8 +215,7 @@ export function SubjectsList({
     table.nextPage();
   }
   function handlePreviousPage() {
-    // const cur = table.getPageCount();
-    if (currentpage === 0) onPageChange(currentpage - 1);
+    onPageChange(currentpage - 1);
     table.previousPage();
   }
 
