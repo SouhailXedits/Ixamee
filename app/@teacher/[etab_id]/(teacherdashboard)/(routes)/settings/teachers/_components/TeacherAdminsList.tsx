@@ -192,9 +192,9 @@ export function TeacherAdminsList({ data, isPending }: teacherAdminListProps) {
   });
 
   if (isPending)
-    return Array.from({ length: 5 }, (_, index) => (
-      <Skeleton key={index} className="w-70 h-10 mt-5" />
-    ));
+  return Array.from({ length: 5 }, (_, index) => (
+    <Skeleton key={index} className="w-70 h-10 mt-5" />
+  ));
 
   return (
     <div className="w-full">
