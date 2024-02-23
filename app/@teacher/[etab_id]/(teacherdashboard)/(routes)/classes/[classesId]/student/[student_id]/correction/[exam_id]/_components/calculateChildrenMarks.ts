@@ -51,3 +51,21 @@ export const transferAllMarkToNull = (content: any) => {
 };
 
 // Call the function passing the fakeData array to get the sum of marks for immediate children
+
+export const hasNullMark = (content: any) => {
+  for (const item of content) {
+    if (item.mark === null) {
+      return true;
+    }
+    if (item.children && hasNullMark(item.children)) {
+      return true;
+    }
+  }
+  return false;
+};
+export const statusOf = (data: any) => {
+  const hasPending = hasNullMark(data);
+  console.log(hasPending, 'hasPending');
+  const status = hasPending ? 'pending' : 'done';
+  return status;
+};
