@@ -132,12 +132,10 @@ export const getIsEstabNameUnique = async (name: string) => {
         name: true,
       },
     });
-    console.log(data)
 
     return data;
   } catch (error: any) {
     return {
-      data: undefined as any,
       error: 'Failed to get establishment.',
     };
   }
