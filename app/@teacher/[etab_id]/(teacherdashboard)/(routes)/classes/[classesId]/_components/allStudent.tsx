@@ -62,7 +62,7 @@ export const AllStudentList = ({
       />
 
       {/* {data.terms.map(term => ())} */}
-      <div className="flex justify-center">
+      <div className="flex justify-center" >
         <table className=" text-center w-[700px] border border-black/50 ">
           <thead className="text-white">
             <tr>

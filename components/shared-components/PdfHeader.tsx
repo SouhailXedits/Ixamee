@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 interface PdfHeaderProps {
   type: 'MSTeach' | 'MSStudent' | 'LOS';
@@ -152,61 +152,66 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             )}
             {type === 'MSStudent' && (
               <>
-                <p
-                  style={{
-                    alignSelf: 'stretch',
-                    color: 'var(--x-1)',
-                    fontFamily: '"Poppins", Helvetica',
-                    fontSize: '12px',
-                    fontWeight: '400',
-                    letterSpacing: '0',
-                    lineHeight: '18px',
-                    marginTop: '-1px',
-                    position: 'relative',
-                  }}
-                >
-                  <span style={{ fontWeight: '600' }}>Moyenne generale : </span>
-                  <span
+                {meta.average && (
+                  <p
                     style={{
-                      color: '#102528',
+                      alignSelf: 'stretch',
+                      color: 'var(--x-1)',
                       fontFamily: '"Poppins", Helvetica',
                       fontSize: '12px',
                       fontWeight: '400',
                       letterSpacing: '0',
                       lineHeight: '18px',
+                      marginTop: '-1px',
+                      position: 'relative',
                     }}
                   >
-                    {meta.average}
-                  </span>
-                </p>
-
-                <p
-                  style={{
-                    alignSelf: 'stretch',
-                    color: 'var(--x-1)',
-                    fontFamily: '"Poppins", Helvetica',
-                    fontSize: '12px',
-                    fontWeight: '400',
-                    letterSpacing: '0',
-                    lineHeight: '18px',
-                    marginTop: '-1px',
-                    position: 'relative',
-                  }}
-                >
-                  <span style={{ fontWeight: '600' }}>rang : </span>
-                  <span
+                    <span style={{ fontWeight: '600' }}>Moyenne generale : </span>
+                    <span
+                      style={{
+                        color: '#102528',
+                        fontFamily: '"Poppins", Helvetica',
+                        fontSize: '12px',
+                        fontWeight: '400',
+                        letterSpacing: '0',
+                        lineHeight: '18px',
+                      }}
+                    >
+                      {meta.average}
+                    </span>
+                  </p>
+                )}
+                {meta.range && (
+                  <p
                     style={{
-                      color: '#102528',
+                      alignSelf: 'stretch',
+                      color: 'var(--x-1)',
                       fontFamily: '"Poppins", Helvetica',
                       fontSize: '12px',
                       fontWeight: '400',
                       letterSpacing: '0',
                       lineHeight: '18px',
+                      marginTop: '-1px',
+                      position: 'relative',
                     }}
                   >
-                    {meta.range}
-                  </span>
-                </p>
+                    <>
+                      <span style={{ fontWeight: '600' }}>rang : </span>
+                      <span
+                        style={{
+                          color: '#102528',
+                          fontFamily: '"Poppins", Helvetica',
+                          fontSize: '12px',
+                          fontWeight: '400',
+                          letterSpacing: '0',
+                          lineHeight: '18px',
+                        }}
+                      >
+                        {meta.range}
+                      </span>
+                    </>
+                  </p>
+                )}
               </>
             )}
           </div>
@@ -223,7 +228,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
               position: 'relative',
             }}
           >
-            {type !== 'MSStudent' && (
+            {type !== 'MSStudent' && meta.studentsNum && (
               <p
                 style={{
                   alignSelf: 'stretch',
@@ -252,7 +257,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                 </span>
               </p>
             )}
-            {type === 'MSStudent' && (
+            {type === 'MSStudent' && meta.teacherName && (
               <p
                 style={{
                   alignSelf: 'stretch',
@@ -281,7 +286,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                 </span>
               </p>
             )}
-            {type === 'MSStudent' && (
+            {type === 'MSStudent' && meta.classe && (
               <p
                 style={{
                   alignSelf: 'stretch',
@@ -342,7 +347,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
           >
             {meta.heading}
           </div>
-          {type === 'MSStudent' && (
+          {type === 'MSStudent' && meta.subject && (
             <p
               style={{
                 alignSelf: 'stretch',

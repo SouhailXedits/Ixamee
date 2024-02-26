@@ -69,3 +69,37 @@ export const statusOf = (data: any) => {
   const status = hasPending ? 'pending' : 'done';
   return status;
 };
+
+
+export  const getNoteOf = (id: string, arr: any[]): any => {
+    if (arr === undefined) return 0;
+    for (const obj of arr) {
+      if (obj.id === id) {
+        return obj.mark;
+      }
+      if (obj.children && obj.children.length > 0) {
+        const mark = getNoteOf(id, obj.children);
+        if (mark !== null) {
+          return mark;
+        }
+      }
+    }
+    return null;
+  };
+
+
+  export function getMaxDepth(obj: any): number {
+    if (!obj || !obj.children || obj.children.length === 0) {
+      return 0; // Base case: no children or empty object
+    }
+
+    let maxChildDepth = 0;
+    for (const child of obj.children) {
+      const childDepth = getMaxDepth(child); // Recursively calculate depth of each child
+      if (childDepth > maxChildDepth) {
+        maxChildDepth = childDepth; // Update maximum depth if child depth is greater
+      }
+    }
+
+    return maxChildDepth + 1; // Return maximum depth of children + 1 for the current object
+  }

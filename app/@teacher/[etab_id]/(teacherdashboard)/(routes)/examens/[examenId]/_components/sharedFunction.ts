@@ -77,6 +77,9 @@ export const handleDeleteSubQuestion = (setFakeData: any, data: any, allData: an
   renderSubSubQuestion(setFakeData, allData);
 };
 export const calcSumOfMarks = (data: any) => {
+  if (data === undefined) {
+    return 0;
+  }
   // Logging the data for debugging purposes
 
   // Initializing the sum variable to 0

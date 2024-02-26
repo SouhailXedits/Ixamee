@@ -45,6 +45,7 @@ import { getStatusById } from '@/actions/classe';
 import { useQueryClient } from '@tanstack/react-query';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
+import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 function calculateDateDifference(date1: Date, date2: Date): number {
   const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
@@ -113,11 +114,9 @@ const Status = ({ row }: any) => {
 };
 
 const Action = ({ row }: any) => {
-  console.log(row?.original);
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
   console.log(correctionExamOfUser);
   // if (!correctionExamOfUser) return;
-  console.log(row?.original?.classe?.id, 'row?.original.class_id');
   const classe_id = row?.original?.classe?.id;
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
@@ -132,9 +131,17 @@ const Action = ({ row }: any) => {
       ) : (
         <Skeleton className="w-[40px] h-[40px] text-[#000000] bg-[#000000]" />
       )}
+
       <ModifierUnEtudiant data={row.original}>
         <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
       </ModifierUnEtudiant>
+      {correctionExamOfUser?.length !== 0 ? (
+        <TelachargePdfEvaluation
+          userContent={correctionExamOfUser}
+          user_id={row.original.id}
+          userDetails={row?.original}
+        ></TelachargePdfEvaluation>
+      ) : null}
 
       {!row.original.emailVerified ? (
         calculateDateDifference(row.original.invited_at, row.original.invited_at) == 0 ? (
