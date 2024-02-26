@@ -35,7 +35,6 @@ const examCorrectionData = [
 ];
 
 const ExamCorrectionList = (data: any) => {
-
   const getColor = (status: string) => {
     if (status === 'done') return '#12B76A';
     if (status === 'pending') return '#D1FADF';
@@ -91,7 +90,7 @@ const ExamCorrectionList = (data: any) => {
                         alt={`user${item?.id}`}
                         width={50}
                         height={50}
-                        className="rounded-full "
+                        className="rounded-full  w-[50px] h-[50px] object-cover"
                       />
                     ) : (
                       <Image

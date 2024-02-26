@@ -8,26 +8,26 @@ function SubjectCard({ subject, etab_id }: any) {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return (
     <div
-      className={`w-[350px] justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden `}
+      className={`min-w-[200px] justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden `}
       style={{
         backgroundColor: colors[randomIndex],
       }}
     >
-      <div className="flex items-center justify-between relative ">
+      <div className="relative flex items-center justify-between ">
         <Image
           src={`/icons/icon-${randomIndex + 1}.svg`}
-          className=" absolute -top-4 -right-6"
+          className="absolute -top-4 -right-6"
           alt={`${subject.name}-icon`}
           height={80}
           width={80}
         />
-        <div className="flex items-center gap-3 z-0">
+        <div className="z-0 flex items-center gap-3">
           <Image alt="MatierIcon" src={subject.icon} width={35} height={35} />
-          <div className='whitespace-nowrap w-full truncate'>
+          <div className="w-full truncate whitespace-nowrap">
             <span className="text-[#1B8392] text-lg  leading-[25px] font-semibold">
               {subject.name}{' '}
             </span>
-            <span className=" text-mainGreen/70 truncate ">({subject.classe_subject[0].name})</span>
+            <span className="truncate text-mainGreen/70">({subject.classe_subject[0].name})</span>
             <p className="text-mainGreen/70">coefficient : {subject.coefficient}</p>
           </div>
         </div>
@@ -39,7 +39,7 @@ function SubjectCard({ subject, etab_id }: any) {
           alt="userAvate"
           width={40}
           height={40}
-          className="inline-block  rounded-full "
+          className="inline-block rounded-full "
         />
         <Image
           src="userAvatar/user2.svg"
@@ -53,7 +53,7 @@ function SubjectCard({ subject, etab_id }: any) {
           alt="userAvate"
           width={40}
           height={40}
-          className="inline-block  rounded-full "
+          className="inline-block rounded-full "
         />
         <div className="bg-white h-[40px] w-[40px] rounded-full flex items-center justify-center text-[#1B8392]">
           <span className="flex items-center justify-center">22</span>
@@ -68,18 +68,18 @@ function SubjectCard({ subject, etab_id }: any) {
           'Libre'
         )}
       </div>
-      <div className="p-2 flex justify-between items-center w-full ">
+      <div className="flex items-center justify-between w-full p-2 ">
         <div className="flex items-center gap-3">
           <Image
             alt="Teacher image"
             src={subject.teacher[0]?.image || '/defaultUserAvatr.svg'}
             width={40}
             height={40}
-            className=" rounded-full"
+            className="rounded-full h-[40px] w-[40px] object-cover"
           />
           <div>
             <span className="text-[#1B8392] text-lg  leading-[25px] ">Professeur:</span>
-            <p className=" w-32 truncate">{subject.teacher[0]?.name || 'inconnue'}</p>
+            <p className="w-32 truncate ">{subject.teacher[0]?.name || 'inconnue'}</p>
           </div>
         </div>
         <Link

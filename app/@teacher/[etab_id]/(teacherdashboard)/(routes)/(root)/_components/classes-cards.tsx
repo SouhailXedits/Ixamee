@@ -16,7 +16,10 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
       {classes &&
         classes.map((classe: any) => {
           return (
-            <div key={classe}  className="w-[260.50px] h-[271px] py-[15px] bg-[#F0F6F8] rounded-[20px] flex-col justify-center items-center gap-[38px] inline-fle p-5 hover:opacity-75">
+            <div
+              key={classe}
+              className="w-[260.50px] h-[271px] py-[15px] bg-[#F0F6F8] rounded-[20px] flex-col justify-center items-center gap-[38px] inline-fle p-5 hover:opacity-75"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Image
@@ -41,7 +44,7 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                         alt="userAvatar"
                         width={40}
                         height={40}
-                        className="inline-block rounded-full"
+                        className="inline-block rounded-full w-[40px] h-[40px] object-cover"
                       />
                     ))
                 ) : (

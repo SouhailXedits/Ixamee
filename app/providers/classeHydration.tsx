@@ -29,10 +29,10 @@ export default async function ClassHydration({
     queryKey: ['getIdOfUserInTheClasse'],
     queryFn: async () => await getIdOfUserInTheClasse(+params.classesId),
   });
-  // await queryClient.prefetchQuery({
-  //   queryKey: ['classe'],
-  //   queryFn: async () => await getClasseById(+params.classesId),
-  // });
+  await queryClient.prefetchQuery({
+    queryKey: ['classe', params.etab_id],
+    queryFn: async () => await getClasseById(+params.classesId),
+  });
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
 }

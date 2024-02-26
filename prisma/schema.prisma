@@ -155,6 +155,7 @@ model Exam {
   exam_classess   Classe[]         @relation("ExamClasseToUser")
   language        Language? // Consider using an enum for style
   create_at       DateTime?        @default(now())
+  is_published    Boolean? @default(false)
   content         Json?
 }
 enum Language {

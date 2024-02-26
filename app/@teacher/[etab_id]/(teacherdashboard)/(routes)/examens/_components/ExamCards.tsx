@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 // 📦 DropdownMenuItemSelect component from modals
 import { DropdownMenuItemSelect } from '@/components/modals/dropDownExameCard';
+import { HoverCard, HoverCardTrigger } from '@/components/ui/hover-card';
+import { HoverCardContent } from '@radix-ui/react-hover-card';
 
 // Interface for the nested class data in ExamClassess
 interface exam_classe {
@@ -54,7 +56,17 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
     >
       {/* Header section with exam name and dropdown menu */}
       <div className="flex justify-between" onClick={(e) => e.stopPropagation()}>
-        <span className="text-[#514E4E]">{exam?.name}</span>
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <span className="text-[#514E4E]">
+              {exam?.name.length > 10 ? exam?.name.slice(0, 10) + '...' : exam?.name}
+            </span>
+          </HoverCardTrigger>
+          <HoverCardContent className="max-w-[200px] bg-white p-2 rounded-lg text-pretty">
+            <span className="text-[#727272]  break-words w-[200px]">{exam?.name}</span>
+          </HoverCardContent>
+        </HoverCard>
+        {/* <span className="text-[#514E4E]">{exam?.name}</span> */}
         {/* Dropdown menu for additional options */}
         <DropdownMenuItemSelect exam={exam}>
           <Image
@@ -83,7 +95,21 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
             >
               {/* Displaying individual class name */}
               <div className="flex gap-[2px] items-center justify-start grow shrink basis-0 text-xs font-medium leading-snug whitespace-nowrap text-[#1B8392]">
-                <span>{examClass?.name}</span>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <span className="">
+                      {examClass?.name.length > 10
+                        ? examClass?.name.slice(0, 10) + '...'
+                        : examClass?.name}
+                    </span>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="max-w-[200px] bg-white p-2 rounded-lg text-pretty">
+                    <span className="text-[#727272]  break-words w-[200px] text-md">
+                      {examClass?.name}
+                    </span>
+                  </HoverCardContent>
+                </HoverCard>
+                {/* <span>{examClass?.name}</span> */}
               </div>
             </div>
           ))}

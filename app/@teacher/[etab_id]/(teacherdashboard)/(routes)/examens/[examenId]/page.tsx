@@ -76,9 +76,11 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
       toast.error('Ilya des champs obligatoires sont manquants.');
       return;
     }
+
+    const is_published = sum === data?.total_mark;
     let exam_id = examenId;
     console.log(fakeData);
-    editExam({ exam_id, content: fakeData });
+    editExam({ exam_id, content: fakeData, is_published });
     confetti.onOpen();
 
     handleConfetti;
