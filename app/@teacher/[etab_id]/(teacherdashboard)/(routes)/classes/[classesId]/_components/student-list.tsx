@@ -135,7 +135,7 @@ const Action = ({ row }: any) => {
       <ModifierUnEtudiant data={row.original}>
         <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
       </ModifierUnEtudiant>
-      {correctionExamOfUser?.length !== 0 ? (
+      {correctionExamOfUser && correctionExamOfUser?.length !== 0 ? (
         <TelachargePdfEvaluation
           userContent={correctionExamOfUser}
           user_id={row.original.id}

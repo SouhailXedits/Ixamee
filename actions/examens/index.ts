@@ -466,7 +466,8 @@ export const deleteExame = async (id: number) => {
     };
   }
 };
-export const updateExamContent = async (examId: string, content: any) => {
+export const updateExamContent = async (examId: string, content: any, is_published: boolean) => {
+  console.log(is_published);
   try {
     const updatedExam = await db.exam.update({
       where: {
@@ -475,6 +476,7 @@ export const updateExamContent = async (examId: string, content: any) => {
 
       data: {
         content: content,
+        is_published: is_published,
       },
     });
 

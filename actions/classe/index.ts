@@ -54,9 +54,14 @@ export const getClasseById = async (id: number) => {
       id: id,
     },
     include: {
-      exam_classe: true,
+      exam_classe: {
+        where: {
+          is_published: true,
+        },
+      },
     },
   });
+  console.log(classe);
   return classe;
 };
 export const getClasseByClassId = async (id: number) => {
@@ -182,7 +187,7 @@ export const createUserWithImportInClasse = async (data: any) => {
           },
         });
 
-      if (res.length === 0) {
+        if (res.length === 0) {
           await db.user.create({
             data: {
               name: user.name,
@@ -218,7 +223,6 @@ export const createUserWithImportInClasse = async (data: any) => {
       })
     );
     // If all users are created/updated successfully, return a resolved Promise
-
   } catch (error) {
     // If any error occurs during creation/updation, return a rejected Promise with the error
     throw error;
@@ -573,7 +577,6 @@ export const updateUserInClasse = async (
       },
     });
   }
-
 };
 
 export const deleteUserInClasse = async (user_id: string, classe_id: string) => {

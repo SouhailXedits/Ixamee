@@ -36,7 +36,8 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
   useEffect(() => {
     setContent(exam?.content);
   }, [exam?.content]);
-  const whidth = exam?.content?.length * 200;
+  const whidth = content?.length * 200 + 200; // Set a maximum width of 800px
+
   let some = 0;
   const result = content?.map((item: any) => {
     const mark = calcSumOfMarks(item);
@@ -44,14 +45,19 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
     some = some + mark;
   });
   const { editExam, isPending: isPendingEdit } = useEditExamContent();
-
+  console.log(whidth);
   const handelUpdateContentOExam = () => {
-    editExam({ exam_id: exam.id, content });
+    const is_published = some === totalMarkOfExam;
+    console.log(is_published);
+    editExam({ exam_id: exam.id, content, is_published });
   };
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className={`sm:max-w-[680px]`}>
+      <DialogContent
+        className={`sm:max-w-[${whidth}px] sm:max-h-[600px] overflow-auto`}
+        // style={{ width: whidth }}
+      >
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
             Ajouter un barème
@@ -61,7 +67,7 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
           {content?.map((item: any) => {
             console.log(item);
             return (
-              <div className=" min-w-[200px] border-[#dedbdb] border-[1px] p-2  rounded-lg flex flex-col gap-2 ">
+              <div className=" min-w-[220px] border-[#dedbdb] border-[1px] p-2  rounded-lg flex flex-col gap-2 ">
                 <div className="flex gap-[10px]">
                   <div className="text-[#999999]">
                     {/* name Of Exerciec */}
@@ -109,7 +115,7 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
           <DialogFooter>
             <Button
               type="submit"
-              disabled={some >= totalMarkOfExam}
+              disabled={some > totalMarkOfExam}
               className="w-full text-white bg-2 hover:opacity-80"
               onClick={() => handelUpdateContentOExam()}
             >
