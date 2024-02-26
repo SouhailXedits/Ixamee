@@ -5,7 +5,7 @@ import BulletinsDesEtudiants from './bulletins-des-etudiants';
 const DashboradBulletinsDesEtudiants = ({ data }: any) => {
   data = { amie: 123 };
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-[500px]">
       <div className="flex justify-between w-full">
         <div className="flex items-center gap-4">
           <Image src="dashboard/bulttin/bulletinsIcon.svg" alt="correct" width={21} height={21} />

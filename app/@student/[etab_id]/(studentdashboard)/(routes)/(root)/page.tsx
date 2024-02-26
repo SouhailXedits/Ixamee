@@ -7,7 +7,11 @@ import DashboradCorrectionsRecentes from './_components/dashborad-corrections-re
 // import DashboradStatistiques from './_components/dashborad-statistiques';
 
 import { useParams } from 'next/navigation';
-import { getAllSubjectsByClasseIdByPage, getAllSubjectsCount } from '@/actions/subjects';
+import {
+  getAllSubjectsByClasseId,
+  getAllSubjectsByClasseIdByPage,
+  getAllSubjectsCount,
+} from '@/actions/subjects';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -24,14 +28,22 @@ export default function Home() {
     queryFn: async () => getAllSubjectsCount(+classId),
   });
 
-
-  const { data: subjects, isPending } = useQuery({
-    queryKey: ['user-subjects-dash', classId],
-    queryFn: async () => getAllSubjectsByClasseIdByPage(2, +classId),
+  const {
+    data: subjects,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ['user-subjects', classId],
+    queryFn: async () => getAllSubjectsByClasseId(+classId),
   });
 
+  // const { data: subjects, isPending } = useQuery({
+  //   queryKey: ['user-subjects-dash', classId],
+  //   queryFn: async () => getAllSubjectsByClasseIdByPage(1, +classId),
+  // });
+
   return (
-    <div className="flex flex-col w-full h-screen p-9 overflow-auto">
+    <div className="flex flex-col w-full h-[100vh] overflow-auto p-9">
       <div className="pl-4 text-2xl font-semibold text-2 ">Tableau de bord</div>
       <div className="flex gap-6 pt-10 flex-nowrap max-2xl:flex-wrap">
         {/* first section 👺  */}
@@ -50,7 +62,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="w-[40%] p-2 flex flex-col gap-9 max-2xl:w-[100%]">
+        <div className="w-[40%]  p-2 flex flex-col gap-9 max-2xl:w-[100%]">
           <DashboradCorrectionsRecentes />
           <DashboradBulletinsDesEtudiants />
         </div>

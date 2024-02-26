@@ -5,7 +5,7 @@ import React from 'react';
 function Errorr() {
   return (
     <div>
-      <Image src={'./notFoundSvg.svg'} width={300} height={300} alt="not found page" />
+      <Image src='./notFound.svg' width={300} height={300} alt="not found page" />
       Error
     </div>
   );

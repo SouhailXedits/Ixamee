@@ -28,7 +28,7 @@ function Results() {
     queryKey: ['user-subjects', id],
     queryFn: async () => getAllSubjectsByClasseId(+id),
   });
-
+  console.log(data);
 
   if (error) return;
   return (

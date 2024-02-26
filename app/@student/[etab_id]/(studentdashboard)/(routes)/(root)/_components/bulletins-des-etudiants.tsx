@@ -24,7 +24,7 @@ const BulletinsDesEtudiants = ({ data }: any) => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
 
-  const userSubjects = queryClient.getQueryData(['user-subjects-dash', classeId]) as any;
+  const userSubjects = queryClient.getQueryData(['user-subjects', classeId]) as any;
   const { data: userCorrections } = useQuery({
     queryKey: ['correction', filter],
     queryFn: async () => getUserCorrectionBySubject(user?.id, filter),
@@ -34,7 +34,7 @@ const BulletinsDesEtudiants = ({ data }: any) => {
   return (
     <>
       {!data ? (
-        <div className="flex items-center justify-center w-full h-full p-10 border rounded-xl">
+        <div className="flex items-center justify-center w-full p-10 border rounded-xl">
           <Rien
             image="/dashboard/books.svg"
             className="flex flex-col justify-center gap-6"
@@ -42,7 +42,7 @@ const BulletinsDesEtudiants = ({ data }: any) => {
           />
         </div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col h-full gap-4">
           <div className="flex items-center justify-end gap-3">
             {/* Classe */}
             <Select
@@ -56,7 +56,7 @@ const BulletinsDesEtudiants = ({ data }: any) => {
                 {userSubjects &&
                   userSubjects?.map((subject: any) => (
                     <SelectItem
-                    key={subject.id}
+                      key={subject.id}
                       value={subject.id}
                       // onClick={() => handleInputChange('term', 'trimestre_1')}
                     >
@@ -111,7 +111,7 @@ const BulletinsDesEtudiants = ({ data }: any) => {
               )}
             </Select>
           </div>
-          <div className="w-full border h-[250px] rounded-xl">
+          <div className="w-full rounded-xl">
             <ExamCorrectionList data={userCorrections} />
           </div>
         </div>

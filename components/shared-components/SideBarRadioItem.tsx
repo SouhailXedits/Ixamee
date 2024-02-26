@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { redirect, useParams, usePathname, useRouter } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { useQueryClient } from '@tanstack/react-query';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card';
 
 const FormSchema = z.object({
   type: z.enum(['all', 'mentions', 'none'], {
@@ -89,7 +90,7 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
                     // onChange={(e: any) => router.push(`/${e.target?.value}`)}
                     className="flex flex-col space-y-1"
                   >
-                    {data.map((lyce :any) => (
+                    {data.map((lyce: any) => (
                       <FormItem // Add a unique key for each item
                         key={lyce.id}
                         className={cn(
@@ -112,11 +113,22 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
                             collapsed && 'w-[38px] overflow-hidden text-center'
                           )}
                         >
-                          {collapsed
-                            ? shorting(lyce?.name)
-                            : lyce?.name?.length > 20
-                            ? lyce?.name?.slice(0, 15) + '...'
-                            : lyce?.name}
+                          <HoverCard>
+                            <HoverCardTrigger asChild>
+                              <span className="">
+                                {collapsed
+                                  ? shorting(lyce?.name)
+                                  : lyce?.name?.length > 20
+                                  ? lyce?.name?.slice(0, 15) + '...'
+                                  : lyce?.name}
+                              </span>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="max-w-[200px] bg-white p-2 rounded-lg text-pretty">
+                              <span className="text-[#727272]  break-words w-[200px] text-md">
+                                {lyce?.name}
+                              </span>
+                            </HoverCardContent>
+                          </HoverCard>
                         </FormLabel>
                       </FormItem>
                     ))}
