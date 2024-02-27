@@ -1,9 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Question } from './Question';
 import { cn } from '@/lib/utils';
-import {
-  calculerExerciceMark,
-} from '../../../../../../_utils/calculateChildrenMarks';
+import { calculerExerciceMark } from '../../../../../../../../_utils/calculateChildrenMarks';
 
 export const Exercise = ({ data, isArabic }: any) => {
   if (!data) return;
@@ -39,7 +37,6 @@ export const Exercise = ({ data, isArabic }: any) => {
                   maxLength={5}
                   disabled
                   value={Number(calculerExerciceMark(data)).toFixed(2)}
-
                 />
                 {/* <span className="text-xl">/ 20.00</span> */}
               </div>
@@ -51,11 +48,7 @@ export const Exercise = ({ data, isArabic }: any) => {
       <div className="flex flex-col gap-6 ml-10">
         <div className="flex flex-col gap-4 ">
           {data.children.map((item: any) => (
-            <Question
-              key={item.id}
-              data={item}
-              isArabic={isArabic}
-            />
+            <Question key={item.id} data={item} isArabic={isArabic} />
           ))}
         </div>
       </div>

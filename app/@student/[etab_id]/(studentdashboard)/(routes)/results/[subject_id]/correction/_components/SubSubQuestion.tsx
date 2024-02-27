@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Editor from '@/components/shared-components/toolbar-editor';
 import { Input } from '@/components/ui/input';
-import { calculerExerciceMark } from '../../../../../../_utils/calculateChildrenMarks';
+import { calculerExerciceMark } from '../../../../../../../../_utils/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 
 export const SubSubQuestion = ({ data, isArabic }: any) => {

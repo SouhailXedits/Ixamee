@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import CreateExam from './_components/create-exam';
+// import CreateExam from './_components/create-exam';
 import { useQuery } from '@tanstack/react-query';
 import { getExamContent, getOneExamById, getOneExamByIdForCorrection } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,6 +15,7 @@ import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorre
 import { Button } from '@/components/ui/button';
 import { useConfettiStore } from '@/store/use-confetti-store';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
+import CreateExam from '@/components/shared-components/exam/create-exam';
 export default function Page({
   params,
 }: {

@@ -2,6 +2,7 @@
 'use server';
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
 import { calculateAverageMark, calculateOverallAverage } from '@/app/_utils/calculateAverage';
+import { transferAllMarkToNull } from '@/app/_utils/calculateChildrenMarks';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 interface ExamEstablishment {

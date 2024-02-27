@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 
 function UserExam({ exam, examsData }: any) { 
@@ -13,6 +13,7 @@ function UserExam({ exam, examsData }: any) {
   const examContent = exam?.examContent;
 
   const params = useParams();
+  const pathname = usePathname()
 
   const router = useRouter();
 
@@ -21,7 +22,8 @@ function UserExam({ exam, examsData }: any) {
       router.push(
         `/${params.etab_id}/classes/${params.classe_id}/student/${params.student_id}/correction/${exam.exam_id}`
       );
-    else router.push(`/${params.etab_id}/correction/${exam.exam_id}`);
+    else router.push(`${pathname}/correction/${exam.exam_id}`);
+    // else router.push(`/${params.etab_id}/results/${params.classe_id}/correction/${exam.exam_id}`);
   }
   function handelUplodFicher() {
     console.log('dskdskdk');
