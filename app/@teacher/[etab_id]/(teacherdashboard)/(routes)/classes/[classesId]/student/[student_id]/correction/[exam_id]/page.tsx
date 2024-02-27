@@ -6,21 +6,15 @@ import { useQuery } from '@tanstack/react-query';
 import { getExamContent, getOneExamById, getOneExamByIdForCorrection } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
-// import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
-import {
-  calcAllMark,
-  hasNullMark,
-  statusOf,
-  transferAllMarkToNull,
-} from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
 import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorrection';
 import { Button } from '@/components/ui/button';
 import { useConfettiStore } from '@/store/use-confetti-store';
+import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 export default function Page({
   params,
 }: {
