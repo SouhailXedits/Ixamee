@@ -473,7 +473,7 @@ body {
   margin-bottom: 2rem;
 }
 
-[data-radix-popper-content-wrapper] {
+.calendar-menu-popover [data-radix-popper-content-wrapper] {
   z-index: 2000 !important;
 }
 

@@ -46,7 +46,7 @@ import 'dayjs/locale/fr';
 import { Button } from '@/components/ui/button';
 import Loading from '@/app/loading';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getExamPlansByUserId } from '@/actions/exam-plans';
+import { getExamPlansByUserId, getStudentExamPlans } from '@/actions/exam-plans';
 import { useParams } from 'next/navigation';
 import { useDeleteExamPlan } from './hooks/useDeleteExamPlan';
 import { useUpdateExamPlan } from './hooks/useUpdateExamPlan';
@@ -85,9 +85,13 @@ const COLOR_OPTIONS = [
   },
 ];
 
+interface CalendarProps {
+  CalendarEditable?: boolean;
+}
+
 // ----------------------------------------------------------------------
 
-export default function Calendar() {
+export default function Calendar({ CalendarEditable }: CalendarProps) {
   // const events = [
   //   {
   //     id: '11',
@@ -112,6 +116,7 @@ export default function Calendar() {
   // const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaMatch('(min-width: 575px)');
+
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
   const params = useParams();
@@ -119,9 +124,13 @@ export default function Calendar() {
   const user_id = user?.id;
   const calendarRef = useRef<FullCalendar>(null);
   // let events: any = useGetEvents(setLoading);
+
   const { data: events, isPending } = useQuery<any>({
     queryKey: ['events'],
-    queryFn: async () => await getExamPlansByUserId(user_id, +etab_id),
+    queryFn: async () => {
+      if (CalendarEditable) return await getExamPlansByUserId(user_id, +etab_id);
+      else return await getStudentExamPlans(user_id, +etab_id);
+    },
   });
   console.log(events);
 
@@ -302,15 +311,15 @@ export default function Calendar() {
       selectedEvent.end = newEndDate.toISOString();
       selectedEvent.subject = selectedEvent?.subject.id;
 
-      const color = selectedEvent?.color
+      const color = selectedEvent?.color;
 
       selectedEvent.color = color;
       delete selectedEvent.textColor;
       console.log(selectedEvent);
       const selectedId = selectedEvent.id;
       console.log(selectedId);
-      const classesIds = selectedEvent.classes.map((classe:any) => classe.id);
-      selectedEvent.classes = classesIds
+      const classesIds = selectedEvent.classes.map((classe: any) => classe.id);
+      selectedEvent.classes = classesIds;
 
       updateExamPlan(selectedEvent);
 
@@ -472,24 +481,33 @@ export default function Calendar() {
     );
   }
 
+  // Conditionally add properties
+  // if (editable) {
+  //   // Add properties relevant only when editable
+  //   calendarProps.eventOverlap = false;
+  //   calendarProps.eventConstraint = 'businessHours';
+  // }
+
   return (
     <>
       <div className="calendar flex flex-col w-full overflow-auto p-9">
         <div className="page__header">
           <div className="page__header-left">
             <h2 className="page-title text-2xl text-2 font-semibold">Calendrier</h2>
-            <Button
-              onClick={() => {
-                handleSelectRange({
-                  start: new Date(),
-                  end: new Date(),
-                });
-              }}
-              className="btn bg-2"
-              type="button"
-            >
-              Planifier un examen
-            </Button>
+            {CalendarEditable && (
+              <Button
+                onClick={() => {
+                  handleSelectRange({
+                    start: new Date(),
+                    end: new Date(),
+                  });
+                }}
+                className="btn bg-2"
+                type="button"
+              >
+                Planifier un examen
+              </Button>
+            )}
           </div>
         </div>
         <CalendarToolbar
@@ -509,11 +527,12 @@ export default function Calendar() {
               <Loading />
             ) : (
               <FullCalendar
+                // {...calendarProps}
                 weekends
-                editable
-                droppable
+                editable={CalendarEditable}
+                droppable={CalendarEditable}
                 locale={'fr'}
-                selectable
+                selectable={CalendarEditable}
                 rerenderDelay={10}
                 allDayMaintainDuration
                 eventResizableFromStart
@@ -553,6 +572,7 @@ export default function Calendar() {
           onDeleteEvent={handleDeleteEvent}
           setSelectedRange={setSelectedRange}
           setSelectedEventId={setSelectedEventId}
+          editable = {CalendarEditable}
         />
         {openForm && (
           <Dialog

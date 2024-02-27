@@ -39,10 +39,6 @@ export const DeleteAdminModal = ({ id, children }: EditUserFormProps) => {
     if (!isPending) setIsFirstModalOpen(!isFirstModalOpen);
   }
 
-  function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen);
-  }
-
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
