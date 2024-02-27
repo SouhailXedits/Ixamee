@@ -32,7 +32,7 @@ interface SideBarRadioItemProps {
 }
 
 export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
-  // console.log('🚀 ~ SideBarRadioItem ~ data:', data);
+  //
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -48,10 +48,10 @@ export function SideBarRadioItem({ data }: SideBarRadioItemProps) {
   const params = useParams();
   const etabId = +params?.etab_id;
 
-  const currentestab = data.find((res :any) => +res?.id === +etabId);
+  const currentestab = data.find((res: any) => +res?.id === +etabId);
   const currentestabName = currentestab?.id;
 
-  if (data.every((res :any) => +res?.id !== +etabId)) {
+  if (data.every((res: any) => +res?.id !== +etabId)) {
     if (+etabId === 0) {
       return;
     }

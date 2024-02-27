@@ -14,7 +14,6 @@ const Profile = () => {
     queryFn: async () => await getEstablishmentOfUser(user?.id as string),
     staleTime: 0,
   });
-  console.log(userEstablishment ,"userEstablishment");
 
   const { data: teacherSubject, isPending: isPendingSubject } = useQuery<any>({
     queryKey: ['teacherSubjects'],

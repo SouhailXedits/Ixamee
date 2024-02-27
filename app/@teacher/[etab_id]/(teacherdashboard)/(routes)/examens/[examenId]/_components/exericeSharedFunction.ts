@@ -1,4 +1,4 @@
-export const AddQuestion = (setFakeData : any ,data: any) => {
+export const AddQuestion = (setFakeData: any, data: any) => {
   setFakeData((prevData: any) => {
     const getNextChar = (num: number) => String.fromCharCode(0x2160 + num);
 
@@ -20,13 +20,13 @@ export const AddQuestion = (setFakeData : any ,data: any) => {
     return updatedData;
   });
 };
-export const deleteExercice = (data: any ,setFakeData: any, allData: any)  => {
+export const deleteExercice = (data: any, setFakeData: any, allData: any) => {
   const newData = allData.filter((item: any) => item.id !== data.id);
   setFakeData(newData);
 };
 
-//   calculateChildrenMarks(allData);  console.log(allData)
-export const hndelChangeExcericeName = (e: any ,setFakeData: any, data: any) => {
+//   calculateChildrenMarks(allData);
+export const hndelChangeExcericeName = (e: any, setFakeData: any, data: any) => {
   setFakeData((prevData: any) => {
     return prevData.map((item: any) => {
       if (item.id === data.id) {

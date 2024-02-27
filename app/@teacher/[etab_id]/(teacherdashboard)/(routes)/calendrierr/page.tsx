@@ -123,20 +123,17 @@ export default function Calendar() {
     queryKey: ['events'],
     queryFn: async () => await getExamPlansByUserId(user_id, +etab_id),
   });
-  console.log(events);
 
   const [openForm, setOpenForm] = useState(false);
   const [openEventDet, setOpenEventDet] = useState(false);
 
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  console.log(selectedEventId);
 
   const [selectedRange, setSelectedRange] = useState<{
     start: Date;
     end: Date;
   } | null>(null);
   const selectedEvent = events?.find((event: any) => event.id === selectedEventId) as any;
-  console.log(selectedEvent);
 
   // const selectedEvent = useAppSelector(() => {
   //   if (selectedEventId) {
@@ -244,7 +241,6 @@ export default function Calendar() {
       // await dispatch(emptyEvents());
       calendarApi.next();
       setDate(calendarApi.getDate());
-      console.log(calendarApi.getDate());
 
       // dispatch(
       //   getEvents({
@@ -280,9 +276,7 @@ export default function Calendar() {
 
   const handleDropEvent = ({ event }: EventDropArg) => {
     try {
-      console.log(event);
       const selectedEvent = events?.find((el: any) => el.id === +event._def.publicId) as any;
-      console.log(selectedEvent);
 
       const startDate = dayjs(event._instance?.range.start).get('date');
       const startMonth = dayjs(event._instance?.range.start).get('month');
@@ -302,15 +296,15 @@ export default function Calendar() {
       selectedEvent.end = newEndDate.toISOString();
       selectedEvent.subject = selectedEvent?.subject.id;
 
-      const color = selectedEvent?.color
+      const color = selectedEvent?.color;
 
       selectedEvent.color = color;
       delete selectedEvent.textColor;
-      console.log(selectedEvent);
+
       const selectedId = selectedEvent.id;
-      console.log(selectedId);
-      const classesIds = selectedEvent.classes.map((classe:any) => classe.id);
-      selectedEvent.classes = classesIds
+
+      const classesIds = selectedEvent.classes.map((classe: any) => classe.id);
+      selectedEvent.classes = classesIds;
 
       updateExamPlan(selectedEvent);
 
@@ -442,8 +436,6 @@ export default function Calendar() {
   });
 
   function renderEventContent(eventInfo: any) {
-    console.log(eventInfo);
-
     const event = eventInfo.event._context.options.events.find(
       (event: any) => event.id === eventInfo.event.id
     );

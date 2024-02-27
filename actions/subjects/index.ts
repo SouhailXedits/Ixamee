@@ -3,14 +3,11 @@
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 export const createSubject = async (data: SubjectInputProps) => {
-
   try {
     const exam = await db.subject.create({
       data: data,
     });
-
   } catch (error: any) {
-
     return {
       error: 'Failed to create subject.',
     };
@@ -32,9 +29,6 @@ export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') =
     });
     const totalCount = await db.subject.count();
 
-
-
-
     return { data: { estabs, totalCount }, error: undefined };
   } catch (error: any) {
     return {
@@ -47,8 +41,6 @@ export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') =
 export const getAllSubjects = async () => {
   try {
     const estabs = await db.subject.findMany();
-
-
 
     return { data: estabs, error: undefined };
   } catch (error: any) {
@@ -80,16 +72,13 @@ export const getAllSubjectsByUserId = async (id: number) => {
 
 export const editSubject = async (id: number, data: SubjectInputProps) => {
   try {
-
     await db.subject.update({
       where: {
         id: id,
       },
       data: data,
     });
-
   } catch (error: any) {
-
     return {
       error: 'Failed to edit subject.',
     };
@@ -97,14 +86,12 @@ export const editSubject = async (id: number, data: SubjectInputProps) => {
 };
 
 export const deleteSubject = async (id: number) => {
-
   try {
     const data = await db.subject.delete({
       where: {
         id: id,
       },
     });
-
   } catch (error: any) {
     return {
       error: 'Failed to delete subject.',
@@ -292,7 +279,6 @@ export const getAllSubjectsCount = async (classeId: number) => {
   }
 };
 
-
 export const getAllSubjectNameById = async (subject_id: number) => {
   try {
     const res = await db.subject.findFirst({
@@ -302,7 +288,7 @@ export const getAllSubjectNameById = async (subject_id: number) => {
       },
       select: {
         name: true,
-      }
+      },
     });
     return res;
   } catch (error: any) {
@@ -328,6 +314,6 @@ export const getAllSubjectNameById = async (subject_id: number) => {
 //       },
 //     },
 //   });
-//   console.log(subject);
+//
 //   return subject;
 // };

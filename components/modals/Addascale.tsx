@@ -26,11 +26,10 @@ interface DeleteExame {
 
 export const Addascal = ({ children, exam }: DeleteExame) => {
   // use State for the update the state :
-  console.log(exam);
+
   const totalMarkOfExam = exam?.total_mark;
   const [content, setContent] = useState<any>(exam?.content);
   // handel get the exam
-  console.log(content);
 
   // the content of the exam :
   useEffect(() => {
@@ -45,18 +44,19 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
     some = some + mark;
   });
   const { editExam, isPending: isPendingEdit } = useEditExamContent();
-  console.log(whidth);
+
   const handelUpdateContentOExam = () => {
     const is_published = some === totalMarkOfExam;
-    console.log(is_published);
+
     editExam({ exam_id: exam.id, content, is_published });
   };
+  const tes = 1000;
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        className={`sm:max-w-[${whidth}px] sm:max-h-[600px] overflow-auto`}
-        // style={{ width: whidth }}
+        className={`w-[${tes}px] sm:max-h-[600px] overflow-auto`}
+        style={{ maxWidth: whidth }}
       >
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
@@ -65,7 +65,6 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
         </DialogHeader>
         <DialogDescription className=" text-neutral-400 text-[15px] font-normal flex gap-2  ">
           {content?.map((item: any) => {
-            console.log(item);
             return (
               <div className=" min-w-[220px] border-[#dedbdb] border-[1px] p-2  rounded-lg flex flex-col gap-2 ">
                 <div className="flex gap-[10px]">

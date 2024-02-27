@@ -19,6 +19,7 @@ import ExportClassePdf from './_components/ExportClassePdf';
 import Selects from './_components/Selects';
 import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
 import { useConfettiStore } from '@/store/use-confetti-store';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 interface classe {
   id: number;
@@ -39,7 +40,6 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
   //get The list of Id in the classe
   const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
-
 
   // get the teacher establishment  with hydration
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
@@ -65,14 +65,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getClasseById(+params.classesId),
   });
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
-  console.log(exam);
+  
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     enabled: exam !== undefined && exam !== '',
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
-  console.log(userCorrection);
+  
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
@@ -80,13 +80,13 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getStudentOfClasse(+classesId),
     retry: 0,
   });
-  console.log(data);
+  
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
     queryFn: async () => await getCorigeExameContentOfAllUser(exam, getIdOfUserInTheClasse),
   });
-  console.log(getCorrigeExamOfUser);
+  
   // ======================= End All Queries✨✨✨✨✨✨✨✨✨✨✨✨ ======================
   // ==================== Start useEffect 😵‍💫😵‍💫😵‍💫 ======================
   // set the default exam if he find a exam  : 3la 5ater bach ki yadhreb yadhreb 3la el examan mo33ain
@@ -186,7 +186,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   }
 
   const userNotCorrected = notCorrected(userCorrection);
-  console.log(newData);
+  
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full gap-14 ">
@@ -196,7 +196,17 @@ const Student = ({ params }: { params: { classesId: string } }) => {
               <Skeleton className="w-[300px] h-[40px]" />
             </div>
           ) : (
-            <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <span className="text-[#1B8392] text-2xl font-semibold ">
+                  {classeName.length > 10 ? classeName.slice(0, 10) + '...' : classeName}
+                </span>
+                {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
+              </HoverCardTrigger>
+              <HoverCardContent className="text-[#727272]  break-words w-[200px] text-md">
+                <span className="text-[#1B8392] text-xl font-semibold">{classeName}</span>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           <div className="flex items-center text-[#727272]">
@@ -236,7 +246,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
       </nav>
 
-      {/* console.log(' :', ); */}
+
       {isPendingClasse ? (
         <div className="flex flex-col gap-6 pt-10">
           <Skeleton className="w-full h-[60px]" />

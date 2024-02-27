@@ -67,7 +67,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
       label: item?.name,
     };
   });
-  
+
   const exam_Establishment = exam.exam_classess[0].establishment[0];
   const defaultEstablishment = userEstablishmentoptions?.find(
     (item: any) => item.value === exam_Establishment.id
@@ -118,7 +118,7 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
-  console.log(formData);
+
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({

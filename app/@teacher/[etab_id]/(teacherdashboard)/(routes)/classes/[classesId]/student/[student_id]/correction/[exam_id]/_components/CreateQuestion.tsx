@@ -166,7 +166,6 @@ export const CreateQuestion = ({
       return updatedData;
     });
   };
-  console.log(fakeData);
 
   return (
     <>
@@ -218,7 +217,7 @@ export const CreateQuestion = ({
       </div>
       {data.children.map((item: any) => (
         <CreateSubQuestion
-        key={item.id}
+          key={item.id}
           allData={allData}
           data={item}
           setFakeData={setFakeData}

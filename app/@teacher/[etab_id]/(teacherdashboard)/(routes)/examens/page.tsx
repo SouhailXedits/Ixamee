@@ -11,9 +11,11 @@ export default function Examens() {
   const user = queryClient.getQueryData(['user']) as any;
   // const data = queryClient.getQueryData(['examens', etab_id]) as any;
   const user_id = user?.id;
+  console.log(user_id);
   const { data, isPending } = useQuery({
     queryKey: ['examens', etab_id],
     queryFn: async () => await getAllExam({ user_id, etab_id }),
+    retry: true,
   });
 
   const [dataInput, setDataInput] = useState('');
@@ -29,18 +31,20 @@ export default function Examens() {
   return (
     <div className="flex flex-col gap-6 p-10">
       <Heading data={dataInput} setData={setDataInput} />
-      {/* ) : (
+      {isPending ? (
         <div className="flex justify-between item-center w-full h-[80px] ">
-          <div className="flex gap-4 item-center">
-            <Skeleton className="w-[200px] h-[60px]"></Skeleton>
-            <Skeleton className="w-[200px] h-[60px]" />
+          <div className="flex flex-wrap gap-4 item-center">
+            <Skeleton className="w-[300px] h-[250px]"></Skeleton>
+            <Skeleton className="w-[300px] h-[250px]"></Skeleton>
+
+            <Skeleton className="w-[300px] h-[250px]"></Skeleton>
+            <Skeleton className="w-[300px] h-[250px]"></Skeleton>
+            <Skeleton className="w-[300px] h-[250px]"></Skeleton>
           </div>
-          <div className="flex gap-6 item-center">
-            <Skeleton className="w-[200px] h-[60px]" />
-            <Skeleton className="w-[200px] h-[60px]" />
-          </div>
-        </div> */}
-      <ExamCardsLayout isPending={false} data={filteredData} />
+        </div>
+      ) : (
+        <ExamCardsLayout isPending={isPending} data={filteredData} />
+      )}
     </div>
   );
 }

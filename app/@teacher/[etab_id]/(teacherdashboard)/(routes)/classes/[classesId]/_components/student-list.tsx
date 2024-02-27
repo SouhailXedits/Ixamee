@@ -115,7 +115,7 @@ const Status = ({ row }: any) => {
 
 const Action = ({ row }: any) => {
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
-  console.log(correctionExamOfUser);
+
   // if (!correctionExamOfUser) return;
   const classe_id = row?.original?.classe?.id;
   return (
@@ -312,7 +312,6 @@ export const columns = [
 ];
 
 export function StudentList({ data, class_id, isPending }: any) {
-  console.log(data, 'data');
   if (!data) {
     return null;
   }

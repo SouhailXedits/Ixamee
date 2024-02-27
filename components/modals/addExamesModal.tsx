@@ -109,7 +109,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     style: 'fr',
     user_id: '',
   });
-  console.log(formData);
+
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({
@@ -149,9 +149,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     try {
       examSchema.parse(formData);
       ok = true;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     return ok;
   };
   const handleSubmit = async () => {
@@ -415,20 +413,12 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 type="number"
                 min={1}
                 placeholder="Saisir le coefficient"
-                onChange={(e) =>{
-                
-                
-                
+                onChange={(e) => {
                   const value = parseInt(e.target.value, 10); // Parse the input value as an integer
                   if (value > 0) {
-                    
                     handleInputChange('coefficient', value);
                   }
-                  }
-                } 
-                  
-                  
-                  
+                }}
                 value={formData.coefficient}
                 className="placeholder:text-[#727272]"
               />

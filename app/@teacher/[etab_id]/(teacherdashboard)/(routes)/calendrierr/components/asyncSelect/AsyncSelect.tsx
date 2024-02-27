@@ -2,7 +2,7 @@
 // @ts-nocheck
 // import React, { useEffect, useState } from 'react'
 // import { useSelector } from 'react-redux'
-import { AsyncPaginate } from 'react-select-async-paginate'
+import { AsyncPaginate } from 'react-select-async-paginate';
 import Select from 'react-select';
 import { ErrorMessage } from 'formik';
 
@@ -30,12 +30,11 @@ const AsyncSelect = ({
   topMenu = false,
   error = false,
 }: any) => {
-  // console.log(options);
-  
+  //
+
   // const theme = useSelector((state) => state?.theme?.mode);
   const theme = 'light';
   const colourStyles = {
-
     multiValueLabel: (styles: any) => {
       return {
         ...styles,
@@ -284,4 +283,4 @@ const AsyncSelect = ({
   );
 };
 
-export default AsyncSelect
+export default AsyncSelect;

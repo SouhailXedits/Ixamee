@@ -5,9 +5,7 @@ import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 import { calcSumOfMarks } from '../[examenId]/_components/sharedFunction';
 
 export default function RenderExercice({ child, content, setContent }: any) {
-
   const handelUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     if (+e.target.value < 0) {
       return;
     }

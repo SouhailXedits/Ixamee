@@ -17,10 +17,8 @@ interface SupprimerUneClasse {
   classe_id: string;
 }
 export const SupprimerUserInClasse = ({ children, user_id, classe_id }: SupprimerUneClasse) => {
-  console.log(classe_id);
   const { deleteUser } = useDeleteUserInClasse();
   const handelDeleteExa = () => {
-    console.log(classe_id, user_id);
     deleteUser({ user_id, classe_id });
   };
   return (

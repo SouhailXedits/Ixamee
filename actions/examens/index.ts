@@ -97,7 +97,6 @@ export const getAllExamsNameAndId = async ({
   etab_id: number;
   classe_id: string;
 }) => {
-  console.log(user_id, etab_id, classe_id);
   const exams = await db.exam.findMany({
     where: {
       teacher: {
@@ -122,7 +121,6 @@ export const getAllExamsNameAndId = async ({
       name: true,
     },
   });
-  console.log(exams);
   return exams;
 };
 export const getUserSubject = async (user_id: string) => {
@@ -202,8 +200,12 @@ export const getMe = async () => {
   });
   return user;
 };
+type Establishment = {
+  value: number;
+  label: string;
+};
 
-export const getClasseOfUser = async (user_id: string, userEstablishments: any) => {
+export const getClasseOfUser = async (user_id: string, userEstablishments: Establishment[]) => {
   const findOneClasse = async (user_id: string, establishmentId: string) => {
     const classe = await db.classe.findMany({
       where: {
@@ -228,10 +230,13 @@ export const getClasseOfUser = async (user_id: string, userEstablishments: any) 
     return classe;
   };
 
-  const establishmentIds = userEstablishments.map((establishment: any) => establishment.value);
+  const establishmentIds = userEstablishments.map(
+    (establishment: Establishment) => establishment.value
+  );
+
   const result = await Promise.all(
     establishmentIds.map(
-      async (establishmentId: string) => await findOneClasse(user_id, establishmentId)
+      async (establishmentId) => await findOneClasse(user_id, establishmentId + '')
     )
   );
 
@@ -322,7 +327,6 @@ export const getEstablishmentOfUser = async (user_id: string) => {
       },
     },
   });
-  console.log(data);
 
   return data;
 };
@@ -345,10 +349,8 @@ export const getOneExamByIdForCorrection = async ({ id }: { id: string }) => {
     },
   });
   const newData = exam?.content;
-  console.log(newData, 'newData⚡️⚡️⚡️⚡️⚡️⚡️⚡️');
 
   transferAllMarkToNull(newData);
-  console.log(exam, 'exam✨✨✨✨');
 
   return exam;
 };
@@ -428,7 +430,6 @@ export async function createExamm(data: any, user_id: string) {
 }
 export async function updateExam(examId: number, data: any, user_id: string) {
   try {
-    console.log(data.subject[0].value);
     const updatedExam = await db.exam.update({
       where: {
         id: examId,
@@ -467,7 +468,6 @@ export const deleteExame = async (id: number) => {
   }
 };
 export const updateExamContent = async (examId: string, content: any, is_published: boolean) => {
-  console.log(is_published);
   try {
     const updatedExam = await db.exam.update({
       where: {

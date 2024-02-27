@@ -4,9 +4,8 @@ import data from '@/app/@student/[etab_id]/(studentdashboard)/(routes)/pdf/compo
 import StudentRow from './StudentRow';
 
 export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) => {
-  console.log(StudentsData);
   const splitedTerm = term.split('_');
-  console.log(splitedTerm)
+
   return (
     <div>
       <PdfHeader

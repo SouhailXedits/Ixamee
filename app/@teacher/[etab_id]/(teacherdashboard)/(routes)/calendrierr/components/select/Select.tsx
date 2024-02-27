@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 function Select({ className, name, formik, placeholder, options }: any) {
   const handleChange = (e: any) => {
     if (formik) formik.setFieldValue(e.target.value);
-    console.log(e.target.value);
   };
   const [colourStyles, setColourStyles]: any = useState(false);
 

@@ -47,7 +47,6 @@ import Rien from './Rien';
 // ];
 
 const ExamCorrectionList = ({ data }: any) => {
-  console.log(data);
   if (!data?.length)
     return (
       <div className="flex items-center justify-center w-full p-10 border rounded-xl">
@@ -70,7 +69,7 @@ const ExamCorrectionList = ({ data }: any) => {
       <div className=" overflow-auto max-h-[150px]">
         <div>
           {data.map((exam: any) => (
-            // console.log(exam)
+            //
             <ExamCorrectionRow Examdata={exam} key={exam.id} />
           ))}
         </div>

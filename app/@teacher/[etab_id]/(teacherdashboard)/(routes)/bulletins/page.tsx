@@ -35,7 +35,6 @@ const Student = () => {
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
   const subjects = queryClient.getQueryData(['teacherSubject']) as any;
   const userEstab = queryClient.getQueryData(['teacherEstab']) as any;
-  console.log(userEstab)
 
   const defaultSubject = subjects?.length && subjects[0]?.id;
 
@@ -127,11 +126,10 @@ const Student = () => {
       };
     });
   }
-  console.log(resultArray);
 
   const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
   const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
-  console.log(classes);
+
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full max-md:justify-normal">
@@ -155,7 +153,7 @@ const Student = () => {
               StudentsData={rankedData}
               classe={classes?.data.find((classe: any) => classe.id === filters.classe_id)?.name}
               term={filters.term}
-              estab={userEstab?.find((estab:any) => estab.id === etab_id)?.name}
+              estab={userEstab?.find((estab: any) => estab.id === etab_id)?.name}
             />
           </PDFExport>
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">

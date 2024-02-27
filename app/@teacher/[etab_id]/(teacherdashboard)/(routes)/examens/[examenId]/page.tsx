@@ -40,8 +40,6 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   }, [data]);
 
   useEffect(() => {
-    console.log(fakeData);
-    console.log(calcAllMark(fakeData));
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
 
@@ -53,7 +51,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   const arabic = data?.language === 'ar' ? true : false;
   // const haveZeroInfakeData = (data: any) => {
   //   for (const item of data) {
-  //     console.log(item.mark);
+  //
   //     if (item.mark === 0) {
   //       return true;
   //     }
@@ -79,7 +77,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
 
     const is_published = sum === data?.total_mark;
     let exam_id = examenId;
-    console.log(fakeData);
+
     editExam({ exam_id, content: fakeData, is_published });
     confetti.onOpen();
 

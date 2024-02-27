@@ -17,14 +17,11 @@ import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
 import { getCorigeExameContentOfAllUser, getStudentOfClasse } from '@/actions/classe';
 import ExamCorrectionList from './exam-correction-list';
 const CorrectionsRecentes = ({ etabId, classes }: any) => {
-  console.log(etabId);
-  console.log(classes);
-
   const [filters, setFilters] = useState({
     exam_id: '',
     classe_id: '',
   });
-  console.log(filters);
+
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
   const userId = user?.id;
@@ -50,8 +47,6 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
     queryFn: async () => await getStudentOfClasse(+filters.classe_id),
     retry: 0,
   });
-  console.log(userCorrection);
-  console.log(data);
 
   const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
 
@@ -69,7 +64,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
         userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
     }));
   }, [data, userCorrection]);
-  console.log(newData);
+
   return (
     <>
       {!newData ? (

@@ -61,7 +61,7 @@ export const getClasseById = async (id: number) => {
       },
     },
   });
-  console.log(classe);
+
   return classe;
 };
 export const getClasseByClassId = async (id: number) => {
@@ -125,7 +125,7 @@ export const createUserInClasse = async (
       },
     },
   });
-  // console.log(nameExiste);
+
   if (nameExiste?.length > 0) {
     throw new Error('Name already exists');
     return;
@@ -515,7 +515,7 @@ export const getStudentOfClasse = async (classe_id: number) => {
       name: 'asc',
     },
   });
-  // console.log(res);
+
   return res;
 };
 
@@ -580,7 +580,6 @@ export const updateUserInClasse = async (
 };
 
 export const deleteUserInClasse = async (user_id: string, classe_id: string) => {
-  console.log(user_id, classe_id);
   const data = await db.user.delete({
     where: {
       id: user_id,
@@ -715,8 +714,8 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
   return data;
 };
 export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
-  // console.log(exam_id);
-  // console.log(userData);
+  //
+  //
   if (!exam_id || !userData) return null;
 
   if (exam_id === 'undefined') return null;

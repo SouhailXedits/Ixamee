@@ -4,9 +4,7 @@ import { calcSumOfMarks } from '../[examenId]/_components/sharedFunction';
 import { updateSubSubQuestion } from '../[examenId]/_components/subsubQuestionSharedFunction';
 
 export default function RenderSubQuestion({ child, content, setContent }: any) {
-  console.log(child);
   const handelUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     updateSubSubQuestion(e, child, setContent, content);
   };
   const handelCalculation = (child: any) => {

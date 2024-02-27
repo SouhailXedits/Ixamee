@@ -32,20 +32,16 @@ export default function Page({
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
-  console.log(params, 'params');
 
   const { data, isPending } = useQuery<any>({
     queryKey: ['examenByIdd', exam_id],
     queryFn: async () => await getOneExamByIdForCorrection({ id: exam_id }),
   });
-  console.log(data, 'dataExam');
 
   const { data: examContent, isPending: isPendingExamContent } = useQuery<any>({
     queryKey: ['exameContent', exam_id],
     queryFn: async () => await getExamContent({ id: exam_id }),
   });
-
-  console.log(examContent, 'examContent');
 
   const { data: userData, isPending: isPendingUser } = useQuery<any>({
     queryKey: ['userName', student_id],
@@ -60,23 +56,21 @@ export default function Page({
   // const { editExam, isPending: isPendingEdit } = useEditExamContent();
   const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const [fakeData, setFakeData] = useState<any>([]);
-  // console.log(data?.content);
-  // console.log(examContent?.content);
-  // console.log(getCorrigeExamOfUser);
+  //
+  //
+  //
 
-  // console.log(isFullMarks)
+  //
   // useEffect(() => {
   //   setSum(MarkObtined);
   // },[])
   useEffect(() => {
     if (isFullMarks) {
       const copiedData = JSON.parse(JSON.stringify(examContent?.content));
-      console.log(copiedData, 'copiedData1');
 
       setFakeData(copiedData);
     } else if (data?.content) {
       const copiedData = JSON.parse(JSON.stringify(data.content));
-      console.log(copiedData, 'copiedData2');
 
       setFakeData(copiedData);
     }
@@ -99,7 +93,7 @@ export default function Page({
   useEffect(() => {
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
-  
+
   if (isPending) return <Loading />;
 
   function handleCancel() {
@@ -108,12 +102,9 @@ export default function Page({
 
   const arabic = data?.language === 'ar' ? true : false;
   const sumToSave = sum > 0 ? sum : MarkObtined;
-  console.log(sumToSave, 'sumToSave');
+
   const handleSaveData = async () => {
     try {
-      console.log(data?.total_mark);
-      console.log(sum);
-
       if (sum > data?.total_mark) {
         toast.error(`La note doit être minimum a ${data?.total_mark}`);
         return;
@@ -121,7 +112,7 @@ export default function Page({
       const stataus = statusOf(fakeData);
 
       // Assuming you have the necessary data
-      console.log(sum);
+
       const dataToSave = {
         exam_id: parseInt(exam_id),
         mark_obtained: sumToSave,
@@ -142,8 +133,7 @@ export default function Page({
   const examContentt = examContent?.content;
 
   if (!examContent) return <Loading />;
-  console.log(fakeData);
-  console.log(MarkObtined, 'MarkObtined');
+
   return (
     <div className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">

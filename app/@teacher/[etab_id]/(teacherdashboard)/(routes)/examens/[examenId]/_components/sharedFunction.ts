@@ -1,7 +1,6 @@
 export const haveZeroInfakeData = (data: any) => {
   if (!data) return false;
   for (const item of data) {
-    console.log(item.mark);
     if (item.mark === 0) {
       return true;
     }
@@ -101,14 +100,12 @@ export const updateSubQuestion = (e: any, data: any, setFakeData: any, allData: 
     // toast.error('la note ne doit pas etre inferieur a 0');
     return;
   }
-  console.log(e.target.value);
-  console.log(data);
-  console.log(allData);
+
   // Updating the mark of the specific subquestion
   setFakeData((prevData: any) => {
     return prevData.map((item: any) => {
       // Checking if the current item's id matches the id of the parent question
-      console.log(item.id, allData.id);
+
       if (item.id === allData.id) {
         // Updating 👍 the children array of the parent question
         return {

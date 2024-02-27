@@ -46,7 +46,7 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
     queryKey: ['establishments'],
     queryFn: async () => await getAllEstabsWithNoPagination(),
   });
-  console.log(establishments, 'establishments');
+
   const estabOptions =
     (establishments?.data &&
       establishments?.data?.estabs.map((estab: any) => {

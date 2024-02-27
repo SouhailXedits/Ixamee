@@ -49,9 +49,9 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
       confirmNewPassword: '',
     },
   });
-  
+
   const [isTransPending, startTransition] = useTransition();
-  console.log(form);
+
   const onSubmit = async (values: z.infer<typeof UpdatePasswordSchema>) => {
     setError('');
     setSuccess('');
@@ -195,9 +195,10 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
             ) : (
               <DialogClose className="flex w-full gap-4">
                 <Button
-                onClick={() => {
-                  form.reset();
-                  setIsFirstModalOpen(false)}}
+                  onClick={() => {
+                    form.reset();
+                    setIsFirstModalOpen(false);
+                  }}
                   type="reset"
                   className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "
                 >

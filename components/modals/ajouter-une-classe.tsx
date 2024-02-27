@@ -32,7 +32,6 @@ import Select from 'react-select';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse) => {
-  console.log(user_id, estab);
   const queryClient = useQueryClient();
 
   const { createClass, isPending } = useCreateClasse();

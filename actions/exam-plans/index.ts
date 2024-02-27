@@ -2,8 +2,6 @@
 import { db } from '@/lib/db';
 
 export async function createExamPlan(values: any) {
-  console.log(values);
-
   const exam = await db.examPlans.create({
     data: {
       name: values.title,
@@ -59,7 +57,7 @@ export async function createExamPlan(values: any) {
 
 export const getExamPlansByUserId = async (user_id: string, estab_id: number) => {
   try {
-    const examPlans:any = await db.examPlans.findMany({
+    const examPlans: any = await db.examPlans.findMany({
       where: {
         teacher_id: user_id,
         estab_id: estab_id,
@@ -86,7 +84,7 @@ export const getExamPlansByUserId = async (user_id: string, estab_id: number) =>
         studentVisibility: true,
       },
     });
-    const renamedExamPlans = examPlans.map((plan:any) => ({
+    const renamedExamPlans = examPlans.map((plan: any) => ({
       ...plan,
       title: plan.name,
       studentsVisibility: plan.studentVisibility,
@@ -96,7 +94,6 @@ export const getExamPlansByUserId = async (user_id: string, estab_id: number) =>
     }));
     return renamedExamPlans;
   } catch (error: any) {
-    console.log(error);
     return {
       data: undefined as any,
       error: 'Failed to get exam plans.',
@@ -133,7 +130,6 @@ interface UpdateEventProps {
 }
 
 export const updateExamPlan = async (data: UpdateEventProps) => {
-  console.log('‼️ update 🚀', data);
   // if(!id || !data) return;
   const {
     start,
@@ -158,8 +154,8 @@ export const updateExamPlan = async (data: UpdateEventProps) => {
       color,
       subject: {
         connect: {
-          id: subject
-        }
+          id: subject,
+        },
       },
       classes: {
         connect: classes.map((class_id: any) => ({

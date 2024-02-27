@@ -5,7 +5,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 const NavbarNotification = () => {
   return (
     <HoverCard>
-    console.log(`<HoverCard>
+    
       <HoverCardTrigger asChild>
         <div className="relative flex">
           <Image

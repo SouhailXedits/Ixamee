@@ -18,7 +18,7 @@ export default function Classes() {
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id, etab_id }),
   });
-  console.log(data);
+  
 
   // to DO Scelton
   const filteredData = data?.data?.filter((classe: any) => {

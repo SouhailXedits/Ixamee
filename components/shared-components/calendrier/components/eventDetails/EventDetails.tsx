@@ -28,7 +28,7 @@ function EventDetails({
   const queryClient = useQueryClient();
   const events = queryClient.getQueryData(['events']) as any;
   const event = events?.find((event: any) => event.id === +eventId);
-  console.log(event);
+
   const { updateExamPlan } = useUpdateExamPlan();
 
   const [deleteForm, setDeleteForm] = useState(false);
@@ -40,7 +40,12 @@ function EventDetails({
   const switchChange = (checked: any) => {
     const classesIds = event?.classes.map((el: any) => el.id);
     const subjectId = event?.subject.id;
-    const newEvent = { ...event, studentsVisibility: checked.target.checked , classes: classesIds, subject: subjectId };
+    const newEvent = {
+      ...event,
+      studentsVisibility: checked.target.checked,
+      classes: classesIds,
+      subject: subjectId,
+    };
     updateExamPlan(newEvent);
   };
   const date1 = dayjs(event?.start);
@@ -103,8 +108,6 @@ function EventDetails({
                 >
                   Modifier
                 </DropdownMenuItem>
-
-
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -139,10 +142,7 @@ function EventDetails({
         </div>
       </Dialog>
 
-      <Dialog
-        title="Supprimer cet examen"
-        open={deleteForm}
-      >
+      <Dialog title="Supprimer cet examen" open={deleteForm}>
         <DialogContent className=" flex flex-col gap-4">
           <DialogHeader className=" text-xl text-2">Supprimer cet examen</DialogHeader>
           <div className="archive-exam-popup-content flex flex-col gap-4">

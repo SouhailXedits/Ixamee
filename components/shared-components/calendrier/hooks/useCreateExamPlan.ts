@@ -7,24 +7,22 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 
 export function useCreateExamPlan() {
   const queryClient = useQueryClient();
-//   const params = useParams();
-//   const pathName = usePathname();
-//   const router = useRouter();
+  //   const params = useParams();
+  //   const pathName = usePathname();
+  //   const router = useRouter();
   const { mutate: creatExamPlan, isPending } = useMutation({
-    mutationFn: ( data : { data: any;}) =>
-      createExamPlanApi(data),
+    mutationFn: (data: { data: any }) => createExamPlanApi(data),
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
-    //   queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
+      //   queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
       toast.success('Exam planification ajouté avec succès.');
-    //   if (pathName.includes('/examens')) {
-    //     router.push(pathName + '/' + data.id);
-    //   } else {
-    //     router.push(params.etab_id + '/examens/' + data.id);
-    //   }
+      //   if (pathName.includes('/examens')) {
+      //     router.push(pathName + '/' + data.id);
+      //   } else {
+      //     router.push(params.etab_id + '/examens/' + data.id);
+      //   }
     },
     onError: (err) => {
-        console.log(err)
       toast.error('There was an error creating the Exam');
     },
     retry: false,

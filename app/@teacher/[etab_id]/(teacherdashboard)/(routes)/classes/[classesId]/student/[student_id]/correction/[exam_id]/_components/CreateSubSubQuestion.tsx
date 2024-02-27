@@ -12,9 +12,6 @@ export const CreateSubSubQuestion = ({
   realExamContetn,
   allData,
 }: any) => {
-  console.log(realExamContetn);
-  console.log(data);
-  console.log(allData);
   const onChange = (content: string) => {
     updateContentSubSubQuestion(content, data);
   };
@@ -121,7 +118,7 @@ export const CreateSubSubQuestion = ({
   };
   const updateSubSubQuestion = (e: any, data: any) => {
     const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
-    console.log(mark);
+
     if (+e.target.value > +mark) {
       // toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
@@ -168,7 +165,6 @@ export const CreateSubSubQuestion = ({
                 ...subItem,
 
                 children: subItem.children.map((subSubItem: any, index: number) => {
-                  console.log(calcSumOfMarks(subSubItem));
                   return {
                     ...subSubItem,
 
@@ -214,8 +210,7 @@ export const CreateSubSubQuestion = ({
 
     calculerExerciceMark(allData);
   };
-  console.log(data);
-  console.log(allData);
+
   return (
     <>
       <div
@@ -237,7 +232,7 @@ export const CreateSubSubQuestion = ({
           </div>
           <div className="flex gap-3 item-center">
             <Input
-              className="bg-transparenta text-center text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
+              className="bg-transparenta text-center text-[#1B8392] w-[99px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
               placeholder="--.--"
               type="number"
               step="0.25"

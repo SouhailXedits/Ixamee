@@ -14,7 +14,6 @@ export const CreateSubQuestion = ({
   realExamContetn,
   fakeData,
 }: any) => {
-  console.log(realExamContetn);
   const onChange = (content: string) => {
     updateContentSubQuestion(content, data);
   };
@@ -351,7 +350,7 @@ export const CreateSubQuestion = ({
             {data.children && data.children.length > 0 ? (
               <div className="w-[160px] bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
                 <span>
-                  <span>{data.mark}</span>
+                  <span>{data.mark === null ? '0.00' : data.mark}</span>
                 </span>
                 <span>/</span>
                 <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
@@ -359,7 +358,7 @@ export const CreateSubQuestion = ({
             ) : (
               <Input
                 className="bg-transparent a text-[#1B8392] w-[100px] text-xl placeholder:text-mainGreen flex items-center justify-center p-3 border border-[#1B8392] text-center"
-                placeholder={`00/0${getMarkOfExerciceWithId(realExamContetn, data.id)}`}
+                // placeholder={`${getMarkOfExerciceWithId(realExamContetn, data.id)}`}
                 type="number"
                 defaultValue={data.mark}
                 step="0.25"

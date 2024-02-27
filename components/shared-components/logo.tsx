@@ -9,7 +9,7 @@ export const Logo = () => {
   const router = useRouter();
   const params = useParams();
   const { etab_id } = params;
-  console.log(etab_id);
+
   return (
     <div className="flex items-center justify-between cursor-pointer">
       <Image

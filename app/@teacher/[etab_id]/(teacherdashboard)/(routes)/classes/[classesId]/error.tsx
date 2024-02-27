@@ -1,12 +1,42 @@
 'use client';
-import Image from 'next/image';
 import React from 'react';
+import Lottie from 'react-lottie';
+import eerrorAnimation from '@/public/error.json';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 function Errorr() {
+  const router = useRouter();
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: eerrorAnimation,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   return (
-    <div>
-      <Image src='./notFound.svg' width={300} height={300} alt="not found page" />
-      Error
+    <div className="flex items-center justify-center w-full h-[100vh] text-center border">
+      <div>
+        <Lottie options={defaultOptions} height={200} width={200} />
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => router.back()}
+            type="button"
+            className="mt-5 bg-red hover:opacity-80"
+          >
+            Go Back
+          </Button>
+          <Button
+            onClick={() => router.push('/')}
+            type="button"
+            className="mt-5 bg-[#1B8392] hover:opacity-80"
+          >
+            Go Home
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

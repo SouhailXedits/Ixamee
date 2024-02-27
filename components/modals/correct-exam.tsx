@@ -37,9 +37,9 @@
 //   user_id,
 //   userDetails,
 // }) => {
-//   console.log(userDetails, 'userDetails');
+//
 //   const exam_id = userDetails?.exam;
-//   console.log(exam_id, 'exam_id');
+//
 //   const [note, setNote] = useState<string>('0');
 //   const [item, setItem] = useState<string | null>(null);
 //   const router = useRouter();
@@ -47,7 +47,7 @@
 //   let data = userContent ? (userContent as any) : [];
 //   if (data.length === 0) {
 //     data = userDetails.classe.exam_classe?.map((item: any) => {
-//       console.log(item);
+//
 //       if (item.id == exam_id) {
 //         return item;
 //       }
@@ -60,12 +60,12 @@
 
 //   const new_total_mark = data[0]?.total_mark || data[0]?.exam?.total_mark || 0;
 
-//   console.log(new_total_mark);
-//   console.log(data, 'data');
-//   console.log(user_id);
+//
+//
+//
 //   useEffect(() => {
 //     const userData = data && data?.find((item: any) => item?.user_id === user_id);
-//     console.log(userData);
+//
 //     const initialNote = userData?.mark_obtained || '0';
 //     setNote(initialNote);
 //   }, [data]);
@@ -94,7 +94,7 @@
 //         mark_obtained: note,
 //         user_id: user_id,
 //       };
-//       console.log(obj);
+//
 //       createExamCorrectionn(obj);
 //     } else {
 //       const obj = {
@@ -105,7 +105,7 @@
 //       editeStatus(obj);
 //     }
 //   };
-//   console.log(note, 'note');
+//
 
 //   return (
 //     <Dialog>
@@ -264,9 +264,8 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
   user_id,
   userDetails,
 }) => {
-  console.log(userDetails, 'userDetails');
   const exam_id = userDetails?.exam;
-  console.log(exam_id, 'exam_id');
+
   const [note, setNote] = useState<string>('0');
   const [item, setItem] = useState<string | null>(null);
   const router = useRouter();
@@ -274,7 +273,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
   let data = userContent ? (userContent as any) : [];
   if (data.length === 0) {
     data = userDetails.classe.exam_classe?.map((item: any) => {
-      console.log(item);
       if (item.id == exam_id) {
         return item;
       }
@@ -287,8 +285,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
 
   const new_total_mark = data[0]?.total_mark || data[0]?.exam?.total_mark || 0;
 
-  console.log(new_total_mark);
-  console.log(data);
   useEffect(() => {
     const userData = data && data?.find((item: any) => item?.user_id === user_id);
 
@@ -320,7 +316,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
         mark_obtained: note,
         user_id: user_id,
       };
-      console.log(obj);
+
       createExamCorrectionn(obj);
     } else {
       const obj = {

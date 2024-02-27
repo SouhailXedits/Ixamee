@@ -3,9 +3,6 @@ import CorrectionsRecentes from './corrections-recentes-item';
 import Link from 'next/link';
 
 const DashboradCorrectionsRecentes = ({ etabId, classes }: any) => {
-  console.log(classes);
-  console.log(etabId);
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between max-md:flex-wrap">

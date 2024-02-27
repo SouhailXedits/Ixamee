@@ -52,7 +52,8 @@ export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, is
                     <span>{Number(calculerExerciceMark(data)).toFixed(2)}</span>
                   </span>
                   <span>/</span>
-                  <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2)}</span>
+
+                  <span>{getMarkOfExerciceWithId(realExamContetn, data.id)?.toFixed(2) || 0}</span>
                 </div>
                 {/* <Input
                   className={cn(

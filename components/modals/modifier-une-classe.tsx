@@ -72,7 +72,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
       //   establishmentId: estab,
       //   teacherId: user_id,
       // });
-      console.log(formatData.matiere);
+
       editeClass({
         name: formatData.classe,
         classe_id: +data?.id,

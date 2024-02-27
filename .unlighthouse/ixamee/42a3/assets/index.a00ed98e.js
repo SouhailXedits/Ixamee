@@ -30200,11 +30200,11 @@ function WebGLRenderer(parameters = {}) {
   };
   function onContextLost(event) {
     event.preventDefault();
-    console.log("THREE.WebGLRenderer: Context Lost.");
+    
     _isContextLost = true;
   }
   function onContextRestore() {
-    console.log("THREE.WebGLRenderer: Context Restored.");
+    
     _isContextLost = false;
     const infoAutoReset = info.autoReset;
     const shadowMapEnabled = shadowMap.enabled;
@@ -31263,7 +31263,7 @@ class InterleavedBufferAttribute {
   }
   clone(data) {
     if (data === void 0) {
-      console.log("THREE.InterleavedBufferAttribute.clone(): Cloning an interlaved buffer attribute will deinterleave buffer data.");
+      
       const array = [];
       for (let i2 = 0; i2 < this.count; i2++) {
         const index = i2 * this.data.stride + this.offset;
@@ -31284,7 +31284,7 @@ class InterleavedBufferAttribute {
   }
   toJSON(data) {
     if (data === void 0) {
-      console.log("THREE.InterleavedBufferAttribute.toJSON(): Serializing an interlaved buffer attribute will deinterleave buffer data.");
+      
       const array = [];
       for (let i2 = 0; i2 < this.count; i2++) {
         const index = i2 * this.data.stride + this.offset;
@@ -39607,7 +39607,7 @@ class DataUtils {
   }
 }
 Curve.create = function(construct, getPoint) {
-  console.log("THREE.Curve.create() has been deprecated");
+  
   construct.prototype = Object.create(Curve.prototype);
   construct.prototype.constructor = construct;
   construct.prototype.getPoint = getPoint;

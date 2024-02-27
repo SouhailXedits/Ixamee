@@ -32,7 +32,6 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
   const { createManyUser, isPending, error } = useCreateManyUserInClass();
 
   const queryClient = useQueryClient();
-  console.log(isPending);
 
   const user = queryClient.getQueryData(['user']) as any;
 
@@ -77,8 +76,6 @@ export const ImportUneClasse = ({ children, class_id, etab_id }: ImportUneClasse
           const csvData = event.target?.result as string;
           const lines = csvData.trim().split('\n'); // Trim and split the CSV data into lines
           const jsonData = lines.map((line) => {
-            console.log('Item', line);
-
             if (line.includes(',')) {
               const [name, email] = line.split(',');
               return { name, email };

@@ -5,7 +5,7 @@ import ReactConfetti from 'react-confetti';
 
 export const ConfettiProvider = () => {
   const confetti = useConfettiStore();
-  console.log(confetti);
+
   if (!confetti.isOpen) return null;
 
   return (

@@ -44,7 +44,7 @@ import { useUpdateExamPlan } from '../hooks/useUpdateExamPlan';
 
 //     fetchSubjects();
 //   }, [queryClient, classes, user_id]);
-//   console.log(options)
+//
 
 //   return options;
 // }
@@ -79,10 +79,10 @@ function CalendarForm({
   });
   const { creatExamPlan, isPending } = useCreateExamPlan();
   const allEvents = queryClient.getQueryData(['events']);
-  console.log(eventId);
+
   const e = allEvents.find((event) => event.id === +eventId);
-  console.log(e);
-  const {updateExamPlan} = useUpdateExamPlan()
+
+  const { updateExamPlan } = useUpdateExamPlan();
 
   // const e = {
   //   id: 1,
@@ -112,11 +112,10 @@ function CalendarForm({
     establishment: e ? e?.establishment : '',
   };
   const submitHandler = async (values: any) => {
-    console.log(values);
     const classesIds = values.classes.map((el: any) => el.value);
-    console.log(classesIds);
+
     const subjectId = values.subject.value;
-    console.log(subjectId);
+
     const values2 = {
       ...values,
       classes: classesIds,
@@ -126,13 +125,12 @@ function CalendarForm({
       id: eventId ? +eventId : null,
     };
 
-    console.log(values2);
-    if (!eventId) {creatExamPlan(values2) 
-      onCancel()
-    }
-    else {
+    if (!eventId) {
+      creatExamPlan(values2);
+      onCancel();
+    } else {
       updateExamPlan(values2);
-      onCancel()
+      onCancel();
     }
 
     // const activeEstablishmentId = localStorage.getItem('activeEstablishmentId');
@@ -141,7 +139,7 @@ function CalendarForm({
     //   await onCreateUpdateEvent(values);
     //   onCancel();
     // } catch (error) {
-    //   console.log(error);
+    //
     // }
   };
   const handleInputSelect = (e: any, formik: any) => {
@@ -150,7 +148,7 @@ function CalendarForm({
 
   const loadPageClasses = async (q: any, prevOptions: any, { page }: any) => {
     const classes = queryClient.getQueryData(['classe', etab_id]);
-    console.log(classes);
+
     return {
       options: classes?.data?.map((item: any) => ({
         value: item.id,
@@ -159,11 +157,11 @@ function CalendarForm({
     };
   };
 
-  // console.log(Formik.values);
+  //
 
   // useEffect(() => {
   //   // This function will run whenever Formik values change
-  //   console.log(formik.values);
+  //
   // }, [formik.values]);
 
   useEffect(() => {
@@ -185,7 +183,6 @@ function CalendarForm({
     getSubjects();
   }, [e]);
   // const [options, setOptions] = useState([{ label: 'subject 1', value: '1' }]);
-  console.log('subjects 🇹🇳', options);
 
   return (
     <Formik
