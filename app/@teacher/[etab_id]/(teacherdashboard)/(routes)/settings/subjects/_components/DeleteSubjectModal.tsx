@@ -15,9 +15,10 @@ import { useDeleteSubject } from '../hooks/useDeleteSubject';
 
 interface editEstabProps {
   id: number;
-  children: React.ReactNode;
+  open: boolean;
+  setOpen: (value: boolean) => void;
 }
-export const DeleteSubject = ({ id, children }: editEstabProps) => {
+export const DeleteSubject = ({ id, open, setOpen }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
   const { deleteSubject, isPending } = useDeleteSubject();
@@ -32,8 +33,8 @@ export const DeleteSubject = ({ id, children }: editEstabProps) => {
   // }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">

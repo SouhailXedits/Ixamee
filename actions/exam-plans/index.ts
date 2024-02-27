@@ -100,6 +100,57 @@ export const getExamPlansByUserId = async (user_id: string, estab_id: number) =>
     };
   }
 };
+export const getStudentExamPlans = async (user_id: string, classe_id: number) => {
+  try {
+    const examPlans: any = await db.examPlans.findMany({
+      where: {
+        // teacher_id: user_id,
+        classes: {
+          some: {
+            id: classe_id,
+          },
+        },
+        studentVisibility: true
+      },
+      select: {
+        id: true,
+        name: true,
+        color: true,
+        description: true,
+        start: true,
+        end: true,
+        subject: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        classes: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        studentVisibility: true,
+      },
+    });
+    const renamedExamPlans = examPlans.map((plan: any) => ({
+      ...plan,
+      title: plan.name,
+      studentsVisibility: plan.studentVisibility,
+      studentVisibility: undefined,
+      textColor: plan.color?.dark,
+      name: undefined,
+    }));
+    return renamedExamPlans;
+  } catch (error: any) {
+    console.log(error);
+    return {
+      data: undefined as any,
+      error: 'Failed to get exam plans.',
+    };
+  }
+};
 
 export const deleteExamPlan = async (id: number) => {
   try {

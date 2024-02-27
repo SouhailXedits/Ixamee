@@ -16,10 +16,11 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface editEstabProps {
-  children: React.ReactNode;
   currentUser: teacherAminOutput;
+  open: boolean;
+  setOpen: (value: boolean) => void;
 }
-export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
+export const TeachersInfos = ({ currentUser, open, setOpen }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
   function returnToCreate() {
@@ -27,8 +28,8 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <div className="flex items-center gap-4 ">
@@ -51,7 +52,7 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
         <div className="flex flex-col gap-6 placeholder:text-[#727272]">
           <div className="flex flex-col gap-2 p-3">
             <p className=" gap-2 text-[#959595] text-sm flex">
-              <span className=" text-mainGreen"> établissement(s):</span>
+              <span className=" text-mainGreen"> Établissement(s):</span>
               <div>
                 {currentUser?.user_establishment?.map((estab: any) => (
                   <p key={estab.id}>{estab.name}</p>

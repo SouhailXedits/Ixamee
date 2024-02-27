@@ -62,6 +62,8 @@ interface estabListProps {
 }
 
 const ActionModal = ({ row }: any) => {
+  const [deleteForm, setDeleteForm] = useState(false);
+  const [editFrom, setEditForm] = useState(false);
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
       <DropdownMenu>
@@ -72,23 +74,17 @@ const ActionModal = ({ row }: any) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {/* <DropdownMenuItem> */}
-          <EditEstab id={parseInt(row.original.id)} currentName={row.original.name}>
-            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-              Modifier
-            </p>
-          </EditEstab>
-          {/* </DropdownMenuItem> */}
-
-          {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-
-          <DeleteEstab id={parseInt(row.original.id)}>
-            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-              Supprimer
-            </p>
-          </DeleteEstab>
+          <DropdownMenuItem onClick={() => setEditForm(true)}>Modifier</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setDeleteForm(true)}>Supprimer</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <DeleteEstab id={parseInt(row.original.id)} open={deleteForm} setOpen={setDeleteForm} />
+      <EditEstab
+        id={parseInt(row.original.id)}
+        currentName={row.original.name}
+        open={editFrom}
+        setOpen={setEditForm}
+      />
     </div>
   );
 };
@@ -192,8 +188,7 @@ export function EstablishementsList({
     table.nextPage();
   }
   function handlePreviousPage() {
-    // const cur = table.getPageCount();
-    if (currentpage === 0) onPageChange(currentpage - 1);
+    onPageChange(currentpage - 1);
     table.previousPage();
   }
 
@@ -243,8 +238,8 @@ export function EstablishementsList({
       </div>
       <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} sur{' '}
+          {table.getFilteredRowModel().rows.length} ligne(s) sélectionnée(s).
         </div>
         <div className="space-x-2">
           <Button
@@ -253,7 +248,7 @@ export function EstablishementsList({
             onClick={() => handlePreviousPage()}
             disabled={currentpage === 1}
           >
-            Previous
+            Précédent
           </Button>
           <Button
             variant="outline"
@@ -261,7 +256,7 @@ export function EstablishementsList({
             onClick={() => handleNextPage()}
             disabled={currentpage + 1 > totalPageCount}
           >
-            Next
+            Suivant
           </Button>
         </div>
       </div>

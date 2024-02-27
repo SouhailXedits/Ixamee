@@ -24,35 +24,31 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 import { useCreateEstab } from '../hooks/useCreateEstab';
+import { getIsEstabNameUnique } from '@/actions/establishements';
 
 interface AjouterUneClasse {
   children: React.ReactNode;
 }
 export const AddEstab = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  // const [file, setFile] = useState<File | null>(null);
-  // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [name, setName] = useState('');
   const { createEstablishement } = useCreateEstab();
+  const [isUnique, setIsUnique] = useState(false);
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const selectedFile = e.target.files[0];
-
-  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-  //       setFile(selectedFile);
-  //       const fileUrl = URL.createObjectURL(selectedFile);
-  //       setSelectedFileUrl(fileUrl);
-  //     }
-  //   }
-  // };
   async function handleCreateEstab() {
     createEstablishement(name);
-    //setIsFirstModalOpen(!isFirstModalOpen)
   }
 
   function returnToCreate() {
     setIsFirstModalOpen(!isFirstModalOpen);
+  }
+
+  async function checkIsUniqueHandler(value: string) {
+    const data = await getIsEstabNameUnique(value);
+    if (data) setIsUnique(false);
+    else {
+      setIsUnique(true);
+    }
   }
 
   return (
@@ -73,10 +69,14 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
               </Label>
               <Input
                 type="text"
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  checkIsUniqueHandler(e.target.value);
+                  setName(e.target.value);
+                }}
                 placeholder="Entrer le nom de l'établissement"
                 className="placeholder:text-[#727272]"
               />
+              {!isUnique && <p className="text-red">Cet nom d'établissement est déjà utilisé</p>}
             </div>
           </div>
         ) : (
@@ -86,7 +86,6 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
               alt="add student done"
               width={150}
               height={150}
-              className=""
             />
             <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
               <Image src={'/establishement-green.svg'} alt="user" width={15} height={15} />
@@ -96,17 +95,31 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
         )}
 
         <DialogFooter>
-          <DialogClose>
-            <Button
-              onClick={() => {
-                isFirstModalOpen ? returnToCreate() : handleCreateEstab();
-              }}
-              type="submit"
-              className="w-full bg-[#1B8392] hover:opacity-80 "
-            >
-              {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
-            </Button>
-          </DialogClose>
+          {!isUnique ? (
+              <Button
+                onClick={() => {
+                  isFirstModalOpen ? returnToCreate() : handleCreateEstab();
+                }}
+                disabled={!isUnique || name === ''}
+                type="submit"
+                className="w-full bg-[#1B8392] hover:opacity-80 "
+              >
+                {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
+              </Button>
+            ) : (
+              <DialogClose className=' w-full'>
+                <Button
+                  onClick={() => {
+                    isFirstModalOpen ? returnToCreate() : handleCreateEstab();
+                  }}
+                  disabled={!isUnique || name === ''}
+                  type="submit"
+                  className="w-full bg-[#1B8392] hover:opacity-80 "
+                >
+                  {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
+                </Button>
+              </DialogClose>
+            )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -15,9 +15,10 @@ import { useDeleteEstab } from '../hooks/useDeleteEstab copy';
 
 interface editEstabProps {
   id: number;
-  children: React.ReactNode;
+  open: boolean;
+  setOpen: (value: boolean) => void;
 }
-export const DeleteEstab = ({ id, children }: editEstabProps) => {
+export const DeleteEstab = ({ id, open, setOpen }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
   const { deleteEstablishement, isPending } = useDeleteEstab();
@@ -32,8 +33,8 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
@@ -61,7 +62,7 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
         </div>
 
         <DialogFooter>
-          <DialogClose className=' w-full'>
+          <DialogClose className=" w-full">
             <Button
               type="button"
               disabled={isPending}
@@ -72,9 +73,11 @@ export const DeleteEstab = ({ id, children }: editEstabProps) => {
           </DialogClose>
           <DialogClose>
             <Button
-              onClick={() => handlDeleteEstab()}
+              onClick={() => {
+                handlDeleteEstab()}}
               type="submit"
               disabled={isPending}
+
               className="w-full bg-[#F04438] hover:opacity-80 "
             >
               Supprimer une établissement.

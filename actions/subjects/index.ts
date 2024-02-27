@@ -14,6 +14,7 @@ export const createSubject = async (data: SubjectInputProps) => {
   }
 };
 export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') => {
+  console.log('page', page)
   try {
     const skip = (page - 1) * pageSize;
 
@@ -27,7 +28,16 @@ export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') =
       skip,
       take: pageSize,
     });
-    const totalCount = await db.subject.count();
+
+    // const totalCount = estabs.length;
+    const totalCount = await db.establishment.count({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+    });
 
     return { data: { estabs, totalCount }, error: undefined };
   } catch (error: any) {

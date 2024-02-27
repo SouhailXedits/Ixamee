@@ -4,30 +4,17 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { EtudiantAjouteAvecSucces } from '../../../../../../../../components/modals/etudiant-ajoute-avec-succes';
+import {  useState } from 'react';
 import SubjectIcon, {
-  SubjectIconProps,
   subjectIcon,
 } from '../../../../../../../../components/ui/SubjectIcon';
+import * as Yup from 'yup';
 
 import { useFormik } from 'formik';
 import { useCreateSubject } from '../hooks/useCreateSubject';
@@ -42,10 +29,18 @@ interface AjouterUneClasse {
 //   alt: string;
 // }
 
+
+const YupValidationSchema = Yup.object({
+  name: Yup.string()
+    .min(3, 'Le nom doit comporter au moins 3 caractères')
+    .required('Le nom est requis'),
+  coefficient: Yup.number().positive('Le coefficient doit être positif').required('Le coefficient est requis'),
+  icon: Yup.string().required("L'icône est requise"),
+});
 export const AddSubject = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
+  // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const { createSubject, isPending } = useCreateSubject();
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
@@ -71,7 +66,7 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
       coefficient: 1,
       icon: '',
     },
-    // validationSchema: validationSchema,
+    validationSchema: YupValidationSchema,
     onSubmit: (values) => {
       createSubject(values);
       formik.resetForm();
@@ -96,9 +91,13 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 placeholder="Entrer le nom de la matière"
                 className="placeholder:text-[#727272]"
               />
+              {formik.touched.name && formik.errors.name ? ( // Show error message if touched and there's an error
+                <div className="text-7">{formik.errors.name}</div>
+              ) : null}
             </div>
             <div className="flex flex-col w-full gap-2">
               <Input
@@ -107,9 +106,13 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
                 name="coefficient"
                 value={formik.values.coefficient}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 placeholder="Saisir le coefficient de la matière"
                 className="placeholder:text-[#727272]"
               />
+              {formik.touched.coefficient && formik.errors.coefficient ? ( // Show error message if touched and there's an error
+                <div className="text-7">{formik.errors.coefficient}</div>
+              ) : null}
             </div>
             <div className=" flex gap-[0.8rem] max-w-[450px] border rounded p-3 flex-wrap">
               {icons.map((icon) => (
@@ -123,15 +126,29 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
             </div>
           </div>
           <DialogFooter className="mt-3 ">
-            <DialogClose className="w-full ">
+            {!formik.isValid && (
               <Button
                 // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
                 type="submit"
                 className="w-full bg-[#1B8392] hover:opacity-80 "
+                disabled={!formik.isValid || isPending}
+              >
+                Ajouter une autre matière
+              </Button>
+            )}
+            {formik.isValid && (
+              <DialogClose className="w-full ">
+              <Button
+                // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
+                type="submit"
+                className="w-full bg-[#1B8392] hover:opacity-80 "
+                disabled={!formik.isValid || isPending}
               >
                 Ajouter une autre matière
               </Button>
             </DialogClose>
+            )}
+            
           </DialogFooter>
         </form>
       </DialogContent>

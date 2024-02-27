@@ -4,7 +4,7 @@ import { EstablishementsList } from './_components/EstablishementsList';
 import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
 import { getAllEstabs } from '@/actions/establishements';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const Establishement = () => {
@@ -22,6 +22,10 @@ const Establishement = () => {
     queryKey: ['estabs', currentPage, searchQuery],
     queryFn: async () => await getAllEstabs(currentPage, 10, searchQuery),
   });
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
   const data = estabs?.data.estabs || [];
   const totalCount = estabs?.data.totalCount;
 

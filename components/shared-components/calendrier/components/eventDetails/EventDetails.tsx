@@ -21,6 +21,7 @@ function EventDetails({
   eventId,
   current,
   setOpenForm,
+  editable
 }: any) {
   // const event = useAppSelector((state) => state.calendar.events).find(
   //   (event: any) => event.id === eventId
@@ -33,9 +34,6 @@ function EventDetails({
 
   const [deleteForm, setDeleteForm] = useState(false);
   const [open, setOpen] = useState(false);
-  // const handleOpenChange = () => {
-  //   setOpen(!open);
-  // };
 
   const switchChange = (checked: any) => {
     const classesIds = event?.classes.map((el: any) => el.id);
@@ -82,6 +80,7 @@ function EventDetails({
               {/* <i className="event-cont-text" style={{ color: event?.color }}> */}
               <i className="event-cont-text">{event?.title}</i>
             </div>
+            {editable && 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
@@ -89,7 +88,7 @@ function EventDetails({
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" >
                 <DropdownMenuItem
                   onClick={() => {
                     setOpenEventDet(false);
@@ -110,17 +109,20 @@ function EventDetails({
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            }
           </div>
         </DialogTitle>
         <div className="details-event">
           <p className="details-event-date">
             à {dayjs(event?.start).format('hh:mm')} - Durée:{date}
           </p>
+          {editable &&
           <span className="details-event-det">
             <p className="details-event-date">Visibilité</p>
 
             <Switch defaultChecked={event?.studentsVisibility} onChange={switchChange} />
           </span>
+          }
 
           <span className="details-event-det">
             Matière:

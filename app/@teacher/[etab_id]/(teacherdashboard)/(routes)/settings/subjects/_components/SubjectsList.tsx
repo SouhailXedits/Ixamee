@@ -126,6 +126,8 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
     enableHiding: false,
 
     cell: ({ row }) => {
+      const [deleteForm, setDeleteForm] = React.useState<boolean>(false);
+      const [editFrom, setEditForm] = React.useState<boolean>(false);
       return (
         <div className="flex items-center gap-4 " style={{ width: '50px' }}>
           <DropdownMenu>
@@ -136,28 +138,22 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {/* <DropdownMenuItem> */}
-              <EditSubjectModal currentSubject={row.original}>
-                {/* <Image
-                  src="/eyesicon.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="cursor-pointer "
-                /> */}
-                <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-                  Modifier
-                </p>
-                {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-              </EditSubjectModal>
+              <DropdownMenuItem onClick={() => setEditForm(true)}>
+                Modifier
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setDeleteForm(true)}>
+                Supprimer
+              </DropdownMenuItem>
 
-              <DeleteSubject id={row.original.id}>
+              {/* <DeleteSubject id={row.original.id}>
                 <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
                   Supprimer
                 </p>
-              </DeleteSubject>
+              </DeleteSubject> */}
             </DropdownMenuContent>
           </DropdownMenu>
+          <EditSubjectModal currentSubject={row.original} open={editFrom} setOpen={setEditForm} />
+          <DeleteSubject id={row.original.id} open={deleteForm} setOpen={setDeleteForm} />
         </div>
       );
     },
@@ -215,8 +211,7 @@ export function SubjectsList({
     table.nextPage();
   }
   function handlePreviousPage() {
-    // const cur = table.getPageCount();
-    if (currentpage === 0) onPageChange(currentpage - 1);
+    onPageChange(currentpage - 1);
     table.previousPage();
   }
 
@@ -266,8 +261,8 @@ export function SubjectsList({
       </div>
       <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} sur{' '}
+          {table.getFilteredRowModel().rows.length} ligne(s) sélectionnée(s).
         </div>
         <div className="space-x-2">
           <Button
@@ -276,7 +271,7 @@ export function SubjectsList({
             onClick={() => handlePreviousPage()}
             disabled={currentpage === 1}
           >
-            Previous
+            Précédent
           </Button>
           <Button
             variant="outline"
@@ -284,7 +279,7 @@ export function SubjectsList({
             onClick={() => handleNextPage()}
             disabled={currentpage + 1 > totalPageCount}
           >
-            Next
+            Suivant
           </Button>
         </div>
       </div>
