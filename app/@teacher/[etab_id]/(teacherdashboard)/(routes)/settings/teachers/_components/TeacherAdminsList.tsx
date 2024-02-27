@@ -20,6 +20,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
@@ -41,7 +42,8 @@ import { useQueryClient } from '@tanstack/react-query';
 function ActionsModal({ rowData }: any) {
   const queryClient = useQueryClient();
   const currentLoggedUser = queryClient.getQueryData(['user']) as any;
-
+  const [deleteForm, setDeleteForm] = React.useState(false);
+  const [infosPopupOpen, setInfosPopupOpen] = React.useState(false);
   const isCurrentUser = currentLoggedUser.id === rowData.id;
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
@@ -54,30 +56,23 @@ function ActionsModal({ rowData }: any) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {/* <DropdownMenuItem> */}
-          <TeachersInfos currentUser={rowData}>
-            {/* <Image
-                  src="/eyesicon.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="cursor-pointer "
-                /> */}
-            <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-              Voir les informations
-            </p>
-            {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-          </TeachersInfos>
-          {!isCurrentUser && (
+          
+          {/* {!isCurrentUser && (
             <DeleteAdminModal id={rowData.id}>
               <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
                 Supprimer l&apos;admin
               </p>
             </DeleteAdminModal>
-          )}
+          )} */}
 
-          {/* <DropdownMenuItem>Supprimer</DropdownMenuItem> */}
+          <DropdownMenuItem onClick={() => setInfosPopupOpen(true)}>Voir les informations</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setDeleteForm(true)}>Supprimer</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {!isCurrentUser && (
+        <DeleteAdminModal id={rowData.id} open={deleteForm} setOpen={setDeleteForm} />
+      )}
+      <TeachersInfos currentUser={rowData} open={infosPopupOpen} setOpen={setInfosPopupOpen} />
     </div>
   );
 }

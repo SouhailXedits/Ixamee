@@ -27,9 +27,11 @@ import { useDeleteAdmin } from '../hooks/useDeleteAdmin';
 
 interface EditUserFormProps {
   id: string;
-  children: React.ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+
 }
-export const DeleteAdminModal = ({ id, children }: EditUserFormProps) => {
+export const DeleteAdminModal = ({ id, open, setOpen }: EditUserFormProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
   const { deleteAdmin, isPending } = useDeleteAdmin();
@@ -40,8 +42,8 @@ export const DeleteAdminModal = ({ id, children }: EditUserFormProps) => {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">

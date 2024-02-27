@@ -138,7 +138,7 @@ const Student = () => {
       </nav>
       <div className="flex items-center gap-3 ml-5 ">
         <Image
-          src={user?.image || '/userAvatar/user1.svg'}
+          src={user?.image || '/defaultUserAvatr.svg'}
           alt=" user avatar"
           height={50}
           width={50}

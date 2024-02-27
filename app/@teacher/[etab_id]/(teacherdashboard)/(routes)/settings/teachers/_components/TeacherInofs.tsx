@@ -16,10 +16,11 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface editEstabProps {
-  children: React.ReactNode;
   currentUser: teacherAminOutput;
+  open: boolean;
+  setOpen: (value: boolean) => void;
 }
-export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
+export const TeachersInfos = ({ currentUser, open, setOpen }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
   function returnToCreate() {
@@ -27,8 +28,8 @@ export const TeachersInfos = ({ children, currentUser }: editEstabProps) => {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <div className="flex items-center gap-4 ">
