@@ -70,6 +70,7 @@ const Student = () => {
     if (!result[term]) {
       result[term] = [];
     }
+    console.log(exam);
     result[term].push({
       id: exam.id,
       exam_id: exam.exam.id,
@@ -80,7 +81,11 @@ const Student = () => {
       totalScore: exam.exam.total_mark,
       overTwnetyMark: exam.mark_obtained * (20 / exam.exam.total_mark),
       range: exam.rank,
+      user: exam?.user,
+      examContent : exam?.exam?.content,
+      examCorrection: exam?.exam?.exam_correction,
     });
+
     return result;
   }, {});
 
@@ -152,7 +157,7 @@ const Student = () => {
 
       <div className="flex overflow-auto gap-9 p-7">
         {trimesters.map((trimester) => (
-          <TermCard key={trimester.name} term={trimester} />
+          <TermCard key={trimester.name} term={trimester} examsData={examsData} />
         ))}
       </div>
       <div className="flex justify-end w-full gap-2 text-white ">

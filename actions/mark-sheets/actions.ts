@@ -102,6 +102,8 @@ export const getMarksheetByUserId = async (
             coefficient: true,
             term: true,
             create_at: true,
+            exam_correction: true,
+            content: true,
           },
           where: {
             is_archived: false,

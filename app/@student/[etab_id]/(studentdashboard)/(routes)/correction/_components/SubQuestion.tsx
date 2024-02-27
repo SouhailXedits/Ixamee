@@ -19,7 +19,7 @@ export const SubQuestion = ({ data, isArabic }: any) => {
             <span>{data.name}</span>
             <Editor
               editable={false}
-              onChange={() => 
+              onChange={(e) => console.log('')}
               initialContent={data.content}
             />
           </div>

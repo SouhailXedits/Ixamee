@@ -1,25 +1,25 @@
 'use client';
 import React from 'react';
-import Lottie from 'react-lottie';
+// import Lottie from 'react-lottie';
 import eerrorAnimation from '@/public/error.json';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 
 function Errorr() {
   const router = useRouter();
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: eerrorAnimation,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  };
+  // const defaultOptions = {
+  //   loop: true,
+  //   autoplay: true,
+  //   animationData: eerrorAnimation,
+  //   rendererSettings: {
+  //     preserveAspectRatio: 'xMidYMid slice',
+  //   },
+  // };
 
   return (
     <div className="flex items-center justify-center w-full h-[100vh] text-center border">
       <div>
-        <Lottie options={defaultOptions} height={200} width={200} />
+        {/* <Lottie options={defaultOptions} height={200} width={200} /> */}
         <div className="flex items-center gap-2">
           <Button
             onClick={() => router.back()}

@@ -65,14 +65,13 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getClasseById(+params.classesId),
   });
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
-  
+
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', exam, classesId],
     enabled: exam !== undefined && exam !== '',
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
     retry: 0,
   });
-  
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
@@ -80,13 +79,13 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getStudentOfClasse(+classesId),
     retry: 0,
   });
-  
+
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
     queryFn: async () => await getCorigeExameContentOfAllUser(exam, getIdOfUserInTheClasse),
   });
-  
+
   // ======================= End All Queries✨✨✨✨✨✨✨✨✨✨✨✨ ======================
   // ==================== Start useEffect 😵‍💫😵‍💫😵‍💫 ======================
   // set the default exam if he find a exam  : 3la 5ater bach ki yadhreb yadhreb 3la el examan mo33ain
@@ -139,6 +138,8 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           exam,
           // user?.user_id,
         ]) as any;
+        console.log(userExamContent);
+        console.log(user?.user_id);
         const markObtin = userExamContent.filter((item: any) => item.user_id === user?.user_id)[0]
           .mark_obtained;
         return {
@@ -186,7 +187,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   }
 
   const userNotCorrected = notCorrected(userCorrection);
-  
+
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full gap-14 ">
@@ -245,7 +246,6 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           <AddStudent classesId={classesId} etab_id={etab_id} />
         </div>
       </nav>
-
 
       {isPendingClasse ? (
         <div className="flex flex-col gap-6 pt-10">
