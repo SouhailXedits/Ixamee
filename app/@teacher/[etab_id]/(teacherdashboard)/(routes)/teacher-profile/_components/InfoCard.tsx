@@ -13,7 +13,7 @@ import {
 import { useRef } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getAllEstabs } from '@/actions/establishements';
+import { getAllEstabs, getAllEstabsWithNoPagination } from '@/actions/establishements';
 import Select from 'react-select';
 import { getAllSubjects } from '@/actions/subjects';
 import { useForm } from 'react-hook-form';
@@ -44,8 +44,9 @@ export default function InfoCard({ user, userEstablishment, teachersubject }: an
 
   const { data: establishments, isPending: estabPending } = useQuery<any>({
     queryKey: ['establishments'],
-    queryFn: async () => await getAllEstabs(),
+    queryFn: async () => await getAllEstabsWithNoPagination(),
   });
+  console.log(establishments, 'establishments');
   const estabOptions =
     (establishments?.data &&
       establishments?.data?.estabs.map((estab: any) => {

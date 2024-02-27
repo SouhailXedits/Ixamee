@@ -42,7 +42,7 @@ export const getMarkOfExerciceWithId = (content: any, id: string): number | null
 
 export const transferAllMarkToNull = (content: any) => {
   for (const item of content) {
-    item.mark = 0;
+    item.mark = null;
     if (item.children) {
       transferAllMarkToNull(item.children);
     }

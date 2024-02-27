@@ -53,7 +53,7 @@ function ParametersSidebar() {
 
 
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event: any) {
       // Check if the clicked element is the trigger button or its children
       if (
         popoverRef.current &&

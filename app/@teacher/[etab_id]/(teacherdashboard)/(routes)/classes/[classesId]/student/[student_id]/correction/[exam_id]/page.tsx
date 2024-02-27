@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 // import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
-import { calcAllMark } from './_components/calculateChildrenMarks';
+import { calcAllMark, transferAllMarkToNull } from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
@@ -27,16 +27,20 @@ export default function Page({
   const router = useRouter();
   const { exam_id } = params;
   const { student_id } = params;
+  console.log(params, 'params');
 
   const { data, isPending } = useQuery<any>({
     queryKey: ['examenByIdd', exam_id],
     queryFn: async () => await getOneExamByIdForCorrection({ id: exam_id }),
   });
+  console.log(data, 'dataExam');
 
   const { data: examContent, isPending: isPendingExamContent } = useQuery<any>({
     queryKey: ['exameContent', exam_id],
     queryFn: async () => await getExamContent({ id: exam_id }),
   });
+
+  console.log(examContent, 'examContent');
 
   const { data: userData, isPending: isPendingUser } = useQuery<any>({
     queryKey: ['userName', student_id],
@@ -60,9 +64,13 @@ export default function Page({
   useEffect(() => {
     if (isFullMarks) {
       const copiedData = JSON.parse(JSON.stringify(examContent?.content));
+      console.log(copiedData, 'copiedData1');
+
       setFakeData(copiedData);
     } else if (data?.content) {
       const copiedData = JSON.parse(JSON.stringify(data.content));
+      console.log(copiedData, 'copiedData2');
+
       setFakeData(copiedData);
     }
   }, [isFullMarks]);
@@ -105,6 +113,7 @@ export default function Page({
   // const { createExamCorrectionn, isPending: isPendingCreate } = useCreateExamCorrection();
   const statusOf = (data: any) => {
     const hasPending = hasNullMark(data);
+    console.log(hasPending, 'hasPending');
     const status = hasPending ? 'pending' : 'done';
     return status;
   };

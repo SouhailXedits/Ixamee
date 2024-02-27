@@ -8,7 +8,7 @@ export default function Store({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 1000 * 60 * 10,
+            staleTime: 0  ,
           },
         },
       })

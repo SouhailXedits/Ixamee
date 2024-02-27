@@ -40,6 +40,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   //get The list of Id in the classe
   const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
 
+
   // get the teacher establishment  with hydration
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   // get the teacher establishment name

@@ -54,7 +54,7 @@ const NavbarProfile = () => {
           src={user?.image || '/studenttestpicture.svg'}
           width={35}
           height={35}
-          className="object-fill rounded-full"
+          className="object-fill rounded-full w-[35px] h-[35px]"
         />
       </div>
 

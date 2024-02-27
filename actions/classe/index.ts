@@ -182,7 +182,7 @@ export const createUserWithImportInClasse = async (data: any) => {
           },
         });
 
-        if (res.length === 0) {
+      if (res.length === 0) {
           await db.user.create({
             data: {
               name: user.name,
@@ -218,10 +218,10 @@ export const createUserWithImportInClasse = async (data: any) => {
       })
     );
     // If all users are created/updated successfully, return a resolved Promise
-    return Promise.resolve();
+
   } catch (error) {
     // If any error occurs during creation/updation, return a rejected Promise with the error
-    return Promise.reject(error);
+    throw error;
   }
 };
 
@@ -551,17 +551,29 @@ export const updateUserInClasse = async (
   //   console.error('Email already exists for another user');
   //   return;
   // }
+  if (image === '') {
+    const data = await db.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: name,
+        email: email,
+      },
+    });
+  } else {
+    const data = await db.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: name,
+        email: email,
+        image: image,
+      },
+    });
+  }
 
-  const data = await db.user.update({
-    where: {
-      id: id,
-    },
-    data: {
-      name: name,
-      email: email,
-      image: image,
-    },
-  });
 };
 
 export const deleteUserInClasse = async (user_id: string, classe_id: string) => {
@@ -671,6 +683,7 @@ export const updateInvitationUser = async (studentEmail: string, teacherEmail: s
 // };
 
 export const getStatusById = async (id: any) => {
+  if (!id) return null;
   const data = await db.examCorrection.findMany({
     where: {
       id: id,
@@ -701,9 +714,9 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
 export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
   // console.log(exam_id);
   // console.log(userData);
-  if(!exam_id || !userData) return null
+  if (!exam_id || !userData) return null;
 
-  // if (exam_id === 'undefined') return null;
+  if (exam_id === 'undefined') return null;
   const data = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,

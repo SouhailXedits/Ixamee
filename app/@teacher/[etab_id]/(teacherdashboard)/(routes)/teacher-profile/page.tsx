@@ -14,6 +14,7 @@ const Profile = () => {
     queryFn: async () => await getEstablishmentOfUser(user?.id as string),
     staleTime: 0,
   });
+  console.log(userEstablishment ,"userEstablishment");
 
   const { data: teacherSubject, isPending: isPendingSubject } = useQuery<any>({
     queryKey: ['teacherSubjects'],
@@ -25,10 +26,10 @@ const Profile = () => {
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex justify-between w-full ">
         <div className="flex flex-col gap-4">
-          <div className="text-[#1B8392] text-2xl font-semibold ">Mon profil</div>
+          <div className="text-[#1B8392] text-2xl font-semibold ">Mon profile</div>
           <div className="flex items-center text-[#727272]">
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
-            <span className="cursor-pointer">Mon profil</span>
+            <span className="cursor-pointer">Mon profile</span>
           </div>
         </div>
       </nav>
@@ -36,7 +37,7 @@ const Profile = () => {
       <div>
         {isPendingSubject ? (
           <div className="flex items-center justify-center">
-            <div className="animate-spin border-mainGreen rounded-full h-8 w-8 border-t-2 border-blue-500 border-r-2 border-b-2 border-gray-300"></div>
+            <div className="w-8 h-8 border-t-2 border-b-2 border-r-2 border-gray-300 border-blue-500 rounded-full animate-spin border-mainGreen"></div>
           </div>
         ) : (
           <ProfileCards
