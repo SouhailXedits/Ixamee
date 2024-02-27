@@ -25,8 +25,9 @@ import { useEditSubject } from '../hooks/useEditSubject';
 import { icons } from '../assets/subjectsIcons';
 import * as Yup from 'yup';
 interface AjouterUneClasse {
-  children: React.ReactNode;
   currentSubject: SubjectOutputProps;
+  open: boolean;
+  setOpen: (value: boolean) => void;
 }
 
 // interface IconsTypes {
@@ -44,7 +45,7 @@ const YupValidationSchema = Yup.object({
 });
 
 
-export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse) => {
+export const EditSubjectModal = ({ currentSubject, open , setOpen }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   // const [file, setFile] = useState<File | null>(null);
   // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
@@ -84,8 +85,8 @@ export const EditSubjectModal = ({ children, currentSubject }: AjouterUneClasse)
 
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <form onSubmit={formik.handleSubmit}>
           <DialogHeader>
