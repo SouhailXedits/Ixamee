@@ -252,7 +252,7 @@ export function EstablishementsList({
             onClick={() => handlePreviousPage()}
             disabled={currentpage === 1}
           >
-            Previous
+            Précédent
           </Button>
           <Button
             variant="outline"
@@ -260,7 +260,7 @@ export function EstablishementsList({
             onClick={() => handleNextPage()}
             disabled={currentpage + 1 > totalPageCount}
           >
-            Next
+            Suivant
           </Button>
         </div>
       </div>
