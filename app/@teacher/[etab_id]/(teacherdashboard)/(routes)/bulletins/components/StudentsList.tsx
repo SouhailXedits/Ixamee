@@ -329,7 +329,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Précédent
           </Button>
           <Button
             variant="outline"
@@ -337,7 +337,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Suivant
           </Button>
         </div>
       </div>

@@ -251,7 +251,7 @@ export function TeacherAdminsList({ data, isPending }: teacherAdminListProps) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Précédent
           </Button>
           <Button
             variant="outline"
@@ -259,7 +259,7 @@ export function TeacherAdminsList({ data, isPending }: teacherAdminListProps) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Suivant
           </Button>
         </div>
       </div>
