@@ -20,6 +20,7 @@ export default function MenuPopover({
   return (
     <div className='calendar-menu-popover'>
       <Popover
+        className='calendar-menu-popover'
         open={Boolean(open)}
         anchorEl={open}
         anchorOrigin={anchorOrigin as PopoverOrigin}

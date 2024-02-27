@@ -473,9 +473,9 @@ body {
   margin-bottom: 2rem;
 }
 
-.calendar-menu-popover [data-radix-popper-content-wrapper] {
+/* .calendar-menu-popover [data-radix-popper-content-wrapper] {
   z-index: 2000 !important;
-}
+} */
 
 .MuiMenuItem-root.MuiMenuItem-gutters {
   /* font-size: 2rem !important; */
@@ -532,7 +532,11 @@ tbody,
   background: hsla(0, 0%, 100%, 0.671);
   position: absolute;
   width: 100vw;
-  z-index: 999999999999999999999999999999;
+  z-index: 10;
+}
+
+.MuiDialog-root {
+  z-index: 10 !important;
 }
 
 .fc-daygrid-more-link {

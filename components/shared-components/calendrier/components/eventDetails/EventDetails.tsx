@@ -34,9 +34,6 @@ function EventDetails({
 
   const [deleteForm, setDeleteForm] = useState(false);
   const [open, setOpen] = useState(false);
-  // const handleOpenChange = () => {
-  //   setOpen(!open);
-  // };
 
   const switchChange = (checked: any) => {
     const classesIds = event?.classes.map((el: any) => el.id);
@@ -86,7 +83,7 @@ function EventDetails({
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" >
                 <DropdownMenuItem
                   onClick={() => {
                     setOpenEventDet(false);

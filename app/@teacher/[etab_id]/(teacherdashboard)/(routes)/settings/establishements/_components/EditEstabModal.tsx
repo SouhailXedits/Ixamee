@@ -29,9 +29,10 @@ import { useEditEstab } from '../hooks/useEditEstab';
 interface editEstabProps {
   id: number;
   currentName: string;
-  children: React.ReactNode;
+  open: boolean;
+  setOpen: (value: boolean) => void;
 }
-export const EditEstab = ({ id, currentName, children }: editEstabProps) => {
+export const EditEstab = ({ id, currentName, open, setOpen }: editEstabProps) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
 
   // const [file, setFile] = useState<File | null>(null);
@@ -61,8 +62,8 @@ export const EditEstab = ({ id, currentName, children }: editEstabProps) => {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
