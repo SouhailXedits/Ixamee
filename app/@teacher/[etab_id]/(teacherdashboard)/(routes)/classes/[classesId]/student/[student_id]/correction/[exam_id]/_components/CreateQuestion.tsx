@@ -3,7 +3,7 @@ import { CreateSubQuestion } from './CreateSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from './toolbar-editor';
 import { cn } from '@/lib/utils';
-import { getMarkOfExerciceWithId } from './calculateChildrenMarks';
+import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 import toast from 'react-hot-toast';
 
 export const CreateQuestion = ({

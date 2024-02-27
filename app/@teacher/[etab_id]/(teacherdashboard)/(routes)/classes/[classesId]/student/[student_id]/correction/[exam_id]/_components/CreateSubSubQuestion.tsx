@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import Editor from './toolbar-editor';
 import { Input } from '@/components/ui/input';
-import { calculerExerciceMark, getMarkOfExerciceWithId } from './calculateChildrenMarks';
+// import { calculerExerciceMark, getMarkOfExerciceWithId } from '@a';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { calculerExerciceMark, getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export const CreateSubSubQuestion = ({
   data,

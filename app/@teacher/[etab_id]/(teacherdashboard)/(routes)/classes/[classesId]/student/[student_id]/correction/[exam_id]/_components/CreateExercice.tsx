@@ -6,7 +6,7 @@ import {
   calculateChildrenMarks,
   calculerExerciceMark,
   getMarkOfExerciceWithId,
-} from './calculateChildrenMarks';
+} from '@/app/_utils/calculateChildrenMarks';
 
 export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, isArabic }: any) => {
   if (!data) return;

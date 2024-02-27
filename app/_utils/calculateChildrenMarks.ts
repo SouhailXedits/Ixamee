@@ -25,4 +25,32 @@ export const calcAllMark = (fakeData: any) => {
   });
   return sum;
 };
+
+
+export const transferAllMarkToNull = (content: any) => {
+  for (const item of content) {
+    item.mark = null;
+    if (item.children) {
+      transferAllMarkToNull(item.children);
+    }
+  }
+  console.log(content);
+};
+
+
+export const getMarkOfExerciceWithId = (content: any, id: string): number | null => {
+  for (const item of content) {
+    if (item.id === id) {
+      return item.mark;
+    }
+    if (item.children) {
+      const mark = getMarkOfExerciceWithId(item.children, id);
+      if (mark !== null) {
+        return mark;
+      }
+    }
+  }
+  return null;
+};
+
 // Call the function passing the fakeData array to get the sum of marks for immediate children

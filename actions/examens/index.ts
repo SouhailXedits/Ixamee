@@ -1,7 +1,6 @@
 // index.ts
 'use server';
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
-import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { calculateAverageMark, calculateOverallAverage } from '@/app/_utils/calculateAverage';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';

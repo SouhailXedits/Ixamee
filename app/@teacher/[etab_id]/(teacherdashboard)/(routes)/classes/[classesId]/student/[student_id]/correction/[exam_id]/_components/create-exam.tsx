@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { CreateExercice } from './CreateExercice';
-import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
+// import { calcAllMark, calculateChildrenMarks } from '@/app/_utils/calculateChildrenMarks';
 
 function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
   // function calculateTotalMark(data: any) {
