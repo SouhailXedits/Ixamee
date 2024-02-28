@@ -38,8 +38,6 @@ const Student = () => {
 
     queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
   });
-  console.log(userClasseInfos);
-  //
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
     queryKey: ['marksheet', currentId],
@@ -82,9 +80,7 @@ const Student = () => {
       totalScore: exam.exam.total_mark,
       overTwnetyMark: exam.mark_obtained * (20 / exam.exam.total_mark),
       range: exam.rank,
-      user: exam?.user,
-      examContent : exam?.exam?.content,
-      examCorrection: exam?.exam?.exam_correction,
+      isPublished: exam.is_published,
     });
 
     return result;
@@ -103,7 +99,7 @@ const Student = () => {
     exams: groupedExams[term] || [], // Check and add empty array if term has no exams
   }));
 
-  const averageMark = calculateAverageMark(trimesters);
+  // const averageMark = calculateAverageMark(trimesters);
 
   if (isPendingmMarksheet) return <Loading />;
 

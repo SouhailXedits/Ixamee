@@ -35,15 +35,18 @@ function UserExam({ exam, examsData }: any) {
         <p className="text-xl font-medium whitespace-nowrap text-black/80">{exam.name}</p>
         <p className=" text-black/50">Ajouté le: {exam.date}</p>
       </div>
-      <div className="flex flex-col items-center gap-1 text-mainGreen">
-        <p>
-          {exam.marksObtained}/{exam.totalScore}
-        </p>
+      <div className=" flex items-center flex-col gap-1 text-mainGreen">
+        {exam.isPublished && (
+          <p>
+            {exam.marksObtained}/{exam.totalScore}
+          </p>
+        )}
+
         <p>--</p>
       </div>
       <div className="flex flex-col items-center gap-1 opacity-50 text-mainGreen">
         <p>rang </p>
-        <p>{exam.range}</p>
+        {exam.isPublished ? <p>{exam.range}</p> : <p>--</p>}
       </div>
       <div className="flex flex-col items-center justify-center gap-0">
         <Button

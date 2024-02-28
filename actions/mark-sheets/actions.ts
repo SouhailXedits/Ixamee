@@ -64,7 +64,6 @@ export const getMarkSheets = async (filters: {
   }
 };
 
-// getMarksheetByUserId()
 
 export const getMarksheetByUserId = async (
   classeId: number,
@@ -88,8 +87,6 @@ export const getMarksheetByUserId = async (
             },
           },
         },
-        status: 'done' || 'absent' || 'notClassified' || 'pending',
-        is_published: true,
       },
       select: {
         id: true,
@@ -117,6 +114,7 @@ export const getMarksheetByUserId = async (
           },
         },
         rank: true,
+        is_published: true,
       },
     });
 
@@ -131,7 +129,6 @@ export const getMarksheetByUserId = async (
 
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
   if (exam_id === 'undefined') return null;
-
   const res = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -153,8 +150,4 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
   });
   return res;
 
-  // const res = await db.examCorrection.findMany({
-  //   // relationLoadStrategy: 'join',
-  //   include: {},
-  // });
 };

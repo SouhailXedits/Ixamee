@@ -2,11 +2,11 @@
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 
-
-
-
-export const getAllExamCorrections = async (filters: {exam_id: string, classe_id: string}, user_id: string) => {
-  if(! filters.exam_id || ! filters.classe_id) return
+export const getAllExamCorrections = async (
+  filters: { exam_id: string; classe_id: string },
+  user_id: string
+) => {
+  if (!filters.exam_id || !filters.classe_id) return;
   try {
     const res = await db.examCorrection.findMany({
       select: {
@@ -16,15 +16,15 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
         exam: {
           select: {
             total_mark: true,
-          }
+          },
         },
         user: {
           select: {
             id: true,
             name: true,
             image: true,
-          }
-        }
+          },
+        },
       },
       where: {
         exam: {
@@ -32,16 +32,13 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
           teacher_id: user_id,
           exam_classess: {
             some: {
-              id: +filters.classe_id
-            }
-          }
-          
+              id: +filters.classe_id,
+            },
+          },
         },
-        status: 'done' || "absent" || "notClassified" || "pending",
-        is_published: true
-        
+        status: 'done' || 'absent' || 'notClassified' || 'pending',
+        is_published: true,
       },
-      
     });
     return res;
   } catch (error: any) {
@@ -54,7 +51,7 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
 
 export const getUserCorrectionBySubject = async (
   user_id: string,
-  filters: {subject_id: string, term: string} 
+  filters: { subject_id: string; term: string }
 ) => {
   if (!filters.subject_id || !filters.term) return;
   try {
@@ -72,30 +69,18 @@ export const getUserCorrectionBySubject = async (
                 name: true,
                 icon: true,
                 coefficient: true,
-              }
+              },
             },
           },
         },
-       
       },
       where: {
         user_id: user_id,
         exam: {
           subject_id: +filters.subject_id,
-          term: filters.term
+          term: filters.term,
         },
-        // status: 'done' || 'absent' || 'notClassified' || 'pending',
-        // is_published: true,
       },
-      // include: {
-      //   user: {
-      //     select: {
-      //       id: true,
-      //       name: true,
-      //       image: true,
-      //     }
-      //   },
-      // },
     });
     return res;
   } catch (error: any) {
@@ -106,12 +91,19 @@ export const getUserCorrectionBySubject = async (
   }
 };
 
-
-
-
-
-
-
-
-
-
+export const updateStudentPrespectation = async (
+  correction_id: number,
+  user_id: string,
+  prespectation: any
+) => {
+  if (!correction_id || !user_id) return;
+  const res = await db.examCorrection.update({
+    where: {
+      id: correction_id,
+    },
+    data: {
+      student_prespectation: prespectation,
+    },
+  });
+  return res;
+};
