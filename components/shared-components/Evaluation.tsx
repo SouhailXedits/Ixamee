@@ -2,13 +2,10 @@
 import PdfHeader from '@/components/shared-components/PdfHeader';
 import React from 'react';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { calcSumOfMarks } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/[examenId]/_components/sharedFunction';
-import {
-  getMaxDepth,
-  getNoteOf,
-} from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import { getMaxDepth, getNoteOf } from '@/app/_utils/calculateChildrenMarks';
+import { calcSumOfMarks } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/[examenId]/_components/sharedFunction';
 
 export default function Evaluation({ userContent, userDetails }: any) {
   const params = useParams();

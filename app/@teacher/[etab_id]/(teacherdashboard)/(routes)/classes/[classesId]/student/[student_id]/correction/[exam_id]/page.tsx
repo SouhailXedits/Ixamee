@@ -14,7 +14,7 @@ import { StudentFeadback } from '@/components/modals/studentFeadback';
 import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorrection';
 import { Button } from '@/components/ui/button';
 import { useConfettiStore } from '@/store/use-confetti-store';
-import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
+import { calcAllMark, statusOf } from '@/app/_utils/calculateChildrenMarks';
 import CreateExam from '@/components/shared-components/exam/create-exam';
 export default function Page({
   params,

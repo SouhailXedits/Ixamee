@@ -2,8 +2,8 @@
 import PdfHeader from '@/components/shared-components/PdfHeader';
 import React from 'react';
 import { calcSumOfMarks } from '../../../examens/[examenId]/_components/sharedFunction';
-import { getMaxDepth, getNoteOf } from '../student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getMaxDepth, getNoteOf } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Evaluation({ userContent, userDetails, params }: any) {
   if (!userContent?.[0]?.correction_exam_content) {
