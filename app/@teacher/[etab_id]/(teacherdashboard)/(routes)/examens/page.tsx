@@ -12,12 +12,13 @@ export default function Examens() {
   // const data = queryClient.getQueryData(['examens', etab_id]) as any;
   const user_id = user?.id;
   console.log(user_id);
+  console.log(etab_id);
   const { data, isPending } = useQuery({
     queryKey: ['examens', etab_id],
     queryFn: async () => await getAllExam({ user_id, etab_id }),
     retry: true,
   });
-
+  console.log(data);
   const [dataInput, setDataInput] = useState('');
   // const { data, isPending } = useQuery({
   //   queryKey: ['examens', etab_id],

@@ -1,3 +1,4 @@
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,9 +29,20 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                     width={29}
                     height={29}
                   />
-                  <span className="text-[#1B8392] text-lg font-semibold  leading-[25px]">
+                  {/* <span className="text-[#1B8392] text-lg font-semibold  leading-[25px]">
                     {classe.name}
-                  </span>
+                  </span> */}
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <span className="text-[#1B8392] text-lg font-semibold  leading-[25px]">
+                        {classe.name.length > 10 ? classe.name.slice(0, 10) + '...' : classe.name}
+                      </span>
+                      {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
+                    </HoverCardTrigger>
+                    <HoverCardContent className="text-[#727272]  break-words w-[200px] text-md">
+                      <span className="text-[#1B8392] text-xl font-semibold">{classe.name}</span>
+                    </HoverCardContent>
+                  </HoverCard>
                 </div>
               </div>
               <div className="flex h-2/5 py-2  w-full items-center justify-center text-center font-semibold text-[#4C4C4D] -space-x-2 overflow-hidden">

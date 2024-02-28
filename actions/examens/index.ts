@@ -86,6 +86,7 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
       },
     },
   });
+  console.log(exams);
   return exams;
 };
 export const getAllExamsNameAndId = async ({

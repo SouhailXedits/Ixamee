@@ -176,6 +176,7 @@ model ExamCorrection {
   is_published  Boolean? @default(false)
   published_at  DateTime?
   rank          Int?
+  student_prespectation Json?
 }
  
  
