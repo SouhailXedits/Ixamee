@@ -19,7 +19,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
 
-  // const { data, isPending } = useQuery({
+  // const { data, isPending } = useQuer({
   //   queryKey: ['user'],
   //   queryFn: async () => await getMe(),
   //   staleTime: 0,

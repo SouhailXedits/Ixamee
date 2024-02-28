@@ -41,7 +41,7 @@ export default async function RootLayout({
             <Hydration>
               <ToastProvider />
               <ConfettiProvider />
-              {/* {teacher} */}
+
               {session?.user?.role === 'STUDENT'
                 ? student
                 : session?.user?.role === 'TEACHER' || session?.user?.role === 'ADMIN'

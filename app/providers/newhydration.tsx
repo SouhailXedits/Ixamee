@@ -30,23 +30,23 @@ export default async function NewHydration({
   await queryClient.prefetchQuery({
     queryKey: ['examens', etab_id],
     queryFn: async () => await getAllExam({ user_id, etab_id }),
-    retry: true,
+
   });
   await queryClient.prefetchQuery({
     queryKey: ['teacherEstab'],
     queryFn: async () => await getEstablishmentOfUser(user_id),
-    retry: true,
+
   });
 
   await queryClient.prefetchQuery({
     queryKey: ['teacherTerm'],
     queryFn: async () => await getTermOfUser(user_id),
-    retry: true,
+
   });
   await queryClient.prefetchQuery({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id, etab_id }),
-    retry: true,
+
   });
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
