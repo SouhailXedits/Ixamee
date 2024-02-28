@@ -38,6 +38,7 @@ const Student = () => {
 
     queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
   });
+  console.log(userClasseInfos);
   //
 
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({

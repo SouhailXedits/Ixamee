@@ -84,8 +84,8 @@ export const getUserCorrectionBySubject = async (
           subject_id: +filters.subject_id,
           term: filters.term
         },
-        status: 'done' || 'absent' || 'notClassified' || 'pending',
-        is_published: true,
+        // status: 'done' || 'absent' || 'notClassified' || 'pending',
+        // is_published: true,
       },
       // include: {
       //   user: {

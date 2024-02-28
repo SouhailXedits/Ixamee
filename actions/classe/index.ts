@@ -708,6 +708,7 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
       correction_exam_content: true,
       mark_obtained: true,
       feedback: true,
+      is_published: true
     },
   });
 
