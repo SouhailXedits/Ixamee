@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -12,15 +11,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useCreateEstab } from '../hooks/useCreateEstab';
@@ -33,7 +23,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [name, setName] = useState('');
   const { createEstablishement } = useCreateEstab();
-  const [isUnique, setIsUnique] = useState(false);
+  const [isNameUnique, setIsNameUnique] = useState(false);
 
   async function handleCreateEstab() {
     createEstablishement(name);
@@ -45,11 +35,12 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
 
   async function checkIsUniqueHandler(value: string) {
     const data = await getIsEstabNameUnique(value);
-    if (data) setIsUnique(false);
+    if (data) setIsNameUnique(false);
     else {
-      setIsUnique(true);
+      setIsNameUnique(true);
     }
   }
+  const isNotUnique = !isNameUnique;
 
   return (
     <Dialog>
@@ -76,7 +67,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
                 placeholder="Entrer le nom de l'établissement"
                 className="placeholder:text-[#727272]"
               />
-              {!isUnique && <p className="text-red">Cet nom d'établissement est déjà utilisé</p>}
+              {isNotUnique && <p className="text-red">Cet nom d'établissement est déjà utilisé</p>}
             </div>
           </div>
         ) : (
@@ -95,12 +86,12 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
         )}
 
         <DialogFooter>
-          {!isUnique ? (
+          {isNotUnique ? (
               <Button
                 onClick={() => {
                   isFirstModalOpen ? returnToCreate() : handleCreateEstab();
                 }}
-                disabled={!isUnique || name === ''}
+                disabled={isNotUnique || name === ''}
                 type="submit"
                 className="w-full bg-[#1B8392] hover:opacity-80 "
               >
@@ -112,7 +103,7 @@ export const AddEstab = ({ children }: AjouterUneClasse) => {
                   onClick={() => {
                     isFirstModalOpen ? returnToCreate() : handleCreateEstab();
                   }}
-                  disabled={!isUnique || name === ''}
+                  disabled={isNotUnique || name === ''}
                   type="submit"
                   className="w-full bg-[#1B8392] hover:opacity-80 "
                 >

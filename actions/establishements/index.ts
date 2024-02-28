@@ -54,7 +54,6 @@ export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
         },
       }
     });
-    // const totalCount = estabs.length;
 
     return { data: { estabs, totalCount }, error: undefined };
   } catch (error: any) {

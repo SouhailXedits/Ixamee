@@ -3,27 +3,6 @@
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 
-// export const getAllTeachersByPage = async (page = 1, pageSize = 10) => {
-//   try {
-//     const skip = (page - 1) * pageSize;
-//
-//     const estabs = await db.subject.findMany({
-//       skip,
-//       take: pageSize,
-//     });
-//     const totalCount = await db.subject.count();
-//
-
-//
-
-//     return { data: { estabs, totalCount }, error: undefined };
-//   } catch (error: any) {
-//     return {
-//       data: undefined as any,
-//       error: 'Failed to get subjects.',
-//     };
-//   }
-// };
 
 export const getUserIdByEmail = async (email: string) => {
   try {
@@ -97,23 +76,6 @@ export const getAllAdminTeachers = async (name: string) => {
   }
 };
 
-// export const editSubject = async (id: number, data: SubjectInputProps) => {
-//   try {
-//
-//     await db.subject.update({
-//       where: {
-//         id: id,
-//       },
-//       data: data
-//     });
-//
-//   } catch (error: any) {
-//
-//     return {
-//       error: 'Failed to edit subject.',
-//     };
-//   }
-// };
 
 export const updateUserToAdmin = async (id: string) => {
   try {

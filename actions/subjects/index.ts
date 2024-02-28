@@ -29,7 +29,6 @@ export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') =
       take: pageSize,
     });
 
-    // const totalCount = estabs.length;
     const totalCount = await db.establishment.count({
       where: {
         name: {
