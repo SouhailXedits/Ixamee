@@ -10,7 +10,7 @@ function ExamCorrectionRow({ Examdata }: any) {
 //   }
     // const avg = 
   return (
-    <div className=" flex gap-4 p-2 border-b justify-between">
+    <div className=" flex gap-4 p-2 border-b justify-between items-center">
       <p className=" basis-[50%]">{Examdata.exam.name}</p>
       <p className=" p-2 rounded-xl"
         style={

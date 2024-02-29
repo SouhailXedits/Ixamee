@@ -108,7 +108,8 @@ export const deleteSubject = async (id: number) => {
   }
 };
 
-export const getAllSubjectsByClasseId = async (classeId: number) => {
+export const getAllSubjectsByClasseId = async (classeId: number | undefined) => {
+  if (!classeId) return;
   // const res = await db.classe.findMany({
   //   select: {
   //     id: true,

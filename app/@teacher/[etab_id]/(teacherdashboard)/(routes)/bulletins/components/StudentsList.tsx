@@ -110,6 +110,7 @@ export const CorrectionTag = ({
 );
 
 export default function MarkSheetStudentList({ data: realData, filters }: any) {
+  console.log(realData);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -118,12 +119,15 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
   const router = useRouter();
   const path = usePathname();
 
-  const maxLength = Math.max(...realData.map((student: any) => student.exams.length));
+  const maxLength = Math.max(...realData?.map((student: any) => student.exams.length));
   const examsArray =
     realData.find((student: any) => student.exams.length === maxLength)?.exams || [];
+  console.log(realData)
+  
 
-  const sortedData = [...realData].sort((a, b) => b.average - a.average);
-  const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
+  // const sortedData = [...realData].sort((a, b) => b.average - a.average);
+  // console.log(sortedData);
+  // const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
 
 
   const columns: ColumnDef<any>[] = [
@@ -213,7 +217,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
               className={cn(
                 'text-[#727272] rounded-full px-2',
                 average > 15 && 'text-[#12B76A] bg-[#12B76A]/30',
-                average < 15 && average >= 10 && 'text-[#FBB800]  bg-[#FBB800]/30 ',
+                average <= 15 && average >= 10 && 'text-[#FBB800]  bg-[#FBB800]/30 ',
                 average < 10 && 'text-[#F04438]  bg-[#F04438]/30'
               )}
             >

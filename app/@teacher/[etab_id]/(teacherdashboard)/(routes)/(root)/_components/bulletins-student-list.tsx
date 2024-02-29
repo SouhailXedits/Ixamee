@@ -103,7 +103,7 @@ const BulletinsStudentList = ({ data, nameClasse }: any) => {
       </TableHeader>
       <TableBody>
         {sortData().map((student: any) => (
-          <TableRow key={student.id} className="">
+          <TableRow key={student.id} className=" items-center">
             <TableCell className="flex items-center justify-start gap-3 font-medium">
               <Image src={student.avatarSrc} alt="user" width={38} height={38} className="h-full" />
               <div className="text-gray-900 text-xs font-medium  leading-[25px]">

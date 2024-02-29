@@ -47,6 +47,7 @@ function ParametersSidebar() {
     setIsActive((prev) => !prev);
   }
   const paramroutes = parametersRoutes;
+  console.log(isActive)
 
 
   useEffect(() => {
@@ -77,11 +78,14 @@ function ParametersSidebar() {
   return (
     <div className={cn(!collapsed && 'w-full', '')}>
       {collapsed ? (
-        <Popover open={isActive} >
+        <Popover open={isActive}>
           <PopoverTrigger onClick={onClick} ref={triggerButtonRef}>
             <SettingsBtn isActive={isActive} onClick={onClick} isParameters={true} />
           </PopoverTrigger>
-          <PopoverContent className=" -top-7 left-9 absolute flex flex-col gap-2 text-2" ref={popoverRef}>
+          <PopoverContent
+            className=" -top-7 left-9 absolute flex flex-col gap-2 text-2"
+            ref={popoverRef}
+          >
             {paramroutes.map((route) => (
               <SidebarItem
                 key={route.href}
@@ -104,7 +108,9 @@ function ParametersSidebar() {
             >
               <SettingsBtn isActive={isActive} onClick={onClick} />
             </AccordionTrigger>
-            <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
+            <AccordionContent
+              className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}
+            >
               {paramroutes.map((route) => (
                 <SidebarItem
                   key={route.href}

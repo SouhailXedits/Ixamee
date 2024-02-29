@@ -20,7 +20,7 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
             number: splitedTerm[1],
           },
           classe: classe,
-          studentsNum: StudentsData.length,
+          studentsNum: StudentsData?.length,
         }}
         type="MSTeach"
       />
@@ -30,8 +30,8 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
             <th rowSpan={2} className="bg-[#99C6D3] p-1">
               Etudiant
             </th>
-            {StudentsData.length &&
-              StudentsData[0].exams.map((studentExam: any) => (
+            {StudentsData?.length &&
+              StudentsData?.[0].exams.map((studentExam: any) => (
                 <th
                   key={studentExam.id}
                   className="border border-black/50 bg-[#99C6D3] pb-4"
@@ -53,8 +53,8 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
           <tbody>
             <tr className=" text-[#1B8392]">
               <td className="bg-[#99C6D3]"></td>
-              {StudentsData.length &&
-                StudentsData[0].exams.map((studentExam: any) => (
+              {StudentsData?.length &&
+                StudentsData?.[0].exams.map((studentExam: any) => (
                   <>
                     <td className="border bg-[#99C6D3]/40 border-black/50 pb-4">note</td>
                     <td className="border bg-[#99C6D3]/40 border-black/50 pb-4">rang</td>
@@ -66,7 +66,7 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
               <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
               <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td> */}
             </tr>
-            {StudentsData.map((student: any, i: number) => (
+            {StudentsData?.map((student: any, i: number) => (
               <StudentRow data={student} key={i} />
             ))}
             {/* {data.map((student: any, i: number) => (

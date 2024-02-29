@@ -98,6 +98,8 @@ export const getAllExamsNameAndId = async ({
   etab_id: number;
   classe_id: string;
 }) => {
+  console.log('user_id', user_id, 'etab_id', etab_id);
+  console.log('classe_id', classe_id );
   const exams = await db.exam.findMany({
     where: {
       teacher: {

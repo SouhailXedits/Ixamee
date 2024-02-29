@@ -30,13 +30,23 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
   //   queryKey: ['user-classes'],
   //   queryFn: async () => await getAllClassesNameAndIdDash({ user_id: userId, etab_id: etabId }),
   // });
+  console.log(filters);
   const userClasses = classes;
+  console.log(userClasses);
   const classe_id = filters.classe_id;
+  console.log(classe_id, etabId);
+
   const { data: userExams } = useQuery({
-    queryKey: ['user-exams'],
+    enabled: filters.classe_id !== '' ,
+    queryKey: ['userExams', filters.classe_id],
     queryFn: async () =>
-      await getAllExamsNameAndId({ user_id: userId, etab_id: etabId, classe_id }),
+      await getAllExamsNameAndId({
+        user_id: userId,
+        etab_id: etabId,
+        classe_id: filters.classe_id,
+      }),
   });
+  console.log(userExams);
   // data = ['zegzeg']
   const { data: tableData } = useQuery<any>({
     queryKey: ['users-results', filters],
@@ -52,6 +62,7 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
             <Select
               value={filters.classe_id}
               onValueChange={(value) => setFilters({ ...filters, classe_id: value })}
+              disabled={userClasses?.length === 0}
             >
               <SelectTrigger className="w-1/4 rounded-xl text-11 max-md:w-full">
                 <SelectValue className="text-sm" placeholder="Classe" />
@@ -70,13 +81,13 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
             <Select
               value={filters.exam_id}
               onValueChange={(value) => setFilters({ ...filters, exam_id: value })}
+              disabled={!userExams}
             >
               <SelectTrigger className="w-1/4 rounded-xl text-11 max-md:w-full">
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>
-                {userExams?.length &&
-                  userExams?.map((exam: any) => (
+                {userExams?.map((exam: any) => (
                     <SelectItem key={exam.id} value={exam.id}>
                       {exam.name}
                     </SelectItem>
