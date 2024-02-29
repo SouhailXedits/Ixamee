@@ -153,3 +153,19 @@ export const getExamCorrectionById2 = async (exam_id: string, classe_id: string)
   }
 };
 
+export const updateStudentPrespectation = async (
+  correction_id: number,
+  user_id: string,
+  prespectation: any
+) => {
+  if (!correction_id || !user_id) return;
+  const res = await db.examCorrection.update({
+    where: {
+      id: correction_id,
+    },
+    data: {
+      student_prespectation: prespectation,
+    },
+  });
+  return res;
+};
