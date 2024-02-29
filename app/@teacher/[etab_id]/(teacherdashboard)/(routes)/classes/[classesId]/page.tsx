@@ -70,16 +70,14 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryKey: ['userCorrection', exam, classesId],
     enabled: exam !== undefined && exam !== '',
     queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
-    retry: 0,
   });
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
     queryKey: ['userOfClasses', classesId],
     queryFn: async () => await getStudentOfClasse(+classesId),
-    retry: 0,
   });
-
+  console.log(data);
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', exam],
@@ -259,7 +257,12 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
       ) : (
         <div className="pt-6 max-lg:pt-20 max-ml:pt-30">
-          <StudentList data={newData} class_id={classesId} isPending={isPendingClasse} />
+          <StudentList
+            data={newData}
+            class_id={classesId}
+            isPending={isPendingClasse}
+            isPendingUserOfClasses={isPendingUserOfClasses}
+          />
         </div>
       )}
     </main>

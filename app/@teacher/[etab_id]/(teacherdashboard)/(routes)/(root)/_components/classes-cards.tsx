@@ -9,9 +9,9 @@ function translateDateFormat(dateString: string): string {
 }
 const ClassesCards = ({ classes, isPending, etabId }: any) => {
   return (
-    <div className="flex gap-10 max-2xl:overflow-auto max-2xl:gap-4">
+    <div className="grid w-full gap-4 2xl:grid-cols-5 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2">
       {isPending &&
-        Array.from({ length: 3 }).map((_, index: any) => (
+        Array.from({ length: 4 }).map((_, index: any) => (
           <Skeleton key={index} className="w-[250px] h-[270px] rounded-xl pt-10" />
         ))}
       {classes &&
@@ -19,7 +19,7 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
           return (
             <div
               key={classe}
-              className="w-[260.50px] h-[271px] py-[15px] bg-[#F0F6F8] rounded-[20px] flex-col justify-center items-center gap-[38px] inline-fle p-5 hover:opacity-75"
+              className="min-w-[260.50px] h-[271px] py-[15px] bg-[#F0F6F8] rounded-[20px] flex-col justify-center items-center gap-[38px] inline-fle p-5 hover:opacity-75 cursor-pointer"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -35,7 +35,9 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                   <HoverCard>
                     <HoverCardTrigger asChild>
                       <span className="text-[#1B8392] text-lg font-semibold  leading-[25px]">
-                        {classe.name.length > 10 ? classe.name.slice(0, 10) + '...' : classe.name}
+                        {classe?.name?.length > 20
+                          ? classe?.name?.slice(0, 20) + '...'
+                          : classe?.name}
                       </span>
                       {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
                     </HoverCardTrigger>

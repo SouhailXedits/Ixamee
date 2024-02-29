@@ -2,35 +2,75 @@
 import PdfHeader from '@/components/shared-components/PdfHeader';
 import React from 'react';
 import { calcSumOfMarks } from '../../../examens/[examenId]/_components/sharedFunction';
-import { getMaxDepth, getNoteOf } from '../student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
+import {
+  getMaxDepth,
+  getNoteOf,
+} from '../student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getExamCorrectionById } from '@/actions/exam-correction';
+import { useParams } from 'next/navigation';
 
-export default function Evaluation({ userContent, userDetails, params }: any) {
-  if (!userContent?.[0]?.correction_exam_content) {
+export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
+  const params = useParams();
+  console.log(params);
+  console.log(userExamCorectionContent);
+  console.log(userDetails);
+  const classe_id = params.classesId as string;
+  if (!userExamCorectionContent?.[0]?.correction_exam_content) {
     return null;
   }
   // Logging for debugging
   const queryClient = useQueryClient();
 
-  const etab_id = queryClient.getQueryData(['etab_id']) as any;
+  // const etab_id = queryClient.getQueryData(['etab_id']) as any;
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   const user = queryClient.getQueryData(['user']) as any;
 
-  const estab = teacherEstab.filter((item: any) => {
-    return item.id == etab_id;
+  const estab = teacherEstab?.filter((item: any) => {
+    return item.id == params.etab_id;
   });
 
-  const examId = userContent?.[0]?.exam_id;
+  const examId = userExamCorectionContent?.[0]?.exam_id;
+  console.log(userExamCorectionContent);
+  console.log(examId, 'examId');
 
-  const examCorrection = userContent?.[0]?.correction_exam_content;
+  const examCorrection = userExamCorectionContent?.[0]?.correction_exam_content;
 
   const exam = userDetails?.classe.exam_classe.find((item: any) => item.id === examId);
+  console.log(exam);
 
-  const examContent = userDetails?.classe.exam_classe?.[0]?.content;
+  const examContent = exam?.content;
 
   const maxDepth = getMaxDepth(examContent?.[1]);
+  const { data: userCorrections } = useQuery({
+    queryKey: ['UserExamEvalaiations'],
+    queryFn: async () => getExamCorrectionById(examId, classe_id),
+  });
+  console.log(userCorrections);
+  const getDetailsOfExercice = (id: string, examCorrection: any, userCorrection: any) => {
+    if (!userCorrection) {
+      return null;
+    }
+    let resultOfArray = [] as any;
 
+    let realMark = getNoteOf(id, examContent) === null ? 0 : getNoteOf(id, examContent);
+
+    const result = userCorrection.map((item: any) => {
+      console.log(item.correction_exam_content);
+
+      const mark = getNoteOf(id, item.correction_exam_content);
+      console.log(mark);
+      if (mark > realMark / 2) {
+        resultOfArray.push(mark);
+      }
+    });
+    console.log(resultOfArray);
+    const porsentageResult =
+      ((resultOfArray.length / userCorrection.length) * 100).toFixed(2) + '%';
+    return porsentageResult;
+  };
   const renderExericeTable = (obj: any, depth: number, index: number) => {
+    console.log(depth, 'depth');
     const TotalMark = calcSumOfMarks(obj);
     const result = examCorrection && calcSumOfMarks(examCorrection[index]);
 
@@ -48,6 +88,7 @@ export default function Evaluation({ userContent, userDetails, params }: any) {
             )}
             {depth === 2 && (
               <>
+                <th className="border border-black/50 bg-[#99C6D3] p-2 pb-[10px]">N</th>
                 <th className="border border-black/50 bg-[#99C6D3] p-2 pb-[10px]">S.N</th>
                 <th className="border border-black/50 bg-[#99C6D3] p-2 pb-[10px]">Bareme</th>
                 <th className="border bg-[#99C6D3] border-black/50 p-2 pb-[10px]">Note</th>
@@ -81,9 +122,7 @@ export default function Evaluation({ userContent, userDetails, params }: any) {
                         : getNoteOf(item.id, examCorrection)}
                     </td>
                     <td className="p-2 border border-black/50">
-                      {getNoteOf(item.id, examCorrection) === null
-                        ? '0.00%'
-                        : ((getNoteOf(item.id, examCorrection) / item.mark) * 100).toFixed(2) + '%'}
+                      {getDetailsOfExercice(item.id, examCorrection, userCorrections)}
                     </td>
                   </tr>
                 )}
@@ -102,11 +141,7 @@ export default function Evaluation({ userContent, userDetails, params }: any) {
                           : getNoteOf(subItem.id, examCorrection)}
                       </td>
                       <td className="p-2 border border-black/50">
-                        {getNoteOf(subItem.id, examCorrection) === null
-                          ? '0.00%'
-                          : ((getNoteOf(subItem.id, examCorrection) / subItem.mark) * 100).toFixed(
-                              2
-                            ) + '%'}
+                        {getDetailsOfExercice(subItem.id, examCorrection, userCorrections)}
                       </td>
                     </tr>
                   ))}
@@ -127,12 +162,13 @@ export default function Evaluation({ userContent, userDetails, params }: any) {
                             : getNoteOf(subSubItem.id, examCorrection)}
                         </td>
                         <td className="p-2 pb-[10px] border border-black/50">
-                          {getNoteOf(subSubItem.id, examCorrection) === null
+                          {/* {getNoteOf(subSubItem.id, examCorrection) === null
                             ? '0.00%'
                             : (
                                 (getNoteOf(subSubItem.id, examCorrection) / subSubItem.mark) *
                                 100
-                              ).toFixed(2) + '%'}
+                              ).toFixed(2) + '%'} */}
+                          {getDetailsOfExercice(subSubItem.id, examCorrection, userCorrections)}
                         </td>
                       </tr>
                     ))

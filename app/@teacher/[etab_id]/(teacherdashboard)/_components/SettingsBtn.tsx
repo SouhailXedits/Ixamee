@@ -11,11 +11,11 @@ interface settingBtnProps {
 }
 function SettingsBtn({ onClick, isActive, isParameters }: settingBtnProps) {
   const { collapsed } = useSidebar((state) => state);
-  
+
   return (
     <p
       className={cn(
-        'flex items-start w-full  text-slate-500 text-sm font-[400] pl-3 transition-all',
+        'flex items-start w-full  text-slate-500 text-sm font-[400] pl-3 transition-all'
         // !isActive && ' hover:bg-slate-300/20  hover:rounded-lg duration-300',
         // isActive && !isParameters && ' w-[190px] text-mainGreen rounded-lg'
       )}
@@ -33,7 +33,7 @@ function SettingsBtn({ onClick, isActive, isParameters }: settingBtnProps) {
         )}
         {isParameters && (
           <Image
-            src={ '/settings.svg'}
+            src={'/settings.svg'}
             // src={'/icons/kebab-menu.svg'}
             alt="settings icon"
             width={collapsed ? 20 : 20}

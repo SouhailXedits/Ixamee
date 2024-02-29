@@ -39,7 +39,7 @@ export default function Home() {
   });
 
   const { data: classes, isPending: isPendingClasses } = useQuery({
-    queryKey: ['classes', etab_id],
+    queryKey: ['classess', etab_id],
     queryFn: async () => await getAllClassesNameAndId({ user_id: user?.id, etab_id }),
   });
 

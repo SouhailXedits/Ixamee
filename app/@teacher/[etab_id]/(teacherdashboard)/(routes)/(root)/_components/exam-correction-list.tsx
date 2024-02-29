@@ -37,7 +37,7 @@ const examCorrectionData = [
 const ExamCorrectionList = (data: any) => {
   const getColor = (status: string) => {
     if (status === 'done') return '#12B76A';
-    if (status === 'pending') return '#D1FADF';
+    if (status === 'pending') return '#F69D16';
     if (status === 'notCorrected') return '#F04438';
     if (status === 'notClassified') return '#F04438';
     if (status === 'absent') return '#727272';

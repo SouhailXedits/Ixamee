@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { DropdownMenuItemSelect } from '@/components/modals/dropDownExameCard';
 import { HoverCard, HoverCardTrigger } from '@/components/ui/hover-card';
 import { HoverCardContent } from '@radix-ui/react-hover-card';
+import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 
 // Interface for the nested class data in ExamClassess
 interface exam_classe {
@@ -39,6 +40,8 @@ interface Exam {
   examEstablishment: Record<string, any>; // Change to the appropriate type
   exam_classess: exam_classe[];
   create_at: any;
+
+  content: any;
 }
 
 // React component for displaying exam cards
@@ -48,6 +51,13 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
   const onClick = (exam_id: number) => {
     router.push(`${pathname}/${exam_id}`);
   };
+
+  const totalMark = exam.total_mark;
+  const examContent = exam?.content === null ? [] : exam?.content;
+
+  const CurrentMark = calcAllMark(examContent);
+
+  const porsentage = (CurrentMark / totalMark) * 100;
   return (
     /* Container div for the exam card */
     <div
@@ -55,7 +65,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       onClick={() => onClick(exam?.id)}
     >
       {/* Header section with exam name and dropdown menu */}
-      <div className="flex justify-between" onClick={(e) => e.stopPropagation()}>
+      <div className="flex justify-between" >
         <HoverCard>
           <HoverCardTrigger asChild>
             <span className="text-[#514E4E]">
@@ -68,7 +78,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
         </HoverCard>
         {/* <span className="text-[#514E4E]">{exam?.name}</span> */}
         {/* Dropdown menu for additional options */}
-        <DropdownMenuItemSelect exam={exam}>
+        <DropdownMenuItemSelect exam={exam} >
           <Image
             src="/icons/kebab-menu.svg"
             alt="icons"
@@ -99,7 +109,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
                   <HoverCardTrigger asChild>
                     <span className="">
                       {examClass?.name.length > 10
-                        ? examClass?.name.slice(0, 10) + '...'
+                        ? examClass?.name.slice(0, 7) + '...'
                         : examClass?.name}
                     </span>
                   </HoverCardTrigger>
@@ -116,17 +126,19 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
         </div>
 
         {/* Exam correction progress */}
-        <div
-          className="flex h-[47px] inline-flex mt-[18px] bg-[#1B8392] rounded-xl items-end w-full justify-start flex-col items-center text-[#FFFFFF]"
-          style={{ width: '54px' }}
-        >
-          <span className="text-ms">{exam?.progress}% </span>
-          <span className="text-xs">Corrigé</span>
+        <div className="flex bg-[#1B8392] p-1 items-center justify-center rounded-xl  ">
+          <div
+            className="  w-full justify-center flex-col  text-[#FFFFFF]"
+            style={{ width: '54px' }}
+          >
+            <span className="text-ms">{porsentage.toFixed(2)}% </span>
+            <span className="text-xs">Corrigé</span>
+          </div>
         </div>
       </div>
 
+      <Progress value={porsentage} className="w-full h-2 mt-5 bg-white" />
       {/* Progress bar */}
-      <Progress value={+exam?.progress} className="w-[100%] h-2 bg-white mt-3" />
     </div>
   );
 };

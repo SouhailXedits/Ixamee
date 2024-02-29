@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 interface AjouterUneClasse {
   children: React.ReactNode;
@@ -35,11 +35,12 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
   const queryClient = useQueryClient();
 
   const { createClass, isPending } = useCreateClasse();
-  // const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
-  //   queryKey: ['teachersubject'],
-  //   queryFn: async () => await getUserSubject(user_id),
-  // });
-  const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
+  const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
+    queryKey: ['teachersubject'],
+    queryFn: async () => await getUserSubject(user_id),
+  });
+  // const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
+
   const subjectoptions = Teachersubject?.map((item: any) => {
     return {
       value: item.id,
@@ -78,7 +79,7 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
   };
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={() => resetFormatData()}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -21,6 +21,7 @@ import { StudentFeadback } from '@/components/modals/studentFeadback';
 import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorrection';
 import { Button } from '@/components/ui/button';
 import { useConfettiStore } from '@/store/use-confetti-store';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 export default function Page({
   params,
 }: {
@@ -156,11 +157,27 @@ export default function Page({
             ) : (
               <>
                 <span className="cursor-pointer" onClick={() => router.back()}>
-                  {data?.exam_classess.map((item: any) => item.name).join(', ')}
-                </span>
+                  {data?.exam_classess.map((item: any) => item.name.length >10 ? item.name.slice(0, 10) + '...' : item.name).join(', ')}
+                  </span>
+                  
+
+
+                  
                 <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
-                <span className="cursor-pointer"> {userData?.name}</span>
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <span className="cursor-pointer">
+                      {userData?.name.length > 10
+                        ? userData?.name.slice(0, 10) + '...'
+                        : userData?.name}
+                    </span>
+                    {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
+                  </HoverCardTrigger>
+                  <HoverCardContent className="text-[#727272]  break-words w-[200px] text-md">
+                    <span className="">{userData?.name}</span>
+                  </HoverCardContent>
+                </HoverCard>
               </>
             )}
           </div>

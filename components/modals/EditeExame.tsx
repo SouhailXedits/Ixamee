@@ -40,8 +40,9 @@ import { useCreateExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(rout
 import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
 import { useEditExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useEditeExam';
 interface AjouterUneClasse {
-  children: React.ReactNode;
   exam: any;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 interface Establishment {
   id: number;
@@ -50,9 +51,11 @@ interface Establishment {
 
 interface EstablishmentData {
   establishement: Establishment;
+  open: boolean;
+  setOpen: (open: boolean) => void
 }
 
-export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
+export const EditeExame = ({ exam, open,setOpen}: AjouterUneClasse) => {
   const queryClient = useQueryClient();
   const user: any = queryClient.getQueryData(['user']);
   const teacherEstab: any = queryClient.getQueryData(['teacherEstab']);
@@ -218,8 +221,8 @@ export const EditeExame = ({ children, exam }: AjouterUneClasse) => {
   // };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">

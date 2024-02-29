@@ -1,12 +1,24 @@
 'use client';
-import { DropdownMenuItemSelect } from '@/components/modals/drop-down';
+
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { ModifierUneClasse } from '@/components/modals/modifier-une-classe';
+import { SupprimerUneClasse } from '@/components/modals/suprimer-classe';
+import { ArchiveUneClasse } from '@/components/modals/archiver-classe';
+import React from 'react';
 interface itemProps {
-  id: number;
+  id: any;
   name: string;
   NumberOfStudent: number;
   student_class: any;
@@ -14,6 +26,10 @@ interface itemProps {
 
 const ClasseCard = ({ data }: { data: itemProps }) => {
   const route = useRouter();
+  const [deleteForm, setDeleteForm] = React.useState(false);
+  const [modefierProps, setModefierProps] = React.useState(false);
+  const [archiveProps, setArchiveProps] = React.useState(false);
+
   return (
     <div className="min-w-[195px] h-[190px] bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] ">
       <div className="flex justify-between w-full px-5">
@@ -23,20 +39,60 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
               {data.name.length > 10 ? data.name.slice(0, 10) + '...' : data.name}
             </span>
           </HoverCardTrigger>
-          <HoverCardContent className="max-w-[200px]">
-            <span className="text-[#727272]">{data.name}</span>
+          <HoverCardContent className="w-[200px] text-wrap">
+            <span className="text-[#727272]  break-words max:w-[200px] text-md">{data.name}</span>
           </HoverCardContent>
         </HoverCard>
 
-        <DropdownMenuItemSelect data={data}>
-          <Image
+        {/* <DropdownMenuItemSelect data={data}>
+          {/* <Image
             src="/icons/kebab-menu.svg"
             alt="kebabMenu "
             width={19}
             height={19}
             className="cursor-pointer hover:opacity-80"
-          />
-        </DropdownMenuItemSelect>
+          /> */}
+        {/* </DropdownMenuItemSelect> */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Image
+              src="/icons/kebab-menu.svg"
+              alt="kebabMenu "
+              width={19}
+              height={19}
+              className="cursor-pointer hover:opacity-80"
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-45  text-[#727272]">
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor"
+                onClick={() => setModefierProps(true)}
+              >
+                <span>Modifier</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor"
+                onClick={() => setDeleteForm(true)}
+              >
+                <span>Supprimer</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor"
+                onClick={() => setArchiveProps(true)}
+              >
+                <span>Archiver</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <ModifierUneClasse data={data} open={modefierProps} setOpen={setModefierProps} />
+
+        <SupprimerUneClasse classe_id={data.id} open={deleteForm} setOpen={setDeleteForm} />
+        <ArchiveUneClasse classe_id={data.id} open={archiveProps} setOpen={setArchiveProps} />
       </div>
       <div className="w-full px-5  text-lg text-[#727272] pb-7 ">
         {data?.student_class?.length} Etudiants

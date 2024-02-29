@@ -1,45 +1,81 @@
 'use client';
 import PdfHeader from '@/components/shared-components/PdfHeader';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { calcSumOfMarks } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/[examenId]/_components/sharedFunction';
+import { getExamCorrectionById, getExamCorrectionById2 } from '@/actions/exam-correction';
+import { useParams } from 'next/navigation';
 import {
   getMaxDepth,
   getNoteOf,
 } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
-import { useParams } from 'next/navigation';
+import { calcSumOfMarks } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/[examenId]/_components/sharedFunction';
 
-export default function Evaluation({ userContent, userDetails }: any) {
+export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
   const params = useParams();
-
-  if (!userContent?.correction_exam_content) {
+  console.log(params);
+  console.log(userExamCorectionContent);
+  console.log(userDetails, 'userDetails');
+  const classe_id = params.etab_id as string;
+  if (!userExamCorectionContent?.correction_exam_content) {
     return null;
   }
-
   // Logging for debugging
   const queryClient = useQueryClient();
 
-  const etab_id = queryClient.getQueryData(['AllEstabOfUser']) as any;
-
-  const classeName = queryClient.getQueryData(['classeName', +params.etab_id]) as any;
-
+  // const etab_id = queryClient.getQueryData(['etab_id']) as any;
+  const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   const user = queryClient.getQueryData(['user']) as any;
 
-  // const estab = teacherEstab?.filter((item: any) => {
-  //   return item.id == etab_id;
-  // });
+  const estab = teacherEstab?.filter((item: any) => {
+    return item.id == params.etab_id;
+  });
+  console.log(userExamCorectionContent, 'userExamCorectionContent');
+  const examId = userExamCorectionContent?.exam_id;
+  const [examIdd, setExamIdd] = useState(examId);
+  useEffect(() => {
+    setExamIdd(examId);
+  }, [examId]);
 
-  const examCorrection = userContent?.correction_exam_content;
+  console.log(examIdd, 'examId');
+
+  const examCorrection = userExamCorectionContent?.correction_exam_content;
 
   // const exam = userDetails?.classe.exam_classe.find((item: any) => item.id === examId);
+  // console.log(exam);
 
   const examContent = userDetails;
-  console.log(examContent);
+  console.log(examId);
+  const { data: userCorrections } = useQuery({
+    queryKey: ['UserExamEvalaiationss'],
+    queryFn: async () => getExamCorrectionById2(examId, classe_id),
+    retry: true,
+  });
+  console.log(userCorrections);
+  const getDetailsOfExercice = (id: string, examCorrection: any, userCorrection: any) => {
+    if (!userCorrection) {
+      return null;
+    }
+    let resultOfArray = [] as any;
 
-  const maxDepth = getMaxDepth(examContent?.[1]);
+    let realMark = getNoteOf(id, examContent) === null ? 0 : getNoteOf(id, examContent);
 
+    const result = userCorrection.map((item: any) => {
+      console.log(item.correction_exam_content);
+
+      const mark = getNoteOf(id, item.correction_exam_content);
+      console.log(mark);
+      if (mark > realMark / 2) {
+        resultOfArray.push(mark);
+      }
+    });
+    console.log(resultOfArray);
+    const porsentageResult =
+      ((resultOfArray.length / userCorrection.length) * 100).toFixed(2) + '%';
+    return porsentageResult;
+  };
   const renderExericeTable = (obj: any, depth: number, index: number) => {
+    console.log(depth, 'depth');
     const TotalMark = calcSumOfMarks(obj);
     const result = examCorrection && calcSumOfMarks(examCorrection[index]);
 
@@ -57,6 +93,7 @@ export default function Evaluation({ userContent, userDetails }: any) {
             )}
             {depth === 2 && (
               <>
+                <th className="border border-black/50 bg-[#99C6D3] p-2 pb-[10px]">N</th>
                 <th className="border border-black/50 bg-[#99C6D3] p-2 pb-[10px]">S.N</th>
                 <th className="border border-black/50 bg-[#99C6D3] p-2 pb-[10px]">Bareme</th>
                 <th className="border bg-[#99C6D3] border-black/50 p-2 pb-[10px]">Note</th>
@@ -90,9 +127,7 @@ export default function Evaluation({ userContent, userDetails }: any) {
                         : getNoteOf(item.id, examCorrection)}
                     </td>
                     <td className="p-2 border border-black/50">
-                      {getNoteOf(item.id, examCorrection) === null
-                        ? '0.00%'
-                        : ((getNoteOf(item.id, examCorrection) / item.mark) * 100).toFixed(2) + '%'}
+                      {getDetailsOfExercice(item.id, examCorrection, userCorrections)}
                     </td>
                   </tr>
                 )}
@@ -111,11 +146,7 @@ export default function Evaluation({ userContent, userDetails }: any) {
                           : getNoteOf(subItem.id, examCorrection)}
                       </td>
                       <td className="p-2 border border-black/50">
-                        {getNoteOf(subItem.id, examCorrection) === null
-                          ? '0.00%'
-                          : ((getNoteOf(subItem.id, examCorrection) / subItem.mark) * 100).toFixed(
-                              2
-                            ) + '%'}
+                        {getDetailsOfExercice(subItem.id, examCorrection, userCorrections)}
                       </td>
                     </tr>
                   ))}
@@ -136,12 +167,13 @@ export default function Evaluation({ userContent, userDetails }: any) {
                             : getNoteOf(subSubItem.id, examCorrection)}
                         </td>
                         <td className="p-2 pb-[10px] border border-black/50">
-                          {getNoteOf(subSubItem.id, examCorrection) === null
+                          {/* {getNoteOf(subSubItem.id, examCorrection) === null
                             ? '0.00%'
                             : (
                                 (getNoteOf(subSubItem.id, examCorrection) / subSubItem.mark) *
                                 100
-                              ).toFixed(2) + '%'}
+                              ).toFixed(2) + '%'} */}
+                          {getDetailsOfExercice(subSubItem.id, examCorrection, userCorrections)}
                         </td>
                       </tr>
                     ))
@@ -176,16 +208,16 @@ export default function Evaluation({ userContent, userDetails }: any) {
     <div>
       <PdfHeader
         meta={{
-          estab: etab_id[0]?.name,
+          // estab: estab[0].name,
           heading: 'Fiche d évaluation',
           session: currentYear + '-' + nextYear,
           term: {
             type: user?.term,
             number: 2,
           },
-          classe: classeName && classeName[0]?.name,
-          fullName: user?.name,
-          // teacherName: user?.name,
+          classe: 'Bac math 2',
+          fullName: userDetails?.name,
+          teacherName: user?.name,
           // range: 1,
           // average: 15.57,
         }}

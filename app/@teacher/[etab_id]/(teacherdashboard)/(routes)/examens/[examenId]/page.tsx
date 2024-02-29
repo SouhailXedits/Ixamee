@@ -25,19 +25,22 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   const { data, isPending } = useQuery<any>({
     queryKey: ['examenById', examenId],
     queryFn: async () => await getOneExamById({ id: examenId }),
+    retry: true,
   });
+  const copiedData = JSON?.parse(JSON?.stringify(data));
+
   const queryClient = useQueryClient();
   // const data = queryClient.getQueryData(['examenById', examenId]) as any;
   const { editExam, isPending: isPendingEdit } = useEditExamContent();
 
-  const [fakeData, setFakeData] = useState<any>([]);
+  const [fakeData, setFakeData] = useState<any>(copiedData.content);
 
   useEffect(() => {
-    if (data && data.content) {
-      setFakeData(data.content);
-      setSum(calcAllMark(fakeData));
+    if (copiedData && copiedData.content && !fakeData.length) {
+      setFakeData(copiedData.content);
+      setSum(calcAllMark(copiedData.content));
     }
-  }, [data]);
+  }, [copiedData]);
 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
@@ -49,24 +52,13 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
     router.back();
   }
   const arabic = data?.language === 'ar' ? true : false;
-  // const haveZeroInfakeData = (data: any) => {
-  //   for (const item of data) {
-  //
-  //     if (item.mark === 0) {
-  //       return true;
-  //     }
-  //     if (item.children && haveZeroInfakeData(item.children)) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // };
+
   const handleSaveData = () => {
-    if (fakeData === data?.content) {
+    if (fakeData === copiedData.content) {
       toast.error("Aucune modification n'a été effectuee.");
       return;
     }
-    if (sum > data?.total_mark) {
+    if (sum > copiedData?.total_mark) {
       toast.error(`La note doit être minimum a ${data?.total_mark}`);
       return;
     }
@@ -77,7 +69,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
 
     const is_published = sum === data?.total_mark;
     let exam_id = examenId;
-
+    console.log(fakeData);
     editExam({ exam_id, content: fakeData, is_published });
     confetti.onOpen();
 
@@ -101,7 +93,9 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
           {/* )} */}
           <div className="flex items-center text-[#727272]">
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
-            <span className="cursor-pointer">Examens</span>
+            <span className="cursor-pointer" onClick={() => router.back()}>
+              Examens
+            </span>
             <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
             {/* {isPending ? (
               <span className="flex items-center gap-3 cursor-pointer">
@@ -131,7 +125,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
           >
             <button
               className={cn(
-                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold font-[500] leading-tight '
+                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm  font-[500] leading-tight '
               )}
             >
               {sum} / {data?.total_mark}

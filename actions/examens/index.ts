@@ -5,6 +5,7 @@ import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboar
 import { calculateAverageMark, calculateOverallAverage } from '@/app/_utils/calculateAverage';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
+import { equal } from 'assert';
 interface ExamEstablishment {
   establishement_id: number;
   exam_id: number;
@@ -59,6 +60,7 @@ export const getIdOfUserInTheClasse = async (classeId: number) => {
   return data;
 };
 export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
+  if(!etab_id) return null
   const exams = await db.exam.findMany({
     where: {
       teacher: {
@@ -70,7 +72,9 @@ export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_i
         some: {
           establishment: {
             some: {
-              id: +etab_id,
+              id: {
+                equals: +etab_id,
+              },
             },
           },
         },

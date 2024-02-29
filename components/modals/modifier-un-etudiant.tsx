@@ -19,10 +19,12 @@ import { useCreateUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboar
 import { useUpdateUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeUser';
 
 interface ModifierUnEtudiant {
-  children: React.ReactNode;
   data: any;
+
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
-export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
+export const ModifierUnEtudiant = ({ data, open, setOpen }: ModifierUnEtudiant) => {
   const minrange = data?.length;
   const formatDataSchema = z.object({
     name: z.string().min(3, 'Veuillez renseigner le nom'),
@@ -110,7 +112,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
       //   // class_id: class_id,
       //   // establishmentId: etab_id,
       // });id: string, name: string, email: string, image: string
-    
+
       updateUserInClasse({
         id: data.id,
         name: formatData.name,
@@ -127,8 +129,7 @@ export const ModifierUnEtudiant = ({ children, data }: ModifierUnEtudiant) => {
     } else setFormErrors(validationResult.error);
   };
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">

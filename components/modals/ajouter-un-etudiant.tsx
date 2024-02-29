@@ -36,7 +36,25 @@ interface AjouterUneClasse {
 }
 export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneClasse) => {
   const formatDataSchema = z.object({
-    name: z.string().min(3, 'Veuillez renseigner le nom'),
+    name: z
+      .string()
+      .min(3, 'Veuillez renseigner le nom')
+      .refine(
+        (value) => {
+          // Split the name into parts based on space
+          const parts = value.trim().split(' ');
+
+          // Check if there are at least two parts (first name and last name)
+          if (parts.length < 2) return false;
+
+          // Check if both the first name and last name are at least 3 characters long
+          return parts.every((part) => part.length >= 3);
+        },
+        {
+          message:
+            'Le nom doit contenir un espace et au moins un prénom et un nom de famille, chaque partie doit avoir au moins 3 caractères',
+        }
+      ),
 
     email: z.string().email("L'email n'est pas valide"),
   });
@@ -165,61 +183,62 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
     } else setFormErrors(validationResult.error);
   };
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[518px]">
-        <DialogHeader>
-          <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Ajouter un étudiant
-          </DialogTitle>
-        </DialogHeader>
+    <form onSubmit={handelSubmit}>
+      <Dialog>
+        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogContent className="sm:max-w-[518px]">
+          <DialogHeader>
+            <DialogTitle className="text-[#1B8392] text-xl font-medium ">
+              Ajouter un étudiant
+            </DialogTitle>
+          </DialogHeader>
 
-        <div className="flex flex-col gap-6 placeholder:text-[#727272]">
-          <div className="flex flex-col gap-2">
-            <Label className="text-[#959595]">Photo de profil</Label>
-            <input
-              type="file"
-              className="w-[200px] h-[60px] absolute opacity-0 cursor-pointer"
-              accept="image/*"
-              onChange={(e) => handleFileChange(e)}
-            />
-            <div className="flex items-center gap-3">
-              {selectedFileUrl1 ? (
-                <Image
-                  src={selectedFileUrl1}
-                  alt="upload"
-                  width={55}
-                  height={55}
-                  className="object-cover rounded-full"
-                />
-              ) : (
-                <Image
-                  src={'/uploadimageicon.svg'}
-                  alt="upload"
-                  width={55}
-                  height={55}
-                  className="w-[55px] h-[55px]"
-                />
-              )}
-              <div className="flex flex-col items-start justify-start text-[#727272] gap-2">
-                <span className="text-sm">Ajoutez une photo</span>
-                <span className="text-xs">Taille maximale : 2Mo</span>
+          <div className="flex flex-col gap-6 placeholder:text-[#727272]">
+            <div className="flex flex-col gap-2">
+              <Label className="text-[#959595]">Photo de profil</Label>
+              <input
+                type="file"
+                className="w-[200px] h-[60px] absolute opacity-0 cursor-pointer"
+                accept="image/*"
+                onChange={(e) => handleFileChange(e)}
+              />
+              <div className="flex items-center gap-3">
+                {selectedFileUrl1 ? (
+                  <Image
+                    src={selectedFileUrl1}
+                    alt="upload"
+                    width={55}
+                    height={55}
+                    className="object-cover rounded-full"
+                  />
+                ) : (
+                  <Image
+                    src={'/uploadimageicon.svg'}
+                    alt="upload"
+                    width={55}
+                    height={55}
+                    className="w-[55px] h-[55px]"
+                  />
+                )}
+                <div className="flex flex-col items-start justify-start text-[#727272] gap-2">
+                  <span className="text-sm">Ajoutez une photo</span>
+                  <span className="text-xs">Taille maximale : 2Mo</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label className="text-[#959595]">
-              Nom et prénom <span className="text-red">*</span>{' '}
-            </Label>
-            <Input
-              placeholder="Entrer le nom complet de l’étudiant"
-              className="placeholder:text-[#727272]"
-              value={formatData.name}
-              onChange={(e) => handelUpdateSetFormatData('name', e.target.value)}
-            />
-            {renderFieldError('name')}
-          </div>
-          {/* <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
+              <Label className="text-[#959595]">
+                Nom et prénom <span className="text-red">*</span>{' '}
+              </Label>
+              <Input
+                placeholder="Entrer le nom complet de l’étudiant"
+                className="placeholder:text-[#727272]"
+                value={formatData.name}
+                onChange={(e) => handelUpdateSetFormatData('name', e.target.value)}
+              />
+              {renderFieldError('name')}
+            </div>
+            {/* <div className="flex flex-col gap-2">
             <Label className="text-[#959595]">
               Rang dans la classe<span className="text-red">*</span>
             </Label>
@@ -233,45 +252,46 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
             />
             {renderFieldError('rang')}
           </div> */}
-          <div className="flex flex-col gap-2">
-            <Label className="text-[#959595]">
-              E-mail <span className="text-red">*</span>
-            </Label>
-            <Input
-              type="email"
-              placeholder="Entrer l'email de l'étudiant."
-              value={formatData.email}
-              onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
-              className="placeholder:text-[#727272]"
-            />
-            {renderFieldError('email')}
+            <div className="flex flex-col gap-2">
+              <Label className="text-[#959595]">
+                E-mail <span className="text-red">*</span>
+              </Label>
+              <Input
+                type="email"
+                placeholder="Entrer l'email de l'étudiant."
+                value={formatData.email}
+                onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
+                className="placeholder:text-[#727272]"
+              />
+              {renderFieldError('email')}
+            </div>
           </div>
-        </div>
 
-        <DialogFooter>
-          {/* {isPending } */}
-          <DialogClose className="w-full">
-            <Button
-              onClick={handelSubmit}
-              type="submit"
-              disabled={isPending}
-              className="w-full bg-[#1B8392] hover:opacity-80 "
-            >
-              {isPending ? (
-                <div
-                  className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
-                  role="status"
-                  aria-label="loading"
-                ></div>
-              ) : isFirstModalOpen ? (
-                'Ajouter un autre étudiant'
-              ) : (
-                'Ajouter'
-              )}
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <DialogFooter>
+            {/* {isPending } */}
+            <DialogClose className="w-full">
+              <Button
+                onClick={handelSubmit}
+                type="submit"
+                disabled={isPending || formatDataSchema.safeParse(formatData).success === false}
+                className="w-full bg-[#1B8392] hover:opacity-80 "
+              >
+                {isPending ? (
+                  <div
+                    className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
+                    role="status"
+                    aria-label="loading"
+                  ></div>
+                ) : isFirstModalOpen ? (
+                  'Ajouter un autre étudiant'
+                ) : (
+                  'Ajouter'
+                )}
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </form>
   );
 };

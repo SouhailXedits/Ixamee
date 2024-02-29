@@ -46,6 +46,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import TelachargePdfEvaluation from './TelachargePdfEvaluation';
+import ClasseDropDownMenu from './dropdownmenu';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 function calculateDateDifference(date1: Date, date2: Date): number {
   const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
   const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
@@ -114,88 +116,10 @@ const Status = ({ row }: any) => {
 };
 
 const Action = ({ row }: any) => {
-  const correctionExamOfUser = row?.original?.correctionExamOfUser;
-
+  console.log(row);
   // if (!correctionExamOfUser) return;
   const classe_id = row?.original?.classe?.id;
-  return (
-    <div className="flex items-center gap-4 " style={{ width: '50px' }}>
-      {correctionExamOfUser ? (
-        <CorrectExam
-          userContent={correctionExamOfUser}
-          user_id={row.original.id}
-          userDetails={row?.original}
-        >
-          <Image src="/correctionExam.svg" alt="" width={20} height={20} aria-disabled={true} />
-        </CorrectExam>
-      ) : (
-        <Skeleton className="w-[40px] h-[40px] text-[#000000] bg-[#000000]" />
-      )}
-
-      <ModifierUnEtudiant data={row.original}>
-        <Image src="/eyesicon.svg" alt="" width={20} height={20} className="cursor-pointer " />
-      </ModifierUnEtudiant>
-      {correctionExamOfUser && correctionExamOfUser?.length !== 0 ? (
-        <TelachargePdfEvaluation
-          userContent={correctionExamOfUser}
-          user_id={row.original.id}
-          userDetails={row?.original}
-        ></TelachargePdfEvaluation>
-      ) : null}
-
-      {!row.original.emailVerified ? (
-        calculateDateDifference(row.original.invited_at, row.original.invited_at) == 0 ? (
-          <Image
-            src="/userInvited.svg"
-            alt=""
-            width={20}
-            height={20}
-            aria-disabled={true}
-            className="cursor-not-allowed "
-          />
-        ) : (
-          <InviterUnEtudiant studentEmail={row.original.email}>
-            <Image
-              src="/invitestudent.svg"
-              alt=""
-              width={20}
-              height={20}
-              className="cursor-pointer "
-            />
-          </InviterUnEtudiant>
-        )
-      ) : null}
-      <SupprimerUserInClasse user_id={row?.original?.id} classe_id={classe_id}>
-        <Image
-          src={'/trashicon.svg'}
-          alt="trashicon.svg"
-          width={20}
-          height={20}
-          className="cursor-pointer "
-        />
-      </SupprimerUserInClasse>
-
-      {/* <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-8 h-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="w-4 h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <SupprimerUserInClasse user_id={row?.original?.id}>
-            <DropdownMenuLabel className="cursor-pointer">Supprimer</DropdownMenuLabel>
-          </SupprimerUserInClasse>
-          {/* <DropdownMenuLabel
-            onClick={() => router.push(`${pathname}/${row.original.id}`)}
-            className="cursor-pointer"
-          >
-            Modifier
-          </DropdownMenuLabel> */}
-      {/* </DropdownMenuContent> */}
-      {/* </DropdownMenu> */}
-    </div>
-  );
+  return <ClasseDropDownMenu row={row} classe_id={classe_id} />;
 };
 
 export const CorrectionTag = ({
@@ -271,7 +195,22 @@ export const columns = [
           height={42}
           className="rounded-full object-cover  h-[42px] w-[42px]"
         />
-        {row.getValue('name')}
+        {/* {row.getValue('name').length > 10
+          ? row.getValue('name').slice(0, 10) + '...'
+          : row.getValue('name')} */}
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <span className="">
+              {row.getValue('name').length > 10
+                ? row.getValue('name').slice(0, 10) + '...'
+                : row.getValue('name')}
+            </span>
+            {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
+          </HoverCardTrigger>
+          <HoverCardContent className="text-[#727272]  break-words max:w-[200px] text-md">
+            <span className="">{row.getValue('name')}</span>
+          </HoverCardContent>
+        </HoverCard>
       </div>
     ),
   },
@@ -290,7 +229,21 @@ export const columns = [
         </Button>
       );
     },
-    cell: ({ row }: any) => <div className="lowercase text-[#727272]">{row.getValue('email')}</div>,
+    cell: ({ row }: any) => (
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <span className="">
+            {row.getValue('email').length > 26
+              ? row.getValue('email').slice(0, 26) + '...'
+              : row.getValue('email')}
+          </span>
+          {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
+        </HoverCardTrigger>
+        <HoverCardContent className="text-[#727272]  break-words max:w-[200px] text-md">
+          <span className="">{row.getValue('email')}</span>
+        </HoverCardContent>
+      </HoverCard>
+    ),
   },
   {
     accessorKey: 'correction',
@@ -311,10 +264,11 @@ export const columns = [
   },
 ];
 
-export function StudentList({ data, class_id, isPending }: any) {
+export function StudentList({ data, class_id, isPending, isPendingUserOfClasses }: any) {
   if (!data) {
     return null;
   }
+  console.log(data, 'data');
   // let newData = [data, exam];
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
@@ -332,6 +286,7 @@ export function StudentList({ data, class_id, isPending }: any) {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
@@ -345,7 +300,7 @@ export function StudentList({ data, class_id, isPending }: any) {
 
   return (
     <div className="w-full">
-      {isPending ? (
+      {isPendingUserOfClasses ? (
         <div className="flex flex-col gap-4">
           <Skeleton className="w-full h-[30px] " />
           <Skeleton className="w-full h-[80px] " />

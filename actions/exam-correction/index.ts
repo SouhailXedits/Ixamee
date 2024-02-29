@@ -2,11 +2,11 @@
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 
-
-
-
-export const getAllExamCorrections = async (filters: {exam_id: string, classe_id: string}, user_id: string) => {
-  if(! filters.exam_id || ! filters.classe_id) return
+export const getAllExamCorrections = async (
+  filters: { exam_id: string; classe_id: string },
+  user_id: string
+) => {
+  if (!filters.exam_id || !filters.classe_id) return;
   try {
     const res = await db.examCorrection.findMany({
       select: {
@@ -16,15 +16,15 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
         exam: {
           select: {
             total_mark: true,
-          }
+          },
         },
         user: {
           select: {
             id: true,
             name: true,
             image: true,
-          }
-        }
+          },
+        },
       },
       where: {
         exam: {
@@ -32,16 +32,13 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
           teacher_id: user_id,
           exam_classess: {
             some: {
-              id: +filters.classe_id
-            }
-          }
-          
+              id: +filters.classe_id,
+            },
+          },
         },
-        status: 'done' || "absent" || "notClassified" || "pending",
-        is_published: true
-        
+        status: 'done' || 'absent' || 'notClassified' || 'pending',
+        is_published: true,
       },
-      
     });
     return res;
   } catch (error: any) {
@@ -54,7 +51,7 @@ export const getAllExamCorrections = async (filters: {exam_id: string, classe_id
 
 export const getUserCorrectionBySubject = async (
   user_id: string,
-  filters: {subject_id: string, term: string} 
+  filters: { subject_id: string; term: string }
 ) => {
   if (!filters.subject_id || !filters.term) return;
   try {
@@ -72,17 +69,16 @@ export const getUserCorrectionBySubject = async (
                 name: true,
                 icon: true,
                 coefficient: true,
-              }
+              },
             },
           },
         },
-       
       },
       where: {
         user_id: user_id,
         exam: {
           subject_id: +filters.subject_id,
-          term: filters.term
+          term: filters.term,
         },
         status: 'done' || 'absent' || 'notClassified' || 'pending',
         is_published: true,
@@ -106,12 +102,65 @@ export const getUserCorrectionBySubject = async (
   }
 };
 
+export const getExamCorrectionById = async (exam_id: string, classe_id: string) => {
+  try {
+    console.log(exam_id);
 
 
+    const res = await db.examCorrection.findMany({
+      where: {
+        exam_id: +exam_id,
+        exam: {
+          exam_classess: {
+            some: {
+              id: +classe_id,
+            },
+          },
+        },
+      },
+      select: {
+        correction_exam_content: true,
+        mark_obtained: true,
+        user_id: true,
+      },
+    });
+    return res;
+    console.log(res);
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get exam correction.',
+    };
+  }
+};
+export const getExamCorrectionById2 = async (exam_id: string, classe_id: string) => {
+  try {
+    console.log(exam_id);
 
-
-
-
-
-
+    const res = await db.examCorrection.findMany({
+      where: {
+        exam_id: +exam_id,
+        exam: {
+          exam_classess: {
+            some: {
+              id: +classe_id,
+            },
+          },
+        },
+      },
+      select: {
+        correction_exam_content: true,
+        mark_obtained: true,
+        user_id: true,
+      },
+    });
+    return res;
+    console.log(res);
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get exam correction.',
+    };
+  }
+};
 

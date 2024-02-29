@@ -334,7 +334,10 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Noter cet étudiant
+            Noter{' '}
+            {userDetails?.name.length > 10
+              ? userDetails?.name.slice(0, 10) + '...'
+              : userDetails?.name}
           </DialogTitle>
         </DialogHeader>
         <div className="flex items-center justify-between">

@@ -12,19 +12,21 @@ import {
 } from '@/components/ui/dialog';
 
 interface DeleteExame {
-  children: React.ReactNode;
+
   exam_id: number;
+  open: boolean;
+  setOpen: (open: boolean) => void
 }
 
-export const DeleteExame = ({ children, exam_id }: DeleteExame) => {
+export const DeleteExame = ({  exam_id ,open ,setOpen }: DeleteExame) => {
   const { deleteExam, isPending } = useDeleteExam();
 
   const handelDeletExam = async (exam_id: number) => {
     deleteExam(exam_id);
   };
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">

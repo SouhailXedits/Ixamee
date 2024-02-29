@@ -19,7 +19,7 @@ const EvaluationPDFExport = ({ children, pdfName }: any) => {
 
   return (
     <>
-      <Image
+      {/* <Image
         src="/evaluationsvg.svg"
         alt="evaluationsvg"
         width={20}
@@ -27,7 +27,8 @@ const EvaluationPDFExport = ({ children, pdfName }: any) => {
         aria-disabled={true}
         className="w-[20px] h-[20px] "
         onClick={exportPDF}
-      />
+      /> */}
+      <span onClick={exportPDF}>Evaluation</span>
 
       <div className="fixed -bottom-[999rem]">
         {/* <div> */}

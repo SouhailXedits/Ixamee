@@ -14,6 +14,7 @@ import QueryClientProviderWrapper from './providers/queryClientProvider';
 import { Suspense } from 'react';
 import Hydration from './providers/hydration';
 import { ConfettiProvider } from './providers/confetti-provider';
+import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'Ixamee',
@@ -35,6 +36,9 @@ export default async function RootLayout({
   const session = await authentification();
   return (
     <html lang="en">
+      <Head>
+        <link rel="shortcut icon" href="/static/favicon.ico" />
+      </Head>
       <body className={`font-normal ${poppins.className}`}>
         <QueryClientProviderWrapper>
           <Suspense>

@@ -13,18 +13,20 @@ import {
 } from '@/components/ui/dialog';
 
 interface ArchiveUneClasse {
-  children: React.ReactNode;
+
   id: number;
+  open: boolean;
+  setOpen: (open: boolean) => void
 }
-export const ArchiveExame = ({ children, id }: ArchiveUneClasse) => {
+export const ArchiveExame = ({  id ,open ,setOpen }: ArchiveUneClasse) => {
   const { archiveField, isPending } = useArchive('exams');
   function handleArchive() {
     const table = 'exam';
     archiveField({ id, table });
   }
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">

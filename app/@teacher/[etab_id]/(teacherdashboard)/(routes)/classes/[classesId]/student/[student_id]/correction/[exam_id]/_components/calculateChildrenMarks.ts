@@ -82,7 +82,7 @@ export const getNoteOf = (id: string, arr: any[]): any => {
       }
     }
   }
-  return null;
+  return 0;
 };
 
 export function getMaxDepth(obj: any): number {

@@ -12,18 +12,23 @@ import {
 } from '@/components/ui/dialog';
 
 interface SupprimerUneClasse {
-  children: React.ReactNode;
   user_id: string;
   classe_id: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
-export const SupprimerUserInClasse = ({ children, user_id, classe_id }: SupprimerUneClasse) => {
+export const SupprimerUserInClasse = ({
+  user_id,
+  classe_id,
+  open,
+  setOpen,
+}: SupprimerUneClasse) => {
   const { deleteUser } = useDeleteUserInClasse();
   const handelDeleteExa = () => {
     deleteUser({ user_id, classe_id });
   };
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">

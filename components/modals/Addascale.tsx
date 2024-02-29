@@ -20,11 +20,12 @@ import toast from 'react-hot-toast';
 import { useEditExamContent } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useEditExamContent';
 
 interface DeleteExame {
-  children: React.ReactNode;
   exam: any;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export const Addascal = ({ children, exam }: DeleteExame) => {
+export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
   // use State for the update the state :
 
   const totalMarkOfExam = exam?.total_mark;
@@ -35,7 +36,7 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
   useEffect(() => {
     setContent(exam?.content);
   }, [exam?.content]);
-  const whidth = content?.length * 200 + 200; // Set a maximum width of 800px
+  const whidth = Math.min(content?.length * 200 + 200, 1200);
 
   let some = 0;
   const result = content?.map((item: any) => {
@@ -52,8 +53,7 @@ export const Addascal = ({ children, exam }: DeleteExame) => {
   };
   const tes = 1000;
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
         className={`w-[${tes}px] sm:max-h-[600px] overflow-auto`}
         style={{ maxWidth: whidth }}

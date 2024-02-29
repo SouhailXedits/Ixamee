@@ -511,9 +511,9 @@ export const getStudentOfClasse = async (classe_id: number) => {
 
     // },
 
-    orderBy: {
-      name: 'asc',
-    },
+    // orderBy: {
+    //   name: 'asc',
+    // },
   });
 
   return res;
@@ -580,11 +580,19 @@ export const updateUserInClasse = async (
 };
 
 export const deleteUserInClasse = async (user_id: string, classe_id: string) => {
-  const data = await db.user.delete({
+  const data = await db.user.update({
     where: {
       id: user_id,
     },
+    data: {
+      classe: {
+        disconnect: {
+          id: +classe_id,
+        },
+      },
+    },
   });
+
   return { data: data, error: undefined };
 };
 

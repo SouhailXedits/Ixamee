@@ -5,15 +5,15 @@ const DashboardClassesCard = ({ classes, isPending, etabId }: any) => {
   return (
     <div className="w-full">
       {classes && !classes.length ? (
-        <div className="w-full border h-full rounded-xl flex items-center justify-center p-9">
+        <div className="flex items-center justify-center w-full h-full border rounded-xl p-9">
           <Rien
             image="/dashboard/laptop.svg"
-            className="flex gap-6 justify-center"
+            className="flex justify-center gap-6"
             message="Pas de matières pour le moment"
           />
         </div>
       ) : (
-        <div className="w-full p-4 rounded-[20px] border border-[8] gap-14 flex items-center justify-start">
+        <div className="w-full p-4 rounded-[20px] border border-[8] gap-14  ">
           <ClassesCards classes={classes} isPending={isPending} etabId={etabId} />
         </div>
       )}

@@ -2,24 +2,36 @@
 import Image from 'next/image';
 import ClasseCardContainer from './_components/classe-card-container';
 import { AjouterUneClasse } from '@/components/modals/ajouter-une-classe';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { QueryCache, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllClasse } from '@/actions/classe';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useParams } from 'next/navigation';
+import { getMe } from '@/actions/examens';
 
 export default function Classes() {
+  const params = useParams();
+  const etab_id = +params.etab_id;
   const [value, setValue] = useState('');
   const queryClient = useQueryClient();
-  const etab_id = queryClient.getQueryData(['etab_id']) as number;
-  const user = queryClient.getQueryData(['user']) as any;
-  const user_id = user?.id;
 
+  // const { data: user, isPending: userISPending } = useQuery({
+  //   queryKey: ['user'],
+  //   queryFn: async () => await getMe(),
+  //   retry: true,
+  // });
+  // const etab_id = (queryClient.getQueryData(['etab_id']) as number) || params.etab_id as number;
+  const user = queryClient.getQueryData(['user']) as any;
+
+  const user_id = user?.id as string;
+  console.log(etab_id);
+  console.log(user_id);
   const { data, isPending } = useQuery({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id, etab_id }),
+    retry: true,
   });
-  
-
+  console.log(data);
   // to DO Scelton
   const filteredData = data?.data?.filter((classe: any) => {
     const classes = classe.name.toLowerCase();

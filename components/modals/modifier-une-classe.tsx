@@ -18,8 +18,9 @@ import { Label } from '@/components/ui/label';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 interface AjouterUneClasse {
-  children: React.ReactNode;
   data: any;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
 import * as z from 'zod';
@@ -31,7 +32,7 @@ const schema = z.object({
 import Select from 'react-select';
 import { useEditeClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeClasse';
 
-export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
+export const ModifierUneClasse = ({ data, open, setOpen }: AjouterUneClasse) => {
   const classesubject = data?.subject;
   const queryClient = useQueryClient();
   const { editeClass, isPending } = useEditeClasse();
@@ -84,8 +85,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
