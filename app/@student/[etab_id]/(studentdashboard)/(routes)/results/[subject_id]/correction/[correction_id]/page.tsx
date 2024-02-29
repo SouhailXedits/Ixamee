@@ -10,13 +10,21 @@ import { getCorigeExameContent } from '@/actions/classe';
 import Exam from '../_components/Exam';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 import { StudentFeedback } from '../_components/StudentFeedback';
+import { Button } from '@/components/ui/button';
+import CreateExam from '@/components/shared-components/exam/create-exam';
+import { useUpdateExamPresp } from './hooks/useUpdateStudProsp';
 
 export default function Page({ params }: { params: { correction_id: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
+  const [sumPresp, setSumPresp] = useState(0);
+  const [autoData, setAutoData] = useState<any>([]);
+  const [isAutoCorrection, setIsAutoCorrection] = useState(false);
   const queryClient = useQueryClient();
   const { correction_id } = params;
   const user = queryClient.getQueryData(['user']) as any;
+  const {updateStudentPrespectation, isPending: isSubmittingPres} = useUpdateExamPresp()
   const student_id = user?.id;
+
   const { data, isPending } = useQuery<any>({
     queryKey: ['user-exam', correction_id],
     queryFn: async () => await getOneExamByIdForCorrection({ id: correction_id }),
@@ -31,6 +39,8 @@ export default function Page({ params }: { params: { correction_id: string; etab
     queryKey: ['CorigeExameContent', student_id, correction_id],
     queryFn: async () => await getCorigeExameContent(+correction_id, student_id),
   });
+
+
   const [fakeData, setFakeData] = useState<any>([]);
 
   useEffect(() => {
@@ -45,8 +55,30 @@ export default function Page({ params }: { params: { correction_id: string; etab
   }, [isPending, getCorrigeExamOfUser]);
 
   useEffect(() => {
-    setSum(calcAllMark(fakeData));
-  }, [fakeData]);
+    const mark =
+      getCorrigeExamOfUser?.length && !isAutoCorrection && getCorrigeExamOfUser[0].mark_obtained;
+    setSum(mark || calcAllMark(fakeData));
+  }, [fakeData, getCorrigeExamOfUser, isAutoCorrection]);
+
+  
+  useEffect(() => {
+    setSumPresp(calcAllMark(autoData));
+  }, [autoData, isAutoCorrection]);
+
+
+  useEffect(() => {
+    if (isAutoCorrection) {
+      const copiedData = JSON.parse(
+        JSON.stringify(getCorrigeExamOfUser?.[0]?.student_prespectation || data?.content)
+      );
+
+      setAutoData(copiedData);
+    } else if (data?.content) {
+      const copiedData = JSON.parse(JSON.stringify(data.content));
+
+      setAutoData(copiedData);
+    }
+  }, [isAutoCorrection]);
 
   if (isPending) return <Loading />;
 
@@ -65,6 +97,13 @@ export default function Page({ params }: { params: { correction_id: string; etab
 
   const examContentt = examContent?.content;
   if (!examContent) return <Loading />;
+
+  function submitPrespectation() {
+    const correction_id = getCorrigeExamOfUser?.[0]?.id;
+    updateStudentPrespectation({correction_id, user_id: student_id, prespectation: autoData})
+  }
+
+  const isCorrected = getCorrigeExamOfUser?.[0]?.is_published
 
   return (
     <div className="flex flex-col gap-6 p-10">
@@ -93,30 +132,53 @@ export default function Page({ params }: { params: { correction_id: string; etab
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          <div
-            className={cn(
-              'flex items-center w-[109px] pt-4  gap-3  border rounded-lg cursor-pointer border-[#F04438]  text-[rgb(240,68,56)] hover:opacity-80',
-              +sum < +data?.total_mark && 'bg-[#dea53b1b] border-[#dea53b] text-[#dea53b] ',
-              +sum === +data?.total_mark && 'bg-[#d1fadf] border-[#399739] text-[#399739] '
-            )}
+          {isAutoCorrection && (
+            <Button className=" bg-2 text-white" onClick={submitPrespectation}>
+              <span>Enregistrer</span>
+            </Button>
+          )}
+          <Button
+            className=" bg-2 text-white"
+            onClick={() => setIsAutoCorrection(!isAutoCorrection)}
           >
+            <Image src="/icons/switch.svg" width={20} height={20} alt="switch" />
+            <span>{isAutoCorrection ? 'Prof-corrigé' : 'Auto-corregé'}</span>
+          </Button>
+
             <div
               className={cn(
-                'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
+                'flex items-center w-[109px] pt-4  gap-3  border rounded-lg cursor-pointer border-[#F04438]  text-[rgb(240,68,56)] hover:opacity-80',
+                +sum < +data?.total_mark && 'bg-[#dea53b1b] border-[#dea53b] text-[#dea53b] ',
+                +sum === +data?.total_mark && 'bg-[#d1fadf] border-[#399739] text-[#399739] '
               )}
             >
-              <span className=" text-3xl pb-4 -&mr-3">{sum}</span> / {data?.total_mark}
+              <div
+                className={cn(
+                  'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
+                )}
+              >
+                <span className=" text-3xl pb-4 -mr-3">{isAutoCorrection ? sumPresp : isCorrected ? sum : "--"}</span> / {data?.total_mark}
+              </div>
             </div>
-          </div>
         </div>
       </nav>
-
-      <Exam
-        // data={data}
-        isArabic={arabic}
-        fakeData={fakeData}
-        realExamContetn={examContentt}
-      />
+      <CreateExam />
+      {isAutoCorrection ? (
+        <CreateExam
+          // data={data}
+          isArabic={arabic}
+          setFakeData={setAutoData}
+          fakeData={autoData}
+          realExamContetn={examContentt}
+        />
+      ) : isCorrected ? (
+        <Exam
+          // data={data}
+          isArabic={arabic}
+          fakeData={fakeData}
+          realExamContetn={examContentt}
+        />
+      ): <p>Examen non corrigé a ce moment là ...</p>}
 
       <div className="fixed right-4 bottom-4">
         <StudentFeedback content={getCorrigeExamOfUser?.length && getCorrigeExamOfUser[0].feedback}>

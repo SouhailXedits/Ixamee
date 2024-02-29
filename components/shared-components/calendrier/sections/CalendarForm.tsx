@@ -2,16 +2,12 @@
 'use client';
 import { Formik, Form } from 'formik';
 import React, { useEffect, useState } from 'react';
-// import Button from '../../Bulletin/components/StudentBulletin/components/button/Button';
 import Input from '../components/input/Input';
-// import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-// import { fetchClassList, fetchSubjectsByClasses } from '../../../data/slices/calendarSlice';
 import { ColorSinglePicker } from '../components/color-utils';
 import 'flatpickr/dist/themes/material_green.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import DurationPicker from '../components/duationPicker/DurationPicker';
-// import { ReactComponent as Trash } from '../../../assets/icons/trash.svg';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import useValidationscategorySchema from './eventSchema';
@@ -23,31 +19,6 @@ import { getSubjectOfUser } from '@/actions/examens';
 import { useCreateExamPlan } from '../hooks/useCreateExamPlan';
 import { useUpdateExamPlan } from '../hooks/useUpdateExamPlan';
 
-// function useSubjectOptions(classes, user_id) {
-//   const queryClient = useQueryClient();
-//   const [options, setOptions] = useState([]);
-
-//   useEffect(() => {
-//     const fetchSubjects = async () => {
-//       const { data: subjects } = await queryClient.fetchQuery({queryKey : ['selectSubjects', classes], queryFn: () =>
-//        getSubjectOfUser(user_id, classes)}
-//       );
-//       if (subjects) {
-//         setOptions(
-//           subjects?.data?.subjects?.map((item) => ({
-//             value: item.id,
-//             label: item.name,
-//           })) || []
-//         );
-//       }
-//     };
-
-//     fetchSubjects();
-//   }, [queryClient, classes, user_id]);
-//
-
-//   return options;
-// }
 
 function CalendarForm({
   eventId,
@@ -62,10 +33,8 @@ function CalendarForm({
   const params = useParams();
   const { etab_id } = params;
   const [classes, setClasses] = useState([]);
-  // const e = null;
   const user = queryClient.getQueryData(['user']);
   const user_id = user.id;
-  // const options = useSubjectOptions(classes, user_id);
   const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
     queryKey: ['teachersubject', classes],
     queryFn: async () => await getSubjectOfUser(user_id, classes),
@@ -83,19 +52,6 @@ function CalendarForm({
   const e = allEvents.find((event) => event.id === +eventId);
 
   const { updateExamPlan } = useUpdateExamPlan();
-
-  // const e = {
-  //   id: 1,
-  //   title: 'event 1',
-  //   start: '2024-02-05',
-  //   end: '2024-02-05',
-  //   color: 'purple',
-  //   textColor: 'white',
-  //   classes: [{ name: 'class 1', _id: '1' }],
-  //   subject: { name: 'subject 1', _id: '1' },
-  //   studentsVisibility: true,
-  //   establishment: '1',
-  // };
 
   // const dispatch = useAppDispatch();
   const eventValidation = useValidationscategorySchema();
@@ -124,23 +80,15 @@ function CalendarForm({
       user_id,
       id: eventId ? +eventId : null,
     };
-
-    if (!eventId) {
-      creatExamPlan(values2);
-      onCancel();
-    } else {
+    
+    if (!eventId) {creatExamPlan(values2) 
+      onCancel()
+    }
+    else {
       updateExamPlan(values2);
       onCancel();
     }
 
-    // const activeEstablishmentId = localStorage.getItem('activeEstablishmentId');
-    // values.establishment = activeEstablishmentId;
-    // try {
-    //   await onCreateUpdateEvent(values);
-    //   onCancel();
-    // } catch (error) {
-    //
-    // }
   };
   const handleInputSelect = (e: any, formik: any) => {
     formik.setFieldValue('studentsVisibility', e.target.value);
@@ -157,32 +105,6 @@ function CalendarForm({
     };
   };
 
-  //
-
-  // useEffect(() => {
-  //   // This function will run whenever Formik values change
-  //
-  // }, [formik.values]);
-
-  useEffect(() => {
-    const getSubjects = async () => {
-      if (e?.classes?.length > 0) {
-        // const response = await dispatch(
-        //   fetchSubjectsByClasses({
-        //     classesId: e?.classes?.map((el: { value: string; label: string }) => el?._id),
-        //   })
-        // ).then((response: any) => response);
-        // setOptions(
-        //   response.payload?.data?.subjects?.map((item: any) => ({
-        //     value: item._id,
-        //     label: item.name,
-        //   }))
-        // );
-      }
-    };
-    getSubjects();
-  }, [e]);
-  // const [options, setOptions] = useState([{ label: 'subject 1', value: '1' }]);
 
   return (
     <Formik
@@ -362,16 +284,11 @@ function CalendarForm({
                     onCancel();
                   }}
                   className=" bg-transparent border border-2 text-2 w-full"
-                  // backgroundColor={0}
-                  // color={25}
-                  // borderColor={25}
                 >
                   Annuler
                 </Button>
                 <Button
                   type="submit"
-                  // disabled={loading}
-                  // label={loading ? t('loading') : t('btn')}
                   className="btn-primary category_form_button bg-2 w-full"
                 >
                   {e ? 'Modifier' : 'Planifier'}

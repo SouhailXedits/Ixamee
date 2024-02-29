@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -55,16 +55,6 @@ function ActionsModal({ rowData }: any) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {/* <DropdownMenuItem> */}
-          
-          {/* {!isCurrentUser && (
-            <DeleteAdminModal id={rowData.id}>
-              <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-                Supprimer l&apos;admin
-              </p>
-            </DeleteAdminModal>
-          )} */}
-
           <DropdownMenuItem onClick={() => setInfosPopupOpen(true)}>Voir les informations</DropdownMenuItem>
           <DropdownMenuItem onClick={() => setDeleteForm(true)}>Supprimer</DropdownMenuItem>
         </DropdownMenuContent>

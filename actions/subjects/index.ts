@@ -29,7 +29,6 @@ export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') =
       take: pageSize,
     });
 
-    // const totalCount = estabs.length;
     const totalCount = await db.establishment.count({
       where: {
         name: {
@@ -109,7 +108,8 @@ export const deleteSubject = async (id: number) => {
   }
 };
 
-export const getAllSubjectsByClasseId = async (classeId: number) => {
+export const getAllSubjectsByClasseId = async (classeId: number | undefined) => {
+  if (!classeId) return;
   // const res = await db.classe.findMany({
   //   select: {
   //     id: true,

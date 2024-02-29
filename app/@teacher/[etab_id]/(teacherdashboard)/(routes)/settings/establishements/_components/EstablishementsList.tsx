@@ -20,11 +20,8 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -35,11 +32,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import Image from 'next/image';
-import { ModifierUnEtudiant } from '@/components/modals/modifier-un-etudiant';
-import { CorrectExam } from '@/components/modals/correct-exam';
-import { useQuery } from '@tanstack/react-query';
-import { getAllEstabs } from '@/actions/establishements';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EditEstab } from './EditEstabModal';
 import { DeleteEstab } from './DeleteEstabModal';
@@ -122,7 +114,7 @@ export const columns: ColumnDef<estabProps>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Nom de l&apos;etablissement
+          Nom de l&apos;établissement
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );

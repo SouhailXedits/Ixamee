@@ -4,11 +4,9 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { useDeleteSubject } from '../hooks/useDeleteSubject';
@@ -28,13 +26,8 @@ export const DeleteSubject = ({ id, open, setOpen }: editEstabProps) => {
     if (!isPending) setIsFirstModalOpen(!isFirstModalOpen);
   }
 
-  // function returnToCreate() {
-  //   setIsFirstModalOpen(!isFirstModalOpen)
-  // }
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
@@ -48,16 +41,6 @@ export const DeleteSubject = ({ id, open, setOpen }: editEstabProps) => {
               Êtes-vous sûr de vouloir supprimer cette matière? <br />
               Cette action ne peut être annulée.
             </p>
-            {/* <Label className="text-[#959595]">
-              Nom : <span className="text-red">*</span>
-            </Label>
-            <Input
-              type="text"
-              defaultValue={currentName}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Entrer le nom de l'établissement"
-              className="placeholder:text-[#727272]"
-            /> */}
           </div>
         </div>
 

@@ -22,7 +22,6 @@ export function calculateOverallAverage(data: any) {
       id: exam?.id,
       exam_id: exam.exam?.id,
       name: exam.exam?.name,
-      // date: exam.exam?.create_at.toISOString().split('T')[0],
       marksObtained: exam.mark_obtained,
       coefficient: exam.exam?.coefficient,
       totalScore: exam.exam?.total_mark,
@@ -41,11 +40,13 @@ export function calculateOverallAverage(data: any) {
     : ['semestre_1', 'semestre_2'];
 
   const trimesters = terms.map((term) => ({
-    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
-    exams: groupedExams[term] || [], // Check and add empty array if term has no exams
+    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+    exams: groupedExams[term] || [],
   }));
 
   const averageMark = calculateAverageMark(trimesters);
 
   return averageMark;
 }
+
+

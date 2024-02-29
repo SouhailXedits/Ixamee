@@ -1,20 +1,13 @@
 'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import CreateExam from './_components/create-exam';
+// import CreateExam from './_components/create-exam';
 import { useQuery } from '@tanstack/react-query';
 import { getExamContent, getOneExamById, getOneExamByIdForCorrection } from '@/actions/examens';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
-// import { useEditExamContent } from '../hooks/useEditExamContent';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
-import {
-  calcAllMark,
-  hasNullMark,
-  statusOf,
-  transferAllMarkToNull,
-} from './_components/calculateChildrenMarks';
 import { cn } from '@/lib/utils';
 import { getCorigeExameContent, getNameOfuserById, getUserById } from '@/actions/classe';
 import { StudentFeadback } from '@/components/modals/studentFeadback';
@@ -22,6 +15,8 @@ import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorre
 import { Button } from '@/components/ui/button';
 import { useConfettiStore } from '@/store/use-confetti-store';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { calcAllMark, statusOf } from '@/app/_utils/calculateChildrenMarks';
+import CreateExam from '@/components/shared-components/exam/create-exam';
 export default function Page({
   params,
 }: {

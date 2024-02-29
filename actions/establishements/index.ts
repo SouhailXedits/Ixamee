@@ -54,7 +54,6 @@ export const getAllEstabs = async (page = 1, pageSize = 10, name = '') => {
         },
       }
     });
-    // const totalCount = estabs.length;
 
     return { data: { estabs, totalCount }, error: undefined };
   } catch (error: any) {
@@ -132,12 +131,10 @@ export const getIsEstabNameUnique = async (name: string) => {
         name: true,
       },
     });
-    console.log(data)
 
     return data;
   } catch (error: any) {
     return {
-      data: undefined as any,
       error: 'Failed to get establishment.',
     };
   }

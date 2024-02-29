@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import CorrectionsRecentes from './corrections-recentes-item';
-import BulletinsDesEtudiants from './bulletins-des-etudiants';
+import BulletinsDesEtudiants from './StudentsMarksheets';
 import Link from 'next/link';
 
 const DashboradBulletinsDesEtudiants = ({ etabId, classes }: any) => {

@@ -125,7 +125,6 @@ export const createUserInClasse = async (
       },
     },
   });
-
   if (nameExiste?.length > 0) {
     throw new Error('Name already exists');
     return;
@@ -502,14 +501,6 @@ export const getStudentOfClasse = async (classe_id: number) => {
         },
       },
     },
-    // select: {
-    //   name: true,
-    //   email: true,
-    //   id: true,
-    //   image: true,
-    //   createdAt: true,
-
-    // },
 
     // orderBy: {
     //   name: 'asc',
@@ -519,26 +510,7 @@ export const getStudentOfClasse = async (classe_id: number) => {
   return res;
 };
 
-// export const createManyUserInClasseApi = async (
-//   name: string,
-//   range: number,
-//   email: string,
-//   class_id: string,
-//   establishmentId: number
-// ) => {
-//   const user = await db.user.createMany({
-//     data: {
-//       name: name,
-//       range: range,
-//       email: email,
-//       role: 'STUDENT',
-//       user_establishment: {}
 
-//     },
-
-//   });
-//   return user;
-// };
 
 export const updateUserInClasse = async (
   id: string,
@@ -546,15 +518,6 @@ export const updateUserInClasse = async (
   email: string,
   image: string
 ) => {
-  // const existingUser = await db.user.findUnique({
-  //   where: {
-  //     email: email,
-  //   },
-  // });
-  // if (existingUser && existingUser.id !== id) {
-  //   console.error('Email already exists for another user');
-  //   return;
-  // }
   if (image === '') {
     const data = await db.user.update({
       where: {
@@ -668,30 +631,6 @@ export const updateInvitationUser = async (studentEmail: string, teacherEmail: s
   });
 };
 
-// export const getStudentOfClasse = async (classe_id: number, exma_id: number) => {
-//   const res = await db.examCorrection.findMany({
-//     where: {
-//       id: exma_id,
-
-//       // user: {
-//       //   classe: {
-//       //     some: {
-//       //       id: classe_id,
-//       //     },
-//       //   },
-//       // },
-//     },
-//     include: {
-//       user: {
-//         include: {
-//           classe: true,
-//         },
-//       },
-//     },
-//   });
-//   return res;
-// };
-
 export const getStatusById = async (id: any) => {
   if (!id) return null;
   const data = await db.examCorrection.findMany({
@@ -713,20 +652,20 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
       user_id: student_id,
     },
     select: {
+      id: true,
       correction_exam_content: true,
       mark_obtained: true,
       feedback: true,
+      is_published: true,
+      student_prespectation: true,
     },
   });
 
   return data;
 };
 export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
-  //
-  //
   if (!exam_id || !userData) return null;
 
-  if (exam_id === 'undefined') return null;
   const data = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,

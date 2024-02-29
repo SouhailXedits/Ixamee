@@ -23,11 +23,6 @@ interface AjouterUneClasse {
   children: React.ReactNode;
 }
 
-// interface IconsTypes {
-//   id: string;
-//   src: string;
-//   alt: string;
-// }
 
 
 const YupValidationSchema = Yup.object({
@@ -128,7 +123,6 @@ export const AddSubject = ({ children }: AjouterUneClasse) => {
           <DialogFooter className="mt-3 ">
             {!formik.isValid && (
               <Button
-                // onClick={() => setIsFirstModalOpen(!isFirstModalOpen)}
                 type="submit"
                 className="w-full bg-[#1B8392] hover:opacity-80 "
                 disabled={!formik.isValid || isPending}

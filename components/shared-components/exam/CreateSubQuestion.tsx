@@ -3,8 +3,8 @@ import { CreateSubSubQuestion } from './CreateSubSubQuestion';
 import { Input } from '@/components/ui/input';
 import Editor from './toolbar-editor';
 import { cn } from '@/lib/utils';
-import { getMarkOfExerciceWithId } from './calculateChildrenMarks';
 import toast from 'react-hot-toast';
+import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export const CreateSubQuestion = ({
   allData,

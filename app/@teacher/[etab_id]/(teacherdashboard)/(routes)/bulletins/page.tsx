@@ -18,6 +18,7 @@ import { getMarkSheets } from '@/actions/mark-sheets/actions';
 import Loading from '@/app/loading';
 import PDFExport from '@/app/_utils/ExportAsPdf';
 import { MarkSheetPdfClass } from './components/MarkSheetTeacher';
+import { getAllSubjectsByClasseId } from '@/actions/subjects';
 
 const Student = () => {
   const params = useParams();
@@ -27,108 +28,54 @@ const Student = () => {
 
   const etab_id = Number(params.etab_id);
 
-  const { data: classes } = useQuery({
+  const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
+  const [filters, setFilters] = useState<any>({
+     term: defaultTerm,
+     classe_id: undefined,
+     subject_id: undefined,
+  });
+  const { data: classes, isPending: isClassesPending } = useQuery<any>({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
 
-  const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
-  const subjects = queryClient.getQueryData(['teacherSubject']) as any;
+  // const subjects = queryClient.getQueryData(['teacherSubject']) as any;
+  console.log(classes)
+  const { data: subjects, isPending: isSubjectsPending } = useQuery<any>({
+    queryKey: ['teacherSubject', filters.classe_id],
+    queryFn: async () => await getAllSubjectsByClasseId(filters.classe_id ),
+  });
+  console.log(subjects)
   const userEstab = queryClient.getQueryData(['teacherEstab']) as any;
 
   const defaultSubject = subjects?.length && subjects[0]?.id;
 
-  const [filters, setFilters] = useState({
-    term: defaultTerm,
-    classe_id: classes?.data?.length && classes?.data[0]?.id,
-    subject_id: subjects?.length && subjects[0]?.id,
-  });
+  // const [filters, setFilters] = useState({
+  //   term: defaultTerm,
+  //   classe_id: classes?.data?.length && classes?.data[0]?.id,
+  //   subject_id: subjects?.[0]?.id,
+  // });
   queryClient.setQueryData(['classe-filters'], filters.classe_id);
 
   useEffect(() => {
     classes?.data?.length && setFilters({ ...filters, classe_id: classes?.data[0]?.id });
   }, [classes?.data]);
+  useEffect(() => {
+    subjects?.length && setFilters({ ...filters, subject_id: subjects?.[0]?.id });
+  }, [subjects]);
 
-  const { data: markSheets, isPending } = useQuery({
+  const { data: markSheetsData, isPending } = useQuery({
     queryKey: ['mark-sheets', filters.classe_id, filters.term, filters.subject_id],
     queryFn: async () => await getMarkSheets(filters),
   });
+  const markSheets = markSheetsData?.data
+  console.log(defaultSubject)
+  console.log(filters)
 
-  const groupedData = markSheets?.data.reduce((acc: any, item: any) => {
-    const userId = item.user.id;
-    if (!acc[userId]) {
-      acc[userId] = [];
-    }
-    acc[userId].push(item);
+  
+  // if (!markSheets && isPending) return <Loading />;
 
-    return acc;
-  }, {});
-
-  if (!groupedData && isPending) return <Loading />;
-
-  let maxCoefficient = 0;
-
-  // Iterate through each user's data
-  for (const userId in groupedData) {
-    const userMarks = groupedData[userId];
-
-    const weightedCoef = userMarks.reduce((sum: any, entry: any) => {
-      const weightedMark = entry.exam.coefficient;
-      return sum + weightedMark;
-    }, 0);
-
-    // Update maxWeightedTotalMarkSum if the current sum is higher
-    if (weightedCoef > maxCoefficient) {
-      maxCoefficient = weightedCoef;
-    }
-  }
-
-  let resultArray = [] as any;
-  if (groupedData) {
-    resultArray = Object?.keys(groupedData).map((userId) => {
-      const userData = groupedData[userId];
-
-      const examsInfo = userData.map((examData: any) => {
-        const { id, exam } = examData;
-
-        const average = (examData.mark_obtained * exam.coefficient) / exam.coefficient;
-        const overTwentyAvg = (20 / exam.total_mark) * average;
-
-        return {
-          id: exam.id,
-          name: exam.name,
-          marksObtained: examData.mark_obtained,
-          totalMarks: exam.total_mark,
-          coefficient: exam.coefficient,
-          average: average,
-          overTwentyAvg: overTwentyAvg,
-        };
-      });
-
-      // const totalMarksObtained = examsInfo.reduce(
-      //   (acc: any, exam: any) => acc + exam.marksObtained,
-      //   0
-      // );
-      // const totalCoefficient = examsInfo.reduce((acc: any, exam: any) => acc + exam.coefficient, 0);
-
-      let overallAverage =
-        examsInfo.reduce(
-          (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
-          0
-        ) / maxCoefficient;
-
-      return {
-        id: userId,
-        name: userData[0].user.name,
-        image: userData[0].user.image,
-        exams: examsInfo,
-        average: overallAverage,
-      };
-    });
-  }
-
-  const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
-  const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
+  
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -150,7 +97,7 @@ const Student = () => {
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
           <PDFExport pdfName="bulletins">
             <MarkSheetPdfClass
-              StudentsData={rankedData}
+              StudentsData={markSheets}
               classe={classes?.data.find((classe: any) => classe.id === filters.classe_id)?.name}
               term={filters.term}
               estab={userEstab?.find((estab: any) => estab.id === etab_id)?.name}
@@ -202,36 +149,7 @@ const Student = () => {
               )}
             </SelectContent>
           </Select>
-          <Select
-            defaultValue={defaultSubject}
-            onValueChange={(value) => {
-              setFilters({ ...filters, subject_id: value });
-            }}
-            value={filters.subject_id}
-          >
-            <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
-              {/* {user.term === 'TRIMESTRE' && <SelectItem value="tremester1">Trimester 1</SelectItem>}
-              {user.term === 'SEMESTRE' && <SelectItem value="semester1">Semestre 1</SelectItem>} */}
-              <SelectValue
-                placeholder={
-                  <div className="flex items-center">
-                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
-                    <span className="ml-2 text-[#1B8392] text-base  ">Period</span>
-                  </div>
-                }
-              />
-            </SelectTrigger>
-
-            <SelectContent>
-              {subjects?.map((subject: any) => (
-                <SelectItem value={subject.id} key={subject.id}>
-                  {subject.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {classes?.data ? (
+          {!isClassesPending ? (
             <Select
               defaultValue={classes?.data?.length && classes?.data[0].id}
               onValueChange={(value) => {
@@ -262,11 +180,47 @@ const Student = () => {
           ) : (
             <Skeleton className=" h-10 w-[146px]" />
           )}
+          {!isSubjectsPending && !isClassesPending ? (
+            <Select
+              defaultValue={defaultSubject}
+              onValueChange={(value) => {
+                setFilters({ ...filters, subject_id: +value });
+              }}
+              value={filters.subject_id}
+            >
+              <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
+                {/* {user.term === 'TRIMESTRE' && <SelectItem value="tremester1">Trimester 1</SelectItem>}
+              {user.term === 'SEMESTRE' && <SelectItem value="semester1">Semestre 1</SelectItem>} */}
+                <SelectValue
+                  placeholder={
+                    <div className="flex items-center">
+                      <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
+                      <span className="ml-2 text-[#1B8392] text-base  ">Period</span>
+                    </div>
+                  }
+                />
+              </SelectTrigger>
+
+              <SelectContent>
+                {subjects?.map((subject: any) => (
+                  <SelectItem value={subject.id} key={subject.id}>
+                    {subject.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <Skeleton className=" h-10 w-[146px]" />
+          )}
         </div>
       </nav>
 
       <div className="pt-[4rem] max-md:pt-[6rem]">
-        <MarkSheetStudentList data={rankedData} filters={filters} />
+        {isPending ? (
+          <Skeleton className=" h-10 w-full" />
+        ) : (
+          <MarkSheetStudentList data={markSheets} filters={filters} />
+        )}
       </div>
     </main>
   );

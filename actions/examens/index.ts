@@ -1,8 +1,8 @@
 // index.ts
 'use server';
 import Student from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/page';
-import { transferAllMarkToNull } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { calculateAverageMark, calculateOverallAverage } from '@/app/_utils/calculateAverage';
+import { transferAllMarkToNull } from '@/app/_utils/calculateChildrenMarks';
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { equal } from 'assert';
@@ -102,6 +102,8 @@ export const getAllExamsNameAndId = async ({
   etab_id: number;
   classe_id: string;
 }) => {
+  console.log('user_id', user_id, 'etab_id', etab_id);
+  console.log('classe_id', classe_id );
   const exams = await db.exam.findMany({
     where: {
       teacher: {

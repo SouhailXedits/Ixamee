@@ -24,7 +24,6 @@ function SettingsBtn({ onClick, isActive, isParameters }: settingBtnProps) {
         {!isParameters && (
           <Image
             src={isActive ? '/settings-fill.svg' : '/settings.svg'}
-            // src={'/icons/kebab-menu.svg'}
             alt="settings icon"
             width={collapsed ? 20 : 20}
             height={collapsed ? 20 : 20}

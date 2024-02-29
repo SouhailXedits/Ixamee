@@ -15,9 +15,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getMe } from '@/actions/examens';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-
-// }
-
 const parametersRoutes = [
   {
     Clickedicon: '/teacherbag-fill.svg',
@@ -50,11 +47,11 @@ function ParametersSidebar() {
     setIsActive((prev) => !prev);
   }
   const paramroutes = parametersRoutes;
+  console.log(isActive)
 
 
   useEffect(() => {
     function handleClickOutside(event: any) {
-      // Check if the clicked element is the trigger button or its children
       if (
         popoverRef.current &&
         !popoverRef.current.contains(event.target) &&
@@ -81,11 +78,14 @@ function ParametersSidebar() {
   return (
     <div className={cn(!collapsed && 'w-full', '')}>
       {collapsed ? (
-        <Popover open={isActive} >
+        <Popover open={isActive}>
           <PopoverTrigger onClick={onClick} ref={triggerButtonRef}>
             <SettingsBtn isActive={isActive} onClick={onClick} isParameters={true} />
           </PopoverTrigger>
-          <PopoverContent className=" -top-7 left-9 absolute flex flex-col gap-2 text-2" ref={popoverRef}>
+          <PopoverContent
+            className=" -top-7 left-9 absolute flex flex-col gap-2 text-2"
+            ref={popoverRef}
+          >
             {paramroutes.map((route) => (
               <SidebarItem
                 key={route.href}
@@ -108,7 +108,9 @@ function ParametersSidebar() {
             >
               <SettingsBtn isActive={isActive} onClick={onClick} />
             </AccordionTrigger>
-            <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
+            <AccordionContent
+              className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}
+            >
               {paramroutes.map((route) => (
                 <SidebarItem
                   key={route.href}

@@ -25,4 +25,83 @@ export const calcAllMark = (fakeData: any) => {
   });
   return sum;
 };
-// Call the function passing the fakeData array to get the sum of marks for immediate children
+
+
+export const transferAllMarkToNull = (content: any) => {
+  for (const item of content) {
+    item.mark = null;
+    if (item.children) {
+      transferAllMarkToNull(item.children);
+    }
+  }
+  console.log(content);
+};
+
+
+export const getMarkOfExerciceWithId = (content: any, id: string): number | null => {
+  for (const item of content) {
+    if (item.id === id) {
+      return item.mark;
+    }
+    if (item.children) {
+      const mark = getMarkOfExerciceWithId(item.children, id);
+      if (mark !== null) {
+        return mark;
+      }
+    }
+  }
+  return null;
+};
+
+
+const hasNullMark = (content: any) => {
+  for (const item of content) {
+    if (item.mark === null) {
+      return true;
+    }
+    if (item.children && hasNullMark(item.children)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const statusOf = (data: any) => {
+  const hasPending = hasNullMark(data);
+
+  const status = hasPending ? 'pending' : 'done';
+  return status;
+};
+
+
+export const getNoteOf = (id: string, arr: any[]): any => {
+  if (arr === undefined) return 0;
+  for (const obj of arr) {
+    if (obj.id === id) {
+      return obj.mark;
+    }
+    if (obj.children && obj.children.length > 0) {
+      const mark = getNoteOf(id, obj.children);
+      if (mark !== null) {
+        return mark;
+      }
+    }
+  }
+  return null;
+};
+
+export function getMaxDepth(obj: any): number {
+  if (!obj || !obj.children || obj.children.length === 0) {
+    return 0;
+  }
+
+  let maxChildDepth = 0;
+  for (const child of obj.children) {
+    const childDepth = getMaxDepth(child);
+    if (childDepth > maxChildDepth) {
+      maxChildDepth = childDepth;
+    }
+  }
+
+  return maxChildDepth + 1;
+}

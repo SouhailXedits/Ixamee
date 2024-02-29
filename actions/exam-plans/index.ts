@@ -57,7 +57,7 @@ export async function createExamPlan(values: any) {
 
 export const getExamPlansByUserId = async (user_id: string, estab_id: number) => {
   try {
-    const examPlans: any = await db.examPlans.findMany({
+    const examPlans = await db.examPlans.findMany({
       where: {
         teacher_id: user_id,
         estab_id: estab_id,
@@ -95,14 +95,13 @@ export const getExamPlansByUserId = async (user_id: string, estab_id: number) =>
     return renamedExamPlans;
   } catch (error: any) {
     return {
-      data: undefined as any,
       error: 'Failed to get exam plans.',
     };
   }
 };
 export const getStudentExamPlans = async (user_id: string, classe_id: number) => {
   try {
-    const examPlans: any = await db.examPlans.findMany({
+    const examPlans = await db.examPlans.findMany({
       where: {
         // teacher_id: user_id,
         classes: {
@@ -144,9 +143,7 @@ export const getStudentExamPlans = async (user_id: string, classe_id: number) =>
     }));
     return renamedExamPlans;
   } catch (error: any) {
-    console.log(error);
     return {
-      data: undefined as any,
       error: 'Failed to get exam plans.',
     };
   }
@@ -181,7 +178,6 @@ interface UpdateEventProps {
 }
 
 export const updateExamPlan = async (data: UpdateEventProps) => {
-  // if(!id || !data) return;
   const {
     start,
     end,

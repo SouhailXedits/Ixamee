@@ -1,46 +1,21 @@
 'use client';
-import React, { useCallback } from 'react';
-//@ts-ignore
+import React from 'react';
 import FullCalendar from '@fullcalendar/react';
-//@ts-ignore
 import { EventDropArg, EventInput } from '@fullcalendar/core';
-//@ts-ignore
 import interactionPlugin from '@fullcalendar/interaction';
-//@ts-ignore
 import listPlugin from '@fullcalendar/list';
-//@ts-ignore
 import dayGridPlugin from '@fullcalendar/daygrid';
-//@ts-ignore
 import timeGridPlugin from '@fullcalendar/timegrid';
-//@ts-ignore
 import timelinePlugin from '@fullcalendar/timeline';
 
 import { useState, useRef, useEffect } from 'react';
 
-// import { ReactComponent as Cancel } from '../../assets/icons/cancel.svg';
-
 import { Card, DialogTitle, Dialog, Tooltip } from '@mui/material';
-
 import { ICalendarViewValue } from './types';
-
 import { CalendarForm, StyledCalendar, CalendarToolbar } from './sections';
-
-// import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import useMediaMatch from '@rooks/use-media-match';
 
-// import {
-//   createEvent,
-//   deleteEvent,
-//   deleteEvents,
-//   emptyEvents,
-//   getEvents,
-//   patchEvent,
-//   postEvent,
-//   updateEvent,
-// } from '../../data/slices/calendarSlice';
 import dayjs from 'dayjs';
-
-// import Button from '../Bulletin/components/StudentBulletin/components/button/Button';
 import EventDetails from './components/eventDetails/EventDetails';
 import 'dayjs/locale/fr';
 import { Button } from '@/components/ui/button';
@@ -92,28 +67,6 @@ interface CalendarProps {
 // ----------------------------------------------------------------------
 
 export default function Calendar({ CalendarEditable }: CalendarProps) {
-  // const events = [
-  //   {
-  //     id: '11',
-  //     title: 'Eventt 1',
-  //     start: '2024-02-05T08:00:00',
-  //     end: '2024-02-08T10:00:00',
-  //     color: '#FF2C6E',
-  //     textColor: '#FFEBE9',
-  //     subject: { _id: 1, name: 'souuhail' },
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'Event 2',
-  //     start: '2024-02-02T10:00:00',
-  //     end: '2024-02-02T12:00:00',
-  //     color: '#FF8743',
-  //     textColor: '#FFF5D8',
-  //     subject: { _id: 1, name: 'souhail' },
-  //   },
-  //   // Add more events as needed
-  // ];
-  // const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaMatch('(min-width: 575px)');
   const queryClient = useQueryClient();
@@ -122,7 +75,6 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
   const { etab_id } = params;
   const user_id = user?.id;
   const calendarRef = useRef<FullCalendar>(null);
-  // let events: any = useGetEvents(setLoading);
 
   const { data: events, isPending } = useQuery<any>({
     queryKey: ['events'],
@@ -143,15 +95,6 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
   } | null>(null);
   const selectedEvent = events?.find((event: any) => event.id === selectedEventId) as any;
 
-  // const selectedEvent = useAppSelector(() => {
-  //   if (selectedEventId) {
-  //     return events.find((event: any) => event.id === selectedEventId);
-  //   }
-
-  //   return null;
-  // });
-
-  // const picker = useDateRangePicker(null, null);
 
   const [date, setDate] = useState(new Date());
 
@@ -161,20 +104,6 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
   const { deleteExamPlan } = useDeleteExamPlan();
   const { updateExamPlan } = useUpdateExamPlan();
 
-  // useEffect(() => {
-  //   return () => dispatch(emptyEvents());
-  // }, []);
-  // useEffect(() => {
-  //   const calendarEl = calendarRef.current;
-
-  //   if (calendarEl) {
-  //     const calendarApi = calendarEl.getApi();
-
-  //     const newView = isDesktop ? 'dayGridMonth' : 'listMonth';
-  //     calendarApi.changeView(newView);
-  //     setView(newView);
-  //   }
-  // }, [isDesktop]);
 
   const handleOpenModal = (arg?: boolean) => {
     if (arg) {
@@ -195,18 +124,9 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
 
     if (calendarEl) {
       const calendarApi = calendarEl.getApi();
-      // dispatch(emptyEvents());
       calendarApi.today();
       setDate(calendarApi.getDate());
 
-      // dispatch(
-      //   getEvents({
-      //     //@ts-ignore
-      //     startDate: dayjs(calendarApi.getDate()).startOf('month').toISOString(),
-      //     //@ts-ignore
-      //     endDate: dayjs(calendarApi.getDate()).endOf('month').toISOString(),
-      //   })
-      // );
     }
   };
 
@@ -226,18 +146,9 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
 
     if (calendarEl) {
       const calendarApi = calendarEl.getApi();
-      // dispatch(emptyEvents());
       calendarApi.prev();
       setDate(calendarApi.getDate());
 
-      // dispatch(
-      //   getEvents({
-      //     //@ts-ignore
-      //     startDate: dayjs(calendarApi.getDate()).startOf('month').toISOString(),
-      //     //@ts-ignore
-      //     endDate: dayjs(calendarApi.getDate()).endOf('month').toISOString(),
-      //   })
-      // );
     }
   };
 
@@ -246,18 +157,8 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
 
     if (calendarEl) {
       const calendarApi = calendarEl.getApi();
-      // await dispatch(emptyEvents());
       calendarApi.next();
       setDate(calendarApi.getDate());
-
-      // dispatch(
-      //   getEvents({
-      //     //@ts-ignore
-      //     startDate: dayjs(calendarApi.getDate()).startOf('month').toISOString(),
-      //     //@ts-ignore
-      //     endDate: dayjs(calendarApi.getDate()).endOf('month').toISOString(),
-      //   })
-      // );
     }
   };
 
@@ -308,113 +209,13 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
 
       selectedEvent.color = color;
       delete selectedEvent.textColor;
-
       const selectedId = selectedEvent.id;
-      console.log(selectedId);
       const classesIds = selectedEvent.classes.map((classe: any) => classe.id);
       selectedEvent.classes = classesIds;
-
       updateExamPlan(selectedEvent);
 
-      // dispatch(
-      //   patchEvent({
-      //     id: event.id,
-      //     body: selectedEvent,
-      //   })
-      // )
-      //   .unwrap()
-      //   .then(async () => {
-      //     await dispatch(
-      //       updateEvent({
-      //         selectedEventId: event.id,
-      //         newEvent: selectedEvent,
-      //       })
-      //     );
-
-      //     dispatch(
-      //       getEvents({
-      //         //@ts-ignore
-      //         startDate: dayjs(date).startOf('month').toISOString(),
-      //         //@ts-ignore
-      //         endDate: dayjs(date).endOf('month').toISOString(),
-      //       })
-      //     );
-      //     message.success('événement mis à jour avec succès');
-      //   })
-      //   .catch((err: any) => {
-      //     console.error(err);
-      //     message.error("l'événement n'a pas été mis à jour");
-      //   });
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const handleCreateUpdateEvent = async (newEvent: any) => {
-    if (selectedEventId) {
-      // dispatch(
-      //   updateEvent({
-      //     selectedEventId,
-      //     newEvent,
-      //   })
-      // );
-
-      newEvent.classes = newEvent?.classes?.map((event: any) => event.value);
-      newEvent.subject = newEvent?.subject?._id || newEvent?.subject?.value || newEvent.subject;
-
-      // dispatch(
-      //   patchEvent({
-      //     id: selectedEventId,
-      //     body: newEvent,
-      //   })
-      // )
-      //   .unwrap()
-      //   .then(() => {
-      //     dispatch(
-      //       updateEvent({
-      //         selectedEventId: selectedEventId,
-      //         newEvent,
-      //       })
-      //     );
-
-      //     dispatch(
-      //       getEvents({
-      //         //@ts-ignore
-      //         startDate: dayjs(date).startOf('month').toISOString(),
-      //         //@ts-ignore
-      //         endDate: dayjs(date).endOf('month').toISOString(),
-      //       })
-      //     );
-      //     message.success('événement mis à jour avec succès');
-      //   })
-      //   .catch((err: any) => {
-      //     console.error(err);
-      //     message.error("l'événement n'a pas été mis à jour");
-      //   });
-    } else {
-      // await dispatch(
-      //   createEvent({
-      //     newEvent,
-      //   })
-      // );
-      newEvent.classes = newEvent.classes.map((event: any) => event.value);
-      newEvent.subject = newEvent.subject.value;
-
-      // dispatch(postEvent(newEvent))
-      //   .unwrap()
-      //   .then(() => {
-      //     dispatch(
-      //       getEvents({
-      //         //@ts-ignore
-      //         startDate: dayjs(date).startOf('month').toISOString(),
-      //         //@ts-ignore
-      //         endDate: dayjs(date).endOf('month').toISOString(),
-      //       })
-      //     );
-      //   })
-      //   .catch((err: string) => {
-      //     console.error(err);
-      //   });
     }
   };
 
@@ -582,7 +383,6 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
               eventId={selectedEventId}
               range={selectedRange}
               onCancel={handleCloseModal}
-              onCreateUpdateEvent={handleCreateUpdateEvent}
               onDeleteEvent={handleDeleteEvent}
               colorOptions={COLOR_OPTIONS}
             />
@@ -592,47 +392,6 @@ export default function Calendar({ CalendarEditable }: CalendarProps) {
     </>
   );
 }
-
-// ----------------------------------------------------------------------
-
-// const useGetEvents = (setLoading: any) => {
-//   // const dispatch = useAppDispatch();
-
-//   // const { events: data } = useAppSelector((state) => state?.calendar);
-
-//   const getAllEvents = useCallback(async () => {
-//     // setLoading(true);
-//     // await dispatch(
-//     //   getEvents({
-//     //     //@ts-ignore
-//     //     startDate: dayjs(new Date()).startOf('month').toISOString(),
-//     //     //@ts-ignore
-//     //     endDate: dayjs(new Date()).endOf('month').toISOString(),
-//     //   })
-//     // ).then(() => {
-//     //   setLoading(false);
-//     // });
-//   }, []);
-
-//   useEffect(() => {
-//     getAllEvents();
-//   }, [getAllEvents]);
-
-//   const events = [
-//     { title: 'event 1', date: '2024-02-05' },
-//     { title: 'event 2', date: '2024-02-02' },
-//   ];
-//   // const events = data?.map((event: any) => ({
-//   //   ...event,
-//   //   textColor: event?.color?.light,
-//   //   color: event?.color?.dark,
-//   //   borderLeft: ` 6px solid ${event?.color?.dark}`,
-//   // }));
-
-//   return events;
-// };
-
-// ----------------------------------------------------------------------
 
 function applyFilter({
   inputData,
