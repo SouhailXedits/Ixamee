@@ -65,7 +65,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       onClick={() => onClick(exam?.id)}
     >
       {/* Header section with exam name and dropdown menu */}
-      <div className="flex justify-between" >
+      <div className="flex justify-between" onClick={(e) => e.stopPropagation()}>
         <HoverCard>
           <HoverCardTrigger asChild>
             <span className="text-[#514E4E]">
@@ -78,13 +78,13 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
         </HoverCard>
         {/* <span className="text-[#514E4E]">{exam?.name}</span> */}
         {/* Dropdown menu for additional options */}
-        <DropdownMenuItemSelect exam={exam} >
+        <DropdownMenuItemSelect exam={exam}>
           <Image
             src="/icons/kebab-menu.svg"
             alt="icons"
             width={20}
             height={20}
-            onClick={(e) => e.preventDefault()}
+            onClick={(e) => e.stopPropagation()}
           />
         </DropdownMenuItemSelect>
       </div>

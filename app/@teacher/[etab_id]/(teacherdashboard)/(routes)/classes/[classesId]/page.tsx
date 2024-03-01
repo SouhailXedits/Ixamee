@@ -183,7 +183,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       (user: any) => user?.status === 'notCorrected' || user?.status === 'pending'
     );
   }
-
+  console.log(newData, 'newData');
   const userNotCorrected = notCorrected(userCorrection);
 
   return (

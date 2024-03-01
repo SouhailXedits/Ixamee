@@ -29,10 +29,10 @@ export const DropdownMenuItemSelect = ({ children, exam }: DropdownMenuItemSelec
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-        <DropdownMenuContent className="w-45  text-[#727272]">
+        <DropdownMenuContent className="w-45  text-[#727272]" > 
           <DropdownMenuGroup>
 
-              <DropdownMenuItem className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor" onClick={() => setModfier(true)}>
+              <DropdownMenuItem className="cursor-pointer hover:text-black hover:rounded-sm hover:bg-secondeColor" onClick={() => setModfier(true) }>
                 <span className="">Modifier</span>
               </DropdownMenuItem>
 

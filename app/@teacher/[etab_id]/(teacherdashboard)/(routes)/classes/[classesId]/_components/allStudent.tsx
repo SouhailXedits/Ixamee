@@ -4,15 +4,18 @@ import PdfHeader from '@/components/shared-components/PdfHeader';
 import PdfHeaderForClasse from '@/components/shared-components/PdfHeaderForClasse';
 
 export const AllStudentList = ({
-  data,
+  data: copieData,
   classeName,
   teacherEstabName,
 }: {
   data: any;
   classeName: string;
   teacherEstabName: string;
-  }) => {
-  if (!data) return null;
+}) => {
+  if (!copieData) return null;
+  const data = JSON?.parse(JSON?.stringify(copieData));
+
+
   // const data = {
   //   terms = [{trimester1: [exams= {}}]
   // }
@@ -27,7 +30,6 @@ export const AllStudentList = ({
     return date.toLocaleDateString('en-GB', options);
   }
   const sortedArray = data?.sort((a: any, b: any) => {
-    // Convert names to lowercase for case-insensitive sorting
     const nameA = a.name.toLowerCase();
     const nameB = b.name.toLowerCase();
 
@@ -40,7 +42,6 @@ export const AllStudentList = ({
     }
     return 0;
   });
-
 
   const header = [
     { name: 'Rang' },
@@ -62,7 +63,7 @@ export const AllStudentList = ({
       />
 
       {/* {data.terms.map(term => ())} */}
-      <div className="flex justify-center" >
+      <div className="flex justify-center">
         <table className=" text-center w-[700px] border border-black/50 ">
           <thead className="text-white">
             <tr>

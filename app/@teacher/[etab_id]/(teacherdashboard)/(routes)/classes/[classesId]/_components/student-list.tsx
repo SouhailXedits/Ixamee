@@ -141,7 +141,7 @@ export const columns = [
       return <span className="text-[#1B8392] ">Nom et prénom</span>;
     },
     cell: ({ row }: any) => (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2"> 
         <Image
           src={row?.original?.image ? row?.original?.image : '/defaultUserAvatr.svg'}
           alt=""
@@ -149,9 +149,7 @@ export const columns = [
           height={42}
           className="rounded-full object-cover  h-[42px] w-[42px]"
         />
-        {/* {row.getValue('name').length > 10
-          ? row.getValue('name').slice(0, 10) + '...'
-          : row.getValue('name')} */}
+    
         <HoverCard>
           <HoverCardTrigger asChild>
             <span className="">
@@ -167,9 +165,6 @@ export const columns = [
         </HoverCard>
       </div>
     ),
-    responsive: true,
-    enableSorting: false,
-    enableHiding: false,
   },
 
   {
@@ -226,11 +221,11 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
     return null;
   }
   console.log(data, 'data');
-  // let newData = [data, exam];
+
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  // const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -238,7 +233,7 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
+    // onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -248,7 +243,7 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
+      // sorting,
       columnFilters,
       columnVisibility,
       rowSelection,

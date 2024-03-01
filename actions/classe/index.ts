@@ -503,7 +503,7 @@ export const getStudentOfClasse = async (classe_id: number) => {
     },
 
     // orderBy: {
-    //   name: 'asc',
+    //   name: 'desc',
     // },
   });
 
