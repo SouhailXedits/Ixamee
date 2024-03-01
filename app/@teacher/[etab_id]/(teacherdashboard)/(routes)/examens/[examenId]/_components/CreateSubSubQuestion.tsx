@@ -49,6 +49,7 @@ export const CreateSubSubQuestion = ({ data, setFakeData, isArabic, allData }: a
                 updateSubSubQuestion(e, data, setFakeData, allData);
                 // }
               }}
+              onWheel={(event) => event.currentTarget.blur()}
             />
             {/* <Input
               className="bg-transparent a text-[#1B8392] w-[90px] text-xl placeholder:text-mainGreen p-3 border text-center border-[#1B8392]"

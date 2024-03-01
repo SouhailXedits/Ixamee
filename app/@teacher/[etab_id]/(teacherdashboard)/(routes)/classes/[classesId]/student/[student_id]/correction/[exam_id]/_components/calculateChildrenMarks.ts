@@ -70,7 +70,8 @@ export const statusOf = (data: any) => {
 };
 
 export const getNoteOf = (id: string, arr: any[]): any => {
-  if (arr === undefined) return 0;
+  console.log(arr);
+  if (arr === undefined) return false;
   for (const obj of arr) {
     if (obj.id === id) {
       return obj.mark;

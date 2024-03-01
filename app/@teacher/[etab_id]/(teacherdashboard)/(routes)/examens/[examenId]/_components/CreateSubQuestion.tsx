@@ -60,6 +60,7 @@ export const CreateSubQuestion = ({ allData, data, setFakeData, isArabic, fakeDa
 
                 updateSubQuestion(e, data, setFakeData, allData);
               }}
+              onWheel={(event) => event.currentTarget.blur()}
             />
             <Image
               src="/redcloseicon.svg"

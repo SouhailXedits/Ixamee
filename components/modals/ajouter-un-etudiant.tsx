@@ -67,49 +67,11 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
   };
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
-
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [files, setFile] = useState<any>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const [selectedFileUrl1, setSelectedFileUrl1] = useState<string>('');
-
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const selectedFile = e.target.files[0];
-
-  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-  //       setFile(selectedFile);
-  //       const fileUrl = URL.createObjectURL(selectedFile);
-  //       setSelectedFileUrl(fileUrl);
-  //     }
-  //   }
-  // };
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const selectedFile = e.target.files[0];
-  //     setFile(selectedFile);
-
-  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-  //       const form = new FormData();
-  //       form.append('file', files as any);
-  //       form.append('upload_preset', 'firaslatrach');
-  //       const fileUrl = URL.createObjectURL(selectedFile);
-  //       setSelectedFileUrl1(fileUrl);
-
-  //       fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
-  //         method: 'post',
-  //         body: form,
-  //       })
-  //         .then((resp) => resp.json())
-  //         .then((data) => {
-  //           setSelectedFileUrl(data.url);
-  //         })
-  //         .catch((err) =>
-  //     }
-  //   }
-  // };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -269,7 +231,7 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
 
           <DialogFooter>
             {/* {isPending } */}
-            <DialogClose className="w-full">
+            {formatDataSchema.safeParse(formatData).success === false ? (
               <Button
                 onClick={handelSubmit}
                 type="submit"
@@ -288,7 +250,28 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
                   'Ajouter'
                 )}
               </Button>
-            </DialogClose>
+            ) : (
+              <DialogClose className="w-full">
+                <Button
+                  onClick={handelSubmit}
+                  type="submit"
+                  disabled={isPending || formatDataSchema.safeParse(formatData).success === false}
+                  className="w-full bg-[#1B8392] hover:opacity-80 "
+                >
+                  {isPending ? (
+                    <div
+                      className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue rounded-full dark:text-blue"
+                      role="status"
+                      aria-label="loading"
+                    ></div>
+                  ) : isFirstModalOpen ? (
+                    'Ajouter un autre étudiant'
+                  ) : (
+                    'Ajouter'
+                  )}
+                </Button>
+              </DialogClose>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>

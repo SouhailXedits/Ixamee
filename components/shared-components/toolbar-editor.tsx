@@ -3,16 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useTheme } from 'next-themes';
 import {
-  Block,
   BlockNoteEditor,
-  BlockSchemaFromSpecs,
-  DefaultProps,
-  InlineContent,
-  PartialBlock,
 } from '@blocknote/core';
 import { BlockNoteView, useBlockNote } from '@blocknote/react';
 import '@blocknote/core/style.css';
-import { uploadToTmpFilesDotOrg_DEV_ONLY } from '@blocknote/core';
+
 import Image from 'next/image';
 import { useState } from 'react';
 interface EditorProps {
@@ -99,13 +94,7 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   return (
     <div className="w-full h-full" onPaste={(e) => handlePaste(e)}>
       <BlockNoteView editor={editor} theme={resolvedTheme === 'dark' ? 'dark' : 'light'} />
-      {/* <Image
-        src={file && URL?.createObjectURL(file)}
-        width={100}
-        height={100}
-        alt="1111dsd"
-        className="test"
-      /> */}
+    
     </div>
   );
 };

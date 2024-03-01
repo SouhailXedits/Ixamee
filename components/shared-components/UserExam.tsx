@@ -4,16 +4,17 @@ import Image from 'next/image';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 
-function UserExam({ exam, examsData }: any) { 
-
+function UserExam({ exam, examsData }: any) {
+  console.log(exam, 'exam');
+  console.log(examsData, 'exam');
 
   const userContent = exam?.examCorrection?.[0];
   const user_id = exam?.user?.id;
-
+  console.log(userContent);
   const examContent = exam?.examContent;
 
   const params = useParams();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const router = useRouter();
 
@@ -35,7 +36,7 @@ function UserExam({ exam, examsData }: any) {
         <p className="text-xl font-medium whitespace-nowrap text-black/80">{exam?.name}</p>
         <p className=" text-black/50">Ajouté le: {exam?.date}</p>
       </div>
-      <div className=" flex items-center flex-col gap-1 text-mainGreen">
+      <div className="flex flex-col items-center gap-1 text-mainGreen">
         {exam?.isPublished && (
           <p>
             {exam?.marksObtained}/{exam?.totalScore}
@@ -56,7 +57,7 @@ function UserExam({ exam, examsData }: any) {
         >
           Examen <Image src="/expand-icon-white.svg" alt="expand icon" height={16} width={16} />
         </Button>
-    
+
         <TelachargePdfEvaluation
           userContent={userContent}
           user_id={user_id}

@@ -510,8 +510,6 @@ export const getStudentOfClasse = async (classe_id: number) => {
   return res;
 };
 
-
-
 export const updateUserInClasse = async (
   id: string,
   name: string,
@@ -668,7 +666,9 @@ export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any
 
   const data = await db.examCorrection.findMany({
     where: {
-      exam_id: +exam_id,
+      exam_id: {
+        equals: +exam_id,
+      },
       user_id: {
         in: userData?.map((user: any) => user.id),
       },

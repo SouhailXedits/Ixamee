@@ -29,10 +29,15 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   allStudentCount,
   studentCountPending,
 }) => {
+  console.log(userCorrection, 'userCorrection');
+  console.log(allStudentCount, 'userCorrection');
+  console.log(studentCountPending, 'userCorrection');
+
   const transformedData = useMemo(
     () => userCorrection && transformData(userCorrection, allStudentCount),
     [userCorrection, allStudentCount]
   );
+  console.log(transformedData);
 
   const [animatedCount, setAnimatedCount] = useState<number>(allStudentCount);
 
@@ -81,7 +86,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
     () => transformedData?.map((item) => item.color) || ['#D9D9D9'],
     [transformedData]
   );
-
+  console.log(items);
   return (
     <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px]  max-2xl:h-[400px]  overflow-y-scroll">
       <PieChartItem series={series} colors={colors} numberOfStudent={finalCount || '-'} />

@@ -5,6 +5,7 @@ import { CreateExercice } from './CreateExercice';
 // import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
 
 function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
+  console.log(fakeData);
   // function calculateTotalMark(data: any) {
   //   let totalMark = 0;
 
@@ -37,7 +38,8 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
       mark: 0,
       children: [],
     };
-    const newData = [...fakeData, newExercise];
+    let newFakeData = fakeData || [];
+    const newData = [...newFakeData, newExercise];
     setFakeData(newData);
   };
   // if (!data) return;

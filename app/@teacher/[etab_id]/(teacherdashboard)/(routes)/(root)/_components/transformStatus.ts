@@ -23,13 +23,15 @@ export function transformData(data: InputItem[], allStudentOfClasseCount: number
       case 'done':
         statusCount['Corrigées']++;
         break;
+      case 'pending':
+        statusCount['En cours de corrections']++;
+        break;
       default:
         break;
     }
   });
 
-  statusCount['En cours de corrections'] =
-    allStudentOfClasseCount - statusCount['Non corrigées'] - statusCount['Corrigées'];
+  statusCount['Non corrigées'] = allStudentOfClasseCount -statusCount['Corrigées'];
 
   const colorCodes: Record<string, string> = {
     'Non corrigées': '#F04438',

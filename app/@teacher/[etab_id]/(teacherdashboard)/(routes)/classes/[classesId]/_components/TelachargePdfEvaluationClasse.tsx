@@ -14,18 +14,20 @@ export default function TelachargePdfEvaluationClasse({
   user_id,
   userDetails,
 }: any) {
-  console.log(userContent, 'userContent✨');
-  console.log(userDetails);
+
+  
   const userUSerContent = userContent.filter((item: any) => item.user_id === user_id);
-  console.log(userUSerContent);
+  
 
   return (
-    <EvaluationPDFExport pdfName="evaluation">
-      <Evaluation
-        userExamCorectionContent={userUSerContent}
-        user_id={user_id}
-        userDetails={userDetails}
-      />
-    </EvaluationPDFExport>
+    userUSerContent.length > 0 && (
+      <EvaluationPDFExport pdfName="evaluation">
+        <Evaluation
+          userExamCorectionContent={userUSerContent}
+          user_id={user_id}
+          userDetails={userDetails}
+        />
+      </EvaluationPDFExport>
+    )
   );
 }

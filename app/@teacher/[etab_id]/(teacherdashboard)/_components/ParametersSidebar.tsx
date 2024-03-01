@@ -83,7 +83,7 @@ function ParametersSidebar() {
             <SettingsBtn isActive={isActive} onClick={onClick} isParameters={true} />
           </PopoverTrigger>
           <PopoverContent
-            className=" -top-7 left-9 absolute flex flex-col gap-2 text-2"
+            className="absolute flex flex-col gap-2  -top-7 left-9 text-2"
             ref={popoverRef}
           >
             {paramroutes.map((route) => (

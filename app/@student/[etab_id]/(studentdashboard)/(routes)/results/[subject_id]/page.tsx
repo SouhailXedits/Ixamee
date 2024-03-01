@@ -81,6 +81,9 @@ const Student = () => {
       overTwnetyMark: exam.mark_obtained * (20 / exam.exam.total_mark),
       range: exam.rank,
       isPublished: exam.is_published,
+      user: exam?.user,
+      examContent: exam?.exam?.content,
+      examCorrection: exam?.exam?.exam_correction,
     });
 
     return result;

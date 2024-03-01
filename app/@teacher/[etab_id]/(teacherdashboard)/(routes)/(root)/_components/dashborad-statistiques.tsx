@@ -56,7 +56,7 @@ const DashboradStatistiques = ({
               setClassId(value);
               setDisable(false);
             }}
-            disabled={isPendingClasses || !classes.length}
+            disabled={isPendingClasses || !classes?.length}
           >
             <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full">
               <SelectValue placeholder={'classe'} />
@@ -64,8 +64,8 @@ const DashboradStatistiques = ({
             <SelectContent>
               {classes &&
                 classes?.map((classe: any) => (
-                  <SelectItem key={classe.id} value={classe.id} className="">
-                    {classe.name}
+                  <SelectItem key={classe?.id} value={classe?.id} className="">
+                    {classe?.name}
                   </SelectItem>
                 ))}
             </SelectContent>
@@ -89,8 +89,8 @@ const DashboradStatistiques = ({
             <SelectContent>
               {classe &&
                 classe?.exam_classe?.map((exam: any) => (
-                  <SelectItem key={exam.id} value={exam.id} className="">
-                    {exam.name}
+                  <SelectItem key={exam?.id} value={exam?.id} className="">
+                    {exam?.name}
                   </SelectItem>
                 ))}
             </SelectContent>

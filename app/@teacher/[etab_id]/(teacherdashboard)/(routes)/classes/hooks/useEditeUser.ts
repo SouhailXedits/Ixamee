@@ -10,6 +10,7 @@ export function useUpdateUserInClasse() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
+      queryClient.invalidateQueries({ queryKey: ['classe'] });
 
       toast.success('etudiant modifié avec succès.');
     },

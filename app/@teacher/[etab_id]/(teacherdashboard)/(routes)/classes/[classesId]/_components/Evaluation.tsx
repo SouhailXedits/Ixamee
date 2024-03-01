@@ -9,12 +9,17 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getExamCorrectionById } from '@/actions/exam-correction';
 import { useParams } from 'next/navigation';
+import Loading from '@/app/loading';
+import { getDetailsOfExercice } from './getDetailsOfExam';
+import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
   const params = useParams();
   console.log(params);
   console.log(userExamCorectionContent);
   console.log(userDetails);
+  const examCorrection = userExamCorectionContent?.[0]?.correction_exam_content;
+  console.log(examCorrection, 'examCorrection');
   const classe_id = params.classesId as string;
   if (!userExamCorectionContent?.[0]?.correction_exam_content) {
     return null;
@@ -34,11 +39,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   console.log(userExamCorectionContent);
   console.log(examId, 'examId');
 
-  const examCorrection = userExamCorectionContent?.[0]?.correction_exam_content;
-
   const exam = userDetails?.classe.exam_classe.find((item: any) => item.id === examId);
-  console.log(exam);
-
   const examContent = exam?.content;
 
   const maxDepth = getMaxDepth(examContent?.[1]);
@@ -46,31 +47,12 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     queryKey: ['UserExamEvalaiations'],
     queryFn: async () => getExamCorrectionById(examId, classe_id),
   });
-  console.log(userCorrections);
-  const getDetailsOfExercice = (id: string, examCorrection: any, userCorrection: any) => {
-    if (!userCorrection) {
-      return null;
-    }
-    let resultOfArray = [] as any;
 
-    let realMark = getNoteOf(id, examContent) === null ? 0 : getNoteOf(id, examContent);
+  if (!examCorrection) {
+    return <Loading />;
+  }
 
-    const result = userCorrection.map((item: any) => {
-      console.log(item.correction_exam_content);
-
-      const mark = getNoteOf(id, item.correction_exam_content);
-      console.log(mark);
-      if (mark > realMark / 2) {
-        resultOfArray.push(mark);
-      }
-    });
-    console.log(resultOfArray);
-    const porsentageResult =
-      ((resultOfArray.length / userCorrection.length) * 100).toFixed(2) + '%';
-    return porsentageResult;
-  };
   const renderExericeTable = (obj: any, depth: number, index: number) => {
-    console.log(depth, 'depth');
     const TotalMark = calcSumOfMarks(obj);
     const result = examCorrection && calcSumOfMarks(examCorrection[index]);
 
@@ -111,22 +93,23 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
           <>
             {obj?.children?.map((item: any, index: number) => (
               // <tr key={index}>
+
               <>
                 {depth === 1 && (
                   <tr>
                     <td className="p-2 border border-black/50">{item.name}</td>{' '}
                     <td className="p-2 border border-black/50">{item.mark}</td>
                     <td className="p-2 border border-black/50">
-                      {getNoteOf(item.id, examCorrection) === null
+                      {getMarkOfExerciceWithId(examCorrection, item.id) === null
                         ? 0
-                        : getNoteOf(item.id, examCorrection)}
+                        : getMarkOfExerciceWithId(examCorrection, item.id)}
                     </td>
                     <td className="p-2 border border-black/50">
-                      {getDetailsOfExercice(item.id, examCorrection, userCorrections)}
+                      {getDetailsOfExercice(item.id, examCorrection, userCorrections, examContent)}
                     </td>
                   </tr>
                 )}
-                {depth === 2 &&
+                {/* {depth === 2 &&
                   item?.children?.map((subItem: any, subIndex: number) => (
                     <tr>
                       <td className="p-2 border border-black/50" key={subIndex}>
@@ -136,43 +119,188 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
 
                       <td className="p-2 border border-black/50">{subItem.mark}</td>
                       <td className="p-2 border border-black/50">
-                        {getNoteOf(subItem.id, examCorrection) === null
+                        {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
                           ? 0
-                          : getNoteOf(subItem.id, examCorrection)}
+                          : getMarkOfExerciceWithId(examCorrection, subItem.id)}
                       </td>
                       <td className="p-2 border border-black/50">
-                        {getDetailsOfExercice(subItem.id, examCorrection, userCorrections)}
+                        {getDetailsOfExercice(
+                          subItem.id,
+                          examCorrection,
+                          userCorrections,
+                          examContent
+                        )}
                       </td>
                     </tr>
-                  ))}
+                  ))} */}
+                {depth === 2 &&
+                  (item.children?.length === 0
+                    ? (console.log(item),
+                      (
+                        <tr key={index}>
+                          <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                          <td className="p-2 pb-[10px] border border-black/50"> </td>
+                        
+                          <td className="p-2 pb-[10px] border border-black/50">{item.mark}</td>
+                          <td className="p-2 pb-[10px] border border-black/50">
+                            {getMarkOfExerciceWithId(examCorrection, item.id) === null
+                              ? 0
+                              : getMarkOfExerciceWithId(examCorrection, item.id)}
+                          </td>
+                          <td className="p-2 pb-[10px] border border-black/50">
+                            {getDetailsOfExercice(
+                              item.id,
+                              examCorrection,
+                              userCorrections,
+                              examContent
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    : item?.children?.map((subItem: any, subIndex: number) => {
+                        if (subItem?.children?.length === 0) {
+                          return (
+                            <tr key={subIndex}>
+                              <td className="p-2 pb-[10px] border border-black/50"></td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {' '}
+                                {subItem.name}
+                              </td>
+                            
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {subItem.mark}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
+                                  ? 0
+                                  : getMarkOfExerciceWithId(examCorrection, subItem.id)}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {getDetailsOfExercice(
+                                  subItem.id,
+                                  examCorrection,
+                                  userCorrections,
+                                  examContent
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        }
+                        // return subItem?.children?.map((subSubItem: any, subSubIndex: number) => {
+                        //   console.log(subSubItem);
+                        //   return (
+                        //     <tr key={subSubIndex}>
+                        //       <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                        //       <td className="p-2 pb-[10px] border border-black/50">
+                        //         {subItem.name}
+                        //       </td>
+                        //       <td className="p-2 pb-[10px] border border-black/50">
+                        //         {subSubItem.name}
+                        //       </td>
+                        //       <td className="p-2 pb-[10px] border border-black/50">
+                        //         {subSubItem.mark}
+                        //       </td>
+                        //       <td className="p-2 pb-[10px] border border-black/50">
+                        //         {getMarkOfExerciceWithId(examCorrection, subSubItem.id) === null
+                        //           ? 0
+                        //           : getMarkOfExerciceWithId(examCorrection, subSubItem.id)}
+                        //       </td>
+                        //       <td className="p-2 pb-[10px] border border-black/50">
+                        //         {getDetailsOfExercice(
+                        //           subSubItem.id,
+                        //           examCorrection,
+                        //           userCorrections,
+                        //           examContent
+                        //         )}
+                        //       </td>
+                        //     </tr>
+                        //   );
+                        // });
+                      }))}
                 {depth === 3 &&
-                  item?.children?.map((subItem: any, subIndex: number) =>
-                    subItem?.children?.map((subSubItem: any, subSubIndex: number) => (
-                      <tr>
-                        <td className="p-2 pb-[10px] border border-black/50" key={subIndex}>
-                          {item.name}
-                        </td>
-                        <td className="p-2 pb-[10px] border border-black/50"> {subItem.name}</td>
-
-                        <td className="p-2 pb-[10px] border border-black/50">{subSubItem.name}</td>
-                        <td className="p-2 pb-[10px] border border-black/50">{subSubItem.mark}</td>
-                        <td className="p-2 pb-[10px] border border-black/50">
-                          {getNoteOf(subSubItem.id, examCorrection) === null
-                            ? 0
-                            : getNoteOf(subSubItem.id, examCorrection)}
-                        </td>
-                        <td className="p-2 pb-[10px] border border-black/50">
-                          {/* {getNoteOf(subSubItem.id, examCorrection) === null
-                            ? '0.00%'
-                            : (
-                                (getNoteOf(subSubItem.id, examCorrection) / subSubItem.mark) *
-                                100
-                              ).toFixed(2) + '%'} */}
-                          {getDetailsOfExercice(subSubItem.id, examCorrection, userCorrections)}
-                        </td>
-                      </tr>
-                    ))
-                  )}
+                  (item.children?.length === 0
+                    ? (console.log(item),
+                      (
+                        <tr key={index}>
+                          <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                          <td className="p-2 pb-[10px] border border-black/50"> </td>
+                          <td className="p-2 pb-[10px] border border-black/50"> </td>
+                          <td className="p-2 pb-[10px] border border-black/50">{item.mark}</td>
+                          <td className="p-2 pb-[10px] border border-black/50">
+                            {getMarkOfExerciceWithId(examCorrection, item.id) === null
+                              ? 0
+                              : getMarkOfExerciceWithId(examCorrection, item.id)}
+                          </td>
+                          <td className="p-2 pb-[10px] border border-black/50">
+                            {getDetailsOfExercice(
+                              item.id,
+                              examCorrection,
+                              userCorrections,
+                              examContent
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    : item?.children?.map((subItem: any, subIndex: number) => {
+                        if (subItem?.children?.length === 0) {
+                          return (
+                            <tr key={subIndex}>
+                              <td className="p-2 pb-[10px] border border-black/50"></td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {' '}
+                                {subItem.name}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50"> </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {subItem.mark}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
+                                  ? 0
+                                  : getMarkOfExerciceWithId(examCorrection, subItem.id)}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {getDetailsOfExercice(
+                                  subItem.id,
+                                  examCorrection,
+                                  userCorrections,
+                                  examContent
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        }
+                        return subItem?.children?.map((subSubItem: any, subSubIndex: number) => {
+                          console.log(subSubItem);
+                          return (
+                            <tr key={subSubIndex}>
+                              <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {subItem.name}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {subSubItem.name}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {subSubItem.mark}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {getMarkOfExerciceWithId(examCorrection, subSubItem.id) === null
+                                  ? 0
+                                  : getMarkOfExerciceWithId(examCorrection, subSubItem.id)}
+                              </td>
+                              <td className="p-2 pb-[10px] border border-black/50">
+                                {getDetailsOfExercice(
+                                  subSubItem.id,
+                                  examCorrection,
+                                  userCorrections,
+                                  examContent
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        });
+                      }))}
               </>
             ))}
             <tr>
@@ -203,7 +331,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     <div>
       <PdfHeader
         meta={{
-          estab: estab[0].name,
+          estab: estab && estab[0]?.name,
           heading: 'Fiche d évaluation',
           session: currentYear + '-' + nextYear,
           term: {

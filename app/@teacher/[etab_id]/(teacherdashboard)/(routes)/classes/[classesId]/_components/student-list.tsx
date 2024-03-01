@@ -48,12 +48,7 @@ import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 import ClasseDropDownMenu from './dropdownmenu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-function calculateDateDifference(date1: Date, date2: Date): number {
-  const differenceInMilliseconds = Math.abs(date1?.getTime() - date2?.getTime());
-  const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-  return differenceInDays;
-}
-function handleUpdateUser(user_id: number) {}
+
 const Status = ({ row }: any) => {
   switch (row.original.status) {
     case 'done':
@@ -73,50 +68,9 @@ const Status = ({ row }: any) => {
         <CorrectionTag correction="Non corrigé" bgcolor="#FFF4F3" color="#F04438" width="100px" />
       );
   }
-  // getStatusById(row?.original?.id)
-  //   .then((correction) => {
-  //     switch (correction[0]?.status) {
-  //       case 'done':
-  //         return (
-  //           <CorrectionTag correction="Corrigé" color="#12B76A" bgcolor="#E1FDEE" width="100px" />
-  //         );
-  //       case 'notClassified':
-  //         return (
-  //           <CorrectionTag
-  //             correction="Non classé"
-  //             bgcolor="#F4EFFF"
-  //             color="#8862F5"
-  //             width="100px"
-  //           />
-  //         );
-  //       case 'absent':
-  //         return (
-  //           <CorrectionTag correction="Absent" bgcolor="#E7E7E7" color="#727272" width="100px" />
-  //         );
-  //       case 'pending':
-  //         return (
-  //           <CorrectionTag correction="En cours" bgcolor="#FFF4D3" color="#F69D16" width="100px" />
-  //         );
-  //       default:
-  //         return (
-  //           <CorrectionTag
-  //             correction="Non corrigé"
-  //             bgcolor="#FFF4F3"
-  //             color="#F04438"
-  //             width="100px"
-  //           />
-  //         );
-  //     }
-  //   })
-  //   .catch((error) => {
-  //
-  //     // Handle the error if needed
-  //     // return null;
-  //   });
 };
 
 const Action = ({ row }: any) => {
-  console.log(row);
   // if (!correctionExamOfUser) return;
   const classe_id = row?.original?.classe?.id;
   return <ClasseDropDownMenu row={row} classe_id={classe_id} />;
@@ -213,6 +167,9 @@ export const columns = [
         </HoverCard>
       </div>
     ),
+    responsive: true,
+    enableSorting: false,
+    enableHiding: false,
   },
 
   {
@@ -297,10 +254,10 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
       rowSelection,
     },
   });
-
+  console.log(isPending);
   return (
     <div className="w-full">
-      {isPendingUserOfClasses ? (
+      {isPending ? (
         <div className="flex flex-col gap-4">
           <Skeleton className="w-full h-[30px] " />
           <Skeleton className="w-full h-[80px] " />
