@@ -90,7 +90,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       </div>
 
       {/* Date information */}
-      <div className=" text-[#D2D1D1] text-sm font-normal leading-snug text-lg">
+      <div className=" text-[#D2D1D1]  font-normal leading-snug text-lg">
         Créé le: {exam.create_at.toISOString().slice(0, 10)}
       </div>
 
@@ -132,7 +132,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
             style={{ width: '54px' }}
           >
             <span className="text-ms">{porsentage.toFixed(2)}% </span>
-            <span className="text-xs">Corrigé</span>
+            {/* <span className="text-xs">Corrigé</span> */}
           </div>
         </div>
       </div>
