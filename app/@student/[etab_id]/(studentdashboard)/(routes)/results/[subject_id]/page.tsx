@@ -63,6 +63,7 @@ const Student = () => {
   });
 
   const examsData = marksheet?.data || [];
+  console.log(examsData)
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
     const term = exam.exam.term;
@@ -89,17 +90,15 @@ const Student = () => {
     return result;
   }, {});
 
-  const isTrimester = Object.keys(groupedExams).some((key) =>
-    key.toLowerCase().includes('trimestre')
-  );
+  const isTrimester = classeName?.[0].teacher?.[0]?.term === 'TRIMESTRE';
 
   const terms = isTrimester
     ? ['trimestre_1', 'trimestre_2', 'trimestre_3']
     : ['semestre_1', 'semestre_2'];
 
   const trimesters = terms.map((term) => ({
-    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
-    exams: groupedExams[term] || [], // Check and add empty array if term has no exams
+    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), 
+    exams: groupedExams[term] || [], 
   }));
 
   // const averageMark = calculateAverageMark(trimesters);

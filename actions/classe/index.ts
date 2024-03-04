@@ -697,6 +697,11 @@ export const getNameClasseByClasseId = async (classe_id: number) => {
     },
     select: {
       name: true,
+      teacher: {
+        select: {
+          term: true,
+        },
+      },
     },
   });
 
