@@ -7,6 +7,7 @@ import { AddQuestion, deleteExercice, hndelChangeExcericeName } from './exericeS
 
 export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) => {
   if (!data) return;
+  console.log(data)
   return (
     <div
       
@@ -23,7 +24,7 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
               )}
               // defaultValue={data.name || !isArabic ? 'Exercice 1' : 'تمرين 1'}
               // defaultValue={data.name}
-              value={data.name}
+              value={data.name === "Exercice NaN" ? "Exercice1" : data.name }
               onChange={(e) => hndelChangeExcericeName(e,setFakeData, data )}
             />
 

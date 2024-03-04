@@ -20,10 +20,8 @@ interface studentFeadback {
   params: any;
 }
 export const StudentFeadback = ({ children, params }: studentFeadback) => {
-
   const [feedback, setFeedback] = useState<string[]>([]);
   const [feedbackMessage, setFeedbackMessage] = useState<any>();
-
 
   const [listFeedback, setListFeedback] = useState([
     'Excellent travail! Vous êtes sur la bonne voie!',
@@ -33,7 +31,6 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
   ]);
   const { editeFeedback, isPending } = useEditeExamFeedback();
   const handelSubmitFeedback = () => {
-
     const newfedback = {
       feedback,
       description: feedbackMessage,
@@ -41,10 +38,9 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
     const obj = {
       exam_id: params.exam_id,
       student_id: params.student_id,
-      newFeedback : newfedback,
+      newFeedback: newfedback,
     };
     editeFeedback(obj);
-
   };
   return (
     <Dialog>
@@ -119,13 +115,15 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
               Annuler
             </Button>
           </DialogClose>
-          <Button
-            type="submit"
-            className="w-full text-white bg-2 hover:opacity-80"
-            onClick={handelSubmitFeedback}
-          >
-            Soumettre
-          </Button>
+          <DialogClose>
+            <Button
+              type="submit"
+              className="w-full text-white bg-2 hover:opacity-80"
+              onClick={handelSubmitFeedback}
+            >
+              Soumettre
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

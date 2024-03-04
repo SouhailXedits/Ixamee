@@ -71,7 +71,6 @@ const Status = ({ row }: any) => {
 };
 
 const Action = ({ row }: any) => {
-  // if (!correctionExamOfUser) return;
   const classe_id = row?.original?.classe?.id;
   return <ClasseDropDownMenu row={row} classe_id={classe_id} />;
 };

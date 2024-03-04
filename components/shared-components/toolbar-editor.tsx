@@ -32,6 +32,7 @@ const handleUpload = async (file: File) => {
   }
 };
 const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
+  console.log('mounted')
   const { resolvedTheme } = useTheme();
   const [file, SetFile] = useState('');
   const editor: BlockNoteEditor = useBlockNote({

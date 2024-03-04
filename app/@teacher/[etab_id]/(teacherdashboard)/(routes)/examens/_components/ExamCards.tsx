@@ -95,8 +95,8 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       </div>
 
       {/* Displaying classes associated with the exam */}
-      <div className="flex items-start justify-between w-full">
-        <div className="mt-[20px] space-x-2">
+      <div className="flex items-center justify-between w-full mt-[20px]">
+        <div className=" space-x-2">
           {/* Mapping over examClassess to display class names */}
           {exam?.exam_classess?.map((examClass, index) => (
             <div

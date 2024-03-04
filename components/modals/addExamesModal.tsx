@@ -93,7 +93,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
         message: 'Matière is required',
       }),
     // totalMarks: z.number().min(1, { message: 'Total Marks is required' }),
-    // coefficient: z.string().min(1, { message: 'Coefficient is required' }),
+    // coefficient: z.number().min(1, { message: 'Coefficient is required' }),
     style: z.string(),
   });
 
@@ -311,7 +311,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
               ) : (
                 <Select
                   isMulti
-                  options={classoption.length >8 ? classoption.slice(0,8) : classoption}
+                  options={classoption.length > 8 ? classoption.slice(0, 8) : classoption}
                   isDisabled={formData.establishment.length == 0}
                   onChange={(selectedOptions) => handleInputChange('classes', selectedOptions)}
                   placeholder="Sélectionner votre classe"
@@ -351,8 +351,10 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
               ) : (
                 <Select
                   isMulti={false}
-                  options={subjectoptions}
-                  isDisabled={formData.classes.length == 0}
+                  options={subjectoptions.filter(
+                    (option) => option.value !== formData.subject.value
+                  )}
+                  isDisabled={formData.classes.length === 0}
                   placeholder="Sélectionner la matière"
                   onChange={(selectedOption) => handleInputChange('subject', selectedOption)}
                   styles={{
@@ -372,7 +374,6 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                   theme={(theme) => ({
                     ...theme,
                     borderRadius: 8,
-
                     colors: {
                       ...theme.colors,
                       primary: 'none',
@@ -410,12 +411,12 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 coefficient <span className="text-red">*</span>
               </Label>
               <Input
-                type="number"
-                min={1}
+                type="text"
                 placeholder="Saisir le coefficient"
                 onChange={(e) => {
-                  const value = parseInt(e.target.value, 10); // Parse the input value as an integer
-                  if (value > 0) {
+                  const value = e.target.value;
+                  // Check if the value matches a valid float number pattern
+                  if (/^-?\d*\.?\d*$/.test(value)) {
                     handleInputChange('coefficient', value);
                   }
                 }}

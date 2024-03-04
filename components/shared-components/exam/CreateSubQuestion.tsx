@@ -341,7 +341,7 @@ export const CreateSubQuestion = ({
             {/* Adjusted Editor component */}
             <Editor
               // initialContent={data.content}
-              editable={true}
+              editable={false}
               onChange={onChange}
               initialContent={data.content}
             />
@@ -364,7 +364,7 @@ export const CreateSubQuestion = ({
                 step="0.25"
                 maxLength={5}
                 disabled={data.children && data.children.length > 0}
-                value={data.mark}
+                value={data.mark || 0}
                 onChange={(e: any) => {
                   updateSubQuestion(e, data);
                 }}

@@ -41,13 +41,8 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
       .min(3, 'Veuillez renseigner le nom')
       .refine(
         (value) => {
-          // Split the name into parts based on space
           const parts = value.trim().split(' ');
-
-          // Check if there are at least two parts (first name and last name)
           if (parts.length < 2) return false;
-
-          // Check if both the first name and last name are at least 3 characters long
           return parts.every((part) => part.length >= 3);
         },
         {
@@ -145,7 +140,7 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
     } else setFormErrors(validationResult.error);
   };
   return (
-    <form onSubmit={handelSubmit}>
+    <form onSubmit={handelSubmit} onKeyDown={(e) => e.key === 'Enter' && handelSubmit()}>
       <Dialog>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="sm:max-w-[518px]">

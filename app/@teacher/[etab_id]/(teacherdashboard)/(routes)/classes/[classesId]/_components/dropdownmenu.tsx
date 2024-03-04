@@ -95,15 +95,15 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
           <DropdownMenuItem className="cursor-pointer" onClick={() => setModfier(true)}>
             Modifier
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            {correctionExamOfUser && correctionExamOfUser?.correction_exam_content !== null ? (
+          {correctionExamOfUser && correctionExamOfUser?.correction_exam_content !== null ? (
+            <DropdownMenuItem>
               <TelachargePdfEvaluationClasse
                 userContent={correctionExamOfUser}
                 user_id={row.original.id}
                 userDetails={row?.original}
-              ></TelachargePdfEvaluationClasse>
-            ) : null}
-          </DropdownMenuItem>
+              />
+            </DropdownMenuItem>
+          ) : null}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

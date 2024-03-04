@@ -6,6 +6,8 @@ export const getDetailsOfExercice = (
   userCorrection: any,
   examContent :any
 ) => {
+  console.log(userCorrection, 'userCorrection');
+  console.log(examContent, 'examContent');
   if (!userCorrection) {
     return null;
   }
@@ -19,6 +21,7 @@ export const getDetailsOfExercice = (
     }
 
     const mark = getNoteOf(id, item.correction_exam_content);
+    console.log(mark)
 
     if (mark > realMark / 2) {
       resultOfArray.push(mark);
@@ -26,5 +29,6 @@ export const getDetailsOfExercice = (
   });
 
   const porsentageResult = ((resultOfArray.length / userCorrection.length) * 100).toFixed(2) + '%';
+  console.log(porsentageResult)
   return porsentageResult;
 };

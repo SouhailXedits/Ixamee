@@ -36,7 +36,8 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
   useEffect(() => {
     setContent(exam?.content);
   }, [exam?.content]);
-  const whidth = Math.min(content?.length * 200 + 200, 1200);
+  // const whidth = 500;
+  const whidth = Math.min(content?.length * 200 + 200, 500);
 
   let some = 0;
   const result = content?.map((item: any) => {
@@ -55,7 +56,7 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        className={`w-[${tes}px] sm:max-h-[600px] overflow-auto`}
+        className={`w-[${tes}px] sm:max-h-[600px]`}
         style={{ maxWidth: whidth }}
       >
         <DialogHeader>
@@ -63,7 +64,7 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
             Ajouter un barème
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className=" text-neutral-400 text-[15px] font-normal flex gap-2  ">
+        <DialogDescription className=" text-neutral-400 text-[15px] font-normal flex gap-2 max-w-[400px] overflow-auto">
           {content?.map((item: any) => {
             return (
               <div className=" min-w-[220px] border-[#dedbdb] border-[1px] p-2  rounded-lg flex flex-col gap-2 ">
