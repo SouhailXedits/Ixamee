@@ -9,21 +9,22 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserCorrectionBySubject } from '@/actions/exam-correction';
 
 export default function TelachargePdfEvaluationClasse({
-  children,
   userContent,
   user_id,
   userDetails,
 }: any) {
 
   
-  const userUSerContent = userContent.filter((item: any) => item.user_id === user_id);
+  console.log(userContent)
+  const userUserContent = userContent.filter((item: any) => item.user_id === user_id);
+  console.log(userUserContent)
   
 
   return (
-    userUSerContent.length > 0 && (
+    userUserContent.length > 0 && (
       <EvaluationPDFExport pdfName="evaluation">
         <Evaluation
-          userExamCorectionContent={userUSerContent}
+          userExamCorectionContent={userUserContent}
           user_id={user_id}
           userDetails={userDetails}
         />

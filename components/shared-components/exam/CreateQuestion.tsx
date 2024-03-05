@@ -180,7 +180,7 @@ export const CreateQuestion = ({
             </div>
             <Editor
               // initialContent={data.content}
-              editable={true}
+              editable={false}
               onChange={onChange}
               initialContent={data.content}
             />

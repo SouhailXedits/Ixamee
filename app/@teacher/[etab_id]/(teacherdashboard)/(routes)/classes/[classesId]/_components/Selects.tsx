@@ -50,7 +50,7 @@ function Selects({ exam, setExam, setFilter, classe }: any) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="allExam" className="">
-              Filter
+              All
             </SelectItem>
             <SelectItem value="corrige" className="">
               Corrigé

@@ -38,7 +38,7 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
 
   const { data: userExams } = useQuery({
     enabled: filters.classe_id !== '' ,
-    queryKey: ['userExams', filters.classe_id],
+    queryKey: ['userExams', filters.classe_id, filters.exam_id],
     queryFn: async () =>
       await getAllExamsNameAndId({
         user_id: userId,

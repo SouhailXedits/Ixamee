@@ -47,6 +47,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     queryKey: ['UserExamEvalaiations'],
     queryFn: async () => getExamCorrectionById(examId, classe_id),
   });
+  console.log(userCorrections, "all users corr")
 
   if (!examCorrection) {
     return <Loading />;

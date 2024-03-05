@@ -342,6 +342,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
                 {result}
               </td>
               <td className="p-2  pb-[10px] border border-black/50 bg-[#9DD60026] text-[#4C4C4D]">
+                {/* {calculateClasseOverallAvg()} */}
                 {result === 0 ? '0%' : ((result / TotalMark) * 100).toFixed(2) + '%'}
               </td>
             </tr>

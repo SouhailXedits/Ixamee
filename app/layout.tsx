@@ -19,7 +19,7 @@ import Head from 'next/head';
 export const metadata: Metadata = {
   title: 'Ixamee',
   description: 'Une seule plateforme pour tous vos examens',
-  icons: 'https://jmp.sh/s/a0YrGJSvoHNaKuLij4cj',
+  icons: '/logoheadericon.svg',
 };
 
 export default async function RootLayout({
