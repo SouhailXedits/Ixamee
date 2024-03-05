@@ -97,13 +97,12 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     style: z.string(),
   });
 
-  const [clickedStyle, setClickedStyle] = useState('fr');
   const [formData, setFormData] = useState({
     establishment: [],
     name: '',
     term: '',
     classes: [],
-    subject: '',
+    subject: { value: '', label: '' },
     totalMarks: '',
     coefficient: '',
     style: 'fr',
@@ -352,7 +351,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
                 <Select
                   isMulti={false}
                   options={subjectoptions.filter(
-                    (option) => option.value !== formData.subject.value
+                    (option: any) => option.value !== formData.subject.value
                   )}
                   isDisabled={formData.classes.length === 0}
                   placeholder="Sélectionner la matière"
