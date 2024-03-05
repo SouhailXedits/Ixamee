@@ -45,12 +45,12 @@ export const MarkSheetStudent = () => {
           <tbody>
             <tr className=" text-[#1B8392]">
               <td className="bg-[#99C6D3]"></td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">Note</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">Rang</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">Note</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">Rang</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50">Note</td>
+              <td className="border bg-[#99C6D3]/40 border-black/50 h-8">Rang</td>
             </tr>
             {data.map((student :any, i :number) => (
               <StudentRow data={student} key={i} />

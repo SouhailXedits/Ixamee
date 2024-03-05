@@ -1,4 +1,4 @@
-'use client';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/accordion';
 import { SidebarItem } from '../../../../../components/shared-components/sidebar-item';
 import SettingsBtn from './SettingsBtn';
-import { useEffect, useRef, useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
 import { cn } from '@/lib/utils';
 import { auth } from '@/auth';
@@ -15,6 +14,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getMe } from '@/actions/examens';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
 const parametersRoutes = [
   {
     Clickedicon: '/teacherbag-fill.svg',
@@ -37,7 +37,6 @@ const parametersRoutes = [
 ];
 
 function ParametersSidebar() {
-  const queryclient = useQueryClient();
   const { collapsed } = useSidebar((state) => state);
 
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -46,9 +45,10 @@ function ParametersSidebar() {
   function onClick() {
     setIsActive((prev) => !prev);
   }
+  function handleMouseEnter() {
+    setIsActive(true);
+  }
   const paramroutes = parametersRoutes;
-  console.log(isActive)
-
 
   useEffect(() => {
     function handleClickOutside(event: any) {
@@ -68,6 +68,21 @@ function ParametersSidebar() {
     };
   }, []);
 
+  const accordionRef = useRef<any>(null);
+
+  useEffect(() => {
+    function handleClickOutsideAccordion(event: any) {
+      if (accordionRef.current && !accordionRef.current.contains(event.target) && isActive) {
+        setIsActive(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutsideAccordion);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutsideAccordion);
+    };
+  }, [isActive]);
+
   const { data: user } = useQuery({
     queryKey: ['user'],
     queryFn: async () => getMe(),
@@ -79,7 +94,7 @@ function ParametersSidebar() {
     <div className={cn(!collapsed && 'w-full', '')}>
       {collapsed ? (
         <Popover open={isActive}>
-          <PopoverTrigger onClick={onClick} ref={triggerButtonRef}>
+          <PopoverTrigger onClick={onClick} ref={triggerButtonRef} onMouseEnter={handleMouseEnter}>
             <SettingsBtn isActive={isActive} onClick={onClick} isParameters={true} />
           </PopoverTrigger>
           <PopoverContent
@@ -100,7 +115,7 @@ function ParametersSidebar() {
           </PopoverContent>
         </Popover>
       ) : (
-        <Accordion type="single" collapsible className="w-full">
+        <Accordion type="single" collapsible className="w-full" ref={accordionRef}>
           <AccordionItem value="item-1">
             <AccordionTrigger
               onClick={onClick}
@@ -108,9 +123,7 @@ function ParametersSidebar() {
             >
               <SettingsBtn isActive={isActive} onClick={onClick} />
             </AccordionTrigger>
-            <AccordionContent
-              className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}
-            >
+            <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
               {paramroutes.map((route) => (
                 <SidebarItem
                   key={route.href}

@@ -56,8 +56,8 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
               {StudentsData?.length &&
                 StudentsData?.[0].exams.map((studentExam: any) => (
                   <>
-                    <td className="border bg-[#99C6D3]/40 border-black/50 pb-4">note</td>
-                    <td className="border bg-[#99C6D3]/40 border-black/50 pb-4">rang</td>
+                    <td className="border bg-[#99C6D3]/40 border-black/50 pb-4">Note</td>
+                    <td className="border bg-[#99C6D3]/40 border-black/50 pb-4">Rang</td>
                   </>
                 ))}
 
