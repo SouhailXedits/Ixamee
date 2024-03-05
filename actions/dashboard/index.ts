@@ -127,17 +127,19 @@ export const getCountOfStudentSubjects = async (userId: string) => {
 export const getStudentMarksheet = async (userId: string) => {
   const marksheet = await db.examCorrection.count({
     where: {
-      exam: {
-        exam_classess: {
-          some: {
-            student_class: {
-              some: {
-                id: userId,
-              },
-            },
-          },
-        },
-      },
+      // exam: {
+      //   exam_classess: {
+      //     some: {
+      //       student_class: {
+      //         some: {
+      //           id: userId,
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
+      user_id: userId,
+      is_published: true
     },
   });
   return marksheet;

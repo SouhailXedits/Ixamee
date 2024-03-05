@@ -30,7 +30,7 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
             display: 'inline-flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            left: '40px',
+            left: '-30px',
             position: 'absolute',
             top: '30px',
           }}
@@ -139,7 +139,7 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
                     width: '20rem',
                     marginTop: '-1px',
                     position: 'relative',
-                    left: '240px',
+                    left: '300px',
                     top: '1.5rem',
                   }}
                 >
@@ -148,10 +148,10 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
                     style={{
                       color: '#102528',
                       fontFamily: '"Poppins", Helvetica',
-                      fontSize: '14px',
+                      fontSize: '16px',
                       fontWeight: '400',
                       letterSpacing: '0',
-                      lineHeight: '18px',
+                      // lineHeight: '18px',
                     }}
                   >
                     {meta.NumberOfStudet}
@@ -211,7 +211,7 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
             display: 'inline-flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            left: '464px',
+            left: '500px',
             position: 'absolute',
             top: '30px',
           }}
@@ -221,7 +221,7 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
               alignSelf: 'stretch',
               color: 'var(--x-1)',
               fontFamily: '"Poppins", Helvetica',
-              fontSize: '12px',
+              fontSize: '14px',
               fontWeight: '500',
               letterSpacing: '0',
               lineHeight: '18px',
@@ -237,7 +237,7 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
               alignSelf: 'stretch',
               color: 'var(--x-1)',
               fontFamily: '"Poppins", Helvetica',
-              fontSize: '11px',
+              fontSize: '12px',
               fontWeight: '400',
               letterSpacing: '0',
               lineHeight: '18px',
@@ -250,14 +250,14 @@ function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
         </div>
         <Image
           style={{
-            height: '25px',
+            height: '40px',
             left: '246px',
             position: 'absolute',
             top: '40px',
-            width: '103px',
+            width: '125px',
           }}
-          width={103}
-          height={25}
+          width={120}
+          height={35}
           alt="Layer"
           src="/logo.svg"
         />

@@ -97,7 +97,7 @@ export const columns: ColumnDef<SubjectOutputProps>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Nom de l&apos;etablissement
+          Nom de Matière
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );

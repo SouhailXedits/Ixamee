@@ -1,6 +1,4 @@
 import React from 'react';
-// import data from './fakeMarkSheetsData';
-import PdfHeader from '@/components/shared-components/PdfHeader';
 import PdfHeaderForClasse from '@/components/shared-components/PdfHeaderForClasse';
 
 export const AllStudentList = ({
@@ -54,7 +52,7 @@ export const AllStudentList = ({
       <PdfHeaderForClasse
         meta={{
           estab: teacherEstabName,
-          session: new Date().getFullYear() + '-' + (new Date().getFullYear() + 1),
+          session: new Date().getFullYear() + ' - ' + (new Date().getFullYear() + 1),
 
           NumberOfStudet: sortedArray.length,
           classe: classeName,

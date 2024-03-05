@@ -12,13 +12,21 @@ import {
   getAllSubjectsByClasseIdByPage,
   getAllSubjectsCount,
 } from '@/actions/subjects';
+import { getStudentMarksheet } from '@/actions/dashboard';
 
 export default function Home() {
   const queryClient = useQueryClient();
 
   const examCount = queryClient.getQueryData(['examCount']) as any;
+  const user = queryClient.getQueryData(['user']) as any;
+  const userId = user?.id;
 
-  const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
+  // const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
+  const { data: marksheetCount, isPending: isMarksheetsPending } = useQuery({
+    queryKey: ['marksheetCount', userId],
+    queryFn: async () => await getStudentMarksheet(userId),
+  });
+  // const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
 
   // const allSubjects = queryClient.getQueryData(['teacherSubject']) as any;
   const params = useParams();

@@ -424,7 +424,7 @@ export const getAllClasseByPage = async ({
           },
         },
       },
-      take: 3,
+      take: 4,
     });
     return { data: classes, error: undefined };
   } catch (error: any) {
