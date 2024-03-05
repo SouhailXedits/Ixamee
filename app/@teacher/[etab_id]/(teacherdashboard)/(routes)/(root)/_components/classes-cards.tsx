@@ -54,8 +54,8 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                     .map((student: any, index: number) => (
                       <Image
                         key={index}
-                        src={student.image || 'userAvatar/user3.svg'}
-                        alt="userAvatar"
+                        src={student.image || '/defaultUserAvatr.svg'}
+                        alt="user avatar"
                         width={40}
                         height={40}
                         className="inline-block rounded-full w-[40px] h-[40px] object-cover"

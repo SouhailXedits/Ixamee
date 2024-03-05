@@ -18,15 +18,8 @@ export default function Home() {
   const queryClient = useQueryClient();
 
   const examCount = queryClient.getQueryData(['examCount']) as any;
-  const user = queryClient.getQueryData(['user']) as any;
-  const userId = user?.id;
 
-  // const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
-  const { data: marksheetCount, isPending: isMarksheetsPending } = useQuery({
-    queryKey: ['marksheetCount', userId],
-    queryFn: async () => await getStudentMarksheet(userId),
-  });
-  // const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
+  const marksheetCount = queryClient.getQueryData(['marksheetCount']) as any;
 
   // const allSubjects = queryClient.getQueryData(['teacherSubject']) as any;
   const params = useParams();
@@ -71,7 +64,7 @@ export default function Home() {
         </div>
 
         <div className="w-[40%]  p-2 flex flex-col gap-9 max-2xl:w-[100%]">
-          <DashboradCorrectionsRecentes />
+          <DashboradCorrectionsRecentes  />
           <DashboradBulletinsDesEtudiants />
         </div>
       </div>

@@ -169,3 +169,47 @@ export const updateStudentPrespectation = async (
   });
   return res;
 };
+
+
+export const getRecentCorrections = async (user_id: string) => {
+  try {
+    // console.log();
+    if(!user_id) return
+
+    const res = await db.examCorrection.findMany({
+      where: {
+        user_id: user_id,
+        is_published: true,
+      },
+      select: {
+         mark_obtained: true,
+         exam: {
+          select: {
+            name: true,
+            total_mark: true,
+            subject: {
+              select: {
+                name: true,
+                icon: true,
+              },
+            },
+            teacher: {
+              select: {
+                name: true,
+              },
+            }
+          }
+         },
+         rank: true,
+         status: true,
+      },
+    });
+    console.log(res);
+    return res;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get exam correction.',
+    };
+  }
+};
