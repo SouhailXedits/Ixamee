@@ -9,9 +9,11 @@ import {
 } from '@/components/ui/select';
 import StatistiquesItems from './statistiques-items';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getClasseByClassId } from '@/actions/classe';
 import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
+import { useQuery } from '@tanstack/react-query';
+import { getCorrectionProgressStats, getExamCorrectionById2 } from '@/actions/exam-correction';
 
 const DashboradStatistiques = ({
   isPendingClasses,
@@ -25,10 +27,38 @@ const DashboradStatistiques = ({
   studentCountPending: boolean;
 }) => {
   const [classId, setClassId] = useState<string>('');
+  const [examId, setExamId] = useState<string>('');
   const [classe, setClasse] = useState<any>(undefined);
   const [userCorrection, setUserCorrection] = useState<any>(undefined);
   const [disable, setDisable] = useState<boolean>(true);
   const [allStudentOfClasseCount, setAllStudentOfClasseCount] = useState<number>(allStudentCount);
+  console.log(classe, 'classe');
+
+  const {data: classeInfos, isPending} = useQuery({
+    queryKey: ['classe', classId],
+    queryFn: async () => await getClasseByClassId(+classId)
+  })
+  console.log(classeInfos);
+
+  useEffect(() => {
+    setAllStudentOfClasseCount(classeInfos ? classeInfos?.student_class.length : 0);
+    setClasse(classeInfos);
+  })
+
+  const { data: correctionsProgress } = useQuery({
+    queryKey: ['usersProgress', classId, examId],
+    queryFn: async () => await getCorrectionProgressStats(+classId, +examId),
+  });
+// const userCorrec = (await getCorrectionOfUser(classId, classe?.student_class, value)) as any;
+
+// setUserCorrection(userCorrec);
+
+  // const { data: usersProgresse } = useQuery({
+  //   queryKey: ['usersProgress', classId, examId],
+  //   queryFn: async () => await getCorrectionOfUser(examId, classId),
+  // });
+  console.log(correctionsProgress);
+
 
   return (
     <div className="flex flex-col gap-6">
@@ -49,12 +79,13 @@ const DashboradStatistiques = ({
 
           <Select
             onValueChange={async (value) => {
-              setDisable(true);
-              const data = await getClasseByClassId(+value);
-              setAllStudentOfClasseCount(data ? data?.student_class.length : 0);
-              setClasse(data);
+              // setDisable(true);
+              //const data = await getClasseByClassId(+value);
+              // setAllStudentOfClasseCount(data ? data?.student_class.length : 0);
+              // setClasse(data);
+
               setClassId(value);
-              setDisable(false);
+              // setDisable(false);
             }}
             disabled={isPendingClasses || !classes?.length}
           >
@@ -72,15 +103,10 @@ const DashboradStatistiques = ({
           </Select>
           <Select
             onValueChange={async (value) => {
-              const userCorrec = (await getCorrectionOfUser(
-                classId,
-                classe?.student_class,
-                value
-              )) as any;
-
-              setUserCorrection(userCorrec);
+              console.log(value);
+              setExamId(value);
             }}
-            disabled={disable}
+            disabled={!classeInfos}
           >
             <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full ">
               <SelectValue placeholder={'Devoir'} />
@@ -103,6 +129,7 @@ const DashboradStatistiques = ({
           userCorrection={userCorrection}
           allStudentCount={allStudentOfClasseCount}
           studentCountPending={studentCountPending}
+          correctionsProgress={correctionsProgress}
         />
       </div>
     </div>

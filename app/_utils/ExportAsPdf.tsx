@@ -9,10 +9,17 @@ const PDFExport = ({ children, pdfName }: any) => {
 
   const exportPDF = () => {
     const element = contentRef.current;
+    
     const opt = {
+      margin: [0, -0.1, 0, 0],
       filename: `${pdfName}.pdf`,
-      html2canvas: { scale: 3, useCORS: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      // html2canvas: { dpi: 192, letterRendering: true, scale: 3, useCORS: true },
+      // pagebreak: {
+      //   mode: ['avoid-all', 'css', 'legacy'],
+      // },
+      // pagebreak: { avoid: 'tr', mode: 'css', before: '#nextpage1', after: '1cm' },
+      html2canvas: { scale: 3, useCORS: true, dpi: 192, letterRendering: true },
+      jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putTotalPages:true, },
     };
     // html2pdf(element).set(opt)
     html2pdf().set(opt).from(element).save();

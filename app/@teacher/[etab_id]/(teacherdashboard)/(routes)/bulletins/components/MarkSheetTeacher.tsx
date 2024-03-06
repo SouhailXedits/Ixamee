@@ -6,6 +6,7 @@ import StudentRow from './StudentRow';
 export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) => {
   const splitedTerm = term.split('_');
   const sortedStudents = StudentsData?.sort((a: any, b: any) => a.rank - b.rank);
+  let studentCount = 0;
 
   return (
     <div>
@@ -24,7 +25,7 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
         type="MSTeach"
       />
       <div className="flex justify-center">
-        <table className=" text-center w-[700px] border border-black/50 ">
+        <table className="text-center w-[700px] border border-black/50">
           <thead className="text-white">
             <th rowSpan={2} className="bg-[#99C6D3] p-1">
               Etudiant
@@ -41,7 +42,7 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
               ))}
           </thead>
           <tbody>
-            <tr className=" text-[#1B8392]">
+            <tr className="text-[#1B8392]">
               <td className="bg-[#99C6D3]"></td>
               {sortedStudents?.length &&
                 sortedStudents?.[0].exams.map((studentExam: any) => (
@@ -51,9 +52,15 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
                   </>
                 ))}
             </tr>
-            {sortedStudents?.map((student: any, i: number) => (
-              <StudentRow data={student} key={i} />
-            ))}
+            {sortedStudents?.map((student: any, i: number) => {
+              studentCount++;
+              return (
+                <>
+                  <StudentRow data={student} key={i} />
+                  {studentCount % 20 === 0 && <div className=" h-16" />}
+                </>
+              );
+            })}
           </tbody>
         </table>
       </div>

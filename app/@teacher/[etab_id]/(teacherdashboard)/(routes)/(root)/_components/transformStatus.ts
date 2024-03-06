@@ -1,49 +1,23 @@
-interface InputItem {
-  status: string;
-  user_id: string;
-}
 
-interface OutputItem {
-  status: string;
-  studentNumber: number;
-  color: string;
-}
-export function transformData(data: InputItem[], allStudentOfClasseCount: number): OutputItem[] {
-  const statusCount: Record<string, number> = {
-    'Non corrigées': 0,
-    'En cours de corrections': 0,
-    Corrigées: 0,
-  };
 
-  data.forEach((item) => {
-    switch (item.status) {
-      case 'notCorrected':
-        statusCount['Non corrigées']++;
-        break;
-      case 'done':
-        statusCount['Corrigées']++;
-        break;
-      case 'pending':
-        statusCount['En cours de corrections']++;
-        break;
-      default:
-        break;
-    }
-  });
 
-  statusCount['Non corrigées'] = allStudentOfClasseCount -statusCount['Corrigées'];
+export function transformData(data: any) {
+  console.log(data)
+
 
   const colorCodes: Record<string, string> = {
-    'Non corrigées': '#F04438',
-    'En cours de corrections': '#F69D16',
-    Corrigées: '#12b76a',
+    'Entre 0 - 30%': '#F04438',
+    'Entre 30 - 60%': '#F69D16',
+    'Entre 60 - 80%': '#12b76a',
+    'plus de 80%': '#1B8392',
   };
 
-  const result: OutputItem[] = Object.keys(statusCount).map((status) => ({
+  const result = Object.keys(data).map((status) => ({
     status,
-    studentNumber: statusCount[status],
+    numExams: data[status],
     color: colorCodes[status],
   }));
+  console.log(result);
 
   return result;
 }

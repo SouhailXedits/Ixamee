@@ -40,6 +40,7 @@ export const AllStudentList = ({
     }
     return 0;
   });
+  let studentCount = 0;
 
   const header = [
     { name: 'Rang' },
@@ -47,6 +48,7 @@ export const AllStudentList = ({
     { name: 'E-mail' },
     { name: 'Ajouté(e) le' },
   ];
+  
   return (
     <div>
       <PdfHeaderForClasse
@@ -73,7 +75,7 @@ export const AllStudentList = ({
             </tr>
           </thead>
           <tbody>
-            {sortedArray?.map((student: any, i: number) => (
+            {/* {sortedArray?.map((student: any, i: number) => (
               <tr key={i}>
                 <td className="pb-4 border border-black/50 ">{i + 1}</td>
                 <td className="pb-4 border border-black/50 ">{student.name}</td>
@@ -82,7 +84,23 @@ export const AllStudentList = ({
                   {translateDateFormat(student.createdAt)}
                 </td>
               </tr>
-            ))}
+            ))} */}
+            {sortedArray?.map((student: any, i: number) => {
+              studentCount++;
+              return (
+                <>
+                  <tr key={i}>
+                    <td className="pb-4 border border-black/50 ">{i + 1}</td>
+                    <td className="pb-4 border border-black/50 ">{student.name}</td>
+                    <td className="pb-4 border border-black/50">{student.email}</td>
+                    <td className="pb-4 border border-black/50">
+                      {translateDateFormat(student.createdAt)}
+                    </td>
+                  </tr>
+                  {studentCount % 21 === 0 && <div className=" h-16" />}
+                </>
+              );
+            })}
           </tbody>
         </table>
       </div>
