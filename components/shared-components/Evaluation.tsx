@@ -50,7 +50,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   const examContent = userDetails;
   console.log(examId);
   const { data: userCorrections } = useQuery({
-    queryKey: ['UserExamEvalaiationss'],
+    queryKey: ['UserExamEvalaiationss', examId, classe_id],
     queryFn: async () => getExamCorrectionById2(examId, classe_id),
     retry: true,
   });

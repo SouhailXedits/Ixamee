@@ -325,6 +325,7 @@ export const getTermOfUser = async (user_id: string) => {
   return term;
 };
 export const getEstablishmentOfUser = async (user_id: string) => {
+  if(!user_id) return
   const data = await db.establishment.findMany({
     where: {
       user_establishment: {

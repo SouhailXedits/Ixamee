@@ -115,6 +115,17 @@ export const createUserInClasse = async (
   class_id: string,
   establishmentId: number
 ) => {
+  console.log(email)
+  const isTeacher = await db.user.findMany({
+    where: {
+      email,
+      role: "TEACHER" || "ADMIN"
+    }
+  })
+  console.log(isTeacher)
+  if (isTeacher.length > 0) {
+    throw new Error('Given email is associated to a teacher account');
+  }
   const nameExiste = await db.user.findMany({
     where: {
       name: name,

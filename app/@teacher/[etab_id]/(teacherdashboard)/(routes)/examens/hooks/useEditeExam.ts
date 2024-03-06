@@ -12,7 +12,7 @@ export function useEditExam() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
       queryClient.invalidateQueries({ queryKey: ['examens'] });
-      toast.success('Exame édité avec succès.');
+      toast.success('Exame modifié avec succès.');
     },
     onError: (err) => {
       toast.error("Une erreur est survenue lors de l'édition de l'exame.");

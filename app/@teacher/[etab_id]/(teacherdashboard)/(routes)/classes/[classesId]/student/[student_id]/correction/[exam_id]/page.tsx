@@ -15,7 +15,7 @@ import { useCreateExamCorrection } from '../../../../../hooks/useCreateExamCorre
 import { Button } from '@/components/ui/button';
 import { useConfettiStore } from '@/store/use-confetti-store';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { calcAllMark, statusOf } from '@/app/_utils/calculateChildrenMarks';
+import { calcAllMark, statusOf, transferAllMarkToNull } from '@/app/_utils/calculateChildrenMarks';
 import CreateExam from '@/components/shared-components/exam/create-exam';
 export default function Page({
   params,
@@ -45,7 +45,7 @@ export default function Page({
   });
 
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent'],
+    queryKey: ['CorigeExameContent', student_id],
     queryFn: async () => await getCorigeExameContent(+exam_id, student_id),
   });
   const MarkObtined = (getCorrigeExamOfUser && getCorrigeExamOfUser[0]?.mark_obtained) || null;
@@ -67,7 +67,8 @@ export default function Page({
       setFakeData(copiedData);
     } else if (data?.content) {
       const copiedData = JSON.parse(JSON.stringify(data.content));
-
+      console.log(copiedData, 'copiedData');
+      transferAllMarkToNull(copiedData)
       setFakeData(copiedData);
     }
   }, [isFullMarks]);

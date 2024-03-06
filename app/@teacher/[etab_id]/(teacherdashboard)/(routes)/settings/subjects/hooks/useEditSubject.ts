@@ -17,7 +17,7 @@ export function useEditSubject() {
     mutationFn: (params: paramsProps) => editSubjectApi(params.id, params.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] });
-      toast.success('Matière édité avec succès.');
+      toast.success('Matière modifié avec succès.');
     },
     onError: (err) => {
       toast.error("Une erreur est survenue lors de l'édition de la matière.");

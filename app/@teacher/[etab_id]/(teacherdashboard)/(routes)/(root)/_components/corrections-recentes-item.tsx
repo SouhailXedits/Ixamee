@@ -36,9 +36,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
 
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', filters.exam_id, filters.classe_id],
-    enabled: filters.exam_id !== undefined || filters.classe_id !== undefined,
     queryFn: async () => await getCorrectionOfUser(filters.classe_id, data, filters.exam_id),
-
   });
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe

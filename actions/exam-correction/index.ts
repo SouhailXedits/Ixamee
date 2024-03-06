@@ -113,8 +113,8 @@ export const getExamCorrectionById = async (exam_id: string, classe_id: string) 
         user_id: true,
       },
     });
-    return res;
     console.log(res);
+    return res;
   } catch (error: any) {
     return {
       data: undefined as any,
@@ -143,8 +143,8 @@ export const getExamCorrectionById2 = async (exam_id: string, classe_id: string)
         user_id: true,
       },
     });
-    return res;
     console.log(res);
+    return res;
   } catch (error: any) {
     return {
       data: undefined as any,

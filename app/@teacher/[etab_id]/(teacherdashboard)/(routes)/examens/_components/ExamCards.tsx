@@ -58,6 +58,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
   const CurrentMark = calcAllMark(examContent);
 
   const porsentage = (CurrentMark / totalMark) * 100;
+  console.log(exam)
   return (
     /* Container div for the exam card */
     <div
@@ -108,7 +109,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
                 <HoverCard>
                   <HoverCardTrigger asChild>
                     <span className="">
-                      {examClass?.name.length > 10
+                      {examClass?.name.length > 7
                         ? examClass?.name.slice(0, 7) + '...'
                         : examClass?.name}
                     </span>
@@ -129,9 +130,8 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
         <div className="flex bg-[#1B8392] p-1 items-center justify-center rounded-xl  ">
           <div
             className="  w-full justify-center flex-col  text-[#FFFFFF]"
-            style={{ width: '54px' }}
           >
-            <span className="text-ms">{porsentage.toFixed(2)}% </span>
+            <span className="text-ms">{porsentage}% </span>
             {/* <span className="text-xs">Corrigé</span> */}
           </div>
         </div>

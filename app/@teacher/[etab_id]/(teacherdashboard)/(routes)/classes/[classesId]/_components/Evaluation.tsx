@@ -44,7 +44,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
 
   const maxDepth = getMaxDepth(examContent?.[1]);
   const { data: userCorrections } = useQuery({
-    queryKey: ['UserExamEvalaiations'],
+    queryKey: ['UserExamEvalaiations', examId, classe_id],
     queryFn: async () => getExamCorrectionById(examId, classe_id),
   });
   console.log(userCorrections, "all users corr")
@@ -110,30 +110,6 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
                     </td>
                   </tr>
                 )}
-                {/* {depth === 2 &&
-                  item?.children?.map((subItem: any, subIndex: number) => (
-                    <tr>
-                      <td className="p-2 border border-black/50" key={subIndex}>
-                        {item.name}
-                      </td>
-                      <td className="p-2 border border-black/50">{subItem.name}</td>
-
-                      <td className="p-2 border border-black/50">{subItem.mark}</td>
-                      <td className="p-2 border border-black/50">
-                        {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
-                          ? 0
-                          : getMarkOfExerciceWithId(examCorrection, subItem.id)}
-                      </td>
-                      <td className="p-2 border border-black/50">
-                        {getDetailsOfExercice(
-                          subItem.id,
-                          examCorrection,
-                          userCorrections,
-                          examContent
-                        )}
-                      </td>
-                    </tr>
-                  ))} */}
                 {depth === 2 &&
                   (item.children?.length === 0
                     ? (console.log(item),
@@ -187,36 +163,6 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
                             </tr>
                           );
                         }
-                        // return subItem?.children?.map((subSubItem: any, subSubIndex: number) => {
-                        //   console.log(subSubItem);
-                        //   return (
-                        //     <tr key={subSubIndex}>
-                        //       <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {subItem.name}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {subSubItem.name}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {subSubItem.mark}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {getMarkOfExerciceWithId(examCorrection, subSubItem.id) === null
-                        //           ? 0
-                        //           : getMarkOfExerciceWithId(examCorrection, subSubItem.id)}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {getDetailsOfExercice(
-                        //           subSubItem.id,
-                        //           examCorrection,
-                        //           userCorrections,
-                        //           examContent
-                        //         )}
-                        //       </td>
-                        //     </tr>
-                        //   );
-                        // });
                       }))}
                 {depth === 3 &&
                   (item.children?.length === 0

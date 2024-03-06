@@ -61,7 +61,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // ======================= All Queries✨✨✨✨✨✨✨✨ ======================
   // get the data of classe by Id of classe
   const { data: classe, isPending: isPendingClasse } = useQuery({
-    queryKey: ['classe'],
+    queryKey: ['classe', params.classesId],
     queryFn: async () => await getClasseById(+params.classesId),
   });
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll

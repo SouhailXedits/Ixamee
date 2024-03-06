@@ -30,7 +30,6 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
     queryKey: ['correction', filter],
     queryFn: async () => getUserCorrectionBySubject(user?.id, filter),
   });
-  console.log(userCorrections);
 
   return (
     <div className="flex flex-col gap-4 h-[500px]">
@@ -115,7 +114,6 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
           </Select>
         </div>
         <div className="w-full rounded-xl">
-          {/* <ExamCorrectionList data={userCorrections} /> */}
           <BulletinsDesEtudiants userCorrections={userCorrections} />
         </div>
       </div>

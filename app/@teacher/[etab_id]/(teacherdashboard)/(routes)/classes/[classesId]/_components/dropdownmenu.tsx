@@ -2,14 +2,12 @@ import { CorrectExam } from '@/components/modals/correct-exam';
 import { InviterUnEtudiant } from '@/components/modals/inviter-un-etudiant';
 import { ModifierUnEtudiant } from '@/components/modals/modifier-un-etudiant';
 import { SupprimerUserInClasse } from '@/components/modals/suprimer-user-in-classe';
-import TelachargePdfEvaluation from '@/components/shared-components/TelachargePdfEvaluation';
 
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -27,6 +25,7 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
   console.log(correctionExamOfUser);
   const [modfier, setModfier] = React.useState(false);
+
 
   const [deleteForm, setDeleteForm] = React.useState(false);
   return (
