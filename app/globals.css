@@ -154,6 +154,11 @@ body {
   overflow: hidden;
 }
 
+.tippy-box[data-placement="left"] {
+  display: none;
+}
+
+
 /* @import './components/input/input.css';
 @import './components/duationPicker/durationPicker.css';
 @import './components/eventDetails/eventDetails.css'; */
