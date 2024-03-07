@@ -45,7 +45,6 @@ import { getStatusById } from '@/actions/classe';
 import { useQueryClient } from '@tanstack/react-query';
 import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
-import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 import ClasseDropDownMenu from './dropdownmenu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 

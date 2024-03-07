@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/select';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { EtudiantAjouteAvecSucces } from './etudiant-ajoute-avec-succes';
 import { z } from 'zod';
 import { error } from 'console';
 import { useCreateUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteUser';
@@ -35,6 +34,7 @@ interface AjouterUneClasse {
   etab_id: number;
 }
 export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneClasse) => {
+  const [isOpen, setIsOpen] = useState(false);
   const formatDataSchema = z.object({
     name: z
       .string()
@@ -62,7 +62,6 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
   };
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
-  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [files, setFile] = useState<any>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const [selectedFileUrl1, setSelectedFileUrl1] = useState<string>('');
@@ -133,16 +132,30 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
       setSelectedFileUrl('');
       setSelectedFileUrl1('');
 
-      if (!error) setIsFirstModalOpen(!isFirstModalOpen);
-
-      // setIsFirstModalOpen(!isFirstModalOpen);
-      setFormErrors(null); // Reset error state if submission is successful
+      setFormErrors(null);
     } else setFormErrors(validationResult.error);
+  };
+  useEffect(() => {
+    if (isOpen && !isPending && !error) { 
+      console.log('isNotPending');
+      toggleDialog();
+    }
+  }, [isPending]);
+  // const handleKeyDown = (e:any) => {
+  //   if (e.key === 'Enter') {
+  //     toggleDialog(); // Close the dialog when Enter key is pressed
+  //   }
+  // };
+
+  const toggleDialog = () => {
+    setIsOpen(!isOpen);
   };
   return (
     <form onSubmit={handelSubmit} onKeyDown={(e) => e.key === 'Enter' && handelSubmit()}>
-      <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild onClick={toggleDialog}>
+          {children}
+        </DialogTrigger>
         <DialogContent className="sm:max-w-[518px]">
           <DialogHeader>
             <DialogTitle className="text-[#1B8392] text-xl font-medium ">
@@ -195,20 +208,7 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
               />
               {renderFieldError('name')}
             </div>
-            {/* <div className="flex flex-col gap-2">
-            <Label className="text-[#959595]">
-              Rang dans la classe<span className="text-red">*</span>
-            </Label>
-            <Input
-              placeholder="1"
-              value={formatData.rang}
-              type="number"
-              min={minrange}
-              onChange={(e) => handelUpdateSetFormatData('rang', e.target.value)}
-              className="placeholder:text-[#727272]"
-            />
-            {renderFieldError('rang')}
-          </div> */}
+
             <div className="flex flex-col gap-2">
               <Label className="text-[#959595]">
                 E-mail <span className="text-red">*</span>
@@ -239,8 +239,6 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
                     role="status"
                     aria-label="loading"
                   ></div>
-                ) : isFirstModalOpen ? (
-                  'Ajouter un autre étudiant'
                 ) : (
                   'Ajouter'
                 )}
@@ -259,8 +257,6 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
                       role="status"
                       aria-label="loading"
                     ></div>
-                  ) : isFirstModalOpen ? (
-                    'Ajouter un autre étudiant'
                   ) : (
                     'Ajouter'
                   )}

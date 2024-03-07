@@ -1,7 +1,17 @@
+"use client"
 import Image from 'next/image';
 import CorrectionsRecentes from './corrections-recentes-item';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getRecentCorrections } from '@/actions/exam-correction';
 
-const DashboradCorrectionsRecentes = ({ data }: any) => {
+const DashboradCorrectionsRecentes = () => {
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<any>(['user']) 
+  const userId = user?.id
+  const { data } = useQuery({
+    queryKey: ['corrections-recentes'],
+    queryFn: async () => getRecentCorrections(userId),
+  });
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between w-full">
@@ -21,7 +31,7 @@ const DashboradCorrectionsRecentes = ({ data }: any) => {
         )}
       </div>
 
-      <CorrectionsRecentes />
+      <CorrectionsRecentes data={data} />
     </div>
   );
 };

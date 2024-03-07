@@ -12,6 +12,7 @@ import {
   getAllSubjectsByClasseIdByPage,
   getAllSubjectsCount,
 } from '@/actions/subjects';
+import { getStudentMarksheet } from '@/actions/dashboard';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -63,7 +64,7 @@ export default function Home() {
         </div>
 
         <div className="w-[40%]  p-2 flex flex-col gap-9 max-2xl:w-[100%]">
-          <DashboradCorrectionsRecentes />
+          <DashboradCorrectionsRecentes  />
           <DashboradBulletinsDesEtudiants />
         </div>
       </div>

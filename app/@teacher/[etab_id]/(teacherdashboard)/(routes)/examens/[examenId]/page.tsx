@@ -29,8 +29,6 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   });
   const copiedData = JSON?.parse(JSON?.stringify(data));
 
-  const queryClient = useQueryClient();
-  // const data = queryClient.getQueryData(['examenById', examenId]) as any;
   const { editExam, isPending: isPendingEdit } = useEditExamContent();
 
   const [fakeData, setFakeData] = useState<any>(copiedData.content);
@@ -46,7 +44,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
 
-  // if (isPending) return <Loading />;
+
 
   function handleCancel() {
     router.back();
@@ -75,13 +73,14 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
 
     handleConfetti;
   };
-  // useEffect(() => {
-  //   if (fakeData) {
-  //   }
-  // }, [fakeData]);
+
   const handleConfetti = () => {
     confetti.onOpen();
   };
+  console.log(fakeData);
+  console.log(data)
+
+
   return (
     <div className="flex h-[100vh] flex-col gap-6 p-10 overflow-auto">
       <nav className="flex justify-between w-full ">
@@ -140,13 +139,6 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
               Annuler
             </button>
           </div>
-          {/* 
-          <div className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 ">
-            <div className="flex items-center gap-3 pl-2 pr-2 text-sm font-semibold leading-tight text-center">
-              <Image src="/importerIcon.svg" alt="icons" width={20} height={20} />
-              Importer
-            </div>
-          </div> */}
 
           <div
             className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 "
@@ -159,8 +151,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
           </div>
         </div>
       </nav>
-      {/* <CreateExam examId={examenId} /> */}
-      {/* <EmailSend /> */}
+
       {isPending ? (
         <Skeleton />
       ) : (

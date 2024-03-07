@@ -9,7 +9,7 @@ function translateDateFormat(dateString: string): string {
 }
 const ClassesCards = ({ classes, isPending, etabId }: any) => {
   return (
-    <div className="grid w-full gap-4 2xl:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2">
+    <div className="grid w-full gap-4 2xl:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2">
       {isPending &&
         Array.from({ length: 4 }).map((_, index: any) => (
           <Skeleton key={index} className="w-[250px] h-[270px] rounded-xl pt-10" />
@@ -54,8 +54,8 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                     .map((student: any, index: number) => (
                       <Image
                         key={index}
-                        src={student.image || 'userAvatar/user3.svg'}
-                        alt="userAvatar"
+                        src={student.image || '/defaultUserAvatr.svg'}
+                        alt="user avatar"
                         width={40}
                         height={40}
                         className="inline-block rounded-full w-[40px] h-[40px] object-cover"

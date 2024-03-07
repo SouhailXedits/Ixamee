@@ -53,9 +53,13 @@ interface EstablishmentData {
 export const AddExameModal = ({ children }: AjouterUneClasse) => {
   const queryClient = useQueryClient();
   const user: any = queryClient.getQueryData(['user']);
-  const teacherEstab: any = queryClient.getQueryData(['teacherEstab']);
-
   const user_id = user?.id;
+  // const teacherEstab: any = queryClient.getQueryData(['teacherEstab']);
+  const { data: teacherEstab, isPending: isEstabsPending } = useQuery({
+    queryKey: ['teacherEstab', user_id],
+    queryFn: async () => await getEstablishmentOfUser(user_id),
+  });
+
 
   const userEstablishment = teacherEstab;
 
@@ -135,12 +139,12 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
   const subjectoptions = subject?.map((item: SubjectOutputProps) => {
     return {
       value: item.id,
-      label: item.name.length >10 ? item.name.substring(0, 10) + '...' : item.name
+      label: item.name.length > 10 ? item.name.substring(0, 10) + '...' : item.name,
     };
   });
   const classoption = classe?.map((item: any) => ({
     value: item.id,
-    label: item.name.length >10 ? item.name.substring(0, 10) + '...' : item.name,
+    label: item.name.length > 10 ? item.name.substring(0, 10) + '...' : item.name,
   }));
   const { creatExam, isPending } = useCreateExam();
   const verfierSchema = () => {
@@ -200,37 +204,40 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
             <Label className="text-[#959595]">
               établissement <span className="text-red">*</span>{' '}
             </Label>
+            {isEstabsPending ? (
+              <Skeleton className="w-full h-[40px]" />
+            ) : (
+              <Select
+                isMulti
+                name="estab"
+                options={userEstablishmentoptions}
+                onChange={(selectedOptions) => handleInputChange('establishment', selectedOptions)}
+                placeholder="Sélectionner votre classe"
+                styles={{
+                  option: (baseStyles, state) => ({
+                    ...baseStyles,
+                    fontSize: '14px',
+                    borderRadius: 12,
+                  }),
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    border: '1/4px solid #727272',
+                    fontSize: '14px',
+                    outline: '#727272',
+                    minWidth: '220px',
+                  }),
+                }}
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 8,
 
-            <Select
-              isMulti
-              name="estab"
-              options={userEstablishmentoptions}
-              onChange={(selectedOptions) => handleInputChange('establishment', selectedOptions)}
-              placeholder="Sélectionner votre classe"
-              styles={{
-                option: (baseStyles, state) => ({
-                  ...baseStyles,
-                  fontSize: '14px',
-                  borderRadius: 12,
-                }),
-                control: (baseStyles, state) => ({
-                  ...baseStyles,
-                  border: '1/4px solid #727272',
-                  fontSize: '14px',
-                  outline: '#727272',
-                  minWidth: '220px',
-                }),
-              }}
-              theme={(theme) => ({
-                ...theme,
-                borderRadius: 8,
-
-                colors: {
-                  ...theme.colors,
-                  primary: 'none',
-                },
-              })}
-            />
+                  colors: {
+                    ...theme.colors,
+                    primary: 'none',
+                  },
+                })}
+              />
+            )}
             {renderFieldError('establishment')}
           </div>
           <div className="flex flex-col gap-2">

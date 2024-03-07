@@ -56,7 +56,7 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
           x: 50,
           y: 50,
           label: {
-            text: `${numberOfStudent} Étudiant`,
+            text: `${numberOfStudent} Examens`,
             textAnchor: 'middle',
             style: {
               fontSize: '30px',

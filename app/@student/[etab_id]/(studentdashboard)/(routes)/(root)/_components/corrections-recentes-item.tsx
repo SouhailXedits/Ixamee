@@ -37,7 +37,7 @@ import BulletinsStudentList from './bulletins-student-list';
 //           </div>
 //           <div className="w-full border h-[300px] rounded-xl overflow-auto">
 //           <BulletinsStudentList />
-           
+
 //           </div>
 //         </div>
 //       )}
@@ -47,8 +47,11 @@ import BulletinsStudentList from './bulletins-student-list';
 
 // export default CorrectionsRecentes;
 
-function CorrectionsRecentes() {
-  return (
+function CorrectionsRecentes(data: any) {
+  console.log(data);
+  return data?.data ? (
+    <ExamCorrectionList data={data} />
+  ) : (
     <div className="w-full border h-full rounded-xl flex items-center justify-center p-10">
       <Rien
         image="/dashboard/bag.svg"
@@ -60,4 +63,3 @@ function CorrectionsRecentes() {
 }
 
 export default CorrectionsRecentes;
-

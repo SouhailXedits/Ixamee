@@ -64,7 +64,6 @@ export const getMarkSheets = async (filters: {
 
       return acc;
     }, {});
-    console.log(groupedData);
 
     let maxCoefficient = 0;
 
@@ -130,7 +129,6 @@ export const getMarkSheets = async (filters: {
     }
     const reRankedStudents = resultArray.map((student: any, i: number) => {
       if (i > 0 && student.average === resultArray[i - 1].average) {
-        console.log(student.rank, resultArray[i - 1].rank);
         return {
           ...student,
           rank: resultArray[i - 1].rank,
@@ -138,7 +136,6 @@ export const getMarkSheets = async (filters: {
       }
       return student;
     });
-    console.log(reRankedStudents);
 
     // const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
     // const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
@@ -216,7 +213,6 @@ export const getMarksheetByUserId = async (
 
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
   if (exam_id === 'undefined') return null;
-  console.log(data);
   const res = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
@@ -236,6 +232,5 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
       user_id: true,
     },
   });
-  console.log(res);
   return res;
 };

@@ -19,6 +19,7 @@ interface StatistiquesItemsProps {
   userCorrection: InputItem[];
   allStudentCount: number;
   studentCountPending: boolean;
+  correctionsProgress: any;
 }
 
 // ... (imports remain the same)
@@ -28,16 +29,16 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   userCorrection,
   allStudentCount,
   studentCountPending,
+  correctionsProgress,
 }) => {
-  console.log(userCorrection, 'userCorrection');
+  console.log(correctionsProgress, 'correctionsProgress');
   console.log(allStudentCount, 'userCorrection');
   console.log(studentCountPending, 'userCorrection');
 
   const transformedData = useMemo(
-    () => userCorrection && transformData(userCorrection, allStudentCount),
-    [userCorrection, allStudentCount]
+    () => correctionsProgress && transformData(correctionsProgress),
+    [correctionsProgress]
   );
-  console.log(transformedData);
 
   const [animatedCount, setAnimatedCount] = useState<number>(allStudentCount);
 
@@ -61,32 +62,34 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
 
   const defaultItems = useMemo(
     () => [
-      { color: '#D0D5DD', firstMessage: 'Non corrigées', studentNumber: 0 },
-      { color: '#D0D5DD', firstMessage: 'En cours de corrections', studentNumber: 0 },
-      { color: '#D0D5DD', firstMessage: 'Corrigées', studentNumber: 0 },
+      { color: '#D0D5DD', firstMessage: 'Entre 0 - 30%', studentNumber: 0 },
+      { color: '#D0D5DD', firstMessage: 'Entre 30 - 60%', studentNumber: 0 },
+      { color: '#D0D5DD', firstMessage: 'Entre 60 - 80%', studentNumber: 0 },
+      { color: '#D0D5DD', firstMessage: 'Plus de 80%', studentNumber: 0 },
     ],
     []
   );
 
   const items = useMemo(
     () =>
-      transformedData?.map((item) => ({
+      transformedData?.map((item:any) => ({
         color: finalCount || finalCount > 0 ? item.color : '#D0D5DD',
         firstMessage: item.status,
-        studentNumber: item.studentNumber,
+        numExams: item.numExams,
       })) || [],
     [transformedData, finalCount]
   );
 
   const series = useMemo(
-    () => transformedData?.map((item) => item.studentNumber) || [100],
+    () => transformedData?.map((item:any) => item.numExams) || [100],
     [transformedData]
   );
   const colors = useMemo(
-    () => transformedData?.map((item) => item.color) || ['#D9D9D9'],
+    () => transformedData?.map((item:any) => item.color) || ['#D9D9D9'],
     [transformedData]
   );
   console.log(items);
+
   return (
     <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px]  max-2xl:h-[400px]  overflow-y-scroll">
       <PieChartItem series={series} colors={colors} numberOfStudent={finalCount || '-'} />
@@ -101,7 +104,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
                 <div className="flex flex-col gap-1 pl-4">
                   <span className="text-[#727272]">{item.firstMessage}</span>
                   <span className="text-10 font-[500] leading-9">
-                    {item.studentNumber} étudiants
+                    {item.numExams} Examens
                   </span>
                 </div>
               </div>
@@ -117,7 +120,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
                 <div className="flex flex-col gap-1 pl-4">
                   <span className="text-[#727272]">{item.firstMessage}</span>
                   <span className="text-10 font-[500] leading-9">
-                    {item.studentNumber} étudiants
+                    {item.studentNumber} Examens
                   </span>
                 </div>
               </div>

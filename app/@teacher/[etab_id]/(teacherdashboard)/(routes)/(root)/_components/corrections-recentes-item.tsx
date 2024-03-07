@@ -36,9 +36,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
 
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', filters.exam_id, filters.classe_id],
-    enabled: filters.exam_id !== undefined || filters.classe_id !== undefined,
     queryFn: async () => await getCorrectionOfUser(filters.classe_id, data, filters.exam_id),
-
   });
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
@@ -69,14 +67,14 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
     <>
       {!newData ? (
         <>
-          <div className="flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end gap-3 self-end w-[50%]">
             {/* Devoir */}
             <Select
               value={filters.classe_id}
               onValueChange={(value) => setFilters({ ...filters, classe_id: value })}
               disabled={!userClasses?.length}
             >
-              <SelectTrigger className="w-1/4 rounded-xl text-11 max-md:w-full">
+              <SelectTrigger className="w-full rounded-xl text-11 max-md:w-full">
                 <SelectValue className="text-sm" placeholder="Classe" />
               </SelectTrigger>
               <SelectContent>

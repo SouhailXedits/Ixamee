@@ -70,12 +70,12 @@ export const ConfirmUnarchiveModel = ({ id, children, isExam }: editEstabProps) 
               Annuler
             </Button>
           </DialogClose>
-          <DialogClose>
+          <DialogClose className=' w-full'>
             <Button
               onClick={() => handleClick()}
               type="submit"
               disabled={isPending}
-              className="w-full bg-[#F04438] hover:opacity-80 "
+              className="w-full bg-2 hover:opacity-80 "
             >
               Restaurer.
             </Button>

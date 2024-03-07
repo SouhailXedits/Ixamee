@@ -12,7 +12,7 @@ export default function Page() {
   const params = useParams();
 
   const { data: classe, isPending: isPendingClasse } = useQuery({
-    queryKey: ['classe'],
+    queryKey: ['classe', params?.classesId],
     queryFn: async () => await getClasseById(+params?.classesId),
   });
 
