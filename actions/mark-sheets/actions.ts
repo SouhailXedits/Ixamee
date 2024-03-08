@@ -105,12 +105,6 @@ export const getMarkSheets = async (filters: {
           };
         });
 
-        // const totalMarksObtained = examsInfo.reduce(
-        //   (acc: any, exam: any) => acc + exam.marksObtained,
-        //   0
-        // );
-        // const totalCoefficient = examsInfo.reduce((acc: any, exam: any) => acc + exam.coefficient, 0);
-
         let overallAverage =
           examsInfo.reduce(
             (acc: any, exam: any): any => acc + exam.overTwentyAvg * exam.coefficient,
@@ -127,17 +121,41 @@ export const getMarkSheets = async (filters: {
         };
       });
     }
-    const reRankedStudents = resultArray.map((student: any, i: number) => {
-      if (i > 0 && student.average === resultArray[i - 1].average) {
-        return {
-          ...student,
-          rank: resultArray[i - 1].rank,
-        };
+    const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
+    let currentRank = 1;
+    let previousAvg : number = -1;
+    
+    const reRankedStudents = sortedData.map((student, index) => {
+      if (previousAvg !== -1 && student.average !== previousAvg) {
+        currentRank = index + 1;
       }
-      return student;
+      previousAvg = student.average;
+      return {
+        ...student,
+        rank: currentRank,
+      }
+      // student.rank = currentRank;
     });
 
-    // const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
+    console.log(reRankedStudents);
+
+    // const reRankedStudents = sortedData.map((student: any, i: number) => {
+    //   if (i === 0) {
+    //     return {
+    //       ...student,
+    //       rank: 1,
+    //     };
+    //   }
+    //   if (i > 0 && student.average === resultArray[i - 1].average) {
+    //     return {
+    //       ...student,
+    //       rank: resultArray[i - 1].rank,
+    //     };
+    //   }
+    //   return student;
+    // });
+    // console.log(reRankedStudents);
+
     // const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
 
     return { data: reRankedStudents || { data: [] }, error: undefined };

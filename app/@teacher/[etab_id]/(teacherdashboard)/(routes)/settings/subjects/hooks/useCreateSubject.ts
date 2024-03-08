@@ -9,7 +9,7 @@ export function useCreateSubject() {
     mutationFn: (data: SubjectInputProps) => createSubjectApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] });
-      toast.success('Matière creé avec succès.');
+      toast.success('Matière crée avec succès.');
     },
     onError: (err) => {
       toast.error('Une erreur est survenue lors de la création de la matière.');

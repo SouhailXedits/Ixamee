@@ -38,8 +38,7 @@ const Student = () => {
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
-
-  // const subjects = queryClient.getQueryData(['teacherSubject']) as any;
+  
   console.log(classes)
   const { data: subjects, isPending: isSubjectsPending } = useQuery<any>({
     queryKey: ['teacherSubject', filters.classe_id],

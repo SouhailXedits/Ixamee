@@ -135,11 +135,20 @@ export const columns = [
   {
     accessorKey: 'name',
 
-    header: () => {
-      return <span className="text-[#1B8392] ">Nom et prénom</span>;
+    header: ({ column }: any) => {
+      return (
+        <Button
+          className="text-[#1B8392]  hover:text-[#1B8392]"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Nom et prénom
+          <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
     },
     cell: ({ row }: any) => (
-      <div className="flex items-center gap-2"> 
+      <div className="flex items-center gap-2">
         <Image
           src={row?.original?.image ? row?.original?.image : '/defaultUserAvatr.svg'}
           alt=""
@@ -147,7 +156,7 @@ export const columns = [
           height={42}
           className="rounded-full object-cover  h-[42px] w-[42px]"
         />
-    
+
         <HoverCard>
           <HoverCardTrigger asChild>
             <span className="">
@@ -169,13 +178,9 @@ export const columns = [
     accessorKey: 'email',
     header: ({ column }: any) => {
       return (
-        <Button
-          className="text-[#1B8392]  hover:text-[#1B8392]"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
+        <Button className="text-[#1B8392]  hover:text-[#1B8392]" variant="ghost">
           Email
-          <ArrowUpDown className="w-4 h-4 ml-2" />
+          
         </Button>
       );
     },
