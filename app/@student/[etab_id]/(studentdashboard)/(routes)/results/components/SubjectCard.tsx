@@ -8,7 +8,7 @@ function SubjectCard({ subject, etab_id }: any) {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return (
     <div
-      className={`min-w-[320px] justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden `}
+      className={`w-[330px] justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden `}
       style={{
         backgroundColor: colors[randomIndex],
       }}
@@ -24,7 +24,7 @@ function SubjectCard({ subject, etab_id }: any) {
         <div className="z-0 flex items-center gap-3">
           <Image alt="MatierIcon" src={subject.icon} width={35} height={35} />
           <div className="w-full truncate whitespace-nowrap">
-            <span className="text-[#1B8392] text-lg  leading-[25px] font-semibold">
+            <span className="text-[#1B8392] text-lg  leading-[25px] font-semibold truncate">
               {subject.name}{' '}
             </span>
             <span className="truncate text-mainGreen/70">({subject.classe_subject[0].name})</span>
