@@ -106,7 +106,7 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
         </div>
 
         <DialogFooter>
-          <DialogClose asChild>
+          <DialogClose asChild className=' w-full'>
             <Button
               type="submit"
               className="w-full bg-white
@@ -115,7 +115,7 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
               Annuler
             </Button>
           </DialogClose>
-          <DialogClose>
+          <DialogClose className=' w-full'>
             <Button
               type="submit"
               className="w-full text-white bg-2 hover:opacity-80"
