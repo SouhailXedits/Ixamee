@@ -511,6 +511,7 @@ export const getStudentClassCount = async ({
 
 export const getStudentOfClasse = async (classe_id: number) => {
   if (!classe_id) return null;
+  console.log("🚀 ~ file: index.ts:classe_id", classe_id);
   const res = await db.user.findMany({
     where: {
       role: 'STUDENT',
@@ -682,6 +683,7 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
 };
 export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
   if (!exam_id || !userData) return null;
+  console.log(exam_id, userData, "🎒");
 
   const data = await db.examCorrection.findMany({
     where: {

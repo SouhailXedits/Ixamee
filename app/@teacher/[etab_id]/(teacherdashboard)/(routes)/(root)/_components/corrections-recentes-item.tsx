@@ -33,17 +33,18 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
     queryFn: async () =>
       await getAllExamsNameAndId({ user_id: userId, etab_id: etabId, classe_id }),
   });
+  console.log(userExams, '(aezaazfazfazfazfazf')
 
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', filters.exam_id, filters.classe_id],
     queryFn: async () => await getCorrectionOfUser(filters.classe_id, data, filters.exam_id),
   });
+  console.log( userCorrection, 'userCorrection✅')
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
     queryKey: ['userOfClasses', filters.classe_id],
     queryFn: async () => await getStudentOfClasse(+filters.classe_id),
-
   });
 
   const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
@@ -55,12 +56,14 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
       await getCorigeExameContentOfAllUser(filters.exam_id, getIdOfUserInTheClasse),
   });
   const newData = useMemo(() => {
-    return data?.map((item: any) => ({
-      ...item,
-      correctionExamOfUser: getCorrigeExamOfUser,
-      status:
-        userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
-    }));
+    if(userCorrection) {
+      return data?.map((item: any) => ({
+        ...item,
+        correctionExamOfUser: getCorrigeExamOfUser,
+        status:
+          userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
+      }));
+    }
   }, [data, userCorrection]);
 
   return (
@@ -97,13 +100,11 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>
-                {userExams && userExams.length > 0
-                  ? userExams.map((exam: any) => (
+                { userExams?.map((exam: any) => (
                       <SelectItem key={exam.id} value={exam.id}>
                         {exam.name}
                       </SelectItem>
-                    ))
-                  : null}
+                    ))}
               </SelectContent>
             </Select>
           </div>
@@ -145,8 +146,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>
-                {userExams?.length &&
-                  userExams?.map((exam: any) => (
+                {userExams?.map((exam: any) => (
                     <SelectItem key={exam.id} value={exam.id}>
                       {exam.name}
                     </SelectItem>

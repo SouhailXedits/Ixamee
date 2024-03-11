@@ -230,7 +230,7 @@ export const getMarksheetByUserId = async (
 };
 
 export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
-  if (exam_id === 'undefined') return null;
+  if (!exam_id || !class_id) return null;
   const res = await db.examCorrection.findMany({
     where: {
       exam_id: +exam_id,
