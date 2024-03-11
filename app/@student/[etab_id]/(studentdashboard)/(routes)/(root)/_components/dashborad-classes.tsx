@@ -15,7 +15,7 @@ const DashboradClasses = ({ subjects, isPending, allSubjectsCount, classId }: an
         </div>
         <span className="text-[#1B8392] text-lg font-[500] underline cursor-pointer">
           <Link href={`/${classId}/results`}>
-            Voir plus ({isPending ? 0 : allSubjectsCount > 2 ? allSubjectsCount - 2 : 0})
+            Voir plus ({isPending ? 0 : allSubjectsCount > 4 ? allSubjectsCount - 4 : 0})
           </Link>
         </span>
       </div>
