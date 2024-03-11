@@ -185,7 +185,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   }
   console.log(newData, 'newData');
   const userNotCorrected = notCorrected(userCorrection);
-
+  const alphabiticSorted = newData?.sort((a, b) => a.name.localeCompare(b.name));
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full gap-14 ">
@@ -258,7 +258,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       ) : (
         <div className="pt-6 max-lg:pt-20 max-ml:pt-30">
           <StudentList
-            data={newData}
+            data={alphabiticSorted}
             class_id={classesId}
             isPending={isPendingClasse}
             isPendingUserOfClasses={isPendingUserOfClasses}
