@@ -69,6 +69,7 @@ export const getClasseByClassId = async (id: number) => {
   const classe = await db.classe.findUnique({
     where: {
       id: id,
+      is_archived: false,
     },
     include: {
       exam_classe: {
@@ -76,6 +77,9 @@ export const getClasseByClassId = async (id: number) => {
           name: true,
           id: true,
         },
+        where: {
+          is_archived: false,
+        }
       },
       student_class: {
         where: {
