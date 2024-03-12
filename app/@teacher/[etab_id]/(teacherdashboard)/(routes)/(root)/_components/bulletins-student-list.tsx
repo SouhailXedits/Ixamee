@@ -81,7 +81,7 @@ const BulletinsStudentList = ({ data, nameClasse }: any) => {
                   alt="user"
                   width={38}
                   height={38}
-                  className="h-full"
+                  className="h-full rounded-full"
                 />
                 <div className="text-gray-900 text-xs font-medium  leading-[25px]">
                   {student.name}

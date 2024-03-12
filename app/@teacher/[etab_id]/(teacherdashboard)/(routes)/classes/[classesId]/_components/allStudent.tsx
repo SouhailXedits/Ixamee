@@ -97,7 +97,7 @@ export const AllStudentList = ({
                       {translateDateFormat(student.createdAt)}
                     </td>
                   </tr>
-                  {studentCount % 21 === 0 && <div className=" h-16" />}
+                  {studentCount % 18 === 0 && <div className=" h-24" />}
                 </>
               );
             })}

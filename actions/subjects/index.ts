@@ -327,3 +327,25 @@ export const getAllSubjectNameById = async (subject_id: number) => {
 //
 //   return subject;
 // };
+
+
+// const getFirstFourSubjects = async (classeId: number) => {
+//   const res = await db.subject.findMany({
+//     where: {
+//       classe_subject: {
+//         some: {
+//           id: classeId,
+//         },
+//       },
+//       is_archived: false,
+//     },
+//     select: {
+//       id: true,
+//       name: true,
+//       coefficient: true,
+//       icon: true,
+//       teacher: {
+//         select: {
+//           id: true,
+//           name: true,
+//           image: true,

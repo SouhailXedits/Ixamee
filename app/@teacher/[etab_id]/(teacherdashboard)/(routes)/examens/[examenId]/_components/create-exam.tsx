@@ -45,7 +45,7 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
   // if (!data) return;
   return (
     <div dir={!isArabic ? 'ltr' : 'rtl'}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 p-10">
         {fakeData?.map((item: any, index: number) => (
           <CreateExercice
             allData={fakeData}

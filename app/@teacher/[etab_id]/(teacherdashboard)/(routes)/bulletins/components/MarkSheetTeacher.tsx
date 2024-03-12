@@ -57,7 +57,7 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
               return (
                 <>
                   <StudentRow data={student} key={i} />
-                  {studentCount % 20 === 0 && <div className=" h-16" />}
+                  {studentCount % 18 === 0 && <div className=" h-24" />}
                 </>
               );
             })}
