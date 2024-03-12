@@ -132,8 +132,8 @@ export default function Page({
   if (!examContent) return <Loading />;
 
   return (
-    <div className="flex flex-col gap-6 p-10">
-      <nav className="flex justify-between w-full ">
+    <div className="flex flex-col gap-6">
+      <nav className="flex justify-between w-full sticky top-0 left-0 p-4 z-[50] bg-white shadow-md">
         <div className="flex flex-col gap-4">
           {isPending ? (
             <Skeleton className="w-[300px] h-[40px]" />
@@ -153,12 +153,13 @@ export default function Page({
             ) : (
               <>
                 <span className="cursor-pointer" onClick={() => router.back()}>
-                  {data?.exam_classess.map((item: any) => item.name.length >10 ? item.name.slice(0, 10) + '...' : item.name).join(', ')}
-                  </span>
-                  
+                  {data?.exam_classess
+                    .map((item: any) =>
+                      item.name.length > 10 ? item.name.slice(0, 10) + '...' : item.name
+                    )
+                    .join(', ')}
+                </span>
 
-
-                  
                 <Image src="/arrowleft.svg" alt="icons" width={20} height={20} />
 
                 <HoverCard>
@@ -234,7 +235,7 @@ export default function Page({
         realExamContetn={examContentt}
       />
 
-      <div className="fixed right-4 bottom-4">
+      <div className="fixed right-4 bottom-4 ">
         <StudentFeadback params={params}>
           <Image
             src="/bigEditNote.svg"
