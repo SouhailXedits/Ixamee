@@ -16,6 +16,7 @@ export const getMarkSheets = async (filters: {
           subject: {
             id: filters.subject_id,
           },
+          is_archived: false,
         },
         user: {
           classe: {
