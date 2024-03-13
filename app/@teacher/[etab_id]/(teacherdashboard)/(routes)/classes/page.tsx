@@ -8,6 +8,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
 import { getMe } from '@/actions/examens';
+import Pagination from '@/components/shared-components/Pagination';
+
 
 export default function Classes() {
   const params = useParams();
@@ -21,7 +23,7 @@ export default function Classes() {
   //   retry: true,
   // });
   // const etab_id = (queryClient.getQueryData(['etab_id']) as number) || params.etab_id as number;
-  const user = queryClient.getQueryData(['user']) as any ;
+  const user = queryClient.getQueryData(['user']) as any;
 
   const user_id = user?.id as string;
 
@@ -31,11 +33,21 @@ export default function Classes() {
     retry: true,
   });
 
-  // to DO Scelton
+  
+  
   const filteredData = data?.data?.filter((classe: any) => {
     const classes = classe.name.toLowerCase();
     return classes.includes(value.toLowerCase());
   });
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 12; 
+
+  const totalPages = Math.ceil(filteredData?.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedData = filteredData?.slice(startIndex, endIndex);
+
 
   return (
     <main className="flex flex-col gap-6 p-10 h-full">
@@ -50,7 +62,7 @@ export default function Classes() {
         </div>
 
         <div className="flex gap-3 pt-4 cursor-pointer max-md:flex-wrap h-14">
-          <div className="flex cursor-pointer items-center gap-3 rounded-lg border border-[#99C6D3]  max-md:w-full p-2 hover:opacity-80 ">
+          <div className="flex cursor-pointer items-center gap-3 rounded-lg border border-[#99C6D3] max-md:w-full p-2 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
             <input
@@ -71,14 +83,18 @@ export default function Classes() {
         </div>
       </nav>
 
-      <div className="max-md:pt-10 h-full">
+      <div className="max-md:pt-10 h-full flex flex-col justify-between gap-6 pb-10">
         <ClasseCardContainer
-          data={filteredData}
+          data={paginatedData}
           user_id={user?.id}
           estab={etab_id}
           // class_id ={}
           isPending={isPending}
         />
+        <div className=' pb-8'>
+
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+        </div>
       </div>
     </main>
   );

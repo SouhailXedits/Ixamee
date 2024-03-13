@@ -3,6 +3,7 @@ import ClasseCard from './classe-card';
 import { AjouterUneClasse } from '@/components/modals/ajouter-une-classe';
 import { cn } from '@/lib/utils';
 
+
 const ClasseCardContainer = ({
   data,
   isPending,
@@ -19,7 +20,7 @@ const ClasseCardContainer = ({
     <div
       className={cn(
         !isPending &&
-          'grid w-full gap-4 2xl:grid-cols-5 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2',
+          'grid w-full gap-4 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2',
         isPending && ' flex flex-wrap gap-5'
       )}
     >
