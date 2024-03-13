@@ -128,7 +128,7 @@ export const columns = [
     cell: ({ row }: any) => (
       <div className="w-10 h-[21px] p-2.5 bg-[#D8ECF3] rounded-[10px] border border-[#1B8392] flex-col justify-center items-center gap-2.5 inline-flex">
         <div className="text-center text-[#1B8392] text-sm font-semibold ">
-          {+row.id + 1}
+          {+row.id}
           {/* {row.getValue('range')}  */}
         </div>
       </div>
