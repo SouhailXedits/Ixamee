@@ -99,7 +99,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
       </div>
 
       <Link
-        href={`classes/${data.id}`}
+        href={`classes/${data.id}?page=0`}
         key={data.id}
         className=" pl-3 pr-3 text-md font-[700] leading-tight text-center text-white"
       >

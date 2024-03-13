@@ -81,7 +81,7 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
             <Select
               value={filters.exam_id}
               onValueChange={(value) => setFilters({ ...filters, exam_id: value })}
-              disabled={!userExams}
+              disabled={!userExams?.length}
             >
               <SelectTrigger className="w-1/4 rounded-xl text-11 max-md:w-full">
                 <SelectValue className="text-sm" placeholder="examan" />

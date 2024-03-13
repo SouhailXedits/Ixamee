@@ -94,17 +94,17 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
             <Select
               value={filters.exam_id}
               onValueChange={(value) => setFilters({ ...filters, exam_id: value })}
-              disabled={!filters.classe_id}
+              disabled={!userExams?.length}
             >
               <SelectTrigger className="max-md:w-full rounded-xl text-11">
                 <SelectValue className="text-sm" placeholder="examan" />
               </SelectTrigger>
               <SelectContent>
-                { userExams?.map((exam: any) => (
-                      <SelectItem key={exam.id} value={exam.id}>
-                        {exam.name}
-                      </SelectItem>
-                    ))}
+                {userExams?.map((exam: any) => (
+                  <SelectItem key={exam.id} value={exam.id}>
+                    {exam.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -147,10 +147,10 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
               </SelectTrigger>
               <SelectContent>
                 {userExams?.map((exam: any) => (
-                    <SelectItem key={exam.id} value={exam.id}>
-                      {exam.name}
-                    </SelectItem>
-                  ))}
+                  <SelectItem key={exam.id} value={exam.id}>
+                    {exam.name}
+                  </SelectItem>
+                ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
               </SelectContent>
