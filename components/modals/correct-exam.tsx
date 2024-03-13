@@ -356,6 +356,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
                   min={0}
                   value={note}
                   onChange={handelSubmitCorrectionExam}
+                  disabled
                 />
                 <span>/</span>
                 <span className="flex items-center text-xl ">{new_total_mark}</span>

@@ -38,7 +38,7 @@ export default function Classes() {
   });
 
   return (
-    <main className="flex flex-col gap-6 p-10 ">
+    <main className="flex flex-col gap-6 p-10 h-full">
       <nav className="flex justify-between w-full max-md:flex-col">
         <div className="flex flex-col gap-4">
           <div className="text-2xl font-semibold text-[#1B8392] ">Classes</div>
@@ -71,7 +71,7 @@ export default function Classes() {
         </div>
       </nav>
 
-      <div className="max-md:pt-10">
+      <div className="max-md:pt-10 h-full">
         <ClasseCardContainer
           data={filteredData}
           user_id={user?.id}
