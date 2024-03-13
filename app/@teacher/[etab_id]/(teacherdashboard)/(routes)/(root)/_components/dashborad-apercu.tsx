@@ -60,7 +60,7 @@ const DashboradApercu = ({
     },
   ];
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 overflow-auto">
       <div className="flex gap-3">
         <Image alt="apercu" src="dashboard/apercu.svg" width={20} height={20} />
         <span className="text-xl font-[500] text-11">Aperçu</span>

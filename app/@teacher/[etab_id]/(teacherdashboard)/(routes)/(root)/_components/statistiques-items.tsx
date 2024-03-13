@@ -31,9 +31,12 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   studentCountPending,
   correctionsProgress,
 }) => {
-  console.log(correctionsProgress, 'correctionsProgress');
-  console.log(allStudentCount, 'userCorrection');
-  console.log(studentCountPending, 'userCorrection');
+  console.log("🚀 ~ userCorrection:", userCorrection)
+  console.log("🚀 ~ classeExam:", classeExam)
+  console.log("🚀 ~ correctionsProgress:", correctionsProgress)
+  console.log("🚀 ~ studentCountPending:", studentCountPending)
+  console.log("🚀 ~ allStudentCount:", allStudentCount)
+
 
   const transformedData = useMemo(
     () => correctionsProgress && transformData(correctionsProgress),
@@ -104,7 +107,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
                 <div className="flex flex-col gap-1 pl-4">
                   <span className="text-[#727272]">{item.firstMessage}</span>
                   <span className="text-10 font-[500] leading-9">
-                    {item.numExams} Examens
+                    {item.numExams} Etudiant(s)
                   </span>
                 </div>
               </div>
@@ -120,7 +123,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
                 <div className="flex flex-col gap-1 pl-4">
                   <span className="text-[#727272]">{item.firstMessage}</span>
                   <span className="text-10 font-[500] leading-9">
-                    {item.studentNumber} Examens
+                    {item.studentNumber} Etudiant(s)
                   </span>
                 </div>
               </div>
