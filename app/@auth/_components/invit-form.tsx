@@ -22,6 +22,7 @@ import { generateSixDigitNumber } from '@/actions/auth/codeGenerator';
 import { useRouter } from 'next/navigation';
 import { sendEmailVerificationToken } from '@/actions/auth/sendEmailVerificationToken';
 import { RegisterInvitedStudent } from '@/actions/auth/registerInvitedStudent';
+import { login } from '@/actions/auth/login';
 
 export default function InvitForm({ email }: any) {
   const [error, setError] = useState<string | undefined>('');
@@ -53,27 +54,23 @@ export default function InvitForm({ email }: any) {
         setError(data?.error);
 
         setSuccess(data?.success);
-        if (data?.success) {
-          localStorage.setItem(
-            'new-verification',
-            JSON.stringify({
-              email: values.email,
-              code: hashedCode,
-              password: values.password,
-              role: 'STUDENT',
-            })
-          );
-          sendEmailVerificationToken(values.email);
-        }
+
+        login(
+          {
+            email: values?.email || '',
+            password: values?.password,
+            rememberMe: true,
+          },
+          123456
+        ).then(() => {
+          console.log('logged in successfully');
+          localStorage.removeItem('new-verification');
+          setRegistrationFormSuccessful(true);
+        });
       });
     });
   };
 
-  useEffect(() => {
-    if (isRegistrationFormSuccessful) {
-      router.push('/teacher-after');
-    }
-  }, [isRegistrationFormSuccessful, router]);
 
   return (
     <Form {...form}>

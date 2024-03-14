@@ -50,7 +50,7 @@ export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) 
             <Button
               type="submit"
               className="w-full text-white bg-[#177C9A] hover:opacity-80"
-              onClick={() => updateInvitationUser({studentEmail, teacherEmail})}
+              onClick={() => updateInvitationUser({ studentEmail, teacherEmail })}
             >
               Inviter
             </Button>

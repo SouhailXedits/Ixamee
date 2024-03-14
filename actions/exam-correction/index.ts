@@ -92,6 +92,41 @@ export const getUserCorrectionBySubject = async (
   }
 };
 
+export const getUserCorrectionBySubjectId = async (user_id: string, subject_id: string) => {
+  try {
+    const res = await db.examCorrection.findMany({
+      select: {
+        id: true,
+        mark_obtained: true,
+        exam: {
+          select: {
+            total_mark: true,
+            name: true,
+            subject: {
+              select: {
+                name: true,
+                coefficient: true,
+              },
+            },
+          },
+        },
+      },
+      where: {
+        user_id: user_id,
+        exam: {
+          subject_id: +subject_id,
+        },
+      },
+    });
+    return res;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get exam corrections.',
+    };
+  }
+};
+
 export const getExamCorrectionById = async (exam_id: string, classe_id: string) => {
   try {
     console.log(exam_id);
@@ -240,7 +275,7 @@ export const getCorrectionProgressStats = async (classe_id: number, exam_id: num
       mark_obtained: true,
     },
   });
-  console.log("🚀 ~ getCorrectionProgressStats ~ res:", res)
+  console.log('🚀 ~ getCorrectionProgressStats ~ res:', res);
   const groupedData = groupByCorrectionProgress(res);
   console.log(groupedData);
   return groupedData;

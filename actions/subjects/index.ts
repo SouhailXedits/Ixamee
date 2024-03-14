@@ -14,7 +14,7 @@ export const createSubject = async (data: SubjectInputProps) => {
   }
 };
 export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') => {
-  console.log('page', page)
+  console.log('page', page);
   try {
     const skip = (page - 1) * pageSize;
 
@@ -195,23 +195,24 @@ export const getAllSubjectsByClasseId = async (classeId: number | undefined) => 
           id: classeId,
         },
       },
-      // exams: {
-      //   select: {
-      //     id: true,
-      //     name: true,
-      //     term: true,
-      //   },
-      //   where: {
-      //     is_archived: false,
-      //     exam_classess: {
-      //       some: {
-      //         id: classeId,
-      //       },
-      //     },
-      //   },
-      // },
+      exams: {
+        select: {
+          id: true,
+          name: true,
+          term: true,
+        },
+        where: {
+          is_archived: false,
+          exam_classess: {
+            some: {
+              id: classeId,
+            },
+          },
+        },
+      },
     },
   });
+  console.log('🚀 ~ getAllSubjectsByClasseId ~ res:', res);
 
   return res;
 };
@@ -327,7 +328,6 @@ export const getAllSubjectNameById = async (subject_id: number) => {
 //
 //   return subject;
 // };
-
 
 // const getFirstFourSubjects = async (classeId: number) => {
 //   const res = await db.subject.findMany({
