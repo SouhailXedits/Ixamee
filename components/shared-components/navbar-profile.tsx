@@ -59,7 +59,7 @@ const NavbarProfile = () => {
       </div>
 
       <div className="flex flex-col items-start">
-        <span className="w-[120px] text-[#1B8392] text-sm font-semibold whitespace-nowrap ">
+        <span className="w-full text-[#1B8392] text-sm font-semibold whitespace-nowrap">
           {user?.name}{' '}
         </span>
         <span className="w-[120px] text-[#99C6D3] text-xs font-thin ">
