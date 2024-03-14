@@ -144,7 +144,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
   });
   const classoption = classe?.map((item: any) => ({
     value: item.id,
-    label: item.name.length > 10 ? item.name.substring(0, 10) + '...' : item.name,
+    label: item.name,
   }));
   const { creatExam, isPending } = useCreateExam();
   const verfierSchema = () => {
@@ -317,7 +317,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
               ) : (
                 <Select
                   isMulti
-                  options={classoption.length > 8 ? classoption.slice(0, 8) : classoption}
+                  options={classoption}
                   isDisabled={formData.establishment.length == 0}
                   onChange={(selectedOptions) => handleInputChange('classes', selectedOptions)}
                   placeholder="Sélectionner votre classe"

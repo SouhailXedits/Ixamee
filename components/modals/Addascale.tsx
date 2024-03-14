@@ -37,7 +37,7 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
     setContent(exam?.content);
   }, [exam?.content]);
   // const whidth = 500;
-  const whidth = Math.min(content?.length * 200 + 200, 500);
+  const whidth = Math.min(content?.length * 200 + 200, 1500);
 
   let some = 0;
   const result = content?.map((item: any) => {
@@ -52,7 +52,7 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
 
     editExam({ exam_id: exam.id, content, is_published });
   };
-  const tes = 1000;
+  const tes = 1500;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
@@ -64,7 +64,7 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
             Ajouter un barème
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className=" text-neutral-400 text-[15px] font-normal flex gap-2 max-w-[400px] overflow-auto">
+        <DialogDescription className=" text-neutral-400 text-[15px] font-normal flex gap-2 overflow-auto">
           {content?.map((item: any) => {
             return (
               <div className=" min-w-[220px] border-[#dedbdb] border-[1px] p-2  rounded-lg flex flex-col gap-2 ">

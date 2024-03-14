@@ -82,7 +82,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
 
 
   return (
-    <div className="flex h-[100vh] flex-col gap-6 overflow-auto">
+    <div className="flex h-[92vh] flex-col gap-6 overflow-auto">
       <nav className="flex justify-between w-full sticky top-0 left-0 p-4 z-[50] bg-white shadow-md">
         <div className="flex flex-col gap-4">
           {/* {isPending ? (

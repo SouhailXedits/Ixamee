@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import Navbar from '../../../../components/shared-components/navbar';
 import { useQueryClient } from '@tanstack/react-query';
 import MobileSideBar from './(routes)/examens/[examenId]/_components/MobileSideBar';
+import { useEffect } from 'react';
 
 type DashboardLayoutProps = {
   params?: {
@@ -18,19 +19,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ params, children }) =
   if (params?.etab_id) {
     queryClient.setQueryData(['etab_id'], params?.etab_id);
   }
-
-  // const { data, isPending } = useQuer({
-  //   queryKey: ['user'],
-  //   queryFn: async () => await getMe(),
-  //   staleTime: 0,
-  // });
-
-  // const { data: teachersubject, isPending: isPendingSubject } = useQuery<any>({
-  //   queryKey: ['teachersubjects'],
-  //   queryFn: async () => await getSubjectOfUserById(data?.id as string),
-  //   staleTime: 0,
-  // });
-
   const { collapsed } = useSidebar((state) => state);
 
   return (

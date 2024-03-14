@@ -5,7 +5,7 @@ interface PdfHeaderProps {
   meta: any;
 }
 
-function PdfHeader({ type, meta }: PdfHeaderProps) {
+function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
   console.log(meta)
   return (
     <div
@@ -468,4 +468,4 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
   );
 }
 
-export default PdfHeader;
+export default PdfHeaderEvatuation;

@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800&family=Public+Sans:ital,wght@0,200;0,300;0,400;1,100;1,700&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
 
 @layer base {
+  img { display: initial }
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
