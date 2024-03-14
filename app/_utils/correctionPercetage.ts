@@ -1,27 +1,13 @@
 export function calculateCorrectionPercentage(entry: any) {
-  if (entry.status === 'done' || entry.status === 'absent' || entry.status === 'notClassified') {
-    return 100;
-  } else if (entry.status === 'notCorrected') {
+  console.log('🚀 ~ calculateCorrectionPercentage ~ entry:', entry);
+  if (entry.status === 'absent' || entry.status === 'notClassified') {
     return 0;
-  } else if (entry.status === 'pending') {
-    let totalQuestions = 0;
-    let nullMarks = 0;
-
-    if (entry.correction_exam_content) {
-      for (const exercise of entry.correction_exam_content) {
-        for (const question of exercise.children) {
-          if (question.mark === null) {
-            nullMarks++;
-          }
-          totalQuestions++;
-        }
-      }
-    }
-
-    return totalQuestions === 0 ? 0 : (1 - nullMarks / totalQuestions) * 100;
+  } else if (entry.status === 'done') {
+    const percentage = (entry.mark_obtained * 100) / entry?.exam?.total_mark;
+    return percentage;
+  } else {
+    return 0;
   }
-
-  return 0;
 }
 
 export function groupByCorrectionProgress(data: any) {
@@ -44,7 +30,6 @@ export function groupByCorrectionProgress(data: any) {
       counts['plus de 80%']++;
     }
   }
-  console.log(counts);
 
   return counts;
 }

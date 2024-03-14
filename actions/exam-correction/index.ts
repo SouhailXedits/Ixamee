@@ -225,15 +225,22 @@ export const getCorrectionProgressStats = async (classe_id: number, exam_id: num
             id: classe_id,
           },
         },
+        is_published: true,
       },
     },
     select: {
       user_id: true,
       status: true,
       correction_exam_content: true,
+      exam: {
+        select: {
+          total_mark: true,
+        },
+      },
+      mark_obtained: true,
     },
   });
-  console.log(res);
+  console.log("🚀 ~ getCorrectionProgressStats ~ res:", res)
   const groupedData = groupByCorrectionProgress(res);
   console.log(groupedData);
   return groupedData;

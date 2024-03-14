@@ -7,6 +7,9 @@ interface PieChartItemProps {
   numberOfStudent: number | '-';
 }
 const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStudent }) => {
+  if (series.length === 4) {
+    numberOfStudent = series.reduce((sum, student) => sum + student, 0);
+  }
   // const series = [11, 11, 13, 8]
   // const series = [11]
 

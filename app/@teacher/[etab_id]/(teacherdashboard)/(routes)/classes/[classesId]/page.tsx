@@ -89,6 +89,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // set the default exam if he find a exam  : 3la 5ater bach ki yadhreb yadhreb 3la el examan mo33ain
   useEffect(() => {
     const note = classe?.exam_classe[0]?.id;
+    console.log("🚀 ~ useEffect ~ note:", note)
     setExam(note + '');
   }, [classe, isPendingClasse]);
 

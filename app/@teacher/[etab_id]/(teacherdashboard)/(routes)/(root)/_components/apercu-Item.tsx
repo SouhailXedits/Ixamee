@@ -33,7 +33,7 @@ const ApercuItem = ({ color, icon, stat, name, count, isPending, textColor }: Ap
   let finalCount = animatedCount;
   return (
     <div
-      className="w-1/4 h-[93px] px-2.5 bg-red-50 rounded-[20px] justify-start items-center gap-2.5 inline-flex   min-w-[220px]"
+      className="w-1/4 h-[93px] px-2.5 bg-red-50 rounded-[20px] justify-start items-center gap-2.5 inline-flex min-w-[220px] overflow-auto max-lg:w-full"
       style={{ backgroundColor: color }}
     >
       <div className="w-[60px] h-[60px] p-[5px] bg-white rounded-2xl flex-col justify-center items-center gap-2.5 inline-flex ">

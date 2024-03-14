@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -14,56 +13,55 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-interface AjouterUneClasse {
+import * as z from 'zod';
+import Select from 'react-select';
+import { DialogClose } from '@radix-ui/react-dialog';
+
+interface AjouterUneClasseProps {
   children: React.ReactNode;
   user_id: string;
   estab: number;
 }
 
-import * as z from 'zod';
-
 const schema = z.object({
   classe: z.string().min(1, { message: 'Nom Du Classe est requis' }),
-  // matiere: z.array().min(1, { message: 'Matières est requis' }),
+  matiere: z.array(z.string()).min(1, { message: 'Matières est requis' }),
 });
-import Select from 'react-select';
-import { DialogClose } from '@radix-ui/react-dialog';
 
-export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse) => {
-  const queryClient = useQueryClient();
-
-  const { createClass, isPending } = useCreateClasse();
-  const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
-    queryKey: ['teachersubject'],
-    queryFn: async () => await getUserSubject(user_id),
-  });
-  // const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
-
-  const subjectoptions = Teachersubject?.map((item: any) => {
-    return {
-      value: item.id,
-      label: item.name,
-    };
-  });
+export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasseProps) => {
+  const { createClass } = useCreateClasse();
   const [formatData, setFormatData] = useState({
     classe: '',
     matiere: '',
   });
+
+  const { data: TeacherSubject } = useQuery({
+    queryKey: ['teachersubject'],
+    queryFn: async () => await getUserSubject(user_id),
+  });
+
+  const subjectOptions = TeacherSubject?.map((item: any) => ({
+    value: item.id,
+    label: item.name,
+  }));
+
   const resetFormatData = () => {
     setFormatData({
       classe: '',
       matiere: '',
     });
   };
+
   const handleInputChange = (field: string, value: any) => {
     setFormatData((prevFormData) => ({
       ...prevFormData,
       [field]: value,
     }));
   };
-  const handelSubmitInput = () => {
+
+  const handleSubmitInput = () => {
     try {
       schema.parse(formatData);
       createClass({
@@ -78,12 +76,14 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
     }
   };
 
+  const isButtonDisabled = formatData.classe === '' || !formatData.matiere.length;
+
   return (
     <Dialog onOpenChange={() => resetFormatData()}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-[#1B8392] text-xl font-medium ">
+          <DialogTitle className="text-[#1B8392] text-xl font-medium">
             Ajouter une classe
           </DialogTitle>
         </DialogHeader>
@@ -95,31 +95,13 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
           className="placeholder:text-[#959595] text-[#959595] "
           onChange={(e) => handleInputChange('classe', e.target.value)}
           value={formatData.classe}
-
-          // disabled={formatData.classe.length > 0 || formatData.rang.length > 0}
         />
-        {/* CHoisir votre classe */}
         <Label className="text-[#959595]">
           Matières <span className="text-red">*</span>
         </Label>
-        {/* <Select onValueChange={(value) => handleInputChange('matiere', value)}>
-          <SelectTrigger className="w-full text-[#959595]">
-            <SelectValue placeholder="Choisir votre classe" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Choisir votre Matières</SelectLabel>
-              {Teachersubject?.map((item) => (
-                <SelectItem key={item.id} value={item?.name} className="flex">
-                  {item?.name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
         <Select
           isMulti
-          options={subjectoptions}
+          options={subjectOptions}
           onChange={(selectedOptions) => handleInputChange('matiere', selectedOptions)}
           placeholder="Sélectionner votre classe"
           styles={{
@@ -139,38 +121,25 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasse)
           theme={(theme) => ({
             ...theme,
             borderRadius: 8,
-
             colors: {
               ...theme.colors,
               primary: 'none',
             },
           })}
         />
-
-        {/* Choisir le rang de classe */}
-
         <DialogFooter>
-          {formatData.classe === '' || formatData.matiere === '' ? (
+          <DialogClose className="w-full">
             <Button
               type="submit"
-              className="w-full bg-[#1B8392] hover:opacity-80"
-              onClick={handelSubmitInput}
-              disabled={formatData.classe === '' || formatData.matiere === ''}
+              className={`w-full bg-[#1B8392] hover:opacity-80 ${
+                isButtonDisabled ? 'pointer-events-none' : ''
+              }`}
+              onClick={handleSubmitInput}
+              disabled={isButtonDisabled}
             >
               Ajouter
             </Button>
-          ) : (
-            <DialogClose className="w-full ">
-              <Button
-                type="submit"
-                className="w-full bg-[#1B8392] hover:opacity-80"
-                onClick={handelSubmitInput}
-                disabled={formatData.classe === '' || formatData.matiere === ''}
-              >
-                Ajouter
-              </Button>
-            </DialogClose>
-          )}
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -31,9 +31,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   studentCountPending,
   correctionsProgress,
 }) => {
-  console.log(correctionsProgress, 'correctionsProgress');
-  console.log(allStudentCount, 'userCorrection');
-  console.log(studentCountPending, 'userCorrection');
+
 
   const transformedData = useMemo(
     () => correctionsProgress && transformData(correctionsProgress),
@@ -88,7 +86,6 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
     () => transformedData?.map((item:any) => item.color) || ['#D9D9D9'],
     [transformedData]
   );
-  console.log(items);
 
   return (
     <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px]  max-2xl:h-[400px]  overflow-y-scroll">
@@ -104,7 +101,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
                 <div className="flex flex-col gap-1 pl-4">
                   <span className="text-[#727272]">{item.firstMessage}</span>
                   <span className="text-10 font-[500] leading-9">
-                    {item.numExams} Examens
+                    {item.numExams} Etudiant(s)
                   </span>
                 </div>
               </div>
@@ -120,7 +117,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
                 <div className="flex flex-col gap-1 pl-4">
                   <span className="text-[#727272]">{item.firstMessage}</span>
                   <span className="text-10 font-[500] leading-9">
-                    {item.studentNumber} Examens
+                    {item.studentNumber} Etudiant(s)
                   </span>
                 </div>
               </div>
