@@ -12,6 +12,7 @@ import { useParams } from 'next/navigation';
 import Loading from '@/app/loading';
 import { getDetailsOfExercice } from './getDetailsOfExam';
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
+import { getNameClasseByClasseId } from '@/actions/classe';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
   const params = useParams();
@@ -36,8 +37,6 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   });
 
   const examId = userExamCorectionContent?.[0]?.exam_id;
-  console.log(userExamCorectionContent);
-  console.log(examId, 'examId');
 
   const exam = userDetails?.classe.exam_classe.find((item: any) => item.id === examId);
   const examContent = exam?.content;
@@ -47,7 +46,11 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     queryKey: ['UserExamEvalaiations', examId, classe_id],
     queryFn: async () => getExamCorrectionById(examId, classe_id),
   });
-  console.log(userCorrections, "all users corr")
+  const {data: NameClasse} = useQuery({
+    queryKey: ['NameClasse', classe_id],
+    queryFn: async() => await getNameClasseByClasseId(+classe_id)
+  })
+
 
   if (!examCorrection) {
     return <Loading />;
@@ -274,6 +277,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   };
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
+  console.log(userDetails)
   return (
     <div>
       <PdfHeader
@@ -285,7 +289,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
             type: user?.term,
             number: 2,
           },
-          classe: 'Bac math 2',
+          classe: NameClasse?.[0].name,
           fullName: userDetails?.name,
           teacherName: user?.name,
           // range: 1,
