@@ -32,51 +32,7 @@ import { cn } from '@/lib/utils';
 import { link } from 'fs';
 import { usePathname, useRouter } from 'next/navigation';
 
-const data = [
-  {
-    id: 'm5gr84i9',
-    rang: 1,
-    name: 'Souhail Brahmi',
-    email: 'ken99@yahoo.com',
-    dc1: '19.3',
-    dc2: '12.3',
-    ds1: '16.5',
-    average: 8,
-  },
-  {
-    id: 'derv1ws0',
-    rang: 3,
 
-    name: 'Firas Latrach',
-    email: 'Monserrat44@gmail.com',
-    dc1: '13.2',
-    dc2: '12.3',
-    ds1: '18',
-    average: 10.0,
-  },
-  {
-    id: 'derdv1ws0',
-    rang: 2,
-
-    name: 'ahmad ahmad',
-    email: 'Monsse44@gmail.com',
-    dc1: '13.2',
-    dc2: '12.3',
-    ds1: '19',
-    average: 16,
-  },
-
-  //   {
-  //     id: '5kma53ae',
-  //     rang: 4,
-
-  //     name: 'Firas Latrach',
-
-  //     correction: 'Non classé',
-  //     email: 'Silas22@gmail.com',
-  //     average: 19.3,
-  //   },
-];
 
 export type Payment = {
   id: string;
@@ -183,16 +139,20 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
           </p>
         );
       },
-      cell: ({ row }: any) => (
-
-        (
+      cell: ({ row }: any) => {
+        const examInfos = row.original.exams.find(
+          (e: any) => e.name.toLowerCase() === exam.name.toLowerCase()
+        );
+        
+        return (
           <div className="text-[#727272]">
-            {row.original.exams.find((e: any) => e.name.toLowerCase() === exam.name.toLowerCase())
-              ?.average || '--'}{' '}
-            / {exam.totalMarks}
+            {examInfos?.status !== 'done'
+              ? examInfos?.status
+              : `${examInfos?.average || '--'}${' '} / ${examInfos.totalMarks}`}
           </div>
-        )
-      ),
+        );
+      }
+        ,
     })),
     {
       accessorKey: 'average',
@@ -210,19 +170,22 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
       },
       cell: ({ row }) => {
         const average = row.original.average as number;
+        console.log(row)
+
+
 
         return (
           <div className={cn('flex justify-center items-center')}>
-            <p
-              className={cn(
-                'text-[#727272] rounded-full px-2',
-                average > 15 && 'text-[#12B76A] bg-[#12B76A]/30',
-                average <= 15 && average >= 10 && 'text-[#FBB800]  bg-[#FBB800]/30 ',
-                average < 10 && 'text-[#F04438]  bg-[#F04438]/30'
-              )}
-            >
-              {average.toFixed(2)} / 20
-            </p>
+              <p
+                className={cn(
+                  'text-[#727272] rounded-full px-2',
+                  average > 15 && 'text-[#12B76A] bg-[#12B76A]/30',
+                  average <= 15 && average >= 10 && 'text-[#FBB800]  bg-[#FBB800]/30 ',
+                  average < 10 && 'text-[#F04438]  bg-[#F04438]/30'
+                )}
+              >
+                {average.toFixed(2)} / 20
+              </p>
           </div>
         );
       },

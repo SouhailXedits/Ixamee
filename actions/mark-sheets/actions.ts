@@ -30,12 +30,13 @@ export const getMarkSheets = async (filters: {
         //     },
         //   },
         // },
-        status: 'done' || 'absent' || 'notClassified' || 'pending',
+        // status: 'done' || 'absent' || 'notClassified' || 'pending',
         is_published: true,
       },
       select: {
         id: true,
         mark_obtained: true,
+        status: true,
         exam: {
           select: {
             id: true,
@@ -60,6 +61,7 @@ export const getMarkSheets = async (filters: {
         rank: true,
       },
     });
+    console.log(markSheets)
 
     const groupedData = markSheets?.reduce((acc: any, item: any) => {
       const userId = item.user.id;
@@ -102,12 +104,13 @@ export const getMarkSheets = async (filters: {
           return {
             id: exam.id,
             name: exam.name,
-            marksObtained: examData.mark_obtained,
+            marksObtained: examData.status === 'done' ? examData.mark_obtained : 0,
             totalMarks: exam.total_mark,
             coefficient: exam.coefficient,
-            average: average,
-            overTwentyAvg: overTwentyAvg,
+            average: examData.status === 'done' ? average : 0,
+            overTwentyAvg: examData.status === 'done' ? overTwentyAvg : 0,
             rank: examData.rank,
+            status: examData.status
           };
         });
 
@@ -124,6 +127,7 @@ export const getMarkSheets = async (filters: {
           exams: examsInfo,
           average: overallAverage,
           rank: userData[0].rank,
+          status: userData[0].status
         };
       });
     }
