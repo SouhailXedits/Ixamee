@@ -8,6 +8,14 @@ import {
 import Image from 'next/image';
 
 function Selects({ exam, setExam, setFilter, classe }: any) {
+  console.log('🚀 ~ Selects ~ classe:', classe);
+  console.log('🚀 ~ Selects ~ exam:', exam);
+  const exams = classe?.exam_classe?.sort((a: any, b: any) => {
+    if (a.term < b.term) return -1;
+    if (a.term > b.term) return 1;
+    return 0;
+  });
+  console.log('🚀 ~ exams ~ exams:', exams);
   return (
     <>
       <div>
@@ -27,7 +35,7 @@ function Selects({ exam, setExam, setFilter, classe }: any) {
             </SelectTrigger>
 
             <SelectContent>
-              {classe?.exam_classe?.map((exam: any) => (
+              {exams?.map((exam: any) => (
                 <SelectItem key={exam.id} value={exam.id + ''} className="">
                   {exam.name}
                 </SelectItem>
