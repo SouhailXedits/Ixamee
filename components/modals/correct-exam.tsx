@@ -267,7 +267,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
   const exam_id = userDetails?.exam;
 
   const [note, setNote] = useState<string>('0');
-  const [item, setItem] = useState<string | null>(null);
+  const [item, setItem] = useState<string | undefined>(undefined);
   const router = useRouter();
   const pathname = usePathname();
   let data = userContent ? (userContent as any) : [];
@@ -303,7 +303,10 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
       // toast.error('la note ne doit pas depasser le total de la classe');
       return;
     }
+    setItem(undefined);
     setNote(value);
+    console.log('value', item);
+    console.log('note', note)
   };
 
   const { createExamCorrectionn, isPending } = useCreateExamCorrection();
@@ -353,6 +356,7 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
                   min={0}
                   value={note}
                   onChange={handelSubmitCorrectionExam}
+                  disabled
                 />
                 <span>/</span>
                 <span className="flex items-center text-xl ">{new_total_mark}</span>
@@ -381,7 +385,9 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
         <hr className="bg-[#F0F6F8] mb-4" />
         <div className="flex items-center gap-4">
           <span className="text-[#959595]">Marquer comme</span>
-          <RadioGroup onValueChange={(value) => setItem(value)} className="flex">
+          <RadioGroup value={item} onValueChange={(value) => {
+            setNote('0')
+            setItem(value)}} className="flex">
             <div
               className="flex items-center space-x-2 border border-[#1B8392] p-1 text-[#1B8392] rounded-xl"
               style={item === 'absent' ? { backgroundColor: '#F0F6F8' } : {}}

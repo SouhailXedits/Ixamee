@@ -17,14 +17,19 @@ export const getMarkSheets = async (filters: {
             id: filters.subject_id,
           },
           is_archived: false,
-        },
-        user: {
-          classe: {
+          exam_classess: {
             some: {
-              id: filters.classe_id,
+                id: filters.classe_id
             },
-          },
+          }
         },
+        // user: {
+        //   classe: {
+        //     some: {
+        //       id: filters.classe_id,
+        //     },
+        //   },
+        // },
         status: 'done' || 'absent' || 'notClassified' || 'pending',
         is_published: true,
       },

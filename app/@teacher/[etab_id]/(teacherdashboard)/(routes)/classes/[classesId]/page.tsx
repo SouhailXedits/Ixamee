@@ -199,7 +199,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
             <HoverCard>
               <HoverCardTrigger asChild>
                 <span className="text-[#1B8392] text-2xl font-semibold ">
-                  {classeName.length > 10 ? classeName.slice(0, 10) + '...' : classeName}
+                  {classeName}
                 </span>
                 {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
               </HoverCardTrigger>

@@ -19,6 +19,7 @@ import Loading from '@/app/loading';
 import PDFExport from '@/app/_utils/ExportAsPdf';
 import { MarkSheetPdfClass } from './components/MarkSheetTeacher';
 import { getAllSubjectsByClasseId } from '@/actions/subjects';
+import { getNameEstabByClasseId } from '@/actions/establishements';
 
 const Student = () => {
   const params = useParams();
@@ -45,7 +46,11 @@ const Student = () => {
     queryFn: async () => await getAllSubjectsByClasseId(filters.classe_id ),
   });
   console.log(subjects)
-  const userEstab = queryClient.getQueryData(['teacherEstab']) as any;
+  const { data: userEstab } = useQuery<any>({
+    queryKey: ['user-estab'],
+    queryFn: async () => await getNameEstabByClasseId(filters.classe_id),
+  });
+  console.log(userEstab)
 
   const defaultSubject = subjects?.length && subjects[0]?.id;
 
@@ -99,7 +104,7 @@ const Student = () => {
               StudentsData={markSheets}
               classe={classes?.data.find((classe: any) => classe.id === filters.classe_id)?.name}
               term={filters.term}
-              estab={userEstab?.find((estab: any) => estab.id === etab_id)?.name}
+              estab={userEstab?.name}
             />
           </PDFExport>
           <div className="flex items-center p-2 border rounded-lg cursor-pointer border-[#99C6D3] gap-3 hover:opacity-80 ">

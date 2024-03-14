@@ -161,6 +161,7 @@ export function EstablishementsList({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    autoResetPageIndex: false,
     state: {
       sorting,
       columnFilters,

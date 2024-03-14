@@ -7,7 +7,7 @@ const layout = ({ children, params }: { children: React.ReactNode; params: any }
   return (
     <Suspense fallback={<Loading />}>
       {/* <ClassHydration params={params}> */}
-        <div>{children}</div>
+        {children}
       {/* </ClassHydration> */}
     </Suspense>
   );

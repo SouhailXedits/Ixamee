@@ -168,6 +168,7 @@ export function TeacherAdminsList({ data, isPending }: teacherAdminListProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    autoResetPageIndex: false,
     state: {
       sorting,
       columnFilters,

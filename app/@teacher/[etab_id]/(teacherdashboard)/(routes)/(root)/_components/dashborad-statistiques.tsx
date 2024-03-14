@@ -56,7 +56,6 @@ const DashboradStatistiques = ({
   //   queryFn: async () => await getCorrectionOfUser(examId, classId),
   // });
 
-
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between max-md:flex-col max-md:gap-3">
@@ -84,13 +83,13 @@ const DashboradStatistiques = ({
               setClassId(value);
               // setDisable(false);
             }}
-            disabled={isPendingClasses || !classes?.length}
+            disabled={isPendingClasses || !classes?.length }
           >
             <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full">
               <SelectValue placeholder={'classe'} />
             </SelectTrigger>
             <SelectContent>
-              {classes &&
+              {classes?.length > 0 &&
                 classes?.map((classe: any) => (
                   <SelectItem key={classe?.id} value={classe?.id} className="">
                     {classe?.name}
@@ -103,7 +102,7 @@ const DashboradStatistiques = ({
               console.log(value);
               setExamId(value);
             }}
-            disabled={!classeInfos}
+            disabled={!classeInfos?.exam_classe?.length}
           >
             <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full ">
               <SelectValue placeholder={'Devoir'} />

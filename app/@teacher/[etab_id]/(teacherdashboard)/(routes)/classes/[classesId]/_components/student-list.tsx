@@ -1,5 +1,4 @@
 'use client';
-import * as React from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -47,6 +46,8 @@ import { AjouterUnEtudiant } from '@/components/modals/ajouter-un-etudiant';
 import { ImportUneClasse } from '@/components/modals/importer-une-classe';
 import ClasseDropDownMenu from './dropdownmenu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const Status = ({ row }: any) => {
   switch (row.original.status) {
@@ -228,11 +229,18 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
 
   // const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const currentPage = parseInt(localStorage.getItem('currentPage') || '0', 10);
+  useEffect(() => {
+    if (!isPending) {
+      // Update localStorage with current page
+      localStorage.setItem('currentPage', currentPage.toString());
+    }
+  }, [isPending, currentPage]);
 
-  const table = useReactTable({
+  const table = useReactTable<any>({
     data,
     columns,
     // onSortingChange: setSorting,
@@ -240,10 +248,10 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    autoResetPageIndex: false,
     state: {
       // sorting,
       columnFilters,
@@ -251,7 +259,7 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
       rowSelection,
     },
   });
-  console.log(isPending);
+
   return (
     <div className="w-full">
       {isPending ? (
@@ -263,6 +271,7 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
       ) : (
         <>
           <div className="border rounded-md ">
+            {/* <Link href={`/2/classes/${class_id}?page=3`}>page 2 </Link> */}
             <Table>
               <TableHeader className="bg-[#F0F6F8] text-[#1B8392]">
                 {table.getHeaderGroups().map((headerGroup) => (
