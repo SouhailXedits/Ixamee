@@ -52,10 +52,10 @@ interface Establishment {
 interface EstablishmentData {
   establishement: Establishment;
   open: boolean;
-  setOpen: (open: boolean) => void
+  setOpen: (open: boolean) => void;
 }
 
-export const EditeExame = ({ exam, open,setOpen}: AjouterUneClasse) => {
+export const EditeExame = ({ exam, open, setOpen }: AjouterUneClasse) => {
   const queryClient = useQueryClient();
   const user: any = queryClient.getQueryData(['user']);
   const teacherEstab: any = queryClient.getQueryData(['teacherEstab']);
@@ -71,9 +71,9 @@ export const EditeExame = ({ exam, open,setOpen}: AjouterUneClasse) => {
     };
   });
 
-  const exam_Establishment = exam.exam_classess[0].establishment[0];
+  const exam_Establishment = exam?.exam_classess[0]?.establishment[0];
   const defaultEstablishment = userEstablishmentoptions?.find(
-    (item: any) => item.value === exam_Establishment.id
+    (item: any) => item.value === exam_Establishment?.id
   );
 
   const examSchema = z.object({
@@ -135,7 +135,7 @@ export const EditeExame = ({ exam, open,setOpen}: AjouterUneClasse) => {
   });
 
   const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
-    queryKey: ['teachersubject', formData?.classes],
+    queryKey: ['teachersubjects', formData?.classes],
     queryFn: async () => await getSubjectOfUser(user_id, formData?.classes),
   });
   const { data: Teacherterm, isPending: isPendingTeacherterm } = useQuery({
@@ -222,7 +222,6 @@ export const EditeExame = ({ exam, open,setOpen}: AjouterUneClasse) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
@@ -288,55 +287,52 @@ export const EditeExame = ({ exam, open,setOpen}: AjouterUneClasse) => {
               Trimestre / Semestre <span className="text-red">*</span>
             </Label>
 
-            {exam.term.indexOf('trimestre') == -1 ? (
-              <Skeleton className="w-full h-[40px]" />
-            ) : (
-              <Select2
-                onValueChange={(value) => handleInputChange('term', value)}
-                defaultValue={formData.term}
-              >
-                <SelectTrigger className="w-full placeholder:text-[#727272] text-[#727272]">
-                  <SelectValue placeholder="Sélectionner la trimestre ou semestre" />
-                </SelectTrigger>
-                {term?.term === 'TRIMESTRE' ? (
-                  <SelectContent>
-                    <SelectItem
-                      value="trimestre_1"
-                      onClick={() => handleInputChange('term', 'trimestre_1')}
-                    >
-                      Trimestre 1
-                    </SelectItem>
-                    <SelectItem
-                      value="trimestre_2"
-                      onClick={() => handleInputChange('term', 'trimestre_2')}
-                    >
-                      Trimestre 2
-                    </SelectItem>
-                    <SelectItem
-                      value="trimestre_3"
-                      onClick={() => handleInputChange('term', 'trimestre_3')}
-                    >
-                      Trimestre 3
-                    </SelectItem>
-                  </SelectContent>
-                ) : (
-                  <SelectContent>
-                    <SelectItem
-                      value="semestre_1"
-                      onClick={() => handleInputChange('term', 'semestre_1')}
-                    >
-                      Semestre 1
-                    </SelectItem>
-                    <SelectItem
-                      value="semestre_2"
-                      onClick={() => handleInputChange('term', 'semestre_2')}
-                    >
-                      Semestre 2
-                    </SelectItem>
-                  </SelectContent>
-                )}
-              </Select2>
-            )}
+            <Select2
+              onValueChange={(value) => handleInputChange('term', value)}
+              defaultValue={formData.term}
+            >
+              <SelectTrigger className="w-full placeholder:text-[#727272] text-[#727272]">
+                <SelectValue placeholder="Sélectionner la trimestre ou semestre" />
+              </SelectTrigger>
+              {term?.term === 'TRIMESTRE' ? (
+                <SelectContent>
+                  <SelectItem
+                    value="trimestre_1"
+                    onClick={() => handleInputChange('term', 'trimestre_1')}
+                  >
+                    Trimestre 1
+                  </SelectItem>
+                  <SelectItem
+                    value="trimestre_2"
+                    onClick={() => handleInputChange('term', 'trimestre_2')}
+                  >
+                    Trimestre 2
+                  </SelectItem>
+                  <SelectItem
+                    value="trimestre_3"
+                    onClick={() => handleInputChange('term', 'trimestre_3')}
+                  >
+                    Trimestre 3
+                  </SelectItem>
+                </SelectContent>
+              ) : (
+                <SelectContent>
+                  <SelectItem
+                    value="semestre_1"
+                    onClick={() => handleInputChange('term', 'semestre_1')}
+                  >
+                    Semestre 1
+                  </SelectItem>
+                  <SelectItem
+                    value="semestre_2"
+                    onClick={() => handleInputChange('term', 'semestre_2')}
+                  >
+                    Semestre 2
+                  </SelectItem>
+                </SelectContent>
+              )}
+            </Select2>
+
             {renderFieldError('term')}
           </div>
 

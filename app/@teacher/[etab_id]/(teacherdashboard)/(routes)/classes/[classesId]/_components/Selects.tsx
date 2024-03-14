@@ -33,7 +33,7 @@ function Selects({ classe }: any) {
             </SelectTrigger>
 
             <SelectContent>
-              {classe?.exam_classe?.map((exam: any) => (
+              {exams?.map((exam: any) => (
                 <SelectItem key={exam.id} value={exam.id + ''} className="">
                   {exam.name}
                 </SelectItem>

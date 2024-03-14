@@ -32,13 +32,11 @@ const DashboradStatistiques = ({
   const [userCorrection, setUserCorrection] = useState<any>(undefined);
   const [disable, setDisable] = useState<boolean>(true);
   const [allStudentOfClasseCount, setAllStudentOfClasseCount] = useState<number>(allStudentCount);
-  console.log(classe, 'classe');
 
   const {data: classeInfos, isPending} = useQuery({
     queryKey: ['classe', classId],
     queryFn: async () => await getClasseByClassId(+classId)
   })
-  console.log(classeInfos);
 
   useEffect(() => {
     setAllStudentOfClasseCount(classeInfos ? classeInfos?.student_class.length : 0);

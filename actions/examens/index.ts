@@ -60,7 +60,7 @@ export const getIdOfUserInTheClasse = async (classeId: number) => {
   return data;
 };
 export const getAllExam = async ({ user_id, etab_id }: { user_id: string; etab_id: number }) => {
-  if(!etab_id) return null
+  if (!etab_id) return null;
   const exams = await db.exam.findMany({
     where: {
       teacher: {
@@ -103,7 +103,7 @@ export const getAllExamsNameAndId = async ({
   classe_id: string;
 }) => {
   console.log('user_id', user_id, 'etab_id', etab_id);
-  console.log('classe_id', classe_id );
+  console.log('classe_id', classe_id);
   const exams = await db.exam.findMany({
     where: {
       teacher: {
@@ -325,7 +325,7 @@ export const getTermOfUser = async (user_id: string) => {
   return term;
 };
 export const getEstablishmentOfUser = async (user_id: string) => {
-  if(!user_id) return
+  if (!user_id) return;
   const data = await db.establishment.findMany({
     where: {
       user_establishment: {

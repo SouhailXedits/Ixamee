@@ -31,11 +31,6 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   studentCountPending,
   correctionsProgress,
 }) => {
-  console.log("🚀 ~ userCorrection:", userCorrection)
-  console.log("🚀 ~ classeExam:", classeExam)
-  console.log("🚀 ~ correctionsProgress:", correctionsProgress)
-  console.log("🚀 ~ studentCountPending:", studentCountPending)
-  console.log("🚀 ~ allStudentCount:", allStudentCount)
 
 
   const transformedData = useMemo(
@@ -91,7 +86,6 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
     () => transformedData?.map((item:any) => item.color) || ['#D9D9D9'],
     [transformedData]
   );
-  console.log(items);
 
   return (
     <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px]  max-2xl:h-[400px]  overflow-y-scroll">
