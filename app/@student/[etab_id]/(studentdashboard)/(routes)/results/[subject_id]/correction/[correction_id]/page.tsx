@@ -168,7 +168,6 @@ export default function Page({ params }: { params: { correction_id: string; etab
       <CreateExam />
       {isAutoCorrection ? (
         <CreateExam
-          // data={data}
           isArabic={arabic}
           setFakeData={setAutoData}
           fakeData={autoData}
@@ -176,7 +175,6 @@ export default function Page({ params }: { params: { correction_id: string; etab
         />
       ) : isCorrected ? (
         <Exam
-          // data={data}
           isArabic={arabic}
           fakeData={fakeData}
           realExamContetn={examContentt}

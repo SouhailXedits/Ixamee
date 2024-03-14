@@ -11,9 +11,8 @@ const EvaluationPDFExport = ({ children, pdfName }: any) => {
     const opt = {
       filename: `${pdfName}.pdf`,
       html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      jsPDF: { unit: 'mm', format: [400, 250], orientation: 'landscape' },
     };
-    // html2pdf(element).set(opt)
     html2pdf().set(opt).from(element).save();
   };
 
