@@ -22,7 +22,7 @@ export default function Page({
 }: {
   params: { exam_id: string; classesId: string; student_id: string };
 }) {
-  const [sum, setSum] = useState(0);
+  const [sum, setSum] = useState<number>(-1);
   const [isFullMarks, setIsFullMarks] = useState(false);
   const confetti = useConfettiStore();
   const router = useRouter();
@@ -63,13 +63,13 @@ export default function Page({
   useEffect(() => {
     if (isFullMarks) {
       const copiedData = JSON.parse(JSON.stringify(examContent?.content));
-
       setFakeData(copiedData);
     } else if (data?.content) {
       const copiedData = JSON.parse(JSON.stringify(data.content));
       console.log(copiedData, 'copiedData');
       transferAllMarkToNull(copiedData)
       setFakeData(copiedData);
+      setSum(0)
     }
   }, [isFullMarks]);
   useEffect(() => {
@@ -83,7 +83,6 @@ export default function Page({
       } else {
         setFakeData(data?.content);
       }
-      setSum(calcAllMark(fakeData));
     }
   }, [isPending, getCorrigeExamOfUser]);
 
@@ -200,7 +199,7 @@ export default function Page({
                 'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
               )}
             >
-              {sum > 0 ? sum : MarkObtined} / {data?.total_mark}
+              {sum > -1 ? sum : MarkObtined} / {data?.total_mark}
             </button>
           </div>
           <div className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer border-[#F04438] text-[#F04438] hover:opacity-80 ">

@@ -13,6 +13,7 @@ import Loading from '@/app/loading';
 import { getDetailsOfExercice } from './getDetailsOfExam';
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 import { getNameClasseByClasseId } from '@/actions/classe';
+import PdfHeaderEvatuation from '@/components/shared-components/PdfHeaderEvalution';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
   const params = useParams();
@@ -277,10 +278,10 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   };
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
-  console.log(userDetails)
+
   return (
     <div>
-      <PdfHeader
+      <PdfHeaderEvatuation
         meta={{
           estab: estab && estab[0]?.name,
           heading: 'Fiche d évaluation',

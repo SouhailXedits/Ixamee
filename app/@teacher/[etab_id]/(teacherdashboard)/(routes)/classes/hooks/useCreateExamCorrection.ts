@@ -24,7 +24,7 @@ export function useCreateExamCorrection() {
     }: CreateExamCorrectionParams) =>
       createExamCorrectionApi(exam_id, mark_obtained, user_id, correction_exam_content, status),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['examCorrections'] });
+      // queryClient.invalidateQueries({ queryKey: ['examCorrections'] });
       toast.success("Correction de l'examen ajoutée avec succès.");
       router.back()
     },

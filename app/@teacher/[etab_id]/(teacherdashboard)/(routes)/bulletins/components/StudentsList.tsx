@@ -146,9 +146,9 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
         
         return (
           <div className="text-[#727272]">
-            {examInfos?.status !== 'done'
-              ? examInfos?.status
-              : `${examInfos?.average || '--'}${' '} / ${examInfos.totalMarks}`}
+            {examInfos?.status === 'done'&& `${examInfos?.average || '--'}${' '} / ${examInfos.totalMarks}`}
+            {examInfos?.status === 'notClassified' && 'Non classé'}
+            {examInfos?.status === 'absent' && 'Absent'}
           </div>
         );
       }

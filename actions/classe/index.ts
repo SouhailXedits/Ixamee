@@ -132,7 +132,7 @@ export const createUserInClasse = async (
     },
   });
   if (isTeacher) {
-    throw new Error('Given email is associated to a teacher account');
+    throw new Error("L'email donné est associé à un compte d'enseignant.");
   }
   const nameExiste = await db.user.findMany({
     where: {
@@ -146,7 +146,6 @@ export const createUserInClasse = async (
   });
   if (nameExiste?.length > 0) {
     throw new Error('Name already exists');
-    return;
   }
   const data = await db.user.findUnique({
     where: {
