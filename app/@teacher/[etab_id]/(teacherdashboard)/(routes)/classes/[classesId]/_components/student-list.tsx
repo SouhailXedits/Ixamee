@@ -48,6 +48,7 @@ import ClasseDropDownMenu from './dropdownmenu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useFilters } from '@/store/use-filters-params';
 
 const Status = ({ row }: any) => {
   switch (row.original.status) {
@@ -181,7 +182,6 @@ export const columns = [
       return (
         <Button className="text-[#1B8392]  hover:text-[#1B8392]" variant="ghost">
           Email
-          
         </Button>
       );
     },
@@ -224,6 +224,7 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
   if (!data) {
     return null;
   }
+
   console.log(data, 'data');
 
   const queryClient = useQueryClient();
@@ -233,13 +234,8 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const currentPage = parseInt(localStorage.getItem('currentPage') || '0', 10);
-  useEffect(() => {
-    if (!isPending) {
-      // Update localStorage with current page
-      localStorage.setItem('currentPage', currentPage.toString());
-    }
-  }, [isPending, currentPage]);
+  const { filters, setFilters } = useFilters((state) => state);
+  console.log(filters)
 
   const table = useReactTable<any>({
     data,
@@ -260,6 +256,17 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
       rowSelection,
     },
   });
+
+  useEffect(() => {
+    table.setPageIndex(filters.page_number);
+  }, [filters.page_number]);
+
+  useEffect(() => {
+    if (data?.length > 0 && data?.length < filters.page_number) {
+      table.setPageIndex(Math.ceil(data?.length / 10) - 1);
+      setFilters({ ...filters, page_number: Math.ceil(data?.length / 10) - 1 });
+    }
+  }, [data]);
 
   return (
     <div className="w-full">
@@ -335,7 +342,10 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => table.previousPage()}
+                onClick={() => {
+                  setFilters({ ...filters, page_number: filters.page_number - 1 });
+                  table.previousPage();
+                }}
                 disabled={!table.getCanPreviousPage()}
               >
                 Précédent
@@ -343,7 +353,10 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => table.nextPage()}
+                onClick={() => {
+                  table.nextPage();
+                  setFilters({ ...filters, page_number: filters.page_number + 1 });
+                }}
                 disabled={!table.getCanNextPage()}
               >
                 Suivant
