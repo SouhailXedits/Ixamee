@@ -1,5 +1,6 @@
 // index.ts
 'use server';
+import { groupByCorrectionProgress } from '@/app/_utils/correctionPercetage';
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 export const createSubject = async (data: SubjectInputProps) => {
@@ -14,7 +15,7 @@ export const createSubject = async (data: SubjectInputProps) => {
   }
 };
 export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') => {
-  console.log('page', page)
+  console.log('page', page);
   try {
     const skip = (page - 1) * pageSize;
 
@@ -195,23 +196,31 @@ export const getAllSubjectsByClasseId = async (classeId: number | undefined) => 
           id: classeId,
         },
       },
-      // exams: {
-      //   select: {
-      //     id: true,
-      //     name: true,
-      //     term: true,
-      //   },
-      //   where: {
-      //     is_archived: false,
-      //     exam_classess: {
-      //       some: {
-      //         id: classeId,
-      //       },
-      //     },
-      //   },
-      // },
+      exams: {
+        select: {
+          id: true,
+          name: true,
+          term: true,
+        },
+        where: {
+          is_archived: false,
+          exam_classess: {
+            some: {
+              id: classeId,
+            },
+          },
+          exam_correction: {
+            some: {
+              is_published: true,
+            },
+          },
+        },
+      },
+      
     },
   });
+  console.log('🚀 ~ getAllSubjectsByClasseId ~ res:', res);
+  
 
   return res;
 };
@@ -327,7 +336,6 @@ export const getAllSubjectNameById = async (subject_id: number) => {
 //
 //   return subject;
 // };
-
 
 // const getFirstFourSubjects = async (classeId: number) => {
 //   const res = await db.subject.findMany({

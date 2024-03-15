@@ -2,6 +2,7 @@
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 import { groupByCorrectionProgress } from '@/app/_utils/correctionPercetage';
+import { groupByExamCorrectionProgress } from '@/app/_utils/examcorrectionPercetage';
 
 export const getAllExamCorrections = async (
   filters: { exam_id: string; classe_id: string },
@@ -84,6 +85,49 @@ export const getUserCorrectionBySubject = async (
       },
     });
     return res;
+  } catch (error: any) {
+    return {
+      data: undefined as any,
+      error: 'Failed to get exam corrections.',
+    };
+  }
+};
+
+export const getUserCorrectionBySubjectId = async (
+  user_id: string,
+  subject_id?: number | undefined
+) => {
+  if (!subject_id) subject_id =undefined
+  console.log('🚀 ~ subject_id:', subject_id);
+  console.log('🚀 ~ user_id:', user_id);
+  try {
+    const res = await db.examCorrection.findMany({
+      select: {
+        id: true,
+        mark_obtained: true,
+        exam: {
+          select: {
+            total_mark: true,
+            name: true,
+            subject: {
+              select: {
+                name: true,
+                coefficient: true,
+              },
+            },
+          },
+        },
+      },
+      where: {
+        user: { id: user_id },
+        exam: {
+          subject_id: subject_id,
+        },
+      },
+    });
+    console.log('🚀 ~ getUserCorrectionBySubjectId ~ res:', res);
+    const groupedData = groupByExamCorrectionProgress(res);
+    return groupedData;
   } catch (error: any) {
     return {
       data: undefined as any,
@@ -240,7 +284,7 @@ export const getCorrectionProgressStats = async (classe_id: number, exam_id: num
       mark_obtained: true,
     },
   });
-  console.log("🚀 ~ getCorrectionProgressStats ~ res:", res)
+  console.log('🚀 ~ getCorrectionProgressStats ~ res:', res);
   const groupedData = groupByCorrectionProgress(res);
   console.log(groupedData);
   return groupedData;

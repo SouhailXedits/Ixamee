@@ -1,10 +1,4 @@
-
-
-
 export function transformData(data: any) {
-  console.log(data)
-
-
   const colorCodes: Record<string, string> = {
     'Entre 0 - 30%': '#F04438',
     'Entre 30 - 60%': '#F69D16',
@@ -17,7 +11,6 @@ export function transformData(data: any) {
     numExams: data[status],
     color: colorCodes[status],
   }));
-  console.log(result);
 
   return result;
 }

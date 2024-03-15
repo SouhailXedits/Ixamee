@@ -1,61 +1,130 @@
+'use client';
+import { useEffect, useMemo, useState } from 'react';
 import PieChartItem from './pie-chartItem';
+import { transformData } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/(root)/_components/transformStatus';
+import { Skeleton } from '@/components/ui/skeleton';
+import Rien from './Rien';
+import Loading from '@/app/loading';
 
-const StatistiquesItems = () => {
-  const items = [
-    {
-      // color: '#F04438',
-      color: '#D0D5DD',
+interface InputItem {
+  status: string;
+  user_id: string;
+}
 
-      firstMessage: 'Entre 0 - 30%',
-      studentNumber: 0,
-    },
-    {
-      // color: '#F69D16',
-      color: '#D0D5DD',
+interface OutputItem {
+  status: string;
+  studentNumber: number;
+  color: string;
+}
 
-      firstMessage: 'Entre 30 - 60%',
-      studentNumber: 0,
-    },
-    {
-      // color: '#12B76A',
-      color: '#D0D5DD',
+interface StatistiquesItemsProps {
+  marksObtained: any;
+  SubjectsPending: boolean;
+}
 
-      firstMessage: 'Entre 60 - 80%',
-      studentNumber: 0,
-    },
-    {
-      // color: '#1B8392',
-      color: '#D0D5DD',
+// ... (imports remain the same)
 
-      firstMessage: 'Plus de 80%',
-      studentNumber: 0,
-    },
-  ];
+const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
+  marksObtained,
+  SubjectsPending,
+}) => {
+  console.log('🚀 ~ marksObtained:', marksObtained);
+  const totalExams =
+    marksObtained &&
+    Object?.values(marksObtained)?.reduce(
+      (acc: number, currentValue: any) => acc + currentValue,
+      0
+    );
+
+  const transformedData = useMemo(
+    () => marksObtained && transformData(marksObtained),
+    [marksObtained]
+  );
+
+  console.log('🚀 ~ transformedData:', transformedData);
+  const [animatedCount, setAnimatedCount] = useState<number>(totalExams);
+
+  // console.log('🚀 ~ animatedCount:', animatedCount);
+  useEffect(() => {
+    if (SubjectsPending || totalExams === undefined) return;
+
+    let startCount = 0;
+    const interval = setInterval(() => {
+      startCount += 1;
+      if (startCount <= totalExams) {
+        setAnimatedCount(startCount);
+      } else {
+        clearInterval(interval);
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [totalExams, SubjectsPending]);
+
+  const finalCount = animatedCount;
+  console.log('🚀 ~ finalCount:', finalCount);
+
+  // const defaultItems = useMemo(
+  //   () => [
+  //     { color: '#D0D5DD', firstMessage: 'Entre 0 - 30%', studentNumber: 0 },
+  //     { color: '#D0D5DD', firstMessage: 'Entre 30 - 60%', studentNumber: 0 },
+  //     { color: '#D0D5DD', firstMessage: 'Entre 60 - 80%', studentNumber: 0 },
+  //     { color: '#D0D5DD', firstMessage: 'Plus de 80%', studentNumber: 0 },
+  //   ],
+  //   []
+  // );
+
+  const items = useMemo(
+    () =>
+      (!SubjectsPending &&
+        transformedData?.map((item: any) => ({
+          color: item.color,
+          firstMessage: item.status,
+          numExams: item.numExams,
+        }))) ||
+      [],
+    [transformedData, finalCount]
+  );
+
+  const series = useMemo(
+    () => transformedData?.map((item: any) => item.numExams) || [100],
+    [transformedData]
+  );
+  const colors = useMemo(() => transformedData?.map((item: any) => item.color), [transformedData]);
 
   return (
-    <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px] ">
-      <PieChartItem
-        // series={[11, 11, 13, 8]}
-        series={[100]}
-        colors={['#D9D9D9']}
-        // colors={['#12b76a', '#f04438', '#1b8392', '#f69d16']}
-        numberOfStudent={0}
-      />
-      {/* PieChartItem */}
-      <div className="flex ">
-        {items.map((item :any) => (
-          <div key={item.color} className="flex gap-2 pl-6">
-            <div
-              className="w-[5.08px]  rounded-[126.89px]"
-              style={{ backgroundColor: item.color }}
-            />
-            <div className="flex flex-col gap-1 pl-4">
-              <span className=" text-[#727272]">{item.firstMessage}</span>
-              <span className=" text-10 font-[500] leading-9">{item.studentNumber} étudiants </span>
-            </div>
+    <div className="flex items-center justify-center w-full pt-4 pb-4 border rounded-xl max-2xl:flex-wrap max-2xl:gap-4  h-[205px]  max-2xl:h-[400px]  overflow-y-scroll">
+      {!SubjectsPending && transformedData?.length ? (
+        <>
+          <PieChartItem series={series} colors={colors} numberOfStudent={finalCount || '-'} />
+          <div className="flex min-w-[600px]">
+            {!SubjectsPending && transformedData?.length
+              ? items.map((item: OutputItem | any) => (
+                  <div key={item.color} className="flex gap-2 pl-6">
+                    <div
+                      className={`w-[5.08px] h-full rounded-[126.89px]  `}
+                      style={{ backgroundColor: item.color }}
+                    />
+                    <div className="flex flex-col gap-1 pl-4">
+                      <span className="text-[#727272]">{item.firstMessage}</span>
+                      <span className="text-10 font-[500] leading-9">
+                        {item.numExams} Examen(s)
+                      </span>
+                    </div>
+                  </div>
+                ))
+              : ''}
           </div>
-        ))}
-      </div>
+        </>
+      ) : (
+        <div className="flex items-center space-x-4">
+          <Skeleton className="h-24 w-24 rounded-full" />
+          <div className="space-y-4">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

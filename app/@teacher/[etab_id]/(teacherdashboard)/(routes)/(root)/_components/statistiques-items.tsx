@@ -31,6 +31,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   studentCountPending,
   correctionsProgress,
 }) => {
+  console.log("🚀 ~ correctionsProgress:", correctionsProgress)
 
 
   const transformedData = useMemo(

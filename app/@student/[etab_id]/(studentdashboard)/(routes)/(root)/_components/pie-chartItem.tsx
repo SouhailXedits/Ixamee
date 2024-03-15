@@ -4,9 +4,12 @@ import { ApexOptions } from 'apexcharts';
 interface PieChartItemProps {
   series: number[];
   colors: string[];
-  numberOfStudent: number;
+  numberOfStudent: number | '-';
 }
 const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStudent }) => {
+  if (series.length === 4) {
+    numberOfStudent = series.reduce((sum, student) => sum + student, 0);
+  }
   // const series = [11, 11, 13, 8]
   // const series = [11]
 
@@ -56,7 +59,7 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
           x: 50,
           y: 50,
           label: {
-            text: `${numberOfStudent} Étudiant`,
+            text: `${numberOfStudent} Examens`,
             textAnchor: 'middle',
             style: {
               fontSize: '30px',
@@ -70,7 +73,7 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
 
   return (
     <div>
-      <div className="chart-wrap relative">
+      <div className="chart-wrap relative min-w-[230]">
         <div id="chart">
           <ReactApexChart options={options} series={series} type="donut" width={230} />
         </div>
@@ -84,7 +87,7 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
           </span>
 
           <span className="text-[#727272] text-[10.81px] font-medium  capitalize leading-[18.56px]">
-            matières
+            examens
           </span>
         </div>
       </div>
@@ -93,9 +96,3 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
 };
 
 export default PieChartItem;
-
-// function PieChartItem() {
-//   return <div>piechart </div>;
-// }
-
-// export default PieChartItem;

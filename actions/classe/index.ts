@@ -534,6 +534,7 @@ export const getStudentClassCount = async ({
 
 export const getStudentOfClasse = async (classe_id: number) => {
   if (!classe_id) return null;
+  console.log('🚀 ~ file: index.ts:classe_id', classe_id);
   const res = await db.user.findMany({
     where: {
       role: 'STUDENT',
@@ -662,6 +663,7 @@ export const updateInvitationUser = async (studentEmail: string, teacherEmail: s
         },
         data: {
           invited_at: new Date(),
+          emailVerified: new Date(),
         },
       });
       return user;

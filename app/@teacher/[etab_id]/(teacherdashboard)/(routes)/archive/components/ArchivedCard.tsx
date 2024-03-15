@@ -21,7 +21,7 @@ const ArchiverCard = ({ data }: { data: itemProps }) => {
   const router = useRouter();
 
   return (
-    <div className=" h-full bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] border-[2px] border-[#1B8392] border-dashed  ">
+    <div className=" h-full bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] border-[2px] border-[#1B8392] border-dashed hover:shadow-md transition-all ">
       <div className="flex justify-between w-full px-5">
         <span className="text-xl font-semibold  text-[#727272]">{data.name}</span>
         {/* <DropdownMenuItemSelect data={data}>

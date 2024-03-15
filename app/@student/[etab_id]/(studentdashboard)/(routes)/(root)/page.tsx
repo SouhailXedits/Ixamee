@@ -4,7 +4,6 @@ import DashboradApercu from './_components/dashborad-apercu';
 import DashboradBulletinsDesEtudiants from './_components/dashborad-bulletins-des-etudiants';
 import DashboradClasses from './_components/dashborad-classes';
 import DashboradCorrectionsRecentes from './_components/dashborad-corrections-recentes';
-// import DashboradStatistiques from './_components/dashborad-statistiques';
 
 import { useParams } from 'next/navigation';
 import {
@@ -13,6 +12,7 @@ import {
   getAllSubjectsCount,
 } from '@/actions/subjects';
 import { getStudentMarksheet } from '@/actions/dashboard';
+import DashboradStatistiques from './_components/dashborad-statistiques';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -35,7 +35,7 @@ export default function Home() {
     error,
   } = useQuery({
     queryKey: ['user-subjects', classId],
-    queryFn: async () => getAllSubjectsByClasseIdByPage(4,+classId),
+    queryFn: async () => getAllSubjectsByClasseIdByPage(3, +classId),
   });
 
   // const { data: subjects, isPending } = useQuery({
@@ -54,7 +54,12 @@ export default function Home() {
             examCount={examCount}
             marksheetCount={marksheetCount}
           />
-          {/* <DashboradStatistiques /> */}
+          <DashboradStatistiques
+            isPendingClasses={false}
+            classes={allSubjects}
+            allStudentCount={12}
+            studentCountPending={false}
+          />
           <DashboradClasses
             classId={classId}
             subjects={subjects}
@@ -64,7 +69,7 @@ export default function Home() {
         </div>
 
         <div className="w-[40%]  p-2 flex flex-col gap-9 max-2xl:w-[100%]">
-          <DashboradCorrectionsRecentes  />
+          <DashboradCorrectionsRecentes />
           <DashboradBulletinsDesEtudiants />
         </div>
       </div>

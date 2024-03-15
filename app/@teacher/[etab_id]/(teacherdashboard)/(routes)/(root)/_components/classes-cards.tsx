@@ -9,7 +9,7 @@ function translateDateFormat(dateString: string): string {
 }
 const ClassesCards = ({ classes, isPending, etabId }: any) => {
   return (
-    <div className="grid w-full gap-4 2xl:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2">
+    <div className="grid w-full gap-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1">
       {isPending &&
         Array.from({ length: 4 }).map((_, index: any) => (
           <Skeleton key={index} className="w-[250px] h-[270px] rounded-xl pt-10" />
@@ -19,7 +19,7 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
           return (
             <div
               key={classe}
-              className="min-w-[260.50px] h-[271px] py-[15px] bg-[#F0F6F8] rounded-[20px] flex-col justify-center items-center gap-[38px] inline-fle p-5 hover:opacity-75 cursor-pointer"
+              className="w-full h-[271px] py-[15px] bg-[#F0F6F8] rounded-[20px] flex-col justify-center items-center gap-[38px] inline-fle p-5 hover:opacity-75 cursor-pointer"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
