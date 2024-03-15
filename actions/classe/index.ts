@@ -79,7 +79,7 @@ export const getClasseByClassId = async (id: number) => {
         },
         where: {
           is_archived: false,
-        }
+        },
       },
       student_class: {
         where: {
@@ -127,12 +127,36 @@ export const createUserInClasse = async (
         {
           role: 'TEACHER',
         },
-        {role: 'ADMIN'}
+        { role: 'ADMIN' },
       ],
     },
   });
   if (isTeacher) {
-    throw new Error("L'email donné est associé à un compte d'enseignant.");
+    return {
+      error: {
+        message: "L'email donné est associé à un compte d'enseignant.",
+        status: 'already_teacher',
+      },
+    };
+  }
+  const user = await db.user.findFirst({
+    where: {
+      email,
+      classe: {
+        some: {
+          id: +class_id,
+        },
+      },
+    },
+  });
+  if (user) {
+    return {
+      error: {
+        message:
+          "Un étudiant avec cet email déja existe.",
+        status: 'exist_in_classe',
+      },
+    };
   }
   const nameExiste = await db.user.findMany({
     where: {
@@ -681,7 +705,7 @@ export const getCorigeExameContent = async (exam_id: number, student_id: string)
 };
 export const getCorigeExameContentOfAllUser = async (exam_id: any, userData: any) => {
   if (!exam_id || !userData) return null;
-  console.log(exam_id, userData, "🎒");
+  console.log(exam_id, userData, '🎒');
 
   const data = await db.examCorrection.findMany({
     where: {
