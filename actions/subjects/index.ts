@@ -1,5 +1,6 @@
 // index.ts
 'use server';
+import { groupByCorrectionProgress } from '@/app/_utils/correctionPercetage';
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 export const createSubject = async (data: SubjectInputProps) => {
@@ -208,11 +209,18 @@ export const getAllSubjectsByClasseId = async (classeId: number | undefined) => 
               id: classeId,
             },
           },
+          exam_correction: {
+            some: {
+              is_published: true,
+            },
+          },
         },
       },
+      
     },
   });
   console.log('🚀 ~ getAllSubjectsByClasseId ~ res:', res);
+  
 
   return res;
 };

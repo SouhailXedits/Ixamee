@@ -31,7 +31,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
   const [archiveProps, setArchiveProps] = React.useState(false);
 
   return (
-    <div className="min-w-[195px] h-[190px] bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] ">
+    <div className="min-w-[195px] h-[190px] bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] hover:shadow-md transition-all ">
       <div className="flex justify-between w-full px-5">
         <HoverCard>
           <HoverCardTrigger asChild>

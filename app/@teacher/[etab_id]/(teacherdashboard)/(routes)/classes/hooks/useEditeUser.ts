@@ -15,7 +15,12 @@ export function useUpdateUserInClasse() {
       toast.success('etudiant modifié avec succès.');
     },
     onError: (err) => {
-      toast.error("Une erreur est survenue lors de l'édition de l'etudiant.");
+      console.log();
+      if (err.message.includes('email')) {
+        toast.error('Email deja utulisé pour un autre étudiant!');
+      } else {
+        toast.error("Une erreur est survenue lors le modification de l'etudiant.");
+      }
     },
     retry: false,
   });

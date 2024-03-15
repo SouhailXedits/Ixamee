@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const ClassesCards = ({ subjects, isPending }: any) => {
   return (
-    <div className="grid w-full gap-4 2xl:grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2">
+    <div className="grid w-full gap-8 xl:grid-cols-2 lg:grid-cols-1">
       {isPending && <Skeleton className=" w-[350px] rounded-[20px] h-[200px] " />}
       {subjects?.map((subject: any) => (
         <SubjectCard key={subject.id} subject={subject} etab_id={subject.classe_subject.id} />

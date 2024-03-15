@@ -87,7 +87,7 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
           </span>
 
           <span className="text-[#727272] text-[10.81px] font-medium  capitalize leading-[18.56px]">
-            étudiants
+            examens
           </span>
         </div>
       </div>

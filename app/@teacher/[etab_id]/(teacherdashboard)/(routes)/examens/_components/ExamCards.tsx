@@ -58,11 +58,11 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
   const CurrentMark = calcAllMark(examContent);
 
   const porsentage = (CurrentMark / totalMark) * 100;
-  console.log(exam)
+  console.log(exam);
   return (
     /* Container div for the exam card */
     <div
-      className=" min-w-[180px] h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2 cursor-pointer"
+      className=" min-w-[180px] h-[190px] bg-[#F3F6F6] p-3 rounded-3xl flex flex-col gap-2 cursor-pointer hover:shadow-md transition-all"
       onClick={() => onClick(exam?.id)}
     >
       {/* Header section with exam name and dropdown menu */}
@@ -128,9 +128,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
 
         {/* Exam correction progress */}
         <div className="flex bg-[#1B8392] p-1 items-center justify-center rounded-xl  ">
-          <div
-            className="  w-full justify-center flex-col  text-[#FFFFFF]"
-          >
+          <div className="  w-full justify-center flex-col  text-[#FFFFFF]">
             <span className="text-ms">{porsentage}% </span>
             {/* <span className="text-xs">Corrigé</span> */}
           </div>

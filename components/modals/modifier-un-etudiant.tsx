@@ -4,58 +4,58 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
-import { useCreateUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreteUser';
 import { useUpdateUserInClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeUser';
 
 interface ModifierUnEtudiant {
   data: any;
-
   open: boolean;
   setOpen: (open: boolean) => void;
 }
+
 export const ModifierUnEtudiant = ({ data, open, setOpen }: ModifierUnEtudiant) => {
   const minrange = data?.length;
   const formatDataSchema = z.object({
     name: z.string().min(3, 'Veuillez renseigner le nom'),
-
     email: z.string().email("L'email n'est pas valide"),
   });
-  const [formatData, setFormatData] = useState({
+  const initialFormatData = {
     name: data.name,
     email: data.email,
-  });
-  const handelUpdateSetFormatData = (key: string, value: string | number) => {
-    setFormatData({ ...formatData, [key]: value });
   };
+  const [formatData, setFormatData] = useState(initialFormatData);
   const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
   const [files, setFile] = useState<any>(null);
   const [selectedFileUrl1, setSelectedFileUrl1] = useState<string>('');
-
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const selectedFile = e.target.files[0];
+  useEffect(() => {
+    if (!open) {
+      resetState();
+    }
+  }, [open]);
 
-  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-  //       setFile(selectedFile);
-  //       const fileUrl = URL.createObjectURL(selectedFile);
-  //       setSelectedFileUrl(fileUrl);
-  //     }
-  //   }
-  // };
+  const resetState = () => {
+    setFormatData(initialFormatData);
+    setFile(null);
+    setSelectedFileUrl('');
+    setSelectedFileUrl1('');
+    setFormErrors(null);
+  };
+
+  const handelUpdateSetFormatData = (key: string, value: string | number) => {
+    setFormatData({ ...formatData, [key]: value });
+  };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
@@ -104,28 +104,13 @@ export const ModifierUnEtudiant = ({ data, open, setOpen }: ModifierUnEtudiant) 
     const validationResult = formatDataSchema.safeParse(formatData);
 
     if (validationResult.success) {
-      // createUserInClass({
-      //   name: formatData.name,
-      //   range: +formatData.rang,
-      //   email: formatData.email.toLowerCase(),
-      //   image: selectedFileUrl,
-      //   // class_id: class_id,
-      //   // establishmentId: etab_id,
-      // });id: string, name: string, email: string, image: string
-
       updateUserInClasse({
         id: data.id,
         name: formatData.name,
         email: formatData.email.toLowerCase(),
         image: selectedFileUrl,
       });
-      // if (!) setIsFirstModalOpen(!isFirstModalOpen);
-      // else {
-
-      // }
-
-      // setIsFirstModalOpen(!isFirstModalOpen);
-      setFormErrors(null); // Reset error state if submission is successful
+      setFormErrors(null);
     } else setFormErrors(validationResult.error);
   };
   return (
@@ -183,21 +168,6 @@ export const ModifierUnEtudiant = ({ data, open, setOpen }: ModifierUnEtudiant) 
             />
             {renderFieldError('name')}
           </div>
-          {/* <div className="flex flex-col gap-2">
-              <Label className="text-[#959595]">
-                Rang dans la classe<span className="text-red">*</span>
-              </Label>
-              <Input
-                placeholder="1"
-                value={formatData.rang}
-                type="number"
-                min={minrange}
-                onChange={(e) => handelUpdateSetFormatData('rang', e.target.value)}
-                className="placeholder:text-[#727272]"
-              />
-              {renderFieldError('rang')}
-            </div> */}
-
           <div className="flex flex-col gap-2">
             <Label className="text-[#959595]">
               E-mail <span className="text-red">*</span>

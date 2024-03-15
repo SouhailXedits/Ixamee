@@ -12,14 +12,17 @@ import StatistiquesItems from './statistiques-items';
 import { useEffect, useState } from 'react';
 import { getClasseByClassId } from '@/actions/classe';
 import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getCorrectionProgressStats,
+  getExamCorrectionById,
   getExamCorrectionById2,
   getUserCorrectionBySubjectId,
 } from '@/actions/exam-correction';
 import { getAllSubjectsByClasseId } from '@/actions/subjects';
 import { useParams } from 'next/navigation';
+import { groupByExamCorrectionProgress } from '@/app/_utils/examcorrectionPercetage';
+import { groupByExamProgress } from '@/app/_utils/examPercetage';
 
 const DashboradStatistiques = ({
   isPendingClasses,
@@ -32,13 +35,10 @@ const DashboradStatistiques = ({
   allStudentCount: number;
   studentCountPending: boolean;
 }) => {
-  const [examId, setExamId] = useState<string>('');
   const [subId, setSubId] = useState<string>('');
-  const [classe, setClasse] = useState<any>(undefined);
-  const [userCorrection, setUserCorrection] = useState<any>(undefined);
-  const [disable, setDisable] = useState<boolean>(true);
-  const [allStudentOfClasseCount, setAllStudentOfClasseCount] = useState<number>(allStudentCount);
-
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(['user']) as any;
+  const userId = user?.id;
   const params = useParams();
 
   const classId = params.etab_id;
@@ -52,16 +52,14 @@ const DashboradStatistiques = ({
   }) as any;
 
   const {
-    data: exams,
-    isPending: isExamPending,
-    error,
+    data: subjectsExams,
+    isPending: isSubjectsExamsPending,
+    error: subjectsExamsError,
   } = useQuery({
-    queryKey: ['subject-examCorrection', subId],
-    queryFn: async () => getUserCorrectionBySubjectId(userId,subId),
+    queryKey: ['user-subjects-examCorrection', userId,subId],
+    queryFn: async () => getUserCorrectionBySubjectId(userId, +subId),
   }) as any;
-  console.log('🚀 ~ exams:', exams);
 
-  console.log('🚀 ~ subjects:', subjects);
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between max-md:flex-col max-md:gap-3">
@@ -81,7 +79,6 @@ const DashboradStatistiques = ({
 
           <Select
             onValueChange={async (value) => {
-              console.log(value);
               setSubId(value);
             }}
             disabled={isSubjectsPending || !subjects?.length}
@@ -98,36 +95,10 @@ const DashboradStatistiques = ({
                 ))}
             </SelectContent>
           </Select>
-          {/* <Select
-            onValueChange={async (value) => {
-              console.log(value);
-              setExamId(value);
-            }}
-            disabled={subId === ''}
-          >
-            <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full ">
-              <SelectValue placeholder={'Tous les examens'} />
-            </SelectTrigger>
-
-            <SelectContent>
-              {subjects?.length > 0 &&
-                subjects[subId]?.exams?.map((exam: any) => (
-                  <SelectItem key={exam?.id} value={exam?.id} className="">
-                    {exam?.name}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select> */}
         </div>
       </div>
       <div>
-        {/* <StatistiquesItems
-          allSubjectCount={subjects?.length}
-          classeExam={subjects}
-          studentCountPending={true}
-          correctionsProgress={subjects}
-          allStudentCount={subjects?.length}
-        /> */}
+        <StatistiquesItems marksObtained={subjectsExams} SubjectsPending={isSubjectsExamsPending} />
       </div>
     </div>
   );
