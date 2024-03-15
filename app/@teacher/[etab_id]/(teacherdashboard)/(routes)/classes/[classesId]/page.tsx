@@ -20,6 +20,7 @@ import Selects from './_components/Selects';
 import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
 import { useConfettiStore } from '@/store/use-confetti-store';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useFilters } from '@/store/use-filters-params';
 
 interface classe {
   id: number;
@@ -29,37 +30,22 @@ interface classe {
   exam_classe: [];
 }
 const Student = ({ params }: { params: { classesId: string } }) => {
-  //query Client called
   const queryClient = useQueryClient();
-
   const confetti = useConfettiStore();
-
-  /// get the classse Id
   const { classesId } = params;
-  /// get the Etab Id
-  const etab_id = queryClient.getQueryData(['etab_id']) as number;
-  //get The list of Id in the classe
+  const etab_id = queryClient.getQueryData(['etab_id']) as number;  //get The list of Id in the classe
   const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
-
-  // get the teacher establishment  with hydration
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
-  // get the teacher establishment name
   const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
 
-  //Mutation
+
   const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
+  const {filters, setFilters} = useFilters((state) => state)
+  console.log(filters)
+  // const [filter, setFilter] = useState<any>(filters.filterBy);
+  // const [exam, setExam] = useState<string>(filters.exam_id + '');
 
-  // End Mutaion Clalled
 
-  // use State
-
-  const [filter, setFilter] = useState<any>('');
-  const [exam, setExam] = useState<string>('');
-
-  //End UseState
-
-  // ======================= All Queries✨✨✨✨✨✨✨✨ ======================
-  // get the data of classe by Id of classe
   const { data: classe, isPending: isPendingClasse } = useQuery({
     queryKey: ['classe', params.classesId],
     queryFn: async () => await getClasseById(+params.classesId),
@@ -67,9 +53,9 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
 
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
-    queryKey: ['userCorrection', exam, classesId],
-    enabled: exam !== undefined && exam !== '',
-    queryFn: async () => await getCorrectionOfUser(classesId, data, exam),
+    queryKey: ['userCorrection', filters.exam_id, classesId],
+    enabled: filters.exam_id !== undefined && filters.exam_id !== '',
+    queryFn: async () => await getCorrectionOfUser(classesId, data, filters.exam_id),
   });
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
@@ -78,26 +64,19 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
   console.log(data);
-  // get the correction of user : hadi bach tjiblna el correction mta3 el user el koll
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
-    queryKey: ['CorigeExameContent', exam],
-    queryFn: async () => await getCorigeExameContentOfAllUser(exam, getIdOfUserInTheClasse),
+    queryKey: ['CorigeExameContent', filters.exam_id],
+    queryFn: async () =>
+      await getCorigeExameContentOfAllUser(filters.exam_id, getIdOfUserInTheClasse),
   });
 
-  // ======================= End All Queries✨✨✨✨✨✨✨✨✨✨✨✨ ======================
-  // ==================== Start useEffect 😵‍💫😵‍💫😵‍💫 ======================
-  // set the default exam if he find a exam  : 3la 5ater bach ki yadhreb yadhreb 3la el examan mo33ain
   useEffect(() => {
-    const note = classe?.exam_classe[0]?.id;
-    console.log("🚀 ~ useEffect ~ note:", note)
-    setExam(note + '');
-  }, [classe, isPendingClasse]);
+    if (filters.exam_id === 'undefined' || filters.exam_id === '') {
+      const examId = classe?.exam_classe[0]?.id;
+      setFilters({ ...filters, exam_id: examId + '' });
+    }
+  }, [classe, isPendingClasse, filters.exam_id]);
 
-  // ==================== End useEffect 😵‍💫😵‍💫😵‍💫 ======================
-
-  // const data = queryClient.getQueryData(['userOfClasses']) as any;
-
-  // set the calasseName in varaibel
   const classeName = classe?.name as string;
 
   // }
@@ -106,35 +85,35 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       ?.map((item: any) => ({
         ...item,
         correctionExamOfUser: getCorrigeExamOfUser,
-        exam: exam,
+        exam: filters.exam_id,
         classe: classe,
         status:
           userCorrection?.find((user: any) => user?.user_id === item?.id)?.status || 'notCorrected',
       }))
       ?.filter((item: any) => {
-        if (filter === 'corrige' && item.status === 'done') {
+        if (filters.filterBy === 'corrige' && item.status === 'done') {
           return true;
-        } else if (filter === 'en-cours' && item.status === 'pending') {
+        } else if (filters.filterBy === 'en-cours' && item.status === 'pending') {
           return true;
-        } else if (filter === 'non-corrigé' && item.status === 'notCorrected') {
+        } else if (filters.filterBy === 'non-corrigé' && item.status === 'notCorrected') {
           return true;
-        } else if (filter === 'non-classé' && item.status === 'notClassified') {
+        } else if (filters.filterBy === 'non-classé' && item.status === 'notClassified') {
           return true;
-        } else if (filter === 'absent' && item.status === 'absent') {
+        } else if (filters.filterBy === 'absent' && item.status === 'absent') {
           return true;
-        } else if (filter === 'allExam' || filter === '') {
+        } else if (filters.filterBy === 'allExam' || filters.filterBy === '') {
           return true;
         }
         return false;
       });
-  }, [data, exam, getCorrigeExamOfUser, userCorrection, filter]);
+  }, [data, filters.exam_id, getCorrigeExamOfUser, userCorrection, filters.filterBy]);
 
   const handleSendResults = () => {
     if (data?.length === userCorrection?.length) {
       const ExamMarkData = userCorrection?.map((user: any) => {
         const userExamContent = queryClient.getQueryData([
           'CorigeExameContent',
-          exam,
+          filters.exam_id,
           // user?.user_id,
         ]) as any;
         console.log(userExamContent);
@@ -143,7 +122,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           .mark_obtained;
         return {
           user_id: user?.user_id,
-          exam_id: exam,
+          exam_id: filters.exam_id,
           rank: 0,
           classesId: classesId,
           mark: markObtin,
@@ -167,12 +146,12 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       });
       const marksDataToSend = ExamMarkData?.map(({ user_id, mark, classesId, rank }: any) => ({
         user_id,
-        exam_id: exam,
+        exam_id: filters.exam_id,
         mark,
         classesId: classesId,
         rank,
       }));
-      sendExamMark({ exam_id: exam, marks: marksDataToSend });
+      sendExamMark({ exam_id: filters.exam_id, marks: marksDataToSend });
       confetti.onOpen();
     }
   };
@@ -184,7 +163,6 @@ const Student = ({ params }: { params: { classesId: string } }) => {
       (user: any) => user?.status === 'notCorrected' || user?.status === 'pending'
     );
   }
-  console.log(newData, 'newData');
   const userNotCorrected = notCorrected(userCorrection);
   const alphabiticSorted = newData?.sort((a, b) => a.name.localeCompare(b.name));
   return (
@@ -222,7 +200,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
         </div>
 
         <div className="flex flex-wrap justify-end gap-3 pt-4 h-14 cursor-pointe ">
-          <Selects exam={exam} setExam={setExam} setFilter={setFilter} classe={classe} />
+          <Selects classe={classe} />
           <Button
             className=" justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
             disabled={userNotCorrected?.length !== 0 || userCorrection?.length === 0}

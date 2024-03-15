@@ -12,6 +12,9 @@ import { getClassesOfUser } from '@/data/user';
 import Loading from '@/app/loading';
 import { useQuery } from '@tanstack/react-query';
 
+
+
+
 export default function Page() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<any>({});
