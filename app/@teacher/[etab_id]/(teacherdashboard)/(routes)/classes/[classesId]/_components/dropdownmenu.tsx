@@ -24,8 +24,10 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
   }
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
   console.log(correctionExamOfUser);
-  const [modfier, setModfier] = React.useState(false);
 
+  console.log(row.original.status);
+  const [modfier, setModfier] = React.useState(false);
+  const isStatusDone = row?.original?.status === 'done'
 
   const [deleteForm, setDeleteForm] = React.useState(false);
   return (
@@ -94,7 +96,7 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
           <DropdownMenuItem className="cursor-pointer" onClick={() => setModfier(true)}>
             Modifier
           </DropdownMenuItem>
-          {correctionExamOfUser && correctionExamOfUser?.correction_exam_content !== null ? (
+          {correctionExamOfUser && correctionExamOfUser?.correction_exam_content !== null && isStatusDone? (
             <DropdownMenuItem>
               <TelachargePdfEvaluationClasse
                 userContent={correctionExamOfUser}
