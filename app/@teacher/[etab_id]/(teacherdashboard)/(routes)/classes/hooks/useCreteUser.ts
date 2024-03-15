@@ -21,16 +21,21 @@ export function useCreateUserInClasse() {
   } = useMutation({
     mutationFn: ({ image, name, email, term, class_id, establishmentId }: CreateClasseParams) =>
       createUserInClasseApi(image, name, email, term, class_id, establishmentId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
-      queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
-      toast.success('Étudiant ajouté avec succès.');
+    onSuccess: (data: any) => {
+      if(data.error && data.error.status === 'already_teacher') toast.error(data.error.message);
+      else if (data.error && data.error.status === 'exist_in_classe') toast.error(data.error.message);
+      else {
+        queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
+        queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
+        toast.success('Étudiant ajouté avec succès.');
+      }
     },
     onError: (err: any) => {
+      console.log(err)
       const message = err.message
-      if (err.digest === '1270835298')
-        toast.error("Un étudiant avec cet email déja existe");
-      else if (err.digest === '4072300200') toast.error(message);
+      if (message.includes('Unique constraint failed'))
+        toast.error('Un étudiant avec cet email déja existe');
+      else if (message.includes('enseignant')) toast.error(message);
       else toast.error("Une erreur s'est produite lors de la création de l'étudiant");
 
       //   ror {

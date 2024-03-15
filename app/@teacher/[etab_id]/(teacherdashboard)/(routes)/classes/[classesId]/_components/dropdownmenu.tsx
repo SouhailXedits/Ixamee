@@ -23,10 +23,8 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
     return differenceInDays;
   }
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
-  console.log(correctionExamOfUser);
   const [modfier, setModfier] = React.useState(false);
-
-
+  const isStatusDone = row?.original?.status === 'done'
   const [deleteForm, setDeleteForm] = React.useState(false);
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
@@ -94,7 +92,7 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
           <DropdownMenuItem className="cursor-pointer" onClick={() => setModfier(true)}>
             Modifier
           </DropdownMenuItem>
-          {correctionExamOfUser && correctionExamOfUser?.correction_exam_content !== null ? (
+          {correctionExamOfUser && correctionExamOfUser?.correction_exam_content !== null && isStatusDone? (
             <DropdownMenuItem>
               <TelachargePdfEvaluationClasse
                 userContent={correctionExamOfUser}

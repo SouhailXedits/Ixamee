@@ -1,3 +1,4 @@
+'use client'
 import {
   Select,
   SelectContent,
@@ -5,37 +6,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useFilters } from '@/store/use-filters-params';
 import Image from 'next/image';
 
-function Selects({ exam, setExam, setFilter, classe }: any) {
-  console.log('🚀 ~ Selects ~ classe:', classe);
-  console.log('🚀 ~ Selects ~ exam:', exam);
-  const exams = classe?.exam_classe?.sort((a: any, b: any) => {
-    if (a.term < b.term) return -1;
-    if (a.term > b.term) return 1;
-    return 0;
-  });
-  console.log('🚀 ~ exams ~ exams:', exams);
+function Selects({ classe }: any) {
+  const { filters, setFilters} = useFilters((state) => state)
   return (
     <>
       <div>
-        {exam !== 'undefined' && (
+        {filters.exam_id !== 'undefined' && (
           <Select
-            onValueChange={(value) => setExam(value)}
-            defaultValue={classe?.exam_classe[0]?.id + ''}
+            onValueChange={(value) => {
+              setFilters({ ...filters, exam_id: value });
+            }}
+            defaultValue={filters.exam_id + '' || classe?.exam_classe[0]?.id + ''}
           >
             <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 ">
               <SelectValue
                 placeholder={
                   <div className="flex items-center">
-                    <span className="ml-2 text-[#1B8392] text-base  ">Sélectionner un examen</span>
+                    <Image src={'/filterIcon.svg'} alt="filtericon" width={20} height={20} />
+                    <span className="ml-2 text-[#1B8392] text-base  ">Examen</span>
                   </div>
                 }
               />
             </SelectTrigger>
 
             <SelectContent>
-              {exams?.map((exam: any) => (
+              {classe?.exam_classe?.map((exam: any) => (
                 <SelectItem key={exam.id} value={exam.id + ''} className="">
                   {exam.name}
                 </SelectItem>
@@ -44,8 +42,16 @@ function Selects({ exam, setExam, setFilter, classe }: any) {
           </Select>
         )}
       </div>
-      {exam !== 'undefined' && (
-        <Select onValueChange={(value) => setFilter(value)}>
+      {filters.exam_id !== 'undefined' && (
+        <Select
+          onValueChange={(value) => {
+            setFilters({
+              ...filters,
+              filterBy: value,
+            });
+          }}
+          defaultValue={filters?.filterBy}
+        >
           <SelectTrigger className="flex items-center p-2 border rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 w-[146px]">
             <SelectValue
               placeholder={

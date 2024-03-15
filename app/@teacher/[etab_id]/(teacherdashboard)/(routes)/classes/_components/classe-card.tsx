@@ -17,6 +17,7 @@ import { ModifierUneClasse } from '@/components/modals/modifier-une-classe';
 import { SupprimerUneClasse } from '@/components/modals/suprimer-classe';
 import { ArchiveUneClasse } from '@/components/modals/archiver-classe';
 import React from 'react';
+import { useFilters } from '@/store/use-filters-params';
 interface itemProps {
   id: any;
   name: string;
@@ -26,6 +27,7 @@ interface itemProps {
 
 const ClasseCard = ({ data }: { data: itemProps }) => {
   const route = useRouter();
+  const {resetFilters} = useFilters()
   const [deleteForm, setDeleteForm] = React.useState(false);
   const [modefierProps, setModefierProps] = React.useState(false);
   const [archiveProps, setArchiveProps] = React.useState(false);
@@ -102,6 +104,7 @@ const ClasseCard = ({ data }: { data: itemProps }) => {
         href={`classes/${data.id}`}
         key={data.id}
         className=" pl-3 pr-3 text-md font-[700] leading-tight text-center text-white"
+        onClick={() => resetFilters()}
       >
         <div className=" bg-[#1B8392]  p-2 rounded-lg cursor-pointer hover:opacity-80 pl-4 pr-4">
           Ouvrir

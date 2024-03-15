@@ -132,7 +132,31 @@ export const createUserInClasse = async (
     },
   });
   if (isTeacher) {
-    throw new Error("L'email donné est associé à un compte d'enseignant.");
+    return {
+      error: {
+        message: "L'email donné est associé à un compte d'enseignant.",
+        status: 'already_teacher',
+      },
+    };
+  }
+  const user = await db.user.findFirst({
+    where: {
+      email,
+      classe: {
+        some: {
+          id: +class_id,
+        },
+      },
+    },
+  });
+  if (user) {
+    return {
+      error: {
+        message:
+          "Un étudiant avec cet email déja existe.",
+        status: 'exist_in_classe',
+      },
+    };
   }
   const nameExiste = await db.user.findMany({
     where: {

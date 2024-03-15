@@ -56,6 +56,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   if (!examCorrection) {
     return <Loading />;
   }
+  console.log(userCorrections)
 
   const renderExericeTable = (obj: any, depth: number, index: number) => {
     const TotalMark = calcSumOfMarks(obj);
