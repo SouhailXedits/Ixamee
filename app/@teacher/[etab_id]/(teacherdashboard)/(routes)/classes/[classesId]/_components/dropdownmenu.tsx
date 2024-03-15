@@ -23,12 +23,8 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
     return differenceInDays;
   }
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
-  console.log(correctionExamOfUser);
-
-  console.log(row.original.status);
   const [modfier, setModfier] = React.useState(false);
   const isStatusDone = row?.original?.status === 'done'
-
   const [deleteForm, setDeleteForm] = React.useState(false);
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>

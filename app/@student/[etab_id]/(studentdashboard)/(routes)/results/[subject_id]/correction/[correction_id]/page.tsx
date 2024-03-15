@@ -107,7 +107,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
 
   return (
     <div className="flex flex-col gap-6">
-      <nav className="flex justify-between w-full  sticky top-0 left-0 p-4 ">
+      <nav className="flex justify-between w-full  sticky top-0 left-0 p-4 bg-white z-[50] shadow-md">
         <div className="flex flex-col gap-4">
           {isPending ? (
             <Skeleton className="w-[300px] h-[40px]" />
@@ -183,7 +183,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
         <p>Examen non corrigé a ce moment là ...</p>
       )}
 
-      <div className="fixed right-4 bottom-4">
+      {/* <div className="fixed right-4 bottom-4">
         <StudentFeedback content={getCorrigeExamOfUser?.length && getCorrigeExamOfUser[0].feedback}>
           <Image
             src="/bigEditNote.svg"
@@ -193,7 +193,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
             className="cursor-pointer"
           />
         </StudentFeedback>
-      </div>
+      </div> */}
     </div>
   );
 }

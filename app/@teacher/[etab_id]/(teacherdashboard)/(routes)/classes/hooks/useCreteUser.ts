@@ -28,9 +28,9 @@ export function useCreateUserInClasse() {
     },
     onError: (err: any) => {
       const message = err.message
-      if (err.digest === '1270835298')
-        toast.error("Un étudiant avec cet email déja existe");
-      else if (err.digest === '4072300200') toast.error(message);
+      if (message.includes('Unique constraint failed'))
+        toast.error('Un étudiant avec cet email déja existe');
+      else if (message.includes('enseignant')) toast.error(message);
       else toast.error("Une erreur s'est produite lors de la création de l'étudiant");
 
       //   ror {
