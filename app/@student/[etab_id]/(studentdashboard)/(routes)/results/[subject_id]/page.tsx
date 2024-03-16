@@ -6,7 +6,6 @@ import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
 import { getAllSubjectNameById } from '@/actions/subjects';
 import { getTeacherName } from '@/actions/teachers';
 import PDFExport from '@/app/_utils/ExportAsPdf';
-import { calculateAverageMark } from '@/app/_utils/calculateAverage';
 import Loading from '@/app/loading';
 import { MarkSheetStudent } from '@/components/shared-components/MarkSheetStudent';
 import TermCard from '@/components/shared-components/TermCard';
@@ -63,14 +62,11 @@ const Student = () => {
   });
 
   const examsData = marksheet?.data || [];
-  console.log(examsData)
-
   const groupedExams = examsData.reduce((result: any, exam: any) => {
     const term = exam.exam.term;
     if (!result[term]) {
       result[term] = [];
     }
-    console.log(exam);
     result[term].push({
       id: exam.id,
       exam_id: exam.exam.id,

@@ -3,8 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 import PieChartItem from './pie-chartItem';
 import { transformData } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/(root)/_components/transformStatus';
 import { Skeleton } from '@/components/ui/skeleton';
-import Rien from './Rien';
-import Loading from '@/app/loading';
 
 interface InputItem {
   status: string;
@@ -21,8 +19,6 @@ interface StatistiquesItemsProps {
   marksObtained: any;
   SubjectsPending: boolean;
 }
-
-// ... (imports remain the same)
 
 const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   marksObtained,

@@ -13,7 +13,7 @@ import {
 import { useRef } from 'react';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { getAllEstabs, getAllEstabsWithNoPagination } from '@/actions/establishements';
+import { getAllEstabsWithNoPagination } from '@/actions/establishements';
 import Select from 'react-select';
 import { getAllSubjects } from '@/actions/subjects';
 import { useForm } from 'react-hook-form';
