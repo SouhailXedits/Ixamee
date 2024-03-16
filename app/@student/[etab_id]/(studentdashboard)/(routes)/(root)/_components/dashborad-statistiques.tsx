@@ -8,21 +8,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import StatistiquesItems from './statistiques-items';
-
-import { useEffect, useState } from 'react';
-import { getClasseByClassId } from '@/actions/classe';
-import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
+import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  getCorrectionProgressStats,
-  getExamCorrectionById,
-  getExamCorrectionById2,
-  getUserCorrectionBySubjectId,
-} from '@/actions/exam-correction';
+import { getUserCorrectionBySubjectId } from '@/actions/exam-correction';
 import { getAllSubjectsByClasseId } from '@/actions/subjects';
 import { useParams } from 'next/navigation';
-import { groupByExamCorrectionProgress } from '@/app/_utils/examcorrectionPercetage';
-import { groupByExamProgress } from '@/app/_utils/examPercetage';
 
 const DashboradStatistiques = ({
   isPendingClasses,
@@ -56,7 +46,7 @@ const DashboradStatistiques = ({
     isPending: isSubjectsExamsPending,
     error: subjectsExamsError,
   } = useQuery({
-    queryKey: ['user-subjects-examCorrection', userId,subId],
+    queryKey: ['user-subjects-examCorrection', userId, subId],
     queryFn: async () => getUserCorrectionBySubjectId(userId, +subId),
   }) as any;
 
@@ -75,8 +65,6 @@ const DashboradStatistiques = ({
           </span>
         </div>
         <div className="flex items-end justify-end w-full gap-3 max-md:w-full">
-          {/* Classe */}
-
           <Select
             onValueChange={async (value) => {
               setSubId(value);

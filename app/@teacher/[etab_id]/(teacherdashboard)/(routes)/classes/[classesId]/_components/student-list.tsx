@@ -154,9 +154,9 @@ export const columns = [
         <Image
           src={row?.original?.image ? row?.original?.image : '/defaultUserAvatr.svg'}
           alt=""
-          width={42}
-          height={42}
-          className="rounded-full object-cover  h-[42px] w-[42px]"
+          width={100}
+          height={100}
+          className="object-cover rounded-full w-[42px] h-[42px]"
         />
 
         <HoverCard>
