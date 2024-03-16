@@ -144,8 +144,9 @@ const Student = () => {
         <Image
           src={user?.image || '/defaultUserAvatr.svg'}
           alt=" user avatar"
-          height={50}
-          width={50}
+          width={100}
+          height={100}
+          className="object-cover rounded-full w-[50px] h-[50px]"
         />
         <div>
           <p className="text-xl text-mainGreen">{user?.name}</p>

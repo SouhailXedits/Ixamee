@@ -28,7 +28,6 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   marksObtained,
   SubjectsPending,
 }) => {
-  console.log('🚀 ~ marksObtained:', marksObtained);
   const totalExams =
     marksObtained &&
     Object?.values(marksObtained)?.reduce(
@@ -41,10 +40,8 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
     [marksObtained]
   );
 
-  console.log('🚀 ~ transformedData:', transformedData);
   const [animatedCount, setAnimatedCount] = useState<number>(totalExams);
 
-  // console.log('🚀 ~ animatedCount:', animatedCount);
   useEffect(() => {
     if (SubjectsPending || totalExams === undefined) return;
 
@@ -62,7 +59,6 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   }, [totalExams, SubjectsPending]);
 
   const finalCount = animatedCount;
-  console.log('🚀 ~ finalCount:', finalCount);
 
   // const defaultItems = useMemo(
   //   () => [
@@ -117,11 +113,20 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
           </div>
         </>
       ) : (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-24 w-24 rounded-full" />
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[250px]" />
+        <div className="flex items-center justify-between gap-16">
+          <Skeleton className="h-36 w-36 rounded-full" />
+          <div className="flex gap-4 items-center">
+            {[0, 0, 0, 0].map(() => {
+              return (
+                <div className="flex gap-2 items-center">
+                  <Skeleton className="w-2 h-16 rounded-[126.89px]" />
+                  <div className="flex flex-col gap-4 pl-4">
+                    <Skeleton className="h-4 w-20 " />
+                    <Skeleton className="h-4 w-16 " />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

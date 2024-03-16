@@ -73,8 +73,8 @@ function SubjectCard({ subject, etab_id }: any) {
           <Image
             alt="Teacher image"
             src={subject.teacher[0]?.image || '/defaultUserAvatr.svg'}
-            width={40}
-            height={40}
+            width={100}
+            height={100}
             className="rounded-full h-[40px] w-[40px] object-cover"
           />
           <div>
