@@ -97,9 +97,7 @@ export const getUserCorrectionBySubjectId = async (
   user_id: string,
   subject_id?: number | undefined
 ) => {
-  if (!subject_id) subject_id =undefined
-  console.log('🚀 ~ subject_id:', subject_id);
-  console.log('🚀 ~ user_id:', user_id);
+  if (!subject_id) subject_id = undefined;
   try {
     const res = await db.examCorrection.findMany({
       select: {
@@ -123,9 +121,9 @@ export const getUserCorrectionBySubjectId = async (
         exam: {
           subject_id: subject_id,
         },
+        is_published: true,
       },
     });
-    console.log('🚀 ~ getUserCorrectionBySubjectId ~ res:', res);
     const groupedData = groupByExamCorrectionProgress(res);
     return groupedData;
   } catch (error: any) {

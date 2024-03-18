@@ -2,7 +2,6 @@ import Image from 'next/image';
 import ClassesCards from './classes-cards';
 import Link from 'next/link';
 import Rien from './Rien';
-import { QueryClient } from '@tanstack/react-query';
 
 const DashboradClasses = ({ subjects, isPending, allSubjectsCount, classId }: any) => {
   return (

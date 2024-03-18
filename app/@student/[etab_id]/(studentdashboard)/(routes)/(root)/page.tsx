@@ -38,10 +38,7 @@ export default function Home() {
     queryFn: async () => getAllSubjectsByClasseIdByPage(2, +classId),
   });
 
-  // const { data: subjects, isPending } = useQuery({
-  //   queryKey: ['user-subjects-dash', classId],
-  //   queryFn: async () => getAllSubjectsByClasseIdByPage(1, +classId),
-  // });
+
 
   return (
     <div className="flex flex-col w-full h-[100vh] overflow-auto p-9">
