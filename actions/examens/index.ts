@@ -150,6 +150,14 @@ export const createExamCorrection = async (
   correction_exam_content: any,
   status: any
 ) => {
+  console.log(
+    exam_id,
+    mark_obtained,
+    user_id,
+    correction_exam_content,
+    status,
+    'createExamCorrection'
+  );
   // Check if there is an existing examCorrection for the given exam_id and user_id
   const existingExamCorrection = await db.examCorrection.findMany({
     where: {
@@ -197,6 +205,7 @@ export const createExamCorrection = async (
         user_id: user_id,
       },
     });
+    console.log(correction_exam_content);
     return examCorrection;
   }
 };

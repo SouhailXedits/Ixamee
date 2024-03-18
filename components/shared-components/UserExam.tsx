@@ -5,15 +5,15 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 
 function UserExam({ exam, examsData }: any) {
-  console.log(exam, 'exam');
-  console.log(examsData, 'exam');
-
-  const userContent = exam?.examCorrection?.[0];
+  const params = useParams();
   const user_id = exam?.user?.id;
-  console.log(userContent);
+
+  const userContent = exam?.examCorrection?.filter((item: any) => {
+    return item.user_id === user_id;
+  });
+
   const examContent = exam?.examContent;
 
-  const params = useParams();
   const pathname = usePathname();
 
   const router = useRouter();
