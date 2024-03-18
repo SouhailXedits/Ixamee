@@ -7,7 +7,8 @@ export function useDeleteUserInClasse() {
   const queryClient = useQueryClient();
 
   const { mutate: deleteUser, isPending } = useMutation({
-    mutationFn: ({ user_id, classe_id }: any) => DeleteUserInClasseApi(user_id, classe_id),
+    mutationFn: ({ user_id, classe_id, exam_id }: any) =>
+      DeleteUserInClasseApi(user_id, classe_id, exam_id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });

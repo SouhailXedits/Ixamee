@@ -10,7 +10,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getExamCorrectionById } from '@/actions/exam-correction';
 import { useParams } from 'next/navigation';
 import Loading from '@/app/loading';
-import { getDetailsOfExercice } from './getDetailsOfExam';
+import { getDetailsOfAllExercice, getDetailsOfExercice } from './getDetailsOfExam';
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 import { getNameClasseByClasseId } from '@/actions/classe';
 import PdfHeaderEvatuation from '@/components/shared-components/PdfHeaderEvalution';
@@ -36,6 +36,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   const estab = teacherEstab?.filter((item: any) => {
     return item.id == params.etab_id;
   });
+  console.log(estab);
 
   const examId = userExamCorectionContent?.[0]?.exam_id;
 
@@ -47,16 +48,15 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     queryKey: ['UserExamEvalaiations', examId, classe_id],
     queryFn: async () => getExamCorrectionById(examId, classe_id),
   });
-  const {data: NameClasse} = useQuery({
+  const { data: NameClasse } = useQuery({
     queryKey: ['NameClasse', classe_id],
-    queryFn: async() => await getNameClasseByClasseId(+classe_id)
-  })
-
+    queryFn: async () => await getNameClasseByClasseId(+classe_id),
+  });
 
   if (!examCorrection) {
     return <Loading />;
   }
-  console.log(userCorrections)
+  console.log(userCorrections);
 
   const renderExericeTable = (obj: any, depth: number, index: number) => {
     const TotalMark = calcSumOfMarks(obj);
@@ -122,7 +122,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
                         <tr key={index}>
                           <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
                           <td className="p-2 pb-[10px] border border-black/50"> </td>
-                        
+
                           <td className="p-2 pb-[10px] border border-black/50">{item.mark}</td>
                           <td className="p-2 pb-[10px] border border-black/50">
                             {getMarkOfExerciceWithId(examCorrection, item.id) === null
@@ -148,7 +148,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
                                 {' '}
                                 {subItem.name}
                               </td>
-                            
+
                               <td className="p-2 pb-[10px] border border-black/50">
                                 {subItem.mark}
                               </td>
@@ -269,7 +269,9 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
                 {result}
               </td>
               <td className="p-2  pb-[10px] border border-black/50 bg-[#9DD60026] text-[#4C4C4D]">
-                {result === 0 ? '0%' : ((result / TotalMark) * 100).toFixed(2) + '%'}
+                {/* {result === 0 ? '0%' : ((result / TotalMark) * 100).toFixed(2) + '%'} */}
+
+                {getDetailsOfAllExercice(examCorrection, userCorrections, examContent)}
               </td>
             </tr>
           </>

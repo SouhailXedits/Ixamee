@@ -15,17 +15,21 @@ interface SupprimerUneClasse {
   user_id: string;
   classe_id: string;
   open: boolean;
+  exam_id: string;
   setOpen: (open: boolean) => void;
 }
 export const SupprimerUserInClasse = ({
   user_id,
   classe_id,
   open,
+  exam_id,
+
   setOpen,
 }: SupprimerUneClasse) => {
+  console.log(exam_id);
   const { deleteUser } = useDeleteUserInClasse();
   const handelDeleteExa = () => {
-    deleteUser({ user_id, classe_id });
+    deleteUser({ user_id, classe_id ,exam_id});
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>

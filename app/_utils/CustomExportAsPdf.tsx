@@ -29,8 +29,8 @@ const EvaluationPDFExport = ({ children, pdfName }: any) => {
       /> */}
       <span onClick={exportPDF}>Evaluation</span>
 
-      <div className="fixed -bottom-[999rem]">
-        {/* <div className="w-full overflow-auto"> */}
+      {/* <div className="fixed -bottom-[999rem]"> */}
+        <div className="w-full overflow-auto">
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>
