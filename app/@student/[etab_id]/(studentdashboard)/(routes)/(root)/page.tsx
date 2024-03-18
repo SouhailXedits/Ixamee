@@ -34,8 +34,8 @@ export default function Home() {
     isPending,
     error,
   } = useQuery({
-    queryKey: ['user-subjects', classId],
-    queryFn: async () => getAllSubjectsByClasseIdByPage(3, +classId),
+    queryKey: ['user-subjects-dash', classId],
+    queryFn: async () => getAllSubjectsByClasseIdByPage(2, +classId),
   });
 
   // const { data: subjects, isPending } = useQuery({

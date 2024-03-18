@@ -6,7 +6,7 @@ function SubjectCard({ subject, etab_id }: any) {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return (
     <div
-      className={`w-full justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden `}
+      className={` justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden max-lg:w-full`}
       style={{
         backgroundColor: colors[randomIndex],
       }}
