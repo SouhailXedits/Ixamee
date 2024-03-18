@@ -25,7 +25,7 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
 
-  const userSubjects = queryClient.getQueryData(['user-subjects', classeId]) as any;
+  const userSubjects = queryClient.getQueryData(['user-subjects-dash', classeId]) as any;
   const { data: userCorrections } = useQuery<any>({
     queryKey: ['correction', filter],
     queryFn: async () => getUserCorrectionBySubject(user?.id, filter),
