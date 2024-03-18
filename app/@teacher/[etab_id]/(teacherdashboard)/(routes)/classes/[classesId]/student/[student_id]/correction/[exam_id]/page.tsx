@@ -67,9 +67,9 @@ export default function Page({
     } else if (data?.content) {
       const copiedData = JSON.parse(JSON.stringify(data.content));
       console.log(copiedData, 'copiedData');
-      transferAllMarkToNull(copiedData)
+      transferAllMarkToNull(copiedData);
       setFakeData(copiedData);
-      setSum(0)
+      setSum(0);
     }
   }, [isFullMarks]);
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function Page({
       const stataus = statusOf(fakeData);
 
       // Assuming you have the necessary data
-
+      console.log(fakeData, 'fakeData');
       const dataToSave = {
         exam_id: parseInt(exam_id),
         mark_obtained: sumToSave,

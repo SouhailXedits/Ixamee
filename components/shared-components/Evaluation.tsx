@@ -14,27 +14,35 @@ import { getDetailsOfExercice } from '@/app/@teacher/[etab_id]/(teacherdashboard
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
+  console.log('dsdsd');
+  console.log(userExamCorectionContent);
+  console.log(userDetails);
+
+  if (!userExamCorectionContent?.correction_exam_content) {
+    return null;
+  }
+
   const examCorrection = userExamCorectionContent?.correction_exam_content;
   console.log(examCorrection);
   const params = useParams();
   console.log(params);
   console.log(userExamCorectionContent);
-  console.log(userExamCorectionContent);
+  console.log(userExamCorectionContent.correction_exam_content);
   console.log(userDetails, 'userDetails');
   const classe_id = params.etab_id as string;
-  if (!userExamCorectionContent?.correction_exam_content) {
-    return null;
-  }
+
   // Logging for debugging
   const queryClient = useQueryClient();
 
   // const etab_id = queryClient.getQueryData(['etab_id']) as any;
-  const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
+  const teacherEstab = queryClient.getQueryData(['AllEstabOfUser']) as any;
   const user = queryClient.getQueryData(['user']) as any;
-
-  const estab = teacherEstab?.filter((item: any) => {
-    return item.id == params.etab_id;
-  });
+  const classeNames = queryClient.getQueryData(['user-classes']) as any;
+  const teacherName = queryClient.getQueryData(['TeacherName', +params.subject_id]) as any;
+  console.log(teacherName);
+  console.log(classeNames);
+  const classeName = classeNames.find((item: any) => item.id === +params.etab_id);
+  console.log(classeName);
   console.log(userExamCorectionContent, 'userExamCorectionContent');
   const examId = userExamCorectionContent?.exam_id;
   const [examIdd, setExamIdd] = useState(examId);
@@ -357,16 +365,16 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     <div>
       <PdfHeader
         meta={{
-          // estab: estab[0].name,
+          estab: teacherEstab[0].name,
           heading: 'Fiche d évaluation',
           session: currentYear + '-' + nextYear,
           term: {
             type: user?.term,
             number: 2,
           },
-          classe: 'Bac math 2',
-          fullName: userDetails?.name,
-          teacherName: user?.name,
+          classe: classeName?.name,
+          fullName: user?.name,
+          teacherName: teacherName?.name,
           // range: 1,
           // average: 15.57,
         }}

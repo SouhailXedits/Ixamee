@@ -18,7 +18,7 @@ export default function TelachargePdfEvaluation({
   return (
     <EvaluationPDFExportStudent pdfName="evaluation">
       <Evaluation
-        userExamCorectionContent={userContent}
+        userExamCorectionContent={userContent[0]}
         user_id={user_id}
         userDetails={userDetails}
       />

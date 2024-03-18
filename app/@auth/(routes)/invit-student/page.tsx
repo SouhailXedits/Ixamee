@@ -12,9 +12,6 @@ import { getClassesOfUser } from '@/data/user';
 import Loading from '@/app/loading';
 import { useQuery } from '@tanstack/react-query';
 
-
-
-
 export default function Page() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<any>({});
@@ -63,20 +60,20 @@ export default function Page() {
     <div id="SignUpRoot" className="bg-[#f0f6f8] flex flex-col md:flex-row w-full">
       {/* Left section */}
       <div className="bg-white w-full flex flex-col justify-center h-[100vh] items-center md:rounded-br-[100px] md:rounded-tr-[100px] gap-10">
-        <div className="text-center text-2 text-4xl max-lg:text-3xl">Bienvenue à Ixamee</div>
-        <div className="flex flex-col items-start w-3/5 text-2 text-xl gap-5">
+        <div className="text-4xl text-center text-2 max-lg:text-3xl">Bienvenue à Ixamee</div>
+        <div className="flex flex-col items-start w-3/5 gap-5 text-xl text-2">
           Créons votre compte
         </div>
         <div className="w-full bg-[#F0F6F8]">
           <div className="w-3/5 ml-[14rem]">
             <p className="text-sm mt-2 text-[#727272]"> Vous avez été invité par:</p>
-            <div className="flex gap-10 items-center py-5">
+            <div className="flex items-center gap-10 py-5">
               <Image
                 alt="picture Student"
                 src={teacher?.image || '/studenttestpicture.svg'}
                 width={75}
                 height={75}
-                className="rounded-full object-fill"
+                className="rounded-full object-fill h-[75px] w-[75px]"
               />
               <div>
                 <ul className="flex flex-col gap-3">
@@ -110,13 +107,13 @@ export default function Page() {
           <p>{student?.email}</p>
 
           <InvitForm email={student?.email} />
-          <div className="flex w-full justify-center">
+          <div className="flex justify-center w-full">
             <p className="text-center text-[#727272] max-md:text-sm max-sm:text-xs ">
               Vous avez déjà un compte?{' '}
             </p>
             &nbsp;
             <Link
-              className="text-center text-mainGreen hover:underline text-base font-semibold max-md:text-sm max-sm:text-xs "
+              className="text-base font-semibold text-center text-mainGreen hover:underline max-md:text-sm max-sm:text-xs "
               href={'/login'}
             >
               Se connecter
