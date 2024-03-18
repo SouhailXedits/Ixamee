@@ -157,7 +157,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
                 'w-full flex items-center justify-center gap-3 pl-2 pr-2 text-sm font-semibold  leading-tight '
               )}
             >
-              <span className=" text-3xl pb-4 -mr-3">
+              <span className=" text-2xl pb-4 -mr-3">
                 {isAutoCorrection ? sumPresp : isCorrected ? sum : '--'}
               </span>{' '}
               / {data?.total_mark}
