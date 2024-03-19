@@ -59,7 +59,7 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                       </td>
                       <td className="pb-4 border border-black/50">{exam.range}</td>
                       <td className="pb-4 border border-black/50">--</td>
-                      {/* <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td> */}
+                      {/* <td className="border bg-[#99C6D3]/40 border-black/50 h-8">Rang</td> */}
                     </tr>
                   ))}
                   <tr className=" bg-6/50">

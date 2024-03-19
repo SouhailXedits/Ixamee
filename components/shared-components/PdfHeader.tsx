@@ -1,12 +1,12 @@
 import Image from 'next/image';
 
 interface PdfHeaderProps {
-  type: 'MSTeach' | 'MSStudent' | 'LOS' ;
+  type: 'MSTeach' | 'MSStudent' | 'LOS';
   meta: any;
 }
 
 function PdfHeader({ type, meta }: PdfHeaderProps) {
-  console.log(meta)
+  console.log(meta);
   return (
     <div
       style={{
@@ -197,7 +197,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                     }}
                   >
                     <>
-                      <span style={{ fontWeight: '600' }}>rang : </span>
+                      <span style={{ fontWeight: '600' }}>Rang : </span>
                       <span
                         style={{
                           color: '#102528',

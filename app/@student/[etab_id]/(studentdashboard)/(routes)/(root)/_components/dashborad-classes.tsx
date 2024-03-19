@@ -3,7 +3,12 @@ import ClassesCards from './classes-cards';
 import Link from 'next/link';
 import Rien from './Rien';
 
-const DashboradClasses = ({ subjects, isPending, allSubjectsCount, classId }: any) => {
+const DashboradClasses = ({
+  subjects,
+  isSubjectPending: isPending,
+  allSubjectsCount,
+  classId,
+}: any) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex w-full justify-between">

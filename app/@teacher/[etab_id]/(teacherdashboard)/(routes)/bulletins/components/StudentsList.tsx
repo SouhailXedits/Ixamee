@@ -116,7 +116,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
         return <span className="text-[#1B8392] ">Nom et prénom</span>;
       },
       cell: ({ row }) => (
-        <div className="flex items-center gap-2 capitalize">
+        <div className="flex items-center gap-2 capitalize cursor-pointer">
           <Image
             src={row.original.image || "/defaultUserAvatr.svg"}
             alt=""

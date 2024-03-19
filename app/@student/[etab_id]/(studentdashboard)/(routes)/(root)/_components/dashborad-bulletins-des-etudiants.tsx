@@ -13,8 +13,9 @@ import { getUserCorrectionBySubject } from '@/actions/exam-correction';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import Link from 'next/link';
 
-const DashboradBulletinsDesEtudiants = ({ data }: any) => {
+const DashboradBulletinsDesEtudiants = ({ subjects: userSubjects }: any) => {
   const [filter, setFilter] = useState({
     subject_id: '',
     term: '',
@@ -25,7 +26,6 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(['user']) as any;
 
-  const userSubjects = queryClient.getQueryData(['user-subjects-dash', classeId]) as any;
   const { data: userCorrections } = useQuery<any>({
     queryKey: ['correction', filter],
     queryFn: async () => getUserCorrectionBySubject(user?.id, filter),
@@ -40,7 +40,7 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
         </div>
         {userCorrections?.length > 0 && (
           <div className="text-[#1B8392] cursor-pointer text-lg font-medium  underline">
-            Voir plus
+            <Link href={`/${classeId}/results`}>Voir plus</Link>
           </div>
         )}
       </div>
@@ -51,7 +51,7 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
             value={filter.subject_id}
             onValueChange={(value) => setFilter({ ...filter, subject_id: value })}
           >
-            <SelectTrigger className="w-[140px] rounded-xl text-11">
+            <SelectTrigger className="w-[140px] rounded-xl text-[#1B8392] border-[#99C6D3]">
               <SelectValue placeholder="Matière" />
             </SelectTrigger>
             <SelectContent>
@@ -71,7 +71,7 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
             value={filter.term}
             onValueChange={(value) => setFilter({ ...filter, term: value })}
           >
-            <SelectTrigger className="w-[140px] rounded-xl text-11">
+            <SelectTrigger className="w-[140px] rounded-xl text-[#1B8392] border-[#99C6D3]">
               <SelectValue placeholder="session" />
             </SelectTrigger>
             {user?.term === 'TRIMESTRE' ? (
