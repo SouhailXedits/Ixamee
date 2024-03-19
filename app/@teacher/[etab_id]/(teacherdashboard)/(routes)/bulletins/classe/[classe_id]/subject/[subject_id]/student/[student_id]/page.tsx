@@ -73,20 +73,20 @@ const Student = () => {
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
 
-    const term = exam.exam.term;
+    const term = exam?.exam?.term;
     if (!result[term]) {
       result[term] = [];
     }
     result[term].push({
-      id: exam.id,
-      exam_id: exam.exam.id,
-      name: exam.exam.name,
-      date: exam.exam.create_at.toISOString().split('T')[0],
-      marksObtained: exam.mark_obtained,
-      coefficient: exam.exam.coefficient,
-      totalScore: exam.exam.total_mark,
-      overTwnetyMark: exam.mark_obtained * (20 / exam.exam.total_mark),
-      range: exam.rank,
+      id: exam?.id,
+      exam_id: exam?.exam?.id,
+      name: exam?.exam?.name,
+      date: exam?.exam?.create_at.toISOString().split('T')[0],
+      marksObtained: exam?.mark_obtained,
+      coefficient: exam?.exam?.coefficient,
+      totalScore: exam?.exam?.total_mark,
+      overTwnetyMark: exam?.mark_obtained * (20 / exam?.exam?.total_mark),
+      range: exam?.rank,
     });
     return result;
   }, {});
@@ -133,10 +133,10 @@ const Student = () => {
               meta={{
                 estab: estabName?.name,
                 subject: subjectName?.name,
-                classe: classeNamePending || classeName[0]?.name,
+                classe: classeNamePending || classeName?.[0]?.name,
                 fullName: user?.name,
-                average: userClasseInfos?.length && userClasseInfos[0].average,
-                range: userClasseInfos?.length && userClasseInfos[0].rankInClasse,
+                average: userClasseInfos?.length && userClasseInfos?.[0].average,
+                range: userClasseInfos?.length && userClasseInfos?.[0].rankInClasse,
                 teacherName: TeacherName?.name,
                 userClasseInfos,
               }}
@@ -155,7 +155,7 @@ const Student = () => {
       </nav>
       <div className="flex items-center gap-3 ml-5 ">
         <Image
-          src={user?.image || '/userAvatar/user1.svg'}
+          src={user?.image || '/defaultUserAvatr.svg'}
           alt=" user avatar"
           width={100}
           height={100}
@@ -164,13 +164,13 @@ const Student = () => {
         <div>
           <p className="text-xl text-mainGreen">{user?.name}</p>
           {classeNamePending && <Skeleton className="w-20 h-5 " />}
-          {classeName?.length && <p className=" text-gray">{classeName[0]?.name}</p>}
+          {classeName?.length && <p className=" text-gray">{classeName?.[0]?.name}</p>}
         </div>
       </div>
 
       <div className="flex overflow-auto gap-9 p-7">
         {trimesters.map((trimester) => (
-          <TermCard term={trimester} key={trimester.name}  />
+          <TermCard term={trimester} key={trimester.name} />
         ))}
       </div>
       <div className="flex justify-end w-full gap-2 text-white ">
@@ -180,10 +180,10 @@ const Student = () => {
           <>
             {' '}
             <p className="p-2 rounded bg-orangeColor">
-              Rang: {userClasseInfos[0]?.rankInClasse || '-'}
+              Rang: {userClasseInfos?.[0]?.rankInClasse || '-'}
             </p>{' '}
             <p className="p-2 rounded bg-mainGreen">
-              Moyenne génerale: {userClasseInfos[0]?.average}/20
+              Moyenne génerale: {userClasseInfos?.[0]?.average}/20
             </p>
           </>
         )}
