@@ -56,6 +56,7 @@ export const getClasseById = async (id: number) => {
     include: {
       exam_classe: {
         where: {
+          is_archived: false,
           is_published: true,
         },
       },

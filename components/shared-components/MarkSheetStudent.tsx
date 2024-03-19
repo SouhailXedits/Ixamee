@@ -7,6 +7,7 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
   // const data = {
   //   terms = [{trimester1: [exams= {}}]
   // }
+  console.log(meta)
 
   return (
     <div>
@@ -63,8 +64,11 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                     </tr>
                   ))}
                   <tr className=" bg-6/50">
+                    <td className="pb-4" colSpan={3}>
+                      Moyenne trimestrelle : {calculateAverageMark([term]) || '--'}
+                    </td>
                     <td className="pb-4" colSpan={5}>
-                      Moyenne semestrielle : {calculateAverageMark([term]) || '--'}
+                      range : {term.exams.length > 0 && meta.range || '--'}
                     </td>
                     {/* <td colSpan={3}>-</td> */}
                   </tr>
