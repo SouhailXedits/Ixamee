@@ -132,10 +132,10 @@ const Student = () => {
               meta={{
                 estab: estabName?.name,
                 subject: subjectName?.name,
-                classe: classeNamePending || classeName[0]?.name,
+                classe: classeNamePending || classeName?.[0]?.name,
                 fullName: user?.name,
-                average: userClasseInfos?.length && userClasseInfos[0].average,
-                range: userClasseInfos?.length && userClasseInfos[0].rankInClasse,
+                average: userClasseInfos?.length && userClasseInfos?.[0].average,
+                range: userClasseInfos?.length && userClasseInfos?.[0].rankInClasse,
                 teacherName: TeacherName?.name,
                 userClasseInfos,
               }}
@@ -154,7 +154,7 @@ const Student = () => {
       </nav>
       <div className="flex items-center gap-3 ml-5 ">
         <Image
-          src={user?.image || '/userAvatar/user1.svg'}
+          src={user?.image || '/defaultUserAvatr.svg'}
           alt=" user avatar"
           height={50}
           width={50}
@@ -162,13 +162,13 @@ const Student = () => {
         <div>
           <p className="text-xl text-mainGreen">{user?.name}</p>
           {classeNamePending && <Skeleton className="w-20 h-5 " />}
-          {classeName?.length && <p className=" text-gray">{classeName[0]?.name}</p>}
+          {classeName?.length && <p className=" text-gray">{classeName?.[0]?.name}</p>}
         </div>
       </div>
 
       <div className="flex overflow-auto gap-9 p-7">
         {trimesters.map((trimester) => (
-          <TermCard term={trimester} key={trimester.name}  />
+          <TermCard term={trimester} key={trimester.name} />
         ))}
       </div>
       <div className="flex justify-end w-full gap-2 text-white ">
@@ -178,10 +178,10 @@ const Student = () => {
           <>
             {' '}
             <p className="p-2 rounded bg-orangeColor">
-              Rang: {userClasseInfos[0]?.rankInClasse || '-'}
+              Rang: {userClasseInfos?.[0]?.rankInClasse || '-'}
             </p>{' '}
             <p className="p-2 rounded bg-mainGreen">
-              Moyenne génerale: {userClasseInfos[0]?.average}/20
+              Moyenne génerale: {userClasseInfos?.[0]?.average}/20
             </p>
           </>
         )}
