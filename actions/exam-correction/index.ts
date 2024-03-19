@@ -212,15 +212,24 @@ export const updateStudentPrespectation = async (
   return res;
 };
 
-export const getRecentCorrections = async (user_id: string) => {
+export const getRecentCorrections = async (
+  pageSize: number,
+  user_id: string,
+  subjectId?: number
+) => {
+  if (!subjectId) {
+    subjectId = undefined;
+  }
   try {
-    // console.log();
     if (!user_id) return;
 
     const res = await db.examCorrection.findMany({
       where: {
         user_id: user_id,
         is_published: true,
+        exam: {
+          subject_id: subjectId,
+        },
       },
       select: {
         mark_obtained: true,
@@ -244,8 +253,8 @@ export const getRecentCorrections = async (user_id: string) => {
         rank: true,
         status: true,
       },
+      take: pageSize,
     });
-    console.log(res);
     return res;
   } catch (error: any) {
     return {

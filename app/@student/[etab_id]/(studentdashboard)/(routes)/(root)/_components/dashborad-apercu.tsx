@@ -4,10 +4,12 @@ import ApercuItem from './apercu-Item';
 import { useQueryClient } from '@tanstack/react-query';
 
 const DashboradApercu = ({
+  subjects,
   subjectCount,
   examCount,
   marksheetCount,
 }: {
+  subjects:any
   subjectCount: any | undefined;
   examCount: number | undefined;
   marksheetCount: number | undefined;

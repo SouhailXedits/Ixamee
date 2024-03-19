@@ -56,8 +56,8 @@ const ClassesCards = ({ classes, isPending, etabId }: any) => {
                         key={index}
                         src={student.image || '/defaultUserAvatr.svg'}
                         alt="user avatar"
-                        width={40}
-                        height={40}
+                        width={100}
+                        height={100}
                         className="inline-block rounded-full w-[40px] h-[40px] object-cover"
                       />
                     ))
