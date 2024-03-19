@@ -69,8 +69,8 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
       <div className="flex justify-between" onClick={(e) => e.stopPropagation()}>
         <HoverCard>
           <HoverCardTrigger asChild>
-            <span className="text-[#514E4E]">
-              {exam?.name.length > 10 ? exam?.name.slice(0, 10) + '...' : exam?.name}
+            <span className="text-[#514E4E] text-wrap">
+              {exam?.name.length > 26 ? exam?.name.slice(0, 26) + '...' : exam?.name}
             </span>
           </HoverCardTrigger>
           <HoverCardContent className="max-w-[200px] bg-white p-2 rounded-lg text-pretty">
@@ -97,7 +97,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
 
       {/* Displaying classes associated with the exam */}
       <div className="flex items-center justify-between w-full mt-[20px]">
-        <div className=" space-x-2">
+        <div className="space-x-2 ">
           {/* Mapping over examClassess to display class names */}
           {exam?.exam_classess?.map((examClass, index) => (
             <div

@@ -34,7 +34,7 @@ const PDFExport = ({ children, pdfName }: any) => {
       </div>
       <button
         onClick={exportPDF}
-        className=" justify-center p-[0.6rem]  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
+        className=" justify-center p-[0.6rem]  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center w-full"
       >
         <Image src="/telechargeIcon.svg" alt="icons" width={20} height={20} />
         <p className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">Télécharger</p>

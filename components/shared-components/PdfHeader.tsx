@@ -1,12 +1,12 @@
 import Image from 'next/image';
 
 interface PdfHeaderProps {
-  type: 'MSTeach' | 'MSStudent' | 'LOS' ;
+  type: 'MSTeach' | 'MSStudent' | 'LOS';
   meta: any;
 }
 
 function PdfHeader({ type, meta }: PdfHeaderProps) {
-  console.log(meta)
+  console.log(meta);
   return (
     <div
       style={{
