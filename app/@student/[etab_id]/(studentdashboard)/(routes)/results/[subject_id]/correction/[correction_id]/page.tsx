@@ -13,6 +13,7 @@ import { StudentFeedback } from '../_components/StudentFeedback';
 import { Button } from '@/components/ui/button';
 import CreateExam from '@/components/shared-components/exam/create-exam';
 import { useUpdateExamPresp } from './hooks/useUpdateStudProsp';
+import { usePathname } from 'next/navigation';
 
 export default function Page({ params }: { params: { correction_id: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
@@ -174,26 +175,26 @@ export default function Page({ params }: { params: { correction_id: string; etab
           realExamContetn={examContentt}
         />
       ) : isCorrected ? (
-        <Exam
-          isArabic={arabic}
-          fakeData={fakeData}
-          realExamContetn={examContentt}
-        />
+        <Exam isArabic={arabic} fakeData={fakeData} realExamContetn={examContentt} />
       ) : (
         <p>Examen non corrigé a ce moment là ...</p>
       )}
 
-      {/* <div className="fixed right-4 bottom-4">
-        <StudentFeedback content={getCorrigeExamOfUser?.length && getCorrigeExamOfUser[0].feedback}>
-          <Image
-            src="/bigEditNote.svg"
-            width={100}
-            height={100}
-            alt="editicon"
-            className="cursor-pointer"
-          />
-        </StudentFeedback>
-      </div> */}
+      {!isAutoCorrection && (
+        <div className="fixed right-4 bottom-4">
+          <StudentFeedback
+            content={getCorrigeExamOfUser?.length && getCorrigeExamOfUser[0].feedback}
+          >
+            <Image
+              src="/bigEditNote.svg"
+              width={100}
+              height={100}
+              alt="editicon"
+              className="cursor-pointer"
+            />
+          </StudentFeedback>
+        </div>
+      )}
     </div>
   );
 }
