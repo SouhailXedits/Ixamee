@@ -19,6 +19,9 @@ import { calcSumOfMarks } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(rou
 import toast from 'react-hot-toast';
 import { useEditExamContent } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useEditExamContent';
 
+import AddScall from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/_components/telechargeExamMark/addScall';
+import PDFExport from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/_components/ExportAsPdfExamMark';
+
 interface DeleteExame {
   exam: any;
   open: boolean;
@@ -27,7 +30,7 @@ interface DeleteExame {
 
 export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
   // use State for the update the state :
-
+  console.log(exam);
   const totalMarkOfExam = exam?.total_mark;
   const [content, setContent] = useState<any>(exam?.content);
   // handel get the exam
@@ -55,10 +58,7 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
   const tes = 1500;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent
-        className={`w-[${tes}px] sm:max-h-[600px]`}
-        style={{ maxWidth: whidth }}
-      >
+      <DialogContent className={`w-[${tes}px] sm:max-h-[600px]`} style={{ maxWidth: whidth }}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
             Ajouter un barème
@@ -113,14 +113,20 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
         </DialogDescription>
         <DialogClose>
           <DialogFooter>
-            <Button
-              type="submit"
-              disabled={some > totalMarkOfExam}
-              className="w-full text-white bg-2 hover:opacity-80"
-              onClick={() => handelUpdateContentOExam()}
-            >
-              Ajouter
-            </Button>
+            <div className="flex flex-col w-full gap-4">
+              <PDFExport pdfName="bulletin">
+                <AddScall exam={content} examDetails={exam} />
+              </PDFExport>
+
+              <Button
+                type="submit"
+                disabled={some > totalMarkOfExam}
+                className="w-full text-white bg-2 hover:opacity-80"
+                onClick={() => handelUpdateContentOExam()}
+              >
+                Ajouter
+              </Button>
+            </div>
           </DialogFooter>
         </DialogClose>
       </DialogContent>

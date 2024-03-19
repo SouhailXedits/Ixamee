@@ -132,7 +132,7 @@ export default function Page({
 
   return (
     <div className="flex flex-col gap-6">
-      <nav className="flex justify-between w-full sticky top-0 left-0 p-4 z-[50] bg-white shadow-md">
+      <nav className="flex justify-between w-full sticky top-0 left-1 p-4 z-[30] bg-white shadow-md">
         <div className="flex flex-col gap-4">
           {isPending ? (
             <Skeleton className="w-[300px] h-[40px]" />

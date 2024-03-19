@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { DialogHeader } from '@/components/ui/dialog';
 import { useUpdateExamPlan } from '../../hooks/useUpdateExamPlan';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 function EventDetails({
   setSelectedRange,
   setSelectedEventId,
@@ -21,7 +22,7 @@ function EventDetails({
   eventId,
   current,
   setOpenForm,
-  editable
+  editable,
 }: any) {
   // const event = useAppSelector((state) => state.calendar.events).find(
   //   (event: any) => event.id === eventId
@@ -78,51 +79,62 @@ function EventDetails({
               }}
             >
               {/* <i className="event-cont-text" style={{ color: event?.color }}> */}
-              <i className="event-cont-text">{event?.title}</i>
+
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <i className="event-cont-text">
+                    {event?.title.length > 30 ? event?.title.slice(0, 30) + '...' : event?.title}
+                  </i>
+                  {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
+                </HoverCardTrigger>
+                <HoverCardContent className="text-[#727272]  break-words w-[200px] text-md">
+                  {event?.title}
+                </HoverCardContent>
+              </HoverCard>
             </div>
-            {editable && 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" >
-                <DropdownMenuItem
-                  onClick={() => {
-                    setOpenEventDet(false);
-                    setOpen(false);
-                    setDeleteForm(true);
-                  }}
-                >
-                  <p>Supprimer</p>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setOpenEventDet(false);
-                    setOpen(false);
-                    setOpenForm(true);
-                  }}
-                >
-                  Modifier
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            }
+            {editable && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button name="bnt" variant="ghost" className="w-8 h-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setOpenEventDet(false);
+                      setOpen(false);
+                      setDeleteForm(true);
+                    }}
+                  >
+                    <p>Supprimer</p>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setOpenEventDet(false);
+                      setOpen(false);
+                      setOpenForm(true);
+                    }}
+                  >
+                    Modifier
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </DialogTitle>
         <div className="details-event">
           <p className="details-event-date">
             à {dayjs(event?.start).format('hh:mm')} - Durée:{date}
           </p>
-          {editable &&
-          <span className="details-event-det">
-            <p className="details-event-date">Visibilité</p>
+          {editable && (
+            <span className="details-event-det">
+              <p className="details-event-date">Visibilité</p>
 
-            <Switch defaultChecked={event?.studentsVisibility} onChange={switchChange} />
-          </span>
-          }
+              <Switch defaultChecked={event?.studentsVisibility} onChange={switchChange} />
+            </span>
+          )}
 
           <span className="details-event-det">
             Matière:
@@ -145,16 +157,16 @@ function EventDetails({
       </Dialog>
 
       <Dialog title="Supprimer cet examen" open={deleteForm}>
-        <DialogContent className=" flex flex-col gap-4">
-          <DialogHeader className=" text-xl text-2">Supprimer cet examen</DialogHeader>
-          <div className="archive-exam-popup-content flex flex-col gap-4">
+        <DialogContent className="flex flex-col gap-4 ">
+          <DialogHeader className="text-xl text-2">Supprimer cet examen</DialogHeader>
+          <div className="flex flex-col gap-4 archive-exam-popup-content">
             <div className="archive-exam-popup-message">
               Êtes-vous sûr de vouloir supprimer cet examen ? Il sera définitivement invisible pour
               vous et vos étudiants.
             </div>
-            <div className="archive-exam-popup-buttons flex gap-2">
+            <div className="flex gap-2 archive-exam-popup-buttons">
               <button
-                className="btn white-btn btn-cancel w-full border rounded-lg"
+                className="w-full border rounded-lg btn white-btn btn-cancel"
                 onClick={() => {
                   setDeleteForm(false);
                 }}
@@ -162,7 +174,7 @@ function EventDetails({
                 Annuler
               </button>
               <button
-                className="btn  red btn-delete w-full "
+                className="w-full btn red btn-delete "
                 onClick={() => {
                   onDeleteEvent();
                   setDeleteForm(false);

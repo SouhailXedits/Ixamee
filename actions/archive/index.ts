@@ -16,10 +16,10 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
         //   },
         // },
         teacher: {
-            some: {
-                id: id
-            }
-        }
+          some: {
+            id: id,
+          },
+        },
       },
       select: {
         id: true,
@@ -34,8 +34,6 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
       },
     });
 
-
-
     return { data: exams, error: undefined };
   } catch (error: any) {
     return {
@@ -45,17 +43,16 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
   }
 };
 
-export const getAllArchivedClasses = async (
-  id: string,
-  estabId: number,
-  filters?: any
-) => {
-
+export const getAllArchivedClasses = async (id: string, estabId: number, filters?: any) => {
   try {
     const { dateRange } = filters || {};
+    let { text } = filters || undefined;
 
     const classe = await db.classe.findMany({
       where: {
+        name: {
+          startsWith: text.toLowerCase(),
+        },
         is_archived: true,
         teacher: {
           some: {
@@ -91,7 +88,6 @@ export const getAllArchivedClasses = async (
 
     return { data: classe, error: undefined };
   } catch (error: any) {
-
     return {
       data: undefined as any,
       error: 'Failed to get classes.',
@@ -108,9 +104,7 @@ export const unArchive = async (id: number, table: string) => {
         is_archived: false,
       },
     });
-
   } catch (error: any) {
-
     return {
       error: 'Failed to edit.',
     };
@@ -128,13 +122,9 @@ export const archive = async (id: number, table: string) => {
         is_archived: true,
       },
     });
-
   } catch (error: any) {
-
     return {
       error: 'Failed to archive.',
     };
   }
 };
-
-

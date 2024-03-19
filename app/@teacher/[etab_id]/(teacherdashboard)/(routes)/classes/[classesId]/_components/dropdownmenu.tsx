@@ -24,7 +24,7 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
   }
   const correctionExamOfUser = row?.original?.correctionExamOfUser;
   const [modfier, setModfier] = React.useState(false);
-  const isStatusDone = row?.original?.status === 'done'
+  const isStatusDone = row?.original?.status === 'done';
   const [deleteForm, setDeleteForm] = React.useState(false);
   return (
     <div className="flex items-center gap-4 " style={{ width: '50px' }}>
@@ -75,6 +75,7 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
         user_id={row?.original?.id}
         classe_id={classe_id}
         open={deleteForm}
+        exam_id={row?.original?.exam}
         setOpen={setDeleteForm}
       />
 
@@ -92,7 +93,9 @@ export default function ClasseDropDownMenu({ row, classe_id }: any) {
           <DropdownMenuItem className="cursor-pointer" onClick={() => setModfier(true)}>
             Modifier
           </DropdownMenuItem>
-          {correctionExamOfUser && correctionExamOfUser?.correction_exam_content !== null && isStatusDone? (
+          {correctionExamOfUser &&
+          correctionExamOfUser?.correction_exam_content !== null &&
+          isStatusDone ? (
             <DropdownMenuItem>
               <TelachargePdfEvaluationClasse
                 userContent={correctionExamOfUser}

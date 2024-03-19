@@ -5,6 +5,7 @@ import { sendInvitationEmail } from '@/lib/mail';
 import { generateInvitationToken } from '@/lib/tokens';
 import { Exo } from 'next/font/google';
 import { getMe } from '../examens';
+import { useParams } from 'next/navigation';
 
 export const createClasse = async (
   name: string,
@@ -152,8 +153,7 @@ export const createUserInClasse = async (
   if (user) {
     return {
       error: {
-        message:
-          "Un étudiant avec cet email déja existe.",
+        message: 'Un étudiant avec cet email déja existe.',
         status: 'exist_in_classe',
       },
     };
@@ -583,7 +583,7 @@ export const updateUserInClasse = async (
   }
 };
 
-export const deleteUserInClasse = async (user_id: string, classe_id: string) => {
+export const deleteUserInClasse = async (user_id: string, classe_id: string, exam_id: string) => {
   const data = await db.user.update({
     where: {
       id: user_id,
@@ -594,6 +594,12 @@ export const deleteUserInClasse = async (user_id: string, classe_id: string) => 
           id: +classe_id,
         },
       },
+    },
+  });
+  const suprimeData = await db.examCorrection.deleteMany({
+    where: {
+      user_id: user_id,
+      exam_id: +exam_id,
     },
   });
 
