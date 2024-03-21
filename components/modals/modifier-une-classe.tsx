@@ -1,7 +1,10 @@
 'use client';
-import { getSubjectOfUser, getSubjectOfUserById, getUserSubject } from '@/actions/examens';
-import { useCreateClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useCreateClasse';
-import { Button } from '@/components/ui/button';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import Select from 'react-select';
 import {
   Dialog,
   DialogClose,
@@ -12,34 +15,71 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useEditeClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeClasse';
+import {
+  getSubjectOfUser,
+  getSubjectOfUserById,
+  getUserSubject,
+} from '@/actions/examens';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-interface AjouterUneClasse {
-  children: React.ReactNode;
-  data: any;
+interface Subject {
+  id: string;
+  name: string;
 }
 
-import * as z from 'zod';
+interface ClassData {
+  id: string;
+  name: string;
+  subject: Subject[];
+}
+
+interface ModifierUneClasseProps {
+  data: ClassData;
+}
 
 const schema = z.object({
   classe: z.string().min(1, { message: 'Nom Du Classe est requis' }),
-  // matiere: z.array().min(1, { message: 'Matières est requis' }),
+  matiere: z.array().min(1, { message: 'Matières est requis' }),
 });
-import Select from 'react-select';
-import { useEditeClasse } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeClasse';
 
-export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
-  const classesubject = data?.subject;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  const { etab_id, user_id } = context.query;
+
+  const subjectData = await getSubjectOfUserById(user_id as string);
+  const userSubjectData = await getUserSubject(user_id as string);
+
+  return {
+    props: {
+      data: {
+        id: etab_id as string,
+        name: '',
+        subject: subjectData,
+      },
+      userSubjects: userSubjectData,
+    },
+  };
+};
+
+export default function ModifierUneClasse({ data, userSubjects }: ModifierUneClasseProps) {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { etab_id } = router.query;
   const { editeClass, isPending } = useEditeClasse();
 
-  // const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
-  //   queryKey: ['teachersubject'],
-  //   queryFn: async () => await getSubjectOfUserById(data?.teacher_id),
-  // });
   const Teachersubject = queryClient.getQueryData(['teacherSubject']) as any;
   const subjectoptions = Teachersubject?.map((item: any) => {
     return {
@@ -63,23 +103,18 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
       [field]: value,
     }));
   };
+
   const handelSubmitInput = () => {
     try {
       schema.parse(formatData);
-      // createClass({
-      //   name: formatData.classe,
-      //   matiere: formatData.matiere,
-      //   establishmentId: estab,
-      //   teacherId: user_id,
-      // });
-      console.log(formatData.matiere);
       editeClass({
         name: formatData.classe,
         classe_id: +data?.id,
         matiere: formatData.matiere,
       });
+      router.push(`/@teacher/${etab_id}/(teacherdashboard)/(routes)/classes`);
     } catch (error: any) {
-      console.error(error); // Log the actual error for debugging purposes
+      console.error(error);
     }
   };
 
@@ -110,7 +145,7 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
           options={subjectoptions}
           onChange={(selectedOptions) => handleInputChange('matiere', selectedOptions)}
           placeholder="Sélectionner votre classe"
-          defaultValue={classesubject.map((item: any) => ({
+          defaultValue={data.subject.map((item: any) => ({
             value: item.id,
             label: item.name,
           }))}
@@ -142,19 +177,4 @@ export const ModifierUneClasse = ({ children, data }: AjouterUneClasse) => {
         {/* Choisir le rang de classe */}
 
         <DialogFooter>
-          <DialogClose asChild>
-            <Button
-              type="submit"
-              className="w-full bg-[#1B8392] hover:opacity-80"
-              onClick={handelSubmitInput}
-            >
-              Enregistrer
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
 
-ModifierUneClasse;
