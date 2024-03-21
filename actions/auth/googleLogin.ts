@@ -3,21 +3,29 @@ import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 
 export const googleLogin = async () => {
-  const link = `/`;
+  const redirectUrl = '/';
   try {
     await signIn('google', {
-      redirectTo: link,
+      redirectUrl,
     });
   } catch (error) {
     if (error instanceof AuthError) {
+      let errorMessage;
       switch (error.type) {
         case 'CredentialsSignin':
-          return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
+          errorMessage = 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.';
+          break;
+
+        case 'OAuthSignin':
+          errorMessage = 'Erreur lors de la connexion avec Google. Veuillez réessayer.';
+          break;
 
         default:
-          return { error: "Quelque chose s'est mal passé avec Google" };
+          errorMessage = 'Quelque chose s\'est mal passé lors de la connexion. Veuillez réessayer.';
       }
+      return { error: errorMessage };
     }
     throw error;
   }
 };
+
