@@ -1,24 +1,21 @@
-
+import React from 'react';
 import Editor from '@/components/shared-components/toolbar-editor';
 import { SubQuestion } from './SubQuestion';
-import { Input } from '@/components/ui/input';
+import { QuestionData, SubQuestionData } from './types';
 
-export const Question = ({ data, isArabic }: any) => {
+type QuestionProps = {
+  data: QuestionData;
+  isArabic: boolean;
+};
 
-  const calculateMark = (data: any) => {
-    const children = data?.children || [];
-    data.mark = children?.reduce((acc: number, item: any) => {
-      return acc + item.mark;
-    }, 0);
-    return data.mark;
-  };
-
-
+export const Question = ({ data, isArabic }: QuestionProps) => {
+  const calculateMark = (data: SubQuestionData[]) =>
+    data.reduce((acc: number, item: SubQuestionData) => acc + item.mark, 0);
 
   return (
     <>
       <div
-        className={`relative border flex  h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
+        className={`relative border flex h-auto min-h-[79px] mr-3 rounded-xl flex items-center justify-start`}
       >
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
@@ -27,10 +24,10 @@ export const Question = ({ data, isArabic }: any) => {
               <span>)</span>
             </div>
             <Editor
+              key={data.content}
               editable={false}
               initialContent={data.content}
               onChange={() => console.log('')}
-
             />
           </div>
           <div className="flex gap-3 item-center">
@@ -39,19 +36,18 @@ export const Question = ({ data, isArabic }: any) => {
               placeholder="--.--"
               type="number"
               disabled
-              value={data.children && data.children.length > 0 ? calculateMark(data) : data.mark}
+              value={data.children && data.children.length > 0 ? calculateMark(data.children) : data.mark}
             />
-
           </div>
         </div>
       </div>
-      {data.children.map((item: any) => (
-        <SubQuestion
-        key={item.id}
-          data={item}
-          isArabic={isArabic}
-        />
-      ))}
+      {data.children && data.children.length > 0 && (
+        <>
+          {data.children.map((item: SubQuestionData) => (
+            <SubQuestion key={item.id} data={item} isArabic={isArabic} />
+          ))}
+        </>
+      )}
     </>
   );
 };
