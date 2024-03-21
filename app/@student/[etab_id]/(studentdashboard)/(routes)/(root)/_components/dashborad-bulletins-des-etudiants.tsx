@@ -2,8 +2,11 @@ import Image from 'next/image';
 import CorrectionsRecentes from './corrections-recentes-item';
 import BulletinsDesEtudiants from './bulletins-des-etudiants';
 
-const DashboradBulletinsDesEtudiants = ({ data }: any) => {
-  data = { amie: 123 };
+type DataType = {
+  amie: number;
+};
+
+const DashboradBulletinsDesEtudiants = ({ data }: { data: DataType | null }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between w-full">
@@ -18,7 +21,7 @@ const DashboradBulletinsDesEtudiants = ({ data }: any) => {
         )}
       </div>
 
-      <BulletinsDesEtudiants data={data} />
+      {data && <BulletinsDesEtudiants key={data.amie} data={data} />}
     </div>
   );
 };
