@@ -4,32 +4,18 @@ import { useState } from 'react';
 import { CreateExercice } from './CreateExercice';
 import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
 
-function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
-  // function calculateTotalMark(data: any) {
-  //   let totalMark = 0;
+interface Props {
+  fakeData: any;
+  isArabic: boolean;
+  setFakeData: React.Dispatch<React.SetStateAction<any>>;
+  realExamContetn: any;
+}
 
-  //   function calculateMarkRecursive(item: any) {
-  //
-  //     totalMark += parseInt(item.mark, 10) || 0; // Convert mark to integer and add to totalMark
+function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: Props) {
+  const totalMark = calcAllMark(fakeData);
 
-  //     if (item.children) {
-  //       item.children.forEach((child) => {
-  //         calculateMarkRecursive(child); // Recursively calculate mark for each child
-  //       });
-  //     }
-  //   }
+  if (!fakeData) return null;
 
-  //   data.forEach((item) => {
-  //     calculateMarkRecursive(item); // Start the recursive calculation for each item in the data array
-  //   });
-
-  //   return totalMark;
-  // }
-
-  // // Call the function passing the fakeData array to get the total mark
-  // const totalMark = calculateTotalMark(fakeData);
-  //
-  // if (!data) return;
   return (
     <div dir={!isArabic ? 'ltr' : 'rtl'}>
       <div className="flex flex-col gap-4">
@@ -45,7 +31,9 @@ function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
         ))}
       </div>
 
-      <div className="flex flex-col gap-4"></div>
+      <div className="flex flex-col gap-4">
+        <p>Total Mark: {totalMark}</p>
+      </div>
     </div>
   );
 }
