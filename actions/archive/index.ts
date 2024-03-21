@@ -1,25 +1,35 @@
 'use server';
 import { db } from '@/lib/db';
 
-export const getAllArchivedExams = async (id: string, estabId: number) => {
+export type Exam = {
+  id: string;
+  name: string;
+  archived_at: Date;
+  exam_classess: {
+    id: string;
+    name: string;
+  }[];
+};
+
+export type Classe = {
+  id: string;
+  name: string;
+  archived_at: Date;
+  student_class: {
+    id: string;
+  }[];
+};
+
+export const getAllArchivedExams = async (id: string, estabId: number): Promise<{ data: Exam[] | undefined; error: string | undefined }> => {
   try {
     const exams = await db.exam.findMany({
       where: {
         is_archived: true,
-        // exam_classess: {
-        //   some: {
-        //     establishment: {
-        //       some: {
-        //         id: estabId,
-        //       },
-        //     },
-        //   },
-        // },
         teacher: {
-            some: {
-                id: id
-            }
-        }
+          some: {
+            id: id,
+          },
+        },
       },
       select: {
         id: true,
@@ -34,12 +44,11 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
       },
     });
 
-
-
     return { data: exams, error: undefined };
   } catch (error: any) {
+    console.error(error);
     return {
-      data: undefined as any,
+      data: undefined,
       error: 'Failed to get exams.',
     };
   }
@@ -48,9 +57,8 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
 export const getAllArchivedClasses = async (
   id: string,
   estabId: number,
-  filters?: any
-) => {
-
+  filters?: { dateRange?: { from: Date; to: Date } }
+): Promise<{ data: Classe[] | undefined; error: string | undefined }> => {
   try {
     const { dateRange } = filters || {};
 
@@ -67,15 +75,12 @@ export const getAllArchivedClasses = async (
             id: estabId,
           },
         },
-        archived_at: {
-          // Add date range filter if it exists
-          ...(dateRange
-            ? {
-                gte: dateRange.from,
-                lte: dateRange.to,
-              }
-            : {}),
-        },
+        archived_at: dateRange
+          ? {
+              gte: dateRange.from,
+              lte: dateRange.to,
+            }
+          : undefined,
       },
       select: {
         id: true,
@@ -91,14 +96,15 @@ export const getAllArchivedClasses = async (
 
     return { data: classe, error: undefined };
   } catch (error: any) {
-
+    console.error(error);
     return {
-      data: undefined as any,
+      data: undefined,
       error: 'Failed to get classes.',
     };
   }
 };
-export const unArchive = async (id: number, table: string) => {
+
+export const unArchive = async (id: number, table: string): Promise<{ error: string | undefined }> => {
   try {
     await (db as any)[table].update({
       where: {
@@ -109,15 +115,16 @@ export const unArchive = async (id: number, table: string) => {
       },
     });
 
+    return { error: undefined };
   } catch (error: any) {
-
+    console.error(error);
     return {
       error: 'Failed to edit.',
     };
   }
 };
 
-export const archive = async (id: number, table: string) => {
+export const archive = async (id: number, table: string): Promise<{ error: string | undefined }> => {
   try {
     await (db as any)[table].update({
       where: {
@@ -129,12 +136,8 @@ export const archive = async (id: number, table: string) => {
       },
     });
 
+    return { error: undefined };
   } catch (error: any) {
-
+    console.error(error);
     return {
-      error: 'Failed to archive.',
-    };
-  }
-};
-
 
