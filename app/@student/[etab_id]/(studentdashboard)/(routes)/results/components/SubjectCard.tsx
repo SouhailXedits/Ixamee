@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+"use client"
 import Image from 'next/image';
 import Link from 'next/link';
+import { useMemo } from 'react';
 
 function SubjectCard({ subject, etab_id }: any) {
   const colors = ['#ECF1F9', '#FFF4F3', '#FFF4D3'];
-  const randomIndex = Math.floor(Math.random() * colors.length);
+  const randomIndex = useMemo(() => Math.floor(Math.random() * colors.length), [subject]);
   return (
     <div
       className={`w-[330px] justify-between h-[180px] py-[15px] rounded-[20px] flex flex-col gap-4 inline-fle p-5 pb-48 overflow-hidden `}

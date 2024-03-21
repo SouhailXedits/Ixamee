@@ -31,26 +31,44 @@ const Student = () => {
 
   const defaultTerm = user?.term === 'TRIMESTRE' ? 'trimestre_1' : 'semestre_1';
   const [filters, setFilters] = useState<any>({
-     term: defaultTerm,
-     classe_id: undefined,
-     subject_id: undefined,
+    term: defaultTerm,
+    classe_id: undefined,
+    subject_id: undefined,
+    searchQuery: ''
   });
+
+  const [searchTimeout, setSearchTimeout] = useState<any>(0);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchChange = (e:any) => {
+    const newSearchQuery = e.target.value;
+    clearTimeout(searchTimeout);
+    setSearchQuery(newSearchQuery);
+    setSearchTimeout(
+      setTimeout(() => {
+        setFilters({ ...filters, searchQuery: newSearchQuery });
+      }, 500)
+    );
+  };
+
+  
+
   const { data: classes, isPending: isClassesPending } = useQuery<any>({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
-  
-  console.log(classes)
+
+  console.log(classes);
   const { data: subjects, isPending: isSubjectsPending } = useQuery<any>({
     queryKey: ['teacherSubject', filters.classe_id],
-    queryFn: async () => await getAllSubjectsByClasseId(filters.classe_id ),
+    queryFn: async () => await getAllSubjectsByClasseId(filters.classe_id),
   });
-  console.log(subjects)
+  console.log(subjects);
   const { data: userEstab } = useQuery<any>({
     queryKey: ['user-estab'],
     queryFn: async () => await getNameEstabByClasseId(filters.classe_id),
   });
-  console.log(userEstab)
+  console.log(userEstab);
 
   const defaultSubject = subjects?.length && subjects[0]?.id;
 
@@ -69,17 +87,20 @@ const Student = () => {
   }, [subjects]);
 
   const { data: markSheetsData, isPending } = useQuery({
-    queryKey: ['mark-sheets', filters.classe_id, filters.term, filters.subject_id],
+    queryKey: [
+      'mark-sheets',
+      filters.classe_id,
+      filters.term,
+      filters.subject_id,
+      filters.searchQuery,
+    ],
     queryFn: async () => await getMarkSheets(filters),
   });
-  const markSheets = markSheetsData?.data
-  console.log(defaultSubject)
-  console.log(filters)
+  const markSheets = markSheetsData?.data;
+  // console.log(defaultSubject);
+  // console.log(filters);
 
-  
   // if (!markSheets && isPending) return <Loading />;
-
-  
 
   return (
     <main className="flex flex-col gap-6 p-10">
@@ -112,6 +133,8 @@ const Student = () => {
 
             <input
               type="text"
+              onChange={handleSearchChange}
+              value={searchQuery}
               placeholder="Recherche un étudiant"
               className=" w-40 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />

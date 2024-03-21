@@ -6,11 +6,22 @@ export const getMarkSheets = async (filters: {
   term: string;
   classe_id: number | undefined;
   subject_id: number | undefined;
+  searchQuery: string;
 }) => {
   if (!filters.term || !filters.classe_id || !filters.subject_id) return { data: [] };
   try {
     const markSheets = await db.examCorrection.findMany({
       where: {
+        user: {
+          // name: {
+          //   contains: name,
+          //   mode: 'insensitive',
+          // },
+          name: {
+            contains: filters.searchQuery,
+            mode: 'insensitive',
+          }
+        },
         exam: {
           term: filters.term,
           subject: {
@@ -19,9 +30,9 @@ export const getMarkSheets = async (filters: {
           is_archived: false,
           exam_classess: {
             some: {
-                id: filters.classe_id
+              id: filters.classe_id,
             },
-          }
+          },
         },
         // user: {
         //   classe: {
