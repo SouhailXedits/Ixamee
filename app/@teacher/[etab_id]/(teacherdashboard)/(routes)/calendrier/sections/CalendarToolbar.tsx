@@ -1,52 +1,39 @@
-'use client';
 import { useState } from 'react';
-// @mui
-import { Stack, Typography, IconButton, MenuItem } from '@mui/material';
-// utils
+import {
+  Stack,
+  Typography,
+  IconButton,
+  MenuItem,
+  Button,
+  useMediaQuery,
+} from '@mui/material';
 import { fDate } from '../utils/formatTime';
-// hooks
 import { ICalendarViewValue } from '../types';
-// components
 import Iconify from '../components/iconify';
 import MenuPopover from '../components/menu-popover';
-import useMediaMatch from '@rooks/use-media-match';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
-// ----------------------------------------------------------------------
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import {
+  setCalendarView,
+  setSelectedColors,
+  resetFilter,
+} from '../redux/slices/calendarSlice';
 
 const VIEW_OPTIONS = [
   { value: 'dayGridMonth', label: 'Month', icon: 'ic:round-view-module' },
-
   { value: 'listWeek', label: 'Agenda', icon: 'ic:round-view-agenda' },
-] as const;
-
-// ----------------------------------------------------------------------
+];
 
 type Props = {
   date: Date;
-  view: ICalendarViewValue;
-  onToday: VoidFunction;
-  onNextDate: VoidFunction;
-  onPrevDate: VoidFunction;
-  onChangeView: (newView: ICalendarViewValue) => void;
-  colorOptions: any[];
-  handleFilterEventColor: any;
-  handleResetFilter: any;
 };
 
-export default function CalendarToolbar({
-  date,
-  view,
-  colorOptions,
-  onToday,
-  onNextDate,
-  onPrevDate,
-  onChangeView,
-  handleFilterEventColor,
-  handleResetFilter,
-}: Props) {
-  const isDesktop = useMediaMatch('(min-width: 600px)');
-  const [colors, setColors]: any = useState([]);
+export default function CalendarToolbar({ date }: Props) {
+  const isDesktop = useMediaQuery('(min-width: 600px)');
+  const dispatch = useAppDispatch();
+  const view = useAppSelector((state) => state.calendar.view);
+  const selectedColors = useAppSelector((state) => state.calendar.selectedColors);
   const [openPopover, setOpenPopover] = useState<HTMLElement | null>(null);
 
   const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
@@ -57,7 +44,26 @@ export default function CalendarToolbar({
     setOpenPopover(null);
   };
 
-  const selectedItem = VIEW_OPTIONS.filter((item) => item.value === view)[0];
+  const handleChangeView = (view: ICalendarViewValue) => {
+    dispatch(setCalendarView(view));
+    handleClosePopover();
+  };
+
+  const handleColorClick = (color: any) => {
+    const index = selectedColors.findIndex((el: any) => el.dark === color.dark);
+    if (index === -1) {
+      dispatch(setSelectedColors([...selectedColors, color]));
+    } else {
+      dispatch(
+        setSelectedColors([...selectedColors.slice(0, index), ...selectedColors.slice(index + 1)])
+      );
+    }
+  };
+
+  const handleResetFilterClick = () => {
+    dispatch(resetFilter());
+  };
+
   const [month, year] = [dayjs(date).locale('fr').format('MMMM'), dayjs(date).format('YYYY')];
 
   return (
@@ -69,7 +75,7 @@ export default function CalendarToolbar({
         className="toolbar-cont"
         sx={{ p: 2.5, pr: 2 }}
       >
-        {/* {isDesktop && (
+        {isDesktop && (
           <Button
             color="inherit"
             onClick={handleOpenPopover}
@@ -84,46 +90,34 @@ export default function CalendarToolbar({
           >
             {selectedItem.label}
           </Button>
-        )} */}
+        )}
         <div></div>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <IconButton onClick={onPrevDate}>
+          <IconButton onClick={() => dispatch(setCalendarView('previous'))}>
             <Iconify icon="eva:arrow-ios-back-fill" />
           </IconButton>
 
           <Typography variant="h6">{`${month} ${year}`}</Typography>
 
-          <IconButton onClick={onNextDate}>
+          <IconButton onClick={() => dispatch(setCalendarView('next'))}>
             <Iconify icon="eva:arrow-ios-forward-fill" />
           </IconButton>
         </Stack>
 
         <Stack direction="row" className="calendar-filter-cont" alignItems="center" spacing={2}>
-          <button className="calendar-todayBtn" onClick={onToday}>
+          <Button variant="contained" onClick={() => dispatch(setCalendarView('today'))}>
             Aujourd’hui
-          </button>
-          {/* <div className="calendar-filter-btn">
+          </Button>
+          <div className="calendar-filter-btn">
             <div className="filter-colors">
               <div className="color-picker-container color-picker-filter-cont">
-                {colorOptions.map((color: any) => (
+                {COLOR_OPTIONS.map((color: any) => (
                   <button
-                    key={uuid()}
+                    key={color.id}
                     type="button"
-                    onClick={() => {
-                      const index = colors.findIndex(
-                        (el: any) => el.dark === color.dark && el.light === color.light
-                      );
-
-                      const newColors =
-                        index === -1
-                          ? [...colors, color]
-                          : [...colors.slice(0, index), ...colors.slice(index + 1)];
-
-                      setColors(newColors);
-                      handleFilterEventColor(newColors);
-                    }}
+                    onClick={() => handleColorClick(color)}
                     className={`color-picker-color color-picker-filter ${
-                      colors.findIndex(
+                      selectedColors.findIndex(
                         (el: any) => el.dark === color.dark && el.light === color.light
                       ) > -1
                         ? 'selected'
@@ -137,16 +131,13 @@ export default function CalendarToolbar({
                 ))}
                 <button
                   className="color-picker-color"
-                  onClick={() => {
-                    setColors([]);
-                    handleResetFilter();
-                  }}
+                  onClick={handleResetFilterClick}
                 >
                   <Cancel />
                 </button>
               </div>
             </div>
-          </div> */}
+          </div>
         </Stack>
       </Stack>
 
@@ -159,21 +150,5 @@ export default function CalendarToolbar({
         {VIEW_OPTIONS.map((viewOption) => (
           <MenuItem
             key={viewOption.value}
-            onClick={() => {
-              handleClosePopover();
-              onChangeView(viewOption.value);
-            }}
-            sx={{
-              ...(viewOption.value === view && {
-                bgcolor: 'action.selected',
-              }),
-            }}
-          >
-            <Iconify icon={viewOption.icon} />
-            {viewOption.label}
-          </MenuItem>
-        ))}
-      </MenuPopover>
-    </>
-  );
-}
+            onClick={() => handleChangeView(viewOption.value)}
+           
