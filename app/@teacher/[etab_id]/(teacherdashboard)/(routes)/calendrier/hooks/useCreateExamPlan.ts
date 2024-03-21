@@ -1,34 +1,30 @@
 'use client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 import { toast } from 'react-hot-toast';
 import { createExamPlan as createExamPlanApi } from '@/actions/exam-plans';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 
 export function useCreateExamPlan() {
   const queryClient = useQueryClient();
-//   const params = useParams();
-//   const pathName = usePathname();
-//   const router = useRouter();
-  const { mutate: creatExamPlan, isPending } = useMutation({
-    mutationFn: ( data : { data: any;}) =>
-      createExamPlanApi(data),
+  const params = useParams();
+  const pathName = usePathname();
+  const router = useRouter();
+  const { mutate: createExamPlan, isPending } = useMutation<any, any, any>({
+    mutationFn: (data: { data: any }) => createExamPlanApi(data),
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ['events'] });
-    //   queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
+      const queryKeys = ['events', 'dashExamCount'];
+      queryClient.invalidateQueries(queryKeys);
       toast.success('Exam planification ajouté avec succès.');
-    //   if (pathName.includes('/examens')) {
-    //     router.push(pathName + '/' + data.id);
-    //   } else {
-    //     router.push(params.etab_id + '/examens/' + data.id);
-    //   }
+      const examId = data.id;
+      const etabId = params.etab_id;
+      const path = pathName.includes('/examens') ? pathName : `${etabId}/examens`;
+      router.push(`${path}/${examId}`);
     },
-    onError: (err) => {
-        console.log(err)
+    onError: (err: any) => {
+      console.error(err);
       toast.error('There was an error creating the Exam');
     },
     retry: false,
   });
 
-  return { creatExamPlan, isPending };
-}
+  return { createExam
