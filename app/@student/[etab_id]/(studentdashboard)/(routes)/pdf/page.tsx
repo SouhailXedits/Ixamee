@@ -1,23 +1,24 @@
 'use client';
 import React, { useRef } from 'react';
-import { MarkSheetPdfClass } from './components/MarkSheetTeacher';
 import PDFExport from '@/app/_utils/ExportAsPdf';
-import Test from './components/Test';
-import Table from './components/Table';
-import DevoirSyntheseN2 from './components/TableBul';
-import { MarkSheetStudent } from './components/MarkSheetStudent';
+import MarkSheetStudent from './components/MarkSheetStudent';
 
-function page() {
+function Page() {
+  const pdfRef = useRef(null);
+
+  const exportAsPdf = () => {
+    if (pdfRef.current) {
+      pdfRef.current.exportAsPdf();
+    }
+  };
+
   return (
-    <>
-      <PDFExport pdfName="bulletin">
-        {/* <MarkSheetPdfClass /> */}
-        {/* <p>souhal</p> */}
-        {/* <MarkSheetPdfClass /> */}
-        <MarkSheetStudent/>
-      </PDFExport>
-    </>
+    <div ref={pdfRef}>
+      <MarkSheetStudent />
+      <button onClick={exportAsPdf}>Export as PDF</button>
+    </div>
   );
 }
 
-export default page;
+export default Page;
+
