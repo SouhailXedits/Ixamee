@@ -18,19 +18,16 @@ import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
   console.log('dsdsd');
-  console.log(userExamCorectionContent);
   console.log(userDetails);
 
-  if (!userExamCorectionContent?.correction_exam_content) {
+  if (!userExamCorectionContent) {
     return null;
   }
 
-  const examCorrection = userExamCorectionContent?.correction_exam_content;
+  const [examCorrection] = userExamCorectionContent[0]?.correction_exam_content;
   console.log(examCorrection);
   const params = useParams();
   console.log(params);
-  console.log(userExamCorectionContent);
-  console.log(userExamCorectionContent.correction_exam_content);
   console.log(userDetails, 'userDetails');
   const classe_id = params.etab_id as string;
 
@@ -42,30 +39,22 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   const user = queryClient.getQueryData(['user']) as any;
   const classeNames = queryClient.getQueryData(['user-classes']) as any;
   const teacherName = queryClient.getQueryData(['TeacherName', +params.subject_id]) as any;
-  console.log(teacherName);
-  console.log(classeNames);
   const classeName = classeNames.find((item: any) => item.id === +params.etab_id);
-  console.log(classeName);
-  console.log(userExamCorectionContent, 'userExamCorectionContent');
-  const examId = userExamCorectionContent?.exam_id;
-  const [examIdd, setExamIdd] = useState(examId);
+  const examId = userExamCorectionContent[0].exam_id;
+  const [examIdd, setExamIdd] = useState(examId[0]);
   useEffect(() => {
     setExamIdd(examId);
   }, [examId]);
-
-  console.log(examIdd, 'examId');
 
   // const exam = userDetails?.classe.exam_classe.find((item: any) => item.id === examId);
   // console.log(exam);
 
   const examContent = userDetails;
-  console.log(examId);
   const { data: userCorrections } = useQuery({
     queryKey: ['UserExamEvalaiationss', examId, classe_id],
     queryFn: async () => getExamCorrectionById2(examId, classe_id),
     retry: true,
   });
-  console.log(userCorrections);
   // const getDetailsOfExercice = (id: string, examCorrection: any, userCorrection: any) => {
   //   if (!userCorrection) {
   //     return null;
@@ -369,7 +358,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     <div>
       <PdfHeader
         meta={{
-          estab: teacherEstab[0].name,
+          estab: teacherEstab ? teacherEstab[0]?.name : [],
           heading: 'Fiche d évaluation',
           session: currentYear + '-' + nextYear,
           term: {

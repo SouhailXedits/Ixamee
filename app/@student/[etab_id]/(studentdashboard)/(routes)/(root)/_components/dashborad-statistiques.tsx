@@ -15,15 +15,13 @@ import { getAllSubjectsByClasseId } from '@/actions/subjects';
 import { useParams } from 'next/navigation';
 
 const DashboradStatistiques = ({
-  isPendingClasses,
-  classes,
-  allStudentCount,
-  studentCountPending,
+  subjects,
+  isSubjectPending,
+
 }: {
-  isPendingClasses: boolean;
-  classes: any;
-  allStudentCount: number;
-  studentCountPending: boolean;
+  subjects: any;
+  isSubjectPending: boolean;
+
 }) => {
   const [subId, setSubId] = useState<string>('');
   const queryClient = useQueryClient();
@@ -32,14 +30,6 @@ const DashboradStatistiques = ({
   const params = useParams();
 
   const classId = params.etab_id;
-  const {
-    data: subjects,
-    isPending: isSubjectsPending,
-    error: subjectsError,
-  } = useQuery({
-    queryKey: ['user-subject', classId],
-    queryFn: async () => getAllSubjectsByClasseId(+classId),
-  }) as any;
 
   const {
     data: subjectsExams,
@@ -69,7 +59,7 @@ const DashboradStatistiques = ({
             onValueChange={async (value) => {
               setSubId(value);
             }}
-            disabled={isSubjectsPending || !subjects?.length}
+            disabled={isSubjectPending || !subjects?.length}
           >
             <SelectTrigger className="flex items-center p-2 px-1 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] hover:opacity-80 max-md:w-full">
               <SelectValue placeholder={'Toutes les matiéres'} />

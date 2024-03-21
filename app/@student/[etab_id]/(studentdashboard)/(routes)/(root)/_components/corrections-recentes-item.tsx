@@ -9,6 +9,7 @@ import Image from 'next/image';
 import ExamCorrectionList from './exam-correction-list';
 import Rien from './Rien';
 import BulletinsStudentList from './bulletins-student-list';
+import { Skeleton } from '@/components/ui/skeleton';
 
 // const CorrectionsRecentes = ({ data }: any) => {
 //   return (
@@ -47,11 +48,18 @@ import BulletinsStudentList from './bulletins-student-list';
 
 // export default CorrectionsRecentes;
 
-function CorrectionsRecentes(data: any) {
-  console.log(data);
-  return data?.data ? (
+function CorrectionsRecentes({ data, isPending }: any) {
+  return isPending ? (
+    <>
+      <Skeleton className="w-full h-[70px] mt-6" />
+      <hr />
+      <Skeleton className="w-full h-[70px]" />
+      <hr />
+      <Skeleton className="w-full h-[70px]" />
+    </>
+  ) : !isPending && data.length ? (
     <ExamCorrectionList data={data} />
-  ) : (
+  ) : data.length === 0 ? (
     <div className="w-full border h-full rounded-xl flex items-center justify-center p-10">
       <Rien
         image="/dashboard/bag.svg"
@@ -59,6 +67,8 @@ function CorrectionsRecentes(data: any) {
         message="Pas d'examens pour le moment"
       />
     </div>
+  ) : (
+    ''
   );
 }
 

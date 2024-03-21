@@ -197,7 +197,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                     }}
                   >
                     <>
-                      <span style={{ fontWeight: '600' }}>rang : </span>
+                      <span style={{ fontWeight: '600' }}>Rang : </span>
                       <span
                         style={{
                           color: '#102528',

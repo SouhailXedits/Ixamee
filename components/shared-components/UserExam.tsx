@@ -46,7 +46,7 @@ function UserExam({ exam, examsData }: any) {
         <p>--</p>
       </div>
       <div className="flex flex-col items-center gap-1 opacity-50 text-mainGreen">
-        <p>rang </p>
+        <p>Rang </p>
         {exam?.isPublished ? <p>{exam?.range}</p> : <p>--</p>}
       </div>
       <div className="flex flex-col items-center justify-center gap-0">
