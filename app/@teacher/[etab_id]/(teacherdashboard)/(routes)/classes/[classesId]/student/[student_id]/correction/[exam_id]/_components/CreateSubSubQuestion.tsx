@@ -12,14 +12,6 @@ export const CreateSubSubQuestion = ({
   realExamContetn,
   allData,
 }: any) => {
-  console.log(realExamContetn);
-  console.log(data);
-  console.log(allData);
-  const onChange = (content: string) => {
-    updateContentSubSubQuestion(content, data);
-  };
-  // const r
-
   const updateContentSubSubQuestion = (content: any, data: any) => {
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
@@ -29,7 +21,7 @@ export const CreateSubSubQuestion = ({
             children: item.children.map((subItem: any) => {
               return {
                 ...subItem,
-                children: subItem.children.map((subSubItem: any, index: number) => {
+                children: subItem.children.map((subSubItem: any) => {
                   return {
                     ...subSubItem,
                     children: subSubItem.children.map((subSubSubItem: any) => {
@@ -49,7 +41,7 @@ export const CreateSubSubQuestion = ({
     });
   };
 
-  function numberToLetters(num: number) {
+  const numberToLetters = (num: number) => {
     let letters = '';
     while (num > 0) {
       let mod = (num - 1) % 26;
@@ -57,9 +49,9 @@ export const CreateSubSubQuestion = ({
       num = Math.floor((num - mod) / 26);
     }
     return letters.toLowerCase();
-  }
+  };
+
   const handelDeleteSubSubQuestion = () => {
-    // Update the state to include the new sub-sub-question
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
         if (item.id === allData.id) {
@@ -85,6 +77,7 @@ export const CreateSubSubQuestion = ({
     });
     renderSubSubQuestion();
   };
+
   const renderSubSubQuestion = () => {
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
@@ -111,25 +104,27 @@ export const CreateSubSubQuestion = ({
       });
     });
   };
+
   const calcSumOfMarks = (data: any) => {
     let sum = 0;
     data.children.map((item: any) => {
       sum += +item.mark;
     });
-
     return sum;
   };
+
   const updateSubSubQuestion = (e: any, data: any) => {
-    const mark = getMarkOfExerciceWithId(realExamContetn, data.id) as any;
+    const mark = getMarkOfExerciceWithId(realExamContetn, data.id);
 
     if (+e.target.value > +mark) {
-      // toast.error("la note ne doit pas de passer la note de l'exercice");
+      toast.error("la note ne doit pas de passer la note de l'exercice");
       return;
     }
     if (+e.target.value < 0) {
       toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
+
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
         if (item.id === allData.id) {
@@ -138,7 +133,7 @@ export const CreateSubSubQuestion = ({
             children: item.children.map((subItem: any) => {
               return {
                 ...subItem,
-                children: subItem.children.map((subSubItem: any, index: number) => {
+                children: subItem.children.map((subSubItem: any) => {
                   return {
                     ...subSubItem,
                     children: subSubItem.children.map((subSubSubItem: any) => {
@@ -156,61 +151,14 @@ export const CreateSubSubQuestion = ({
         return item;
       });
     });
-    setFakeData((prevData: any) => {
-      return prevData.map((item: any) => {
-        if (item.id === allData.id) {
-          return {
-            ...item,
-            children: item.children.map((subItem: any) => {
-              return {
-                ...subItem,
-
-                children: subItem.children.map((subSubItem: any, index: number) => {
-                  return {
-                    ...subSubItem,
-                    mark: calcSumOfMarks(subSubItem),
-                  };
-                }),
-                // mark: calculerExerciceMark(allData),
-              };
-            }),
-            // mark: calculerExerciceMark(allData),
-          };
-        }
-        return item;
-      });
-    });
-    setFakeData((prevData: any) => {
-      return prevData.map((item: any) => {
-        // Checking if the current item's id matches the id of the parent question and it has children
-        if (item.id === allData.id && item.children.length > 0) {
-          // Updating the children array of the parent question
-          return {
-            ...item,
-            children: item.children.map((subItem: any) => {
-              // Updating the children array of the parent subquestion
-              return {
-                ...subItem,
-                mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
-                children: subItem.children.map((subSubItem: any) => {
-                  // Returning unchanged subsubitems
-                  return {
-                    ...subSubItem,
-                    mark: calcSumOfMarks(subSubItem),
-                  };
-                }),
-              };
-            }),
-          };
-        }
-        // Returning unchanged items
-        return item;
-      });
-    });
 
     calculerExerciceMark(allData);
   };
-  console.log(data);
+
+  const handleMarkChange = (e: any) => {
+    updateSubSubQuestion(e, data);
+  };
+
   return (
     <>
       <div
@@ -222,30 +170,6 @@ export const CreateSubSubQuestion = ({
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
             <span>{data?.name}</span>
-            {/* Adjusted Editor component */}
             <Editor
-              // initialContent={data.content}
-              editable={true}
-              onChange={onChange}
               initialContent={data?.content}
-            />
-          </div>
-          <div className="flex gap-3 item-center">
-            <Input
-              className="bg-transparenta text-center text-[#1B8392] w-[77px] text-xl placeholder:text-mainGreen p-3 border border-[#1B8392]"
-              placeholder="--.--"
-              type="number"
-              step="0.25"
-              defaultValue={data.mark}
-              maxLength={5}
-              value={data.mark}
-              onChange={(e) => {
-                updateSubSubQuestion(e, data);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
+
