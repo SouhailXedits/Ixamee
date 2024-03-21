@@ -1,47 +1,49 @@
 interface InputItem {
-  status: string;
-  user_id: string;
+  status: 'notCorrected' | 'inProgress' | 'corrected';
+  userId: string;
 }
 
 interface OutputItem {
-  status: string;
+  status: 'Non corrigées' | 'En cours de corrections' | 'Corrigées';
   studentNumber: number;
   color: string;
 }
-export function transformData(data: InputItem[], allStudentOfClasseCount: number): OutputItem[] {
-  const statusCount: Record<string, number> = {
+
+const statusValues: Record<InputItem['status'], OutputItem['status']> = {
+  notCorrected: 'Non corrigées',
+  inProgress: 'En cours de corrections',
+  corrected: 'Corrigées',
+};
+
+const colorCodes: Record<OutputItem['status'], string> = {
+  'Non corrigées': '#F04438',
+  'En cours de corrections': '#F69D16',
+  Corrigées: '#12b76a',
+};
+
+export function transformData(
+  data: InputItem[],
+  allStudentOfClasseCount: number
+): OutputItem[] {
+  const statusCount: Record<OutputItem['status'], number> = {
     'Non corrigées': 0,
     'En cours de corrections': 0,
     Corrigées: 0,
   };
 
   data.forEach((item) => {
-    switch (item.status) {
-      case 'notCorrected':
-        statusCount['Non corrigées']++;
-        break;
-      case 'done':
-        statusCount['Corrigées']++;
-        break;
-      default:
-        break;
+    const outputStatus = statusValues[item.status];
+    if (outputStatus) {
+      statusCount[outputStatus]++;
     }
   });
 
-  statusCount['En cours de corrections'] =
-    allStudentOfClasseCount - statusCount['Non corrigées'] - statusCount['Corrigées'];
+  const remainingCount = allStudentOfClasseCount - statusCount['Non corrigées'] - statusCount['Corrigées'];
+  statusCount['En cours de corrections'] = remainingCount;
 
-  const colorCodes: Record<string, string> = {
-    'Non corrigées': '#F04438',
-    'En cours de corrections': '#F69D16',
-    Corrigées: '#12b76a',
-  };
-
-  const result: OutputItem[] = Object.keys(statusCount).map((status) => ({
+  return Object.entries(statusCount).map(([status, studentNumber]) => ({
     status,
-    studentNumber: statusCount[status],
+    studentNumber,
     color: colorCodes[status],
   }));
-
-  return result;
 }
