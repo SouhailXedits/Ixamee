@@ -1,51 +1,51 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogClose,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Button, Dialog, DialogContent, DialogDescription, DialogClose, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Textarea } from '@/components/ui';
 import Image from 'next/image';
-import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { useEditeExamFeedback } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/hooks/useEditeExamRemarque';
 
-interface studentFeadback {
+interface StudentFeedbackProps {
   children: React.ReactNode;
   params: any;
 }
-export const StudentFeadback = ({ children, params }: studentFeadback) => {
 
+export const StudentFeedback = ({ children, params }: StudentFeedbackProps) => {
   const [feedback, setFeedback] = useState<string[]>([]);
-  const [feedbackMessage, setFeedbackMessage] = useState<any>();
+  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
+  const [selectedFeedback, setSelectedFeedback] = useState<string[]>([]);
+  const { editeFeedback, isPending } = useEditeExamFeedback();
 
-
-  const [listFeedback, setListFeedback] = useState([
+  const listFeedback = [
     'Excellent travail! Vous êtes sur la bonne voie!',
     'Bon travail! Continuez ainsi.',
     'Assez bien! Vous pouvez mieux faire la prochaine fois!',
     'Travail insuffisant!',
-  ]);
-  const { editeFeedback, isPending } = useEditeExamFeedback();
-  const handelSubmitFeedback = () => {
+  ];
 
-    const newfedback = {
-      feedback,
+  const handleAddFeedback = (item: string) => {
+    setSelectedFeedback((prev) => [...prev, item]);
+    setFeedback((prev) => prev.filter((i) => i !== item));
+  };
+
+  const handleRemoveFeedback = (item: string) => {
+    setSelectedFeedback((prev) => prev.filter((i) => i !== item));
+    setFeedback((prev) => [...prev, item]);
+  };
+
+  const handleSubmitFeedback = () => {
+    setFeedback((prev) => [...prev, ...selectedFeedback]);
+    const newFeedback = {
+      feedback: [...new Set([...feedback, ...selectedFeedback])],
       description: feedbackMessage,
     };
     const obj = {
       exam_id: params.exam_id,
       student_id: params.student_id,
-      newFeedback : newfedback,
+      newFeedback,
     };
     editeFeedback(obj);
-
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -66,25 +66,30 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
         </DialogHeader>
         <div className=" h-[290px] border border-9 p-1 rounded-lg overflow-scroll">
           <div className="flex flex-col gap-2">
-            {feedback.map((item: string) => {
-              return (
-                <div
-                  key={item}
-                  className="bg-[#F0F6F8] flex items-center justify-between text-11 rounded-lg p-2 cursor-pointer"
-                >
-                  <span>{item}</span>
-                  <Image
-                    src={'/gray-x-icon.svg'}
-                    width={20}
-                    height={20}
-                    alt="x"
-                    onClick={() => {
-                      setFeedback(feedback.filter((i) => i !== item));
-                    }}
-                  />
-                </div>
-              );
-            })}
+            {selectedFeedback.map((item: string) => (
+              <div
+                key={item}
+                className="bg-[#F0F6F8] flex items-center justify-between text-11 rounded-lg p-2 cursor-pointer"
+              >
+                <span>{item}</span>
+                <Image
+                  src={'/gray-x-icon.svg'}
+                  width={20}
+                  height={20}
+                  alt="x"
+                  onClick={() => handleRemoveFeedback(item)}
+                />
+              </div>
+            ))}
+            {feedback.map((item: string) => (
+              <div
+                key={item}
+                className="bg-[#F0F6F8] text-11 rounded-lg p-2 cursor-pointer"
+                onClick={() => handleAddFeedback(item)}
+              >
+                {item}
+              </div>
+            ))}
           </div>
           <Textarea
             className="border-none resize-none  placeholder:text-[#B5B5B5] "
@@ -92,21 +97,6 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
             onChange={(e) => setFeedbackMessage(e.target.value)}
             value={feedbackMessage}
           />
-          {feedback.length === 0 && (
-            <div className="flex flex-col gap-2">
-              {listFeedback.map((item) => {
-                return (
-                  <div
-                    key={item}
-                    className="bg-[#F0F6F8] text-11 rounded-lg p-2 cursor-pointer"
-                    onClick={() => setFeedback([...feedback, item])}
-                  >
-                    {item}
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </div>
 
         <DialogFooter>
@@ -122,9 +112,10 @@ export const StudentFeadback = ({ children, params }: studentFeadback) => {
           <Button
             type="submit"
             className="w-full text-white bg-2 hover:opacity-80"
-            onClick={handelSubmitFeedback}
+            onClick={handleSubmitFeedback}
+            disabled={isPending}
           >
-            Soumettre
+            {isPending ? 'Enregistrement...' : 'Soumettre'}
           </Button>
         </DialogFooter>
       </DialogContent>
