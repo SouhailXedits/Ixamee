@@ -1,11 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 import { toast } from 'react-hot-toast';
-import { createUserWithImportInClasse as createUserWithImportInClasseAPi } from '@/actions/classe';
-
-interface CreateClasseParams {
-  data: any;
-}
+import { CreateClasseParams, CreateClasseResult } from '@/actions/classe';
 
 export function useCreateManyUserInClass() {
   const queryClient = useQueryClient();
@@ -13,17 +8,29 @@ export function useCreateManyUserInClass() {
     mutate: createManyUser,
     isPending,
     error,
-  } = useMutation({
-    mutationFn: (data: CreateClasseParams) => createUserWithImportInClasseAPi(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
-      toast.success('Étudiantsw ajoutés avec succès.');
-    },
-    onError: (err) => {
-      toast.error("Une erreur s'est produite lors de la création de l'étudiant");
-    },
-    retry: false,
-  });
+  } = useMutation<CreateClasseResult, Error, CreateClasseParams>(
+    (data) => createUserWithImportInClasseAPi(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
+        toast.success('Étudiants ajoutés avec succès.');
+      },
+      onError: (err, variables, context) => {
+        if (isPending()) {
+          toast.error("Une erreur s'est produite lors de la création de l'étudiant");
+        }
+      },
+      retry: false,
+    }
+  );
 
-  return { createManyUser, isPending, error };
+  const memoizedCreateManyUser = useCallback(createManyUser, [queryClient]);
+
+  useEffect(() => {
+    return () => {
+      toast.dismiss();
+    };
+  }, []);
+
+  return { memoizedCreateManyUser, isPending, error };
 }
