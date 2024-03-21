@@ -1,269 +1,183 @@
 import Image from "next/image";
+import styles from "./PdfHeader.module.css";
 
 interface PdfHeaderProps {
   type: 'MSTeach' | 'MSStudent' | 'LOS';
-  meta: any;
+  meta: {
+    estab: string;
+    classe: string;
+    NumberOfStudet: number;
+    session: string;
+  };
 }
 
-function PdfHeaderForClasse({ type, meta }: PdfHeaderProps) {
+const PdfHeaderForClasse: React.FC<PdfHeaderProps> = ({ type, meta }) => {
   return (
-    <div
-      style={{
-        backgroundColor: '#ffffff',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        width: '100%',
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: '#ffffff',
-          height: '250px',
-          position: 'relative',
-          width: '595px',
-        }}
-      >
-        <div
-          style={{
-            alignItems: 'center',
-            display: 'inline-flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            left: '40px',
-            position: 'absolute',
-            top: '30px',
-          }}
-        >
-          <div
-            style={{
-              alignSelf: 'stretch',
-              color: 'var(--x-1)',
-              fontFamily: '"Poppins", Helvetica',
-              fontSize: '12px',
-              fontWeight: '500',
-              letterSpacing: '0',
-              lineHeight: '18px',
-              marginTop: '-1px',
-              position: 'relative',
-              textAlign: 'center',
-            }}
-          >
-            Établissement
-          </div>
-          <div
-            style={{
-              alignSelf: 'stretch',
-              color: 'var(--x-1)',
-              fontFamily: '"Poppins", Helvetica',
-              fontSize: '11px',
-              fontWeight: '400',
-              letterSpacing: '0',
-              lineHeight: '18px',
-              position: 'relative',
-              textAlign: 'center',
-            }}
-          >
-            {meta.estab}
-            {/* Lycée Privé Élite Nabeul */}
-          </div>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.logoContainer}>
+          <Image
+            className={styles.logo}
+            width={103}
+            height={25}
+            alt="Layer"
+            src="/logo.svg"
+          />
         </div>
-        <div
-          style={{
-            alignItems: 'flex-start',
-            display: 'flex',
-            gap: '150px',
-            justifyContent: 'center',
-            left: '52px',
-            position: 'absolute',
-            top: '155px',
-            width: '492px',
-          }}
-        >
-          <div
-            style={{
-              alignItems: 'flex-start',
-              alignSelf: 'stretch',
-              display: 'flex',
-              flex: '1',
-              flexDirection: 'column',
-              flexGrow: '1',
-              gap: '5px',
-              position: 'relative',
-            }}
-          >
-            {type === 'MSStudent' && (
-              <>
-                <p
-                  style={{
-                    alignSelf: 'stretch',
-                    color: 'var(--x-1)',
-                    fontFamily: '"Poppins", Helvetica',
-                    fontSize: '18px',
-                    fontWeight: '400',
-                    letterSpacing: '0',
-                    lineHeight: '18px',
-                    marginTop: '-1px',
-                    position: 'relative',
-                    left: '-90px',
-                    top: '3rem',
-                  }}
-                >
-                  <span style={{ fontWeight: '600' }}>classe : </span>
-                  <span
-                    style={{
-                      color: '#102528',
-                      fontFamily: '"Poppins", Helvetica',
-                      fontSize: '14px',
-                      fontWeight: '400',
-                      letterSpacing: '0',
-                      lineHeight: '18px',
-                    }}
-                  >
-                    {meta.classe}
-                  </span>
-                </p>
-              </>
-            )}
-            {type === 'MSStudent' && (
-              <>
-                <p
-                  style={{
-                    alignSelf: 'stretch',
-                    color: 'var(--x-1)',
-                    fontFamily: '"Poppins", Helvetica',
-                    fontSize: '18px',
-                    fontWeight: '400',
-                    letterSpacing: '0',
-                    lineHeight: '18px',
-                    width: '20rem',
-                    marginTop: '-1px',
-                    position: 'relative',
-                    left: '240px',
-                    top: '1.5rem',
-                  }}
-                >
-                  <span style={{ fontWeight: '600' }}>Nombre total des étudiants: </span>
-                  <span
-                    style={{
-                      color: '#102528',
-                      fontFamily: '"Poppins", Helvetica',
-                      fontSize: '14px',
-                      fontWeight: '400',
-                      letterSpacing: '0',
-                      lineHeight: '18px',
-                    }}
-                  >
-                    {meta.NumberOfStudet}
-                  </span>
-                </p>
-              </>
-            )}
-          </div>
-
-          <div
-            style={{
-              alignItems: 'flex-start',
-              alignSelf: 'stretch',
-              display: 'flex',
-              flex: '1',
-              flexDirection: 'column',
-              flexGrow: '1',
-              gap: '5px',
-              position: 'relative',
-            }}
-          ></div>
+        <div className={styles.titleContainer}>
+          <div className={styles.title}>Établissement</div>
+          <div className={styles.subtitle}>{meta.estab}</div>
         </div>
-        <div
-          style={{
-            alignItems: 'center',
-            display: 'inline-flex',
-            flexDirection: 'column',
-            gap: '5px',
-            height: '50px',
-            justifyContent: 'center',
-            left: '215px',
-            position: 'absolute',
-            top: '96px',
-          }}
-        >
-          <div
-            style={{
-              alignSelf: 'stretch',
-              color: 'var(--x-1)',
-              fontFamily: '"Poppins", Helvetica',
-              fontSize: '20px',
-              fontWeight: '500',
-              letterSpacing: '0',
-              lineHeight: '20px',
-              marginTop: '-1px',
-              position: 'relative',
-              textAlign: 'center',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Liste des étudiants
-          </div>
+        <div className={styles.sessionContainer}>
+          <div className={styles.sessionLabel}>Année Scolaire</div>
+          <div className={styles.sessionValue}>{meta.session}</div>
         </div>
-        <div
-          style={{
-            alignItems: 'center',
-            display: 'inline-flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            left: '464px',
-            position: 'absolute',
-            top: '30px',
-          }}
-        >
-          <div
-            style={{
-              alignSelf: 'stretch',
-              color: 'var(--x-1)',
-              fontFamily: '"Poppins", Helvetica',
-              fontSize: '12px',
-              fontWeight: '500',
-              letterSpacing: '0',
-              lineHeight: '18px',
-              marginTop: '-1px',
-              position: 'relative',
-              textAlign: 'center',
-            }}
-          >
-            Année Scolaire
-          </div>
-          <div
-            style={{
-              alignSelf: 'stretch',
-              color: 'var(--x-1)',
-              fontFamily: '"Poppins", Helvetica',
-              fontSize: '11px',
-              fontWeight: '400',
-              letterSpacing: '0',
-              lineHeight: '18px',
-              position: 'relative',
-              textAlign: 'center',
-            }}
-          >
-            {meta.session}
-          </div>
+      </div>
+      <div className={styles.content}>
+        <div className={styles.column}>
+          {type === 'MSStudent' && (
+            <>
+              <div className={styles.label}>classe</div>
+              <div className={styles.value}>{meta.classe}</div>
+            </>
+          )}
+          {type === 'MSStudent' && (
+            <>
+              <div className={styles.label}>Nombre total des étudiants</div>
+              <div className={styles.value}>{meta.NumberOfStudet}</div>
+            </>
+          )}
         </div>
-        <Image
-          style={{
-            height: '25px',
-            left: '246px',
-            position: 'absolute',
-            top: '40px',
-            width: '103px',
-          }}
-          width={103}
-          height={25}
-          alt="Layer"
-          src="/logo.svg"
-        />
+        <div className={styles.column} />
+        <div className={styles.listTitle}>Liste des étudiants</div>
       </div>
     </div>
   );
-}
+};
 
 export default PdfHeaderForClasse;
+
+
+.container {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.header {
+  background-color: #ffffff;
+  height: 250px;
+  position: relative;
+  width: 595px;
+}
+
+.logoContainer {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 103px;
+}
+
+.logo {
+  height: 25px;
+  width: 103px;
+}
+
+.titleContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 40px;
+  position: absolute;
+  top: 30px;
+}
+
+.title {
+  align-self: stretch;
+  color: var(--x-1);
+  font-family: "Poppins", Helvetica;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 18px;
+  margin-top: -1px;
+  position: relative;
+  text-align: center;
+}
+
+.subtitle {
+  align-self: stretch;
+  color: var(--x-1);
+  font-family: "Poppins", Helvetica;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 18px;
+  position: relative;
+  text-align: center;
+}
+
+.sessionContainer {
+  align-items: center;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 464px;
+  position: absolute;
+  top: 30px;
+}
+
+.sessionLabel {
+  align-self: stretch;
+  color: var(--x-1);
+  font-family: "Poppins", Helvetica;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 18px;
+  margin-top: -1px;
+  position: relative;
+  text-align: center;
+}
+
+.sessionValue {
+  align-self: stretch;
+  color: var(--x-1);
+  font-family: "Poppins", Helvetica;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 18px;
+  position: relative;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  height: 50px;
+}
+
+.label {
+  align-self: stretch;
+  color: var(--x-1);
+  font-family: "Poppins", Helvetica;
