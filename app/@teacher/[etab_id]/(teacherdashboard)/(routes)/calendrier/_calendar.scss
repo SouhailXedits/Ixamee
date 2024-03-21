@@ -1,3 +1,10 @@
+:root {
+  --color-11: #color-11;
+  --color-2: #color-2;
+  --color-12: #color-12;
+  --color-4: #color-4;
+}
+
 @import './components/input/input';
 @import './components/duationPicker/durationPicker';
 @import './components/eventDetails/eventDetails';
@@ -8,57 +15,48 @@
   flex-direction: column;
   gap: 2rem;
   height: 100%;
+  text-transform: capitalize;
+}
 
-  * {
-    text-transform: capitalize;
-  }
+.calendar h6 {
+  font-family: Poppins;
+  font-size: 2.2rem !important;
+  font-weight: 500;
+  text-align: center;
+  color: var(--color-11);
+}
 
-  h6 {
-    font-family: Poppins;
-    font-size: 2.2rem !important;
-    font-weight: 500;
+.page__header-left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 
-    text-align: center;
-    color: $color-11;
-  }
+.page__header-left .btn {
+  max-width: 20rem;
+}
 
-  .page__header-left {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+.calendar svg {
+  width: 30px;
+  height: 30px;
+}
 
-    .btn {
-      max-width: 20rem;
-    }
-  }
+.calendar button {
+  font-size: 1.5rem;
+}
 
-  svg {
-    width: 30px;
-    height: 30px;
-  }
+.calendar-todayBtn {
+  color: var(--color-2);
+  font-size: 2rem !important;
+  font-weight: 400;
+}
 
-  button {
-    font-size: 1.5rem;
-  }
-
-  &-todayBtn {
-    color: $color-2;
+.MuiStack-root {
+  .MuiButton-root:first-child {
     font-size: 2rem !important;
     font-weight: 400;
-
-
-  }
-
-  .MuiStack-root {
-
-    .MuiButton-root:first-child {
-      font-size: 2rem !important;
-      font-weight: 400;
-      color: $color-2;
-
-
-    }
+    color: var(--color-2);
   }
 }
 
@@ -66,51 +64,48 @@
   font-size: 1.5rem;
 }
 
-
 .dialog-title {
   display: flex;
   justify-content: space-between;
+}
 
-  h2 {
-    font-size: 2rem;
-    font-weight: 500;
-    color: $color-2;
-    text-align: left;
-  }
+.dialog-title h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--color-2);
+  text-align: left;
 }
 
 .exam-scheduler-classes {
   display: flex;
   padding: 11px 24px;
-  ;
   flex-direction: column;
   gap: 01rem;
   width: 100%;
+}
 
-  .select-container {
-    padding: 0;
-  }
+.exam-scheduler-classes .select-container {
+  padding: 0;
+}
 
-  .children-select-name {
-    display: flex;
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: #999999;
-  }
+.exam-scheduler-classes .children-select-name {
+  display: flex;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #999999;
+}
 
-  input {
-    border-radius: 12px;
-    border: 1px solid #E4E4E4;
-    width: 100%;
-    padding: 1.5rem;
-  }
+.exam-scheduler-classes input {
+  border-radius: 12px;
+  border: 1px solid #E4E4E4;
+  width: 100%;
+  padding: 1.5rem;
+}
 
-
-  [id^="react-select-"][id$="-placeholder"] {
-    font-size: 1.8rem !important;
-    font-weight: 400;
-    color: #BFBFBF;
-  }
+.exam-scheduler-classes [id^="react-select-"][id$="-placeholder"] {
+  font-size: 1.8rem !important;
+  font-weight: 400;
+  color: #BFBFBF;
 }
 
 .calendar-form-container {
@@ -120,17 +115,13 @@
 }
 
 .subjects-select {
-
   width: 100%;
-
-
 }
 
 .options__placeholder {
   font-size: 1.8rem !important;
   font-weight: 400 !important;
   color: #BFBFBF !important;
-
 }
 
 .color-picker-container {
@@ -141,359 +132,68 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-
 }
 
 .color-picker-color {
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 50%;
+}
 
-  &.selected {
-    position: relative;
-
-    &::after {
-      content: 'tick icon ';
-      // content: url(../../assets/icons/tick.svg);
-      position: absolute;
-      top: -0.3rem;
-      right: -0.8rem,
-    }
-  }
+.color-picker-color.selected::after {
+  content: 'tick icon ';
+  position: absolute;
+  top: -0.3rem;
+  right: -0.8rem;
 }
 
 .student-visibilty {
   color: #999999;
-
   font-size: 1.7rem;
   font-weight: 400;
-
-  &-container {
-    display: flex;
-    flex-direction: row;
-    gap: 4rem;
-
-  }
-
-  &-radio {
-    display: flex;
-    gap: 4rem;
-
-    input {
-      width: 0;
-      height: 0;
-      display: none;
-
-
-    }
-
-    span {
-      position: relative;
-      width: 18px;
-      height: 18px;
-      display: inline-block;
-      border-radius: 50%;
-      border: 1.5px solid #888888;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 9px;
-    }
-
-    input:checked~span::before {
-      content: "";
-      background-color: #1B8392;
-      display: block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    input:checked~span {
-      border-color: #1B8392;
-    }
-
-    label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: row;
-      font-family: Poppins;
-      font-size: 1.5rem;
-      font-weight: 400;
-      color: #999999;
-
-
-    }
-  }
-
 }
 
-.event-cont {
-  border-radius: 6px;
-  padding: 0 0.5rem;
-}
-
-.event-cont-text {
-
-  font-size: 1.4rem;
-  font-weight: 400;
-
-
-}
-
-.date-picker-container {
+.student-visibilty-container {
   display: flex;
-  padding: 11px 24px;
-  ;
-  gap: 1rem;
-
-  .text_field_container {
-    padding: 0;
-
-    &:first-child {
-      flex-grow: 1;
-    }
-  }
+  flex-direction: row;
+  gap: 4rem;
 }
 
-.date-time-picker {
-  input {
-    padding: 1.5rem;
-    font-size: 1.5rem !important;
-  }
-
-  .MuiFormControl-root.MuiTextField-root {
-    width: 100% !important;
-    position: relative !important;
-    border-radius: 12px;
-    border: 1px solid #E4E4E4;
-    width: 100%;
-
-    &:hover {
-      border-radius: 12px;
-      border: 1px solid #E4E4E4;
-      width: 100%;
-    }
-
-    &::after {
-      position: absolute;
-      
-      content: 'calendar icon';
-      // content: url("../../assets/icons/calendar.svg");
-      filter: invert(68%) sepia(9%) saturate(7%) hue-rotate(321deg) brightness(89%) contrast(84%) !important;
-      right: 2rem;
-      top: 20%;
-      background-repeat: no-repeat;
-
-    }
-
-    * {
-      border: none !important;
-    }
-  }
-
-}
-
-.MuiTabs-flexContainer {
-  background-color: #F0F6F8;
-}
-
-.MuiPaper-rounded {
-  border-radius: 16px !important;
-}
-
-.MuiPickersToolbar-root {
-  background-color: #F0F6F8;
-
-  .MuiTypography-root.MuiTypography-overline {
-    display: none !important;
-  }
-}
-
-.MuiDateTimePickerToolbar-timeDigitsContainer {
-  align-items: center;
-}
-
-.MuiSvgIcon-root,
-.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiPickersCalendarHeader-switchViewIcon {
-  width: 20px !important;
-  height: 20px !important;
-}
-
-.MuiPickersCalendarHeader-labelContainer,
-.MuiTypography-root.MuiTypography-subtitle1.MuiPickersToolbarText-root,
-.MuiClockPointer-thumb,
-.MuiClockNumber-root,
-.MuiTypography-root,
-.MuiButtonBase-root,
-.MuiPickersYear-root>button {
-  font-size: 1.8rem !important;
-}
-
-.fc-list-event-time {
-  font-size: 1.5rem;
-}
-
-.fc .fc-list-day-cushion,
-.fc .fc-list-table td {
-  padding: 8px;
-}
-
-.fc-list-event-dot {
-  margin-top: 0.3rem;
-}
-
-.confirm-vbtn {
-  padding: 0px 20px 20px 20px;
-}
-
-.delete-btn-cont {
+.student-visibilty-radio {
   display: flex;
-  align-items: center;
-  padding: 0px 20px 20px 20px;
-  justify-content: space-between;
-
-  &-delete {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-
-      border-radius: 50%;
-
-      background-color: rgba(99, 115, 129, 0.08);
-
-    }
-  }
-
-  svg {
-    width: 22px;
-    height: 22px;
-  }
+  gap: 4rem;
 }
 
-.calendar {
-  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root {
-    border-radius: 5px !important;
-    border: 1px solid $color-12;
-    box-shadow: none !important;
-  }
+.student-visibilty-radio input {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
-.MuiMenuItem-root.MuiMenuItem-gutters {
-  font-size: 2rem !important;
-  font-weight: 400;
-
-
-  color: $color-2;
-
-}
-
-.fc-scrollgrid.fc-scrollgrid-liquid {
-  border-top: none;
-
-}
-
-.calendar-filter-btn {
+.student-visibilty-radio span {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  border-radius: 50%;
+  border: 1.5px solid #888888;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  svg {
-    width: 20px;
-    height: 20px;
-    color: #1b8392
-  }
+  margin-right: 9px;
 }
 
-.color-picker-filter {
-  &-cont {
-    gap: 10px;
-  }
-
+.student-visibilty-radio input:checked~span::before {
+  content: "";
+  background-color: #1B8392;
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 
-.calendar-filter-cont {
-  @include mq(874px, max) {
-    flex-direction: column !important;
-    gap: 2rem;
-  }
+.student-visibilty-radio input:checked~span {
+  border-color: #1B8392;
 }
 
-.toolbar-cont {
-  @include mq(540px, max) {
-    gap: 2rem;
-    flex-direction: column !important;
-  }
-}
-
-.fc-scroller,
-.fc-scrollgrid-sync-table,
-.fc-scrollgrid-section-body,
-.fc-daygrid-body,
-.fc,
-.fc-view,
-tbody,
-.fc-scroller-harness {
-  height: 100% !important;
-}
-
-.calendar {
-  .MuiPaper-elevation {
-    height: 100% !important;
-
-
-  }
-}
-
-.MuiDialog-container {
-  background: hsla(0, 0%, 100%, 0.671);
-  position: absolute;
-  width: 100vw;
-  z-index: 999999999999999999999999999999;
-}
-
-.fc-daygrid-more-link {
-  font-size: 1.3rem !important;
-}
-
-
-.noteSTUDENT {
-  .MuiDialog-container {
-    background: hsla(0, 0%, 100%, 0.1);
-  }
-}
-
-.toolbar_time_picker {
-  display: flex;
-  justify-content: space-around;
-  padding: 2rem 0;
-  background-color: $color-4;
-  justify-content: space-between;
-
-  &-date {
-    text-transform: capitalize;
-    padding-left: 5rem;
-  }
-
-  &-time {
-    padding-right: 7.2rem;
-  }
-
-  &-date,
-  &-time {
-    font-weight: 500;
-    font-size: 1.5rem;
-    color: $color-2;
-  }
-
-}
-
-.MuiPickersLayout-root {
-  display: flex !important;
-  flex-direction: column;
-}
+.student-vis
