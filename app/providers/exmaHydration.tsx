@@ -1,23 +1,8 @@
 'use server';
-import { getAllClasse, getClasseById, getStudentOfClasse } from '@/actions/classe';
-import {
-  getCountOfStudentExams,
-  getCountOfStudentSubjects,
-  getStudentMarksheet,
-} from '@/actions/dashboard';
-import {
-  getAllExam,
-  getClasseOfUser,
-  getEstablishmentOfUser,
-  getMe,
-  getOneExamById,
-  getSubjectOfUser,
-  getSubjectOfUserById,
-  getTermOfUser,
-} from '@/actions/examens';
+import { GetOneExamByIdResponse } from '@/actions/examens';
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-export default async function ExmaHydration({
+export default function ExmaHydration({
   children,
   exam_id,
 }: {
@@ -26,10 +11,15 @@ export default async function ExmaHydration({
 }) {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ['examenById', exam_id],
-    queryFn: async () => await getOneExamById({ id: exam_id }),
-  });
+  queryClient.prefetchQuery<GetOneExamByIdResponse>(
+    ['examenById', exam_id],
+    {
+      queryFn: async () => await getOneExamById({ id: exam_id }),
+      staleTime: 60 * 60 * 1000, // 1 hour
+      select: (data) => data.exam,
+    }
+  );
 
   return <HydrationBoundary state={dehydrate(queryClient)}>{children}</HydrationBoundary>;
 }
+
