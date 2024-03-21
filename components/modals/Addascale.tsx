@@ -30,7 +30,7 @@ interface DeleteExame {
 
 export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
   // use State for the update the state :
-  console.log(exam);
+
   const totalMarkOfExam = exam?.total_mark;
   const [content, setContent] = useState<any>(exam?.content);
   // handel get the exam
@@ -58,16 +58,16 @@ export const Addascal = ({ exam, open, setOpen }: DeleteExame) => {
   const tes = 1500;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className={`w-[${tes}px] sm:max-h-[600px]`} style={{ maxWidth: whidth }}>
+      <DialogContent className={`w-[${tes}px] max-h-[690px] `} style={{ maxWidth: whidth }}>
         <DialogHeader>
           <DialogTitle className="text-[#1B8392] text-xl font-medium ">
             Ajouter un barème
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className=" text-neutral-400 text-[15px] font-normal flex gap-2 overflow-auto">
+        <DialogDescription className=" text-neutral-400 text-[15px] font-normal flex gap-2 overflow-auto max-h-[400px] ">
           {content?.map((item: any) => {
             return (
-              <div className=" min-w-[220px] border-[#dedbdb] border-[1px] p-2  rounded-lg flex flex-col gap-2 ">
+              <div className=" min-w-[220px] border-[#dedbdb] border-[1px] p-2  rounded-lg flex flex-col gap-2 h-full overflow-auto ">
                 <div className="flex gap-[10px]">
                   <div className="text-[#999999]">
                     {/* name Of Exerciec */}

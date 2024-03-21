@@ -31,7 +31,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
             display: 'inline-flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            left: '40px',
+            left: '20px',
             position: 'absolute',
             top: '30px',
           }}
@@ -42,7 +42,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
               color: 'var(--x-1)',
               fontFamily: '"Poppins", Helvetica',
               fontSize: '12px',
-              fontWeight: '500',
+              fontWeight: '600',
               letterSpacing: '0',
               lineHeight: '18px',
               marginTop: '-1px',
@@ -75,10 +75,10 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
             display: 'flex',
             gap: '150px',
             justifyContent: 'center',
-            left: '52px',
+            left: '20px',
             position: 'absolute',
             top: '155px',
-            width: '1000px',
+            width: '1120px',
           }}
         >
           <div
@@ -215,6 +215,61 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
                 )}
               </>
             )}
+            <p
+              style={{
+                alignSelf: 'stretch',
+                color: 'var(--x-1)',
+                fontFamily: '"Poppins", Helvetica',
+                fontSize: '12px',
+                fontWeight: '400',
+                letterSpacing: '0',
+                lineHeight: '18px',
+                marginTop: '-1px',
+                position: 'relative',
+              }}
+            >
+              <span style={{ fontWeight: '600' }}>Note Total : </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '18px',
+                }}
+              >
+                {meta.noteTotal}
+              </span>
+            </p>
+            <p
+              style={{
+                alignSelf: 'stretch',
+                color: 'var(--x-1)',
+                fontFamily: '"Poppins", Helvetica',
+                fontSize: '12px',
+                fontWeight: '400',
+                letterSpacing: '0',
+                lineHeight: '18px',
+                marginTop: '-1px',
+                position: 'relative',
+              }}
+            >
+              <span style={{ fontWeight: '600' }}>Observation : </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '18px',
+                }}
+              >
+                {meta.observation?.feedback[0] ||
+                  "Il n 'y a pas d'observation concernant cet étudiant"}
+              </span>
+            </p>
           </div>
 
           <div
@@ -287,35 +342,99 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
                 </span>
               </p>
             )}
-            {type === 'MSStudent' && meta.classe && (
-              <p
+            <p
+              style={{
+                alignSelf: 'stretch',
+                color: 'var(--x-1)',
+                fontFamily: '"Poppins", Helvetica',
+                fontSize: '12px',
+                fontWeight: '400',
+                letterSpacing: '0',
+                lineHeight: '18px',
+                marginTop: '-1px',
+                position: 'relative',
+              }}
+            >
+              <span style={{ fontWeight: '600' }}>Moyene de la classe : </span>
+              <span
                 style={{
-                  alignSelf: 'stretch',
-                  color: 'var(--x-1)',
+                  color: '#102528',
                   fontFamily: '"Poppins", Helvetica',
                   fontSize: '12px',
                   fontWeight: '400',
                   letterSpacing: '0',
                   lineHeight: '18px',
-                  marginTop: '-1px',
-                  position: 'relative',
                 }}
               >
-                <span style={{ fontWeight: '600' }}>Classe : </span>
-                <span
-                  style={{
-                    color: '#102528',
-                    fontFamily: '"Poppins", Helvetica',
-                    fontSize: '12px',
-                    fontWeight: '400',
-                    letterSpacing: '0',
-                    lineHeight: '18px',
-                  }}
-                >
-                  {meta.classe}
-                </span>
-              </p>
-            )}
+                {meta.moyendeClasse}
+              </span>
+            </p>
+            <p
+              style={{
+                alignSelf: 'stretch',
+                color: 'var(--x-1)',
+                fontFamily: '"Poppins", Helvetica',
+                fontSize: '12px',
+                fontWeight: '400',
+                letterSpacing: '0',
+                lineHeight: '18px',
+                marginTop: '-1px',
+                position: 'relative',
+              }}
+            >
+              <span style={{ fontWeight: '600' }}> Min: </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '18px',
+                }}
+              >
+                {meta.minMoyene}
+              </span>
+              <span style={{ fontWeight: '600' }}> Max: </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '18px',
+                }}
+              >
+                {meta.maxMoyene}
+              </span>
+              <span style={{ fontWeight: '600' }}> Sup 10: </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '18px',
+                }}
+              >
+                {meta.countSupTen}
+              </span>
+              <span style={{ fontWeight: '600' }}> inf 10: </span>
+              <span
+                style={{
+                  color: '#102528',
+                  fontFamily: '"Poppins", Helvetica',
+                  fontSize: '12px',
+                  fontWeight: '400',
+                  letterSpacing: '0',
+                  lineHeight: '18px',
+                }}
+              >
+                {meta.countInfTen}
+              </span>
+            </p>
           </div>
         </div>
         <div
@@ -328,7 +447,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
             justifyContent: 'center',
             left: '350px',
             position: 'absolute',
-            top: '130px',
+            top: '66px',
           }}
         >
           <div
@@ -336,7 +455,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
               alignSelf: 'stretch',
               color: 'var(--x-1)',
               fontFamily: '"Poppins", Helvetica',
-              fontSize: '20px',
+              fontSize: '16px',
               fontWeight: '500',
               letterSpacing: '0',
               lineHeight: '20px',
@@ -348,64 +467,62 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
           >
             {meta.heading}
           </div>
-          {type === 'MSStudent' && meta.subject && (
-            <p
+          <p
+            style={{
+              alignSelf: 'stretch',
+              color: 'var(--x-1)',
+              flex: '1',
+              fontFamily: '"Poppins", Helvetica',
+              fontSize: '12px',
+              fontWeight: '400',
+              letterSpacing: '0',
+              left: '20px',
+              lineHeight: '20px',
+              position: 'relative',
+            }}
+          >
+            <span style={{ fontWeight: '600' }}>Classe : </span>
+            <span
               style={{
-                alignSelf: 'stretch',
-                color: 'var(--x-1)',
-                flex: '1',
+                color: '#102528',
                 fontFamily: '"Poppins", Helvetica',
                 fontSize: '12px',
                 fontWeight: '400',
                 letterSpacing: '0',
                 lineHeight: '20px',
-                position: 'relative',
               }}
             >
-              <span style={{ fontWeight: '500' }}>Matiere : </span>
-              <span
-                style={{
-                  color: '#102528',
-                  fontFamily: '"Poppins", Helvetica',
-                  fontSize: '12px',
-                  fontWeight: '400',
-                  letterSpacing: '0',
-                  lineHeight: '20px',
-                }}
-              >
-                {meta.subject}
-              </span>
-            </p>
-          )}
-          {type === 'MSTeach' && (
-            <p
+              {meta.classe}
+            </span>
+          </p>
+          <p
+            style={{
+              alignSelf: 'stretch',
+              color: 'var(--x-1)',
+              flex: '1',
+              fontFamily: '"Poppins", Helvetica',
+              fontSize: '12px',
+              fontWeight: '400',
+              letterSpacing: '0',
+              left: '20px',
+              lineHeight: '20px',
+              position: 'relative',
+            }}
+          >
+            <span style={{ fontWeight: '600' }}>Devoir : </span>
+            <span
               style={{
-                alignSelf: 'stretch',
-                color: 'var(--x-1)',
-                flex: '1',
+                color: '#102528',
                 fontFamily: '"Poppins", Helvetica',
                 fontSize: '12px',
                 fontWeight: '400',
                 letterSpacing: '0',
                 lineHeight: '20px',
-                position: 'relative',
               }}
             >
-              <span style={{ fontWeight: '500' }}>{meta.term.type} : </span>
-              <span
-                style={{
-                  color: '#102528',
-                  fontFamily: '"Poppins", Helvetica',
-                  fontSize: '12px',
-                  fontWeight: '400',
-                  letterSpacing: '0',
-                  lineHeight: '20px',
-                }}
-              >
-                {meta.term.number}
-              </span>
-            </p>
-          )}
+              {meta.devoir}
+            </span>
+          </p>
         </div>
         <div
           style={{
@@ -424,7 +541,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
               color: 'var(--x-1)',
               fontFamily: '"Poppins", Helvetica',
               fontSize: '12px',
-              fontWeight: '500',
+              fontWeight: '600',
               letterSpacing: '0',
               lineHeight: '18px',
               marginTop: '-1px',
@@ -452,16 +569,16 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
         </div>
         <Image
           style={{
-            height: '60px',
+            height: '30px',
             left: '325px',
             position: 'absolute',
-            top: '35px',
+            top: '15px',
             width: '200px',
           }}
           alt="Layer"
           src="/logo.svg"
           width={200}
-          height={60}
+          height={30}
         />
       </div>
     </div>

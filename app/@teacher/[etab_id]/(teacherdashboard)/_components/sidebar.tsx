@@ -53,7 +53,7 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
         <Logo />
       </div>
 
-      <div className="flex flex-col justify-end h-full p-1 font-normal text-white item-end ">
+      <div className="flex flex-col justify-end h-full p-1 font-normal text-white item-end z-[999]">
         <SidebarRoutes guestRoutes={guestRoutes} />
       </div>
     </div>

@@ -7,7 +7,7 @@ import {
   getNoteOf,
 } from '../student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getExamCorrectionById } from '@/actions/exam-correction';
+import { getExamCorrectionById, getObservationOfStudent } from '@/actions/exam-correction';
 import { useParams } from 'next/navigation';
 import Loading from '@/app/loading';
 import { getDetailsOfAllExercice, getDetailsOfExercice } from './getDetailsOfExam';
@@ -18,8 +18,7 @@ import PdfHeaderEvatuation from '@/components/shared-components/PdfHeaderEvaluti
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
   const params = useParams();
   console.log(params);
-  console.log(userExamCorectionContent);
-  console.log(userDetails);
+
   const examCorrection = userExamCorectionContent?.[0]?.correction_exam_content;
   console.log(examCorrection, 'examCorrection');
   const classe_id = params.classesId as string;
@@ -32,13 +31,32 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   // const etab_id = queryClient.getQueryData(['etab_id']) as any;
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   const user = queryClient.getQueryData(['user']) as any;
+  const examId = userExamCorectionContent?.[0]?.exam_id;
+  console.log(examId);
+  const CorigeExameContent = queryClient.getQueryData(['CorigeExameContent', examId + '']) as any;
+  console.log(CorigeExameContent);
+  const sumOfMarks = CorigeExameContent.reduce(
+    (acc: any, item: any) => acc + item.mark_obtained,
+    0
+  );
+  const averageMark = (sumOfMarks / CorigeExameContent.length).toFixed(2);
+  const minMoyene = Math.min(...CorigeExameContent.map((item: any) => item.mark_obtained));
+  const maxMoyene = Math.max(...CorigeExameContent.map((item: any) => item.mark_obtained));
+  const countSupTen = CorigeExameContent.filter((x: any) => x.mark_obtained > 10).length;
+  const countInfTen = CorigeExameContent.filter((x: any) => x.mark_obtained < 10).length;
+  console.log(minMoyene);
+  console.log(maxMoyene);
+  console.log(countSupTen);
+  console.log(countInfTen);
 
+  const { data: observation } = useQuery({
+    queryKey: ['observation', userDetails.id],
+    queryFn: async () => getObservationOfStudent(examId, userDetails.id),
+  });
+  console.log(observation);
   const estab = teacherEstab?.filter((item: any) => {
     return item.id == params.etab_id;
   });
-  console.log(estab);
-
-  const examId = userExamCorectionContent?.[0]?.exam_id;
 
   const exam = userDetails?.classe.exam_classe.find((item: any) => item.id === examId);
   const examContent = exam?.content;
@@ -56,7 +74,6 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   if (!examCorrection) {
     return <Loading />;
   }
-  console.log(userCorrections);
 
   const renderExericeTable = (obj: any, depth: number, index: number) => {
     const TotalMark = calcSumOfMarks(obj);
@@ -271,7 +288,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
               <td className="p-2  pb-[10px] border border-black/50 bg-[#9DD60026] text-[#4C4C4D]">
                 {/* {result === 0 ? '0%' : ((result / TotalMark) * 100).toFixed(2) + '%'} */}
 
-                {getDetailsOfAllExercice(examCorrection, userCorrections, obj ,index)}
+                {getDetailsOfAllExercice(examCorrection, userCorrections, obj, index)}
               </td>
             </tr>
           </>
@@ -281,6 +298,10 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   };
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
+
+  const totatlMarl = userExamCorectionContent.find((item: any) => item.user_id == userDetails.id);
+
+  const realNote = totatlMarl?.mark_obtained + '/' + totatlMarl?.exam?.total_mark;
 
   return (
     <div>
@@ -298,6 +319,14 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
           teacherName: user?.name,
           // range: 1,
           // average: 15.57,
+          devoir: exam?.name,
+          minMoyene: minMoyene,
+          maxMoyene: maxMoyene,
+          countSupTen: countSupTen,
+          countInfTen: countInfTen,
+          noteTotal: realNote,
+          observation: observation,
+          moyendeClasse: averageMark + '/' + totatlMarl?.exam?.total_mark,
         }}
         type="MSStudent"
       />
