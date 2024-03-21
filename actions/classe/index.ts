@@ -170,7 +170,13 @@ export const createUserInClasse = async (
     },
   });
   if (nameExiste?.length > 0) {
-    throw new Error('Name already exists');
+    return {
+      error: {
+        message: 'Un étudiant avec cet nom déja existe.',
+        status: 'exist_in_classe',
+      },
+    };
+    // throw new Error('Name already exists');
   }
   const data = await db.user.findUnique({
     where: {

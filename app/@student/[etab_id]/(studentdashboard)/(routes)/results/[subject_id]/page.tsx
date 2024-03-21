@@ -93,8 +93,8 @@ const Student = () => {
     : ['semestre_1', 'semestre_2'];
 
   const trimesters = terms.map((term) => ({
-    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), 
-    exams: groupedExams[term] || [], 
+    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+    exams: groupedExams[term] || [],
   }));
 
   // const averageMark = calculateAverageMark(trimesters);
@@ -119,7 +119,7 @@ const Student = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          <PDFExport pdfName="bulletin">
+          {/* <PDFExport pdfName="bulletin">
             <MarkSheetStudent
               data={trimesters}
               meta={{
@@ -133,7 +133,7 @@ const Student = () => {
                 userClasseInfos,
               }}
             />
-          </PDFExport>
+          </PDFExport> */}
         </div>
       </nav>
       <div className="flex items-center gap-3 ml-5 ">

@@ -17,18 +17,16 @@ import {
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
-  console.log('dsdsd');
-  console.log(userDetails);
+
 
   if (!userExamCorectionContent) {
     return null;
   }
 
   const [examCorrection] = userExamCorectionContent[0]?.correction_exam_content;
-  console.log(examCorrection);
+  
   const params = useParams();
-  console.log(params);
-  console.log(userDetails, 'userDetails');
+  
   const classe_id = params.etab_id as string;
 
   // Logging for debugging
@@ -79,7 +77,10 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   // };
   const renderExericeTable = (obj: any, depth: number, index: number) => {
     const TotalMark = calcSumOfMarks(obj);
-    const result = examCorrection && calcSumOfMarks(examCorrection[index]);
+
+    const result = Array.isArray(examCorrection)
+      ? examCorrection && calcSumOfMarks(examCorrection[index])
+      : calcSumOfMarks(examCorrection);
 
     return (
       <>
@@ -344,7 +345,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
               <td className="p-2  pb-[10px] border border-black/50 bg-[#9DD60026] text-[#4C4C4D]">
                 {/* {calculateClasseOverallAvg()} */}
                 {/* {result === 0 ? '0%' : ((result / TotalMark) * 100).toFixed(2) + '%'} */}
-                {getDetailsOfAllExercice(examCorrection, userCorrections, examContent, index)}
+                {getDetailsOfAllExercice(examCorrection, userCorrections, obj, index)}
               </td>
             </tr>
           </>
