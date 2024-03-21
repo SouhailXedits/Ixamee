@@ -1,10 +1,16 @@
 import NextAuth from 'next-auth';
-import authConfig from './auth.config';
-import { auth as authentification } from '@/auth';
-import { DEFAULT_LOGIN_REDIRECT, apiAuthPrefix, authRoutes, publicRoutes } from '@/routes';
-const { auth } = NextAuth(authConfig);
+import { authRoutes, publicRoutes, apiAuthPrefix } from '@/routes';
 
-export default auth(async (req) => {
+type NextAuthRequest = {
+  req: Request & {
+    auth?: any;
+    nextUrl: URL;
+  };
+}
+
+const auth = NextAuth(authConfig);
+
+export default async function middleware(req: NextAuthRequest) {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
@@ -16,25 +22,20 @@ export default auth(async (req) => {
     return null;
   }
 
-  if (isAuthRoute) {
-    return null;
-  }
-  if (isAuthRoute && !isPublicRoute) {
+  if (isAuthRoute && isPublicRoute) {
     return null;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    // let callbackUrl = nextUrl.pathname;
-    // if (nextUrl.search) {
-    //   callbackUrl += nextUrl.search;
-    // }
-    // const encodedCallbackUrl = encodeURIComponent(callbackUrl);
-    // return Response.redirect(new URL(`/login?${encodedCallbackUrl}`, nextUrl));
-    return Response.redirect(new URL(`/login`, nextUrl));
+    try {
+      return Response.redirect(new URL(`/login`, nextUrl));
+    } catch (e) {
+      return new Response('Failed to redirect', { status: 500 });
+    }
   }
 
   return null;
-});
+}
 
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/(api|trpc)(.*)'],
