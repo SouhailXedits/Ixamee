@@ -1,6 +1,5 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import * as z from 'zod';
 import {
   Dialog,
   DialogClose,
@@ -12,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/auth-input';
 import Image from 'next/image';
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import {
   Form,
   FormControl,
@@ -28,13 +27,14 @@ import FormSuccess from '@/components/ui/form-success';
 import { IoKeyOutline } from 'react-icons/io5';
 import { updatePassword } from '@/actions/profile/updateUserpassword';
 import { UpdatePasswordSchema } from '@/actions/profile/schemas';
-interface AjouterUneClasse {
+
+interface UpdatePasswordProps {
   children: React.ReactNode;
   currentUser: any;
 }
 
-export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
-  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
+export const UpdatePassword = ({ children, currentUser }: UpdatePasswordProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -43,32 +43,33 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
     resolver: zodResolver(UpdatePasswordSchema),
     defaultValues: {
-      email: '',
+      email: currentUser?.email || '',
       actualPassord: '',
       newPassword: '',
       confirmNewPassword: '',
     },
   });
-  const [isTransPending, startTransition] = useTransition();
+
   const onSubmit = async (values: z.infer<typeof UpdatePasswordSchema>) => {
     setError('');
     setSuccess('');
-    values.email = currentUser?.email;
-    startTransition(() => {
-      updatePassword(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        if (data.success) {
-          setIsFirstModalOpen(!isFirstModalOpen);
-        }
-      });
-    });
+    values.email = currentUser?.email || '';
+    try {
+      const data = await updatePassword(values);
+      setError(data.error);
+      setSuccess(data.success);
+      if (data.success) {
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      setError('An error occurred while updating the password.');
+    }
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
+      <DialogContent className={!isModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
             <DialogHeader>
@@ -78,8 +79,8 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
             </DialogHeader>
             <FormError message={error} />
             <FormSuccess message={success} />
-            {!isFirstModalOpen ? (
-              <div className="flex flex-col gap-6 placeholder:text-[#727272] items-center">
+            {!isModalOpen ? (
+              <>
                 <div className="flex flex-col gap-2 w-full">
                   <FormField
                     control={form.control}
@@ -96,7 +97,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             name="actualPassord"
                             placeholder="Entrez votre mot de passe actuel"
                             className=" max-w-full"
-                            disabled={isTransPending}
+                            disabled={form.formState.isSubmitting}
                             icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                           />
                         </FormControl>
@@ -121,7 +122,7 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             name="newPassword"
                             placeholder="Entrez votre nouveau mot de passe"
                             className=" max-w-full"
-                            disabled={isTransPending}
+                            disabled={form.formState.isSubmitting}
                             icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                           />
                         </FormControl>
@@ -144,65 +145,8 @@ export const UpdatePassword = ({ children, currentUser }: AjouterUneClasse) => {
                             {...field}
                             icon={<IoKeyOutline className="text-muted-foreground w-5 h-5" />}
                             type={showPassword ? 'text' : 'password'}
-                            name="name"
+                            name="confirmNewPassword"
                             placeholder="Confirmez votre nouveau mot de passe"
                             className=" max-w-full"
-                            disabled={isTransPending}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-5">
-                <Image
-                  src={'/etudiantajouteravecsucces.svg'}
-                  alt=""
-                  width={150}
-                  height={150}
-                  className=""
-                />
-                <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
-                  <Image src={'/subjects-green.svg'} alt="user" width={15} height={15} />
-                  Mot ed passe modifier avec succees.
-                </div>
-              </div>
-            )}
-            {!isFirstModalOpen ? (
-              <DialogFooter className=" mt-3">
-                <DialogClose className="flex gap-4 w-full">
-                  <Button
-                    disabled={isTransPending}
-                    type="reset"
-                    className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "
-                  >
-                    Annuler
-                  </Button>
-                </DialogClose>
-                <Button
-                  disabled={isTransPending}
-                  type="submit"
-                  className="w-full bg-[#1B8392] hover:opacity-80 "
-                >
-                  Modifier
-                </Button>
-              </DialogFooter>
-            ) : (
-              <DialogClose className="flex gap-4 w-full">
-                <Button
-                  type="reset"
-                  className="w-full bg-[white] text-[#1B8392] border-solid border-2 border-[#1B8392] hover:opacity-80 "
-                >
-                  Retournez
-                </Button>
-              </DialogClose>
-            )}
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  );
-};
+                            disabled={form.formState.isSubmitting}
+
