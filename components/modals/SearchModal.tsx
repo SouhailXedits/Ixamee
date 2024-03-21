@@ -16,39 +16,53 @@ import Image from 'next/image';
 import { useState } from 'react';
 import SearchResultItem from '../ui/SearchResultItem';
 
-interface searchChildren {
+interface SearchModalProps {
   children: React.ReactNode;
   field: string;
-  table: string
+  table: string;
+  emptyMessage?: string;
 }
 
-export function SearchModal({ children, field , table}: searchChildren) {
-  const [searchInput, setSearchInput] = useState<string>('');
-  const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
-  const [searchResult, setSearchResults] = useState<any>([])
-  function handleSearchChange(value: string) {
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
+interface SearchState {
+  searchInput: string;
+  searchResult: any[];
+  isLoading: boolean;
+  isError: boolean;
+}
+
+const debounce = (func: (...args: any[]) => void, wait: number) => {
+  let timeout: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+};
+
+export function SearchModal({
+  children,
+  field,
+  table,
+  emptyMessage,
+}: SearchModalProps) {
+  const [searchState, setSearchState] = useState<SearchState>({
+    searchInput: '',
+    searchResult: [],
+    isLoading: false,
+    isError: false,
+  });
+
+  const handleSearchChange = debounce(async (value: string) => {
+    setSearchState((prevState) => ({ ...prevState, isLoading: true }));
+
+    try {
+      const data = await getDataByName(table, value);
+      setSearchState((prevState) => ({ ...prevState, searchResult: data }));
+    } catch (error) {
+      setSearchState((prevState) => ({ ...prevState, isError: true }));
+    } finally {
+      setSearchState((prevState) => ({ ...prevState, isLoading: false }));
     }
-    setSearchInput(value);
-
-    // Set a new timeout to perform the action after 500 milliseconds
-    const timeoutId = setTimeout(async () => {
-      const data = await getDataByName(table, searchInput);
-      setSearchResults(data)
-      
-      // if (user === null || (user?.role !== 'TEACHER' && user?.role !== 'ADMIN')) {
-      //   setShowError(true);
-      //   setUserId(null);
-      // }
-      // if (user) setUserId(user.id);
-    }, 500);
-
-
-    setTypingTimeout(timeoutId);
-  }
-
-
+  }, 500);
 
   return (
     <Dialog>
@@ -65,20 +79,17 @@ export function SearchModal({ children, field , table}: searchChildren) {
           <input
             type="text"
             placeholder={`Chercher un ${field}`}
-            value={searchInput}
+            value={searchState.searchInput}
             onChange={(e) => handleSearchChange(e.target.value)}
             className="rounded-bl-none rounded-br-none pl-10 pr-12  pb-2 outline-none border-b h-10"
           />
           {/* <p>{field} : </p> */}
         </DialogHeader>
         <div className=" overflow-auto h-[300px] bg-white w-full pt-10">
-          <div >
-            {searchResult.length !== 0 && searchResult.map((result: any) => <SearchResultItem data={result} key={result.id}/>
-            )}
-            
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
+          {searchState.isLoading && <div>Loading...</div>}
+          {searchState.isError && <div>Error while fetching data</div>}
+          {searchState.searchResult.length === 0 && (
+            <div>{emptyMessage || 'No results found'}</div>
+          )}
+          <div>
+            {searchState.searchResult.map((result
