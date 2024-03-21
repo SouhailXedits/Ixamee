@@ -166,7 +166,7 @@ const Student = () => {
         </div>
       </div>
 
-      <div className="flex overflow-auto gap-9 p-7">
+      <div className="flex overflow-x-auto gap-9 p-7">
         {trimesters.map((trimester) => (
           <TermCard term={trimester} key={trimester.name} />
         ))}
