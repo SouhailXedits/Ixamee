@@ -1,15 +1,19 @@
 // 'use server';
-// import { db } from '@/lib/db';
+import { db } from '@/lib/db';
 
-// export const getAllgovernments = async () => {
-//   try {
-//     const governments = await db.government.findMany();
-//     return { data: governments, error: undefined };
-//   } catch (error: any) {
-//     console.error('Error fetching governments:', error);
-//     return {
-//       data: undefined as any,
-//       error: 'Failed to get governments. Check the console for details.',
-//     };
-//   }
-// };
+interface GovernmentResponse {
+  data?: typeof db.government[];
+  error?: string;
+}
+
+export const getAllGovernments = async (): Promise<GovernmentResponse> => {
+  try {
+    const governments = await db.government.findMany();
+    return { data: governments };
+  } catch (error: any) {
+    console.error('Error fetching governments:', error);
+    return {
+      error: 'Failed to get governments. Check the console for details.',
+    };
+  }
+};
