@@ -1,48 +1,46 @@
 import React from 'react';
 import Link from 'next/link';
+import { Box, Button } from '@mui/material';
 import LoginSvg from '../../../../components/modals/LoginSvg';
-import LoginForm from '../../_components/LoginForm';
+import LoginForm, { forwardRef } from '../../_components/LoginForm';
 import Logo from '../../../../components/modals/Logo';
 import SocialButton from '../../../../components/modals/SocialButton';
-export default function page() {
+import { useMemo } from 'react';
+
+const Page = () => {
+  const logoClassName = useMemo(() => 'max-xl:w-[50%]', []);
+
   return (
-    <div
-      id="SignUpRoot"
-      className=" bg-[#f0f6f8] flex flex-col overflow-x-hidden md:flex-row w-full"
-    >
-      {/* left */}
+    <div>
+      <Head>
+        <title>Connexion</title>
+        <meta name="description" content="Connectez-vous à votre compte" />
+      </Head>
+      <Box
+        id="SignUpRoot"
+        className=" bg-[#f0f6f8] flex flex-col overflow-x-hidden md:flex-row w-full"
+      >
+        {/* left */}
 
-      <div className="bg-white w-full flex flex-col justify-center h-[100vh] gap-8 items-center  md:rounded-br-[100px] md:rounded-tr-[100px]  ">
-        <div className="flex flex-col ml-3 gap-5 items-center">
-          <Logo className={' max-xl:w-[50%]'} width={200} height={100} />
-          <div className="text-center text-2 text-4xl max-lg:text-3xl">Connectez-vous</div>
-        </div>
-        <div className="flex flex-col gap-5 w-3/5 items-start">
-          <div className="w-full">
-            <LoginForm />
-          </div>
-          <div className="flex flex-col gap-3 w-full items-center">
-            <SocialButton />
+        <Box
+          className="bg-white w-full flex flex-col justify-center h-[100vh] gap-8 items-center  md:rounded-br-[100px] md:rounded-tr-[100px]  "
+        >
+          <Box className="flex flex-col ml-3 gap-5 items-center">
+            <Logo className={logoClassName} width={200} height={100} />
+            <Box className="text-center text-2 text-4xl max-lg:text-3xl">
+              Connectez-vous
+            </Box>
+          </Box>
+          <Box className="flex flex-col gap-5 w-3/5 items-start">
+            <Box className="w-full">
+              <LoginForm ref={forwardRef} />
+            </Box>
+            <Box className="flex flex-col gap-3 w-full items-center">
+              <Button variant="outlined" className="w-full">
+                <SocialButton />
+              </Button>
 
-            <div className="flex">
-              <p className="text-center text-[#727272] max-md:text-sm max-sm:text-xs">
-                Vous n’avez pas un compte?{' '}
-              </p>
-              &nbsp;
-              <Link
-                className="text-center text-mainGreen hover:underline text-base font-semibold max-md:text-sm max-sm:text-xs "
-                href={'/register'}
-              >
-                S’inscrire
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* right */}
-      <div className=" hidden flex-col justify-center  items-center gap-10 lg:flex md:w-[70%] max-md:text-sm max-sm:text-xs">
-        <LoginSvg />
-      </div>
-    </div>
-  );
-}
+              <Box className="flex">
+                <Box className="text-center text-[#727272] max-md:text-sm max-sm:text-xs">
+                  Vous n’avez pas un compte?{' '}
+                </Box>
