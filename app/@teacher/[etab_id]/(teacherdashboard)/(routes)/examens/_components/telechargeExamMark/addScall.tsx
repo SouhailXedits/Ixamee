@@ -4,6 +4,7 @@ import RenderExercice from './renderExercice';
 import RenderQuestion from './renderQuestion';
 import RenderSubQuestion from './renderSubQuestion';
 import PdfHeader from './pdfHeader';
+import PdfHeaderEvatuation from '@/components/shared-components/PdfHeaderEvalution';
 
 export default function AddScall({ exam, examDetails }: any) {
   console.log(examDetails);
@@ -21,7 +22,7 @@ export default function AddScall({ exam, examDetails }: any) {
 
   return (
     <div className="flex flex-wrap gap-4">
-      <PdfHeader
+      <PdfHeaderEvatuation
         meta={{
           estab: devoirName,
 
