@@ -15,41 +15,34 @@ interface Option {
   label: string;
 }
 
-interface SelectScrollableParams {
+interface SelectScrollableProps {
   options: Option[];
   placeholder: string;
   icon?: React.ReactElement;
-  field: {
-    onChange: (value: any) => void;
-    value: any;
-  };
-  disabled: boolean;
-  onChange?: (selectedOption: Option) => void;
+  value?: string;
+  onChange: (value: string, option?: Option) => void;
+  disabled?: boolean;
 }
 
 export function SelectScrollable({
   options,
   placeholder,
   icon,
-  field,
-  disabled,
+  value,
   onChange,
-}: SelectScrollableParams) {
+  disabled,
+}: SelectScrollableProps) {
   const handleValueChange = (selectedValue: string) => {
-    field.onChange(selectedValue);
-
-    if (onChange) {
-      const selectedOption = options.find((option) => option.value === selectedValue);
-      if (selectedOption) {
-        onChange(selectedOption);
-      }
-    }
+    const selectedOption = options.find((option) => option.value === selectedValue);
+    onChange(selectedValue, selectedOption);
   };
+
   return (
     <div className="relative">
-      <Select onValueChange={handleValueChange} defaultValue={field.value} disabled={disabled} >
+      <Select onValueChange={handleValueChange} value={value} disabled={disabled} >
         <SelectTrigger className="w-[102%] border-none text-[#1B8392]">
           <SelectValue placeholder={placeholder} className='text-[#727272]' />
+          {icon && <SelectValue icon={icon} />}
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
