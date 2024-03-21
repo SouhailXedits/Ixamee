@@ -1,6 +1,5 @@
 'use client';
 import { useArchive } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/archive/hooks/useArchive';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -11,19 +10,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
-interface ArchiveUneClasse {
+interface ArchiveExameProps {
   children: React.ReactNode;
   id: number;
 }
-export const ArchiveExame = ({ children, id }: ArchiveUneClasse) => {
+
+export const ArchiveExame = ({ children, id }: ArchiveExameProps) => {
   const { archiveField, isPending } = useArchive('exams');
-  function handleArchive() {
-    const table = 'exam';
-    archiveField({ id, table });
-  }
+
+  const handleArchive = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    archiveField({ id, table: 'exam' });
+  };
+
   return (
-    <Dialog>
+    <Dialog id={`dialog-${id}`}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -38,9 +41,8 @@ export const ArchiveExame = ({ children, id }: ArchiveUneClasse) => {
         <DialogFooter>
           <DialogClose asChild>
             <Button
-              type="submit"
-              className="w-full bg-white
-          text-[#177C9A] border border-[#177C9A] hover:opacity-80"
+              type="button"
+              className="w-full bg-white text-[#177C9A] border border-[#177C9A] hover:opacity-80"
             >
               Annuler
             </Button>
@@ -48,7 +50,10 @@ export const ArchiveExame = ({ children, id }: ArchiveUneClasse) => {
           <Button
             name="bnt"
             className="w-full text-white bg-[#177C9A] hover:opacity-80"
-            onClick={() => handleArchive()}
+            disabled={isPending}
+            loading={isPending}
+            type="submit"
+            onClick={handleArchive}
           >
             Archiver
           </Button>
