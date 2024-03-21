@@ -1,28 +1,30 @@
-import React, { startTransition, useEffect, useState, useTransition } from 'react';
+import React, { useState, useEffect } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
+import { Form, Button } from '@/components/ui';
 import FormError from '@/components/ui/form-error';
-import { VerifSchema } from '@/actions/auth/schemas';
-import { CodeInput } from '../../../components/modals/CodeInput';
-import bcryptjs from 'bcryptjs';
-import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
-import Link from 'next/link';
-import { renvoyer } from '@/actions/auth/renvoyer-email';
 import FormSuccess from '@/components/ui/form-success';
+import CodeInput from '../../../components/modals/CodeInput';
+import { sendPasswordResetToken } from '@/actions/auth/sendPasswordResetToken';
+import { renvoyer } from '@/actions/auth/renvoyer-email';
+import Link from 'next/link';
+
+const VerifSchema = z.object({
+  code: z.string().length(6),
+});
+
 interface VerificationData {
   email?: string | undefined;
-  code?: number | undefined;
+  code?: string | undefined;
 }
-const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
+
+const VerificationCodeForm: React.FC<VerificationData> = ({ email, code }) => {
   const [codeValues, setCodeValues] = useState(['', '', '', '', '', '']);
-  const currentTimestamp = new Date().getTime();
   const [isCodeValid, setIsCodeValid] = useState(false);
-  const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const [expirationTimestamp, setExpirationTimestamp] = useState(0);
 
   const form = useForm<z.infer<typeof VerifSchema>>({
     resolver: zodResolver(VerifSchema),
@@ -37,63 +39,69 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
     setCodeValues(newCodeValues);
     setIsCodeValid(newCodeValues.every((code) => code.length === 1));
   };
-  const [isTransPending, startTransition] = useTransition();
+
   const getVerificationCode = () => {
     return codeValues.join('');
   };
+
   const onSubmit = async () => {
     setError('');
     setSuccess('');
-    try {
+
+    if (email && isCodeValid) {
       const verificationCode = getVerificationCode();
-      const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
-      if (codeValues) {
-        const codeMatch = await bcryptjs.compare(verificationCode, storedVerificationData.code);
 
-        if (email && codeMatch) {
-          const expirationTimestamp = storedVerificationData.expiredAt;
+      try {
+        const codeMatch = await bcryptjs.compare(verificationCode, code!);
 
-          if (expirationTimestamp && currentTimestamp < expirationTimestamp) {
-            setIsCodeCorrect(true);
-            startTransition(() => {
-              sendPasswordResetToken(storedVerificationData.email);
-            });
-          } else {
-            setIsCodeCorrect(false);
-            setError('Code expiré. Réessayez.');
-          }
+        if (codeMatch && expirationTimestamp > Date.now()) {
+          setSuccess('Code vérifié avec succès');
+          sendPasswordResetToken(email);
         } else {
-          setIsCodeCorrect(false);
-          setError('Code incorrect. Réessayez.');
+          setError('Code expiré ou incorrect');
         }
+      } catch (error) {
+        setError('Une erreur est survenue');
       }
-    } catch (error) {
-      setError("Quelque chose s'est mal passé");
+    } else {
+      setError('Veuillez entrer un code valide');
     }
   };
+
   const handleResendVerificationEmail = async () => {
     setSuccess('');
     setError('');
-    startTransition(async () => {
-      if (email && code) {
-        renvoyer(email, '').then((data) => {
-          setError(data.error);
-          setSuccess(data.success);
-          const hashedCode = data.hashedCode;
 
-          const expirationTimestamp = currentTimestamp + 1 * 60 * 1000;
+    if (email && code) {
+      renvoyer(email, '').then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+
+        if (data.hashedCode && data.expirationTimestamp) {
+          const hashedCode = data.hashedCode;
+          const newExpirationTimestamp = Date.now() + 1 * 60 * 1000;
+
+          setExpirationTimestamp(newExpirationTimestamp);
           localStorage.setItem(
             'email-verification',
             JSON.stringify({
               email: email,
               code: hashedCode,
-              expiredAt: expirationTimestamp,
+              expiredAt: newExpirationTimestamp,
             })
           );
-        });
-      }
-    });
+        }
+      });
+    }
   };
+
+  useEffect(() => {
+    const storedVerificationData = JSON.parse(localStorage.getItem('email-verification') || '{}');
+
+    if (storedVerificationData.email && storedVerificationData.expiredAt) {
+      setExpirationTimestamp(storedVerificationData.expiredAt);
+    }
+  }, []);
 
   return (
     <Form {...form}>
@@ -101,7 +109,7 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
         <FormError message={error} />
         <FormSuccess message={success} />
         <div className="flex justify-between gap-2 mb-2 rtl:space-x-reverse">
-          {[1, 2, 3, 4, 5, 6].map((index :number) => (
+          {[1, 2, 3, 4, 5, 6].map((index) => (
             <CodeInput
               key={index}
               id={`code-${index}`}
@@ -109,18 +117,18 @@ const VerificationCodeForm: React.FC = ({ email, code }: VerificationData) => {
               nextId={`code-${index + 1}`}
               value={codeValues[index - 1]}
               onChange={(value) => handleCodeChange(index - 1, value)}
-              isValid={isCodeCorrect}
+              isValid={isCodeValid}
             />
           ))}
         </div>
         <Button
           type="submit"
-          disabled={isTransPending}
+          disabled={!isCodeValid}
           className={`${
             isCodeValid ? 'bg-2' : 'bg-12'
           } font-semibold w-full h-12 pt-3 items-start justify-center rounded-lg text-center text-white text-base hover:opacity-75`}
         >
-          {isTransPending ? 'Verification en cours...' : 'Vérifier'}
+          {isCodeValid ? 'Vérifier' : 'Code invalide'}
         </Button>
         <div className="flex flex-col items-center w-full gap-3 gap-x-2">
           <div className="flex ">
