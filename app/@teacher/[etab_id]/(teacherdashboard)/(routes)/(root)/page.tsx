@@ -1,5 +1,5 @@
 'use client';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, UseQueryResult, UseQueryOptions } from '@tanstack/react-query';
 import DashboradApercu from './_components/dashborad-apercu';
 import DashboradBulletinsDesEtudiants from './_components/dashborad-bulletins-des-etudiants';
 import DashboradClasses from './_components/dashborad-classes';
@@ -14,37 +14,60 @@ export default function Home() {
   const user = queryClient.getQueryData(['user']) as any;
   const etab_id = queryClient.getQueryData(['etab_id']) as any;
 
-  const { data: classeCount, isPending: classeCountPending } = useQuery({
-    queryKey: ['dashClasseCount'],
-    queryFn: async () => await getCountOfClasse(user?.id, etab_id),
+  const getDashClasseCount = (): Promise<number> => getCountOfClasse(user?.id, etab_id);
+  const getDashExamCount = (etab_id: number): Promise<number> => getCountOfExamenes(user?.id, etab_id);
+  const getDashArchiveCount = (etab_id: number): Promise<number> => getCountMonArchive(user?.id, etab_id);
+  const getDashClasses = (): Promise<any> => getAllClasseByPage({ user_id: user?.id, etab_id });
+  const getDashStudentClasses = (etab_id: number): Promise<any> => getStudentClassCount({ user_id: user?.id, etab_id });
+  const getDashClassesNameAndId = (): Promise<any> => getAllClassesNameAndId({ user_id: user?.id, etab_id });
+
+  const getQueryOptions = <T>(queryFn: () => Promise<T>, queryKey: (string | number)[]): UseQueryOptions<T> => ({
+    queryKey,
+    queryFn,
+    onError: (error: any) => console.error(`Error in query: ${queryKey.join('.')}`, error),
+    select: (data) => ({ data, isLoading: !data }),
   });
 
-  const { data: examCount, isPending: examCountPending } = useQuery({
-    queryKey: ['dashExamCount', etab_id],
-    queryFn: async () => await getCountOfExamenes(user?.id, etab_id),
-  });
+  const { data: classeCount, isLoading: classeCountLoading } = useQuery<number>(
+    ['dashClasseCount'],
+    getDashClasseCount
+  );
 
-  const { data: archiveCount, isPending: archiveCountPending } = useQuery({
-    queryKey: ['dashArchiveCount', etab_id],
-    queryFn: async () => await getCountMonArchive(user?.id, etab_id),
-  });
+  const { data: examCount, isLoading: examCountLoading } = useQuery<number>(
+    ['dashExamCount', etab_id],
+    () => getDashExamCount(etab_id),
+    getQueryOptions(getDashExamCount, ['dashExamCount', etab_id])
+  );
 
-  const { data: classe, isPending: isPendingClasse } = useQuery({
-    queryKey: ['dashClasses', etab_id],
-    queryFn: async () => await getAllClasseByPage({ user_id: user?.id, etab_id }),
-  });
-  const { data: studentCount, isPending: isPendingStudentClasse } = useQuery<any>({
-    queryKey: ['dashStudentClasses', etab_id],
-    queryFn: async () => await getStudentClassCount({ user_id: user?.id, etab_id }),
-  });
+  const { data: archiveCount, isLoading: archiveCountLoading } = useQuery<number>(
+    ['dashArchiveCount', etab_id],
+    () => getDashArchiveCount(etab_id),
+    getQueryOptions(getDashArchiveCount, ['dashArchiveCount', etab_id])
+  );
 
-  const { data: classes, isPending: isPendingClasses } = useQuery({
-    queryKey: ['classes', etab_id],
-    queryFn: async () => await getAllClassesNameAndId({ user_id: user?.id, etab_id }),
-  });
-  return isPendingStudentClasse ? (
-    <Loading />
-  ) : (
+  const { data: classe, isLoading: isLoadingClasse } = useQuery<any>(
+    ['dashClasses', etab_id],
+    getDashClasses,
+    getQueryOptions(getDashClasses, ['dashClasses', etab_id])
+  );
+
+  const { data: studentCount, isLoading: isLoadingStudentClasse } = useQuery<any>(
+    ['dashStudentClasses', etab_id],
+    () => getDashStudentClasses(etab_id),
+    getQueryOptions(getDashStudentClasses, ['dashStudentClasses', etab_id])
+  );
+
+  const { data: classes, isLoading: isLoadingClasses } = useQuery<any>(
+    ['classes', etab_id],
+    getDashClassesNameAndId,
+    getQueryOptions(getDashClassesNameAndId, ['classes', etab_id])
+  );
+
+  if (isLoadingStudentClasse) {
+    return <Loading />;
+  }
+
+  return (
     <div className="flex flex-col w-full overflow-auto p-9">
       <div className="text-2 text-2xl font-[500] pl-4 ">Tableau de bord</div>
       <div className="flex gap-6 pt-10 flex-nowrap max-2xl:flex-wrap">
@@ -54,31 +77,14 @@ export default function Home() {
             classeCount={classeCount}
             examCount={examCount}
             archiveCount={archiveCount}
-            classeCountPending={classeCountPending}
-            examCountPending={examCountPending}
-            archiveCountPending={archiveCountPending}
+            classeCountPending={classeCountLoading}
+            examCountPending={examCountLoading}
+            archiveCountPending={archiveCountLoading}
             studentCount={studentCount?.data}
-            studentCountPending={isPendingStudentClasse}
+            studentCountPending={isLoadingStudentClasse}
           />
           <DashboradStatistiques
-            isPendingClasses={isPendingClasses}
+            isPendingClasses={isLoadingClasses}
             classes={classes?.data}
             allStudentCount={studentCount?.data}
-            studentCountPending={isPendingStudentClasse}
-          />
-          <DashboradClasses
-            classe={classe?.data}
-            classeCount={classeCount}
-            isPending={isPendingClasse}
-            etabId={etab_id}
-          />
-        </div>
 
-        <div className="w-[40%] h-full p-2 flex flex-col gap-6 max-2xl:w-[100%]">
-          <DashboradCorrectionsRecentes etabId={etab_id} />
-          <DashboradBulletinsDesEtudiants etabId={etab_id} classes={classe?.data} />
-        </div>
-      </div>
-    </div>
-  );
-}
