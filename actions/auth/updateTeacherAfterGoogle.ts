@@ -6,56 +6,39 @@ import { getUserByEmail } from '@/data/user';
 
 export const updateTeacherAfterGoogle = async (values: z.infer<typeof ProfAfterSchema>) => {
   const validatedFields = ProfAfterSchema.safeParse(values);
-  const existingUser = values?.email ? await getUserByEmail(values?.email) : undefined;
+  const existingUser = validatedFields.data.email ? await getUserByEmail(validatedFields.data.email) : undefined;
 
   if (!validatedFields.success) {
     return { error: 'Veuillez renseigner tous les champs.' };
   }
 
-  if (!validatedFields.success) {
-    return { error: 'Veuillez renseigner tous les champs.' };
+  if (existingUser && existingUser.role !== 'TEACHER') {
+    return { error: 'Cet utilisateur n\'est pas un enseignant.' };
   }
 
-  if (!validatedFields.success || !existingUser) {
-    return { error: "Une erreur s'est produite. Veuillez réessayer." };
-  }
+  const establishmentIds = validatedFields.data.etablissement.map((estab: any) => estab.id);
+  const subjectIds = validatedFields.data.subject.map((subj: any) => subj.id);
+
+  const mappedTerm =
+    validatedFields.data.systeme === 'TRIMESTRE'
+      ? 'TRIMESTRE'
+      : validatedFields.data.systeme === 'SEMESTRE'
+      ? 'SEMESTRE'
+      : 'LIBRE';
+
+  const mappedRole = existingUser?.role || validatedFields.data.role || 'ADMIN';
 
   try {
-    const establishmentIds = values.etablissement.map((estab :any) => estab.id);
-    const subjectIds = values.subject.map((subj : any) => subj.id);
-    enum UserTerm {
-      TRIMESTRE = 'TRIMESTRE',
-      SEMESTRE = 'SEMESTRE',
-      LIBRE = 'LIBRE',
-    }
-    const mappedTerm =
-      values.systeme === 'TRIMESTRE'
-        ? UserTerm.TRIMESTRE
-        : values.systeme === 'SEMESTRE'
-        ? UserTerm.SEMESTRE
-        : UserTerm.LIBRE;
-    enum UserRole {
-      ADMIN = 'ADMIN',
-      STUDENT = 'STUDENT',
-      TEACHER = 'TEACHER',
-    }
-    const mappedRole =
-      existingUser?.role || values?.role === 'TEACHER'
-        ? UserRole.TEACHER
-        : existingUser?.role || values?.role === 'STUDENT'
-        ? UserRole.STUDENT
-        : UserRole.ADMIN;
-
     await db.user.update({
       where: { id: existingUser?.id },
       data: {
         term: mappedTerm,
         role: mappedRole,
         user_establishment: {
-          connect: establishmentIds.map((id :any) => ({ id })),
+          connect: establishmentIds.map((id: any) => ({ id })),
         },
         subjects: {
-          connect: subjectIds.map((id :any) => ({ id })),
+          connect: subjectIds.map((id: any) => ({ id })),
         },
       },
     });
