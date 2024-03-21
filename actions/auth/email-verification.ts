@@ -3,23 +3,28 @@
 import { db } from '@/lib/db';
 import { getUserByEmail } from '@/data/user';
 
-export const emailVerification = async (email: string, token: string | null) => {  
+export async function emailVerification(email: string, token: string | null) {
   if (!token) {
-    return { error: "Jeton d'authentification manquant" };
+    return { error: "Authentication token is missing" };
   }
 
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser) {
-    return { error: "email n'existe pas ! " };
+    return { error: "Email does not exist!" };
   }
 
-  await db.user.update({
-    where: { id: existingUser.id },
-    data: {
-      emailVerified: new Date(),
-    },
-  });
+  try {
+    await db.user.update({
+      where: { id: existingUser.id },
+      data: {
+        emailVerified: new Date(),
+      },
+    });
 
-  return { success: 'email verifiée avec succée' };
-};
+    return { success: 'Email verified successfully' };
+  } catch (error) {
+    return { error: 'An error occurred while verifying the email' };
+  }
+}
+
