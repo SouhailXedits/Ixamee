@@ -1,24 +1,9 @@
 'use client';
 import Image from 'next/image';
-import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
-import { getAllEstabs } from '@/actions/establishements';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Children, cloneElement, useEffect, useState } from 'react';
-import { SearchModal } from '@/components/modals/SearchModal';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@radix-ui/react-select';
-import { Button } from '@/components/ui/button';
-import { DatePickerWithRange } from '@/components/ui/RangeDatePicker';
 import FiltersModal from './components/FiltersModal';
-import { getAllArchivedClasses } from '@/actions/archive';
+import { useState } from 'react';
 
 const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   const params = useParams();

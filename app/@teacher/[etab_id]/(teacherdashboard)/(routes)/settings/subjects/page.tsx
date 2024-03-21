@@ -16,7 +16,6 @@ import { AddSubject } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllSubjectsByPage } from '@/actions/subjects';
-import { SearchModal } from '@/components/modals/SearchModal';
 
 const Establishement = ({ params }: { params: { classesId: string } }) => {
   const [searchQuery, setSearchQuery] = useState('');
