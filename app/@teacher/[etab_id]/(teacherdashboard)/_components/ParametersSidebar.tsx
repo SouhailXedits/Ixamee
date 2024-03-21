@@ -1,11 +1,5 @@
 'use client';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { SidebarItem } from '../../../../../components/shared-components/sidebar-item';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import SettingsBtn from './SettingsBtn';
 import { useEffect, useState } from 'react';
 import { useSidebar } from '@/store/use-sidebar';
@@ -14,44 +8,35 @@ import { auth } from '@/auth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getMe } from '@/actions/examens';
+import { ParametersRoute } from '@/types/parameters'; // Added type import
 
-// }
-
-const parametersRoutes = [
-  {
-    Clickedicon: '/teacherbag-fill.svg',
-    Defaulticon: '/teacherbag.svg',
-    label: 'Enseignants',
-    href: '/settings/teachers',
-  },
-  {
-    Clickedicon: '/establishement-fill.svg',
-    Defaulticon: '/establishement.svg',
-    label: 'Etablissement',
-    href: '/settings/establishements',
-  },
-  {
-    Clickedicon: '/subjects-fill.svg',
-    Defaulticon: '/subjects.svg',
-    label: 'Matières',
-    href: '/settings/subjects',
-  },
+const parametersRoutes: ParametersRoute[] = [
+  // ...
 ];
 
 function ParametersSidebar() {
-  const queryclient = useQueryClient();
+  const queryClient = useQueryClient();
   const { collapsed } = useSidebar((state) => state);
-
   const [isActive, setIsActive] = useState<boolean>(false);
-  function onClick() {
-    setIsActive((prev) => !prev);
-  }
-  const paramroutes = parametersRoutes;
 
-  const { data: user } = useQuery({
+  const { data: user, isLoading, isError, error } = useQuery({
     queryKey: ['user'],
     queryFn: async () => getMe(),
   });
+
+  useEffect(() => {
+    if (isError) {
+      console.error(error);
+    }
+  }, [isError, error]);
+
+  function onClick() {
+    setIsActive((prev) => !prev);
+  }
+
+  if (isLoading) {
+    return <Skeleton className="h-6 w-6" />;
+  }
 
   if (!user || user.role !== 'ADMIN') return null;
 
@@ -62,15 +47,16 @@ function ParametersSidebar() {
           <SettingsBtn isActive={isActive} onClick={onClick} />
         </AccordionTrigger>
         <AccordionContent className={cn(' flex flex-col gap-2', !collapsed && 'ml-4')}>
-          {paramroutes.map((route) => (
-            <SidebarItem
-              key={route.href}
-              Clickedicon={route.Clickedicon}
-              Defaulticon={route.Defaulticon}
-              label={route.label}
-              href={route.href}
-            />
-          ))}
+          {user &&
+            parametersRoutes.map((route) => (
+              <SidebarItem
+                key={route.href}
+                Clickedicon={route.Clickedicon}
+                Defaulticon={route.Defaulticon}
+                label={route.label}
+                href={route.href}
+              />
+            ))}
         </AccordionContent>
       </AccordionItem>
     </Accordion>
