@@ -1,28 +1,32 @@
-export function calculateChildrenMarks(data: any) {
+type Item = {
+  children?: Item[];
+  mark?: number;
+};
+
+export const calculateChildrenMarks = (data: Item[]): number => {
   let totalChildrenMark = 0;
 
-  data.forEach((item: any) => {
+  data.forEach((item) => {
     if (item.children) {
-      item.children.forEach((child: any) => {
-        totalChildrenMark += parseInt(child.mark, 10) || 0; // Convert child's mark to integer and add to totalChildrenMark
-      });
+      totalChildrenMark += calculateChildrenMarks(item.children);
     }
+    totalChildrenMark += item.mark || 0;
   });
 
   return totalChildrenMark;
-}
+};
 
-export const calculerExerciceMark = (data: any) => {
-  data.mark = data?.children?.reduce((acc: number, item: any) => {
-    return acc + item?.mark;
-  }, 0);
+export const calculateExerciseMark = (data: Item): number => {
+  const childrenMarks = data.children?.map((item) => calculateExerciseMark(item)) || [];
+  const sumOfChildrenMarks = childrenMarks.reduce((acc, mark) => acc + mark, 0);
+  data.mark = sumOfChildrenMarks + (data.mark || 0);
   return data.mark;
 };
-export const calcAllMark = (fakeData: any) => {
+
+export const calculateAllMarks = (data: Item[]): number => {
   let sum = 0;
-  fakeData?.map((item: any) => {
-    sum = sum + +item.mark;
+  data.forEach((item) => {
+    sum += calculateExerciseMark(item);
   });
   return sum;
 };
-// Call the function passing the fakeData array to get the sum of marks for immediate children
