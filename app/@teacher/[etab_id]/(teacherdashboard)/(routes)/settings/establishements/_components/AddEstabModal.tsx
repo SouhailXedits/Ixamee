@@ -1,113 +1,115 @@
 'use client';
-import { Button } from '@/components/ui/button';
+import { Button, Label, Input } from '@/components/ui';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import Image from 'next/image';
-import { useState } from 'react';
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/dialog';
+import { Image } from 'next/image';
 import { useCreateEstab } from '../hooks/useCreateEstab';
+import { useState } from 'react';
 
-interface AjouterUneClasse {
+interface AddEstabProps {
   children: React.ReactNode;
 }
-export const AddEstab = ({ children }: AjouterUneClasse) => {
-  const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-  // const [file, setFile] = useState<File | null>(null);
-  // const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+
+export const AddEstab = ({ children }: AddEstabProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
-  const { createEstablishement } = useCreateEstab();
+  const { createEstablishment } = useCreateEstab();
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const selectedFile = e.target.files[0];
+  const handleCreateEstab = async () => {
+    if (name.trim() === '') return;
+    await createEstablishment(name);
+    setName('');
+    setIsOpen(false);
+  };
 
-  //     if (selectedFile.type.startsWith('image/') && selectedFile.size <= 2 * 1024 * 1024) {
-  //       setFile(selectedFile);
-  //       const fileUrl = URL.createObjectURL(selectedFile);
-  //       setSelectedFileUrl(fileUrl);
-  //     }
-  //   }
-  // };
-  async function handleCreateEstab() {
-    createEstablishement(name);
-    //setIsFirstModalOpen(!isFirstModalOpen)
-  }
-
-  function returnToCreate() {
-    setIsFirstModalOpen(!isFirstModalOpen);
-  }
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className={!isFirstModalOpen ? 'sm:max-w-[518px]' : 'sm:max-w-[400px]'}>
+    <Dialog open={isOpen} onOpenChange={toggleModal}>
+      <DialogContent className="sm:max-w-[518px]">
         <DialogHeader>
-          <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Ajouter une établissement
+          <DialogTitle className="text-[#1B8392] text-xl font-medium">
+            Ajouter un établissement
           </DialogTitle>
         </DialogHeader>
 
-        {!isFirstModalOpen ? (
-          <div className="flex flex-col gap-6 placeholder:text-[#727272]">
-            <div className="flex flex-col gap-2">
-              <Label className="text-[#959595]">
-                Nom : <span className="text-red">*</span>
-              </Label>
-              <Input
-                type="text"
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Entrer le nom de l'établissement"
-                className="placeholder:text-[#727272]"
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-5">
-            <Image
-              src={'/etudiantajouteravecsucces.svg'}
-              alt="add student done"
-              width={150}
-              height={150}
-              className=""
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <Label className="text-[#959595]">
+              Nom : <span className="text-red">*</span>
+            </Label>
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Entrer le nom de l'établissement"
+              className="placeholder:text-[#727272]"
             />
-            <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
-              <Image src={'/establishement-green.svg'} alt="user" width={15} height={15} />
-              Établissement ajouté avec succès.
-            </div>
           </div>
-        )}
+        </div>
 
         <DialogFooter>
           <DialogClose>
             <Button
-              onClick={() => {
-                isFirstModalOpen ? returnToCreate() : handleCreateEstab();
-              }}
+              onClick={handleCreateEstab}
               type="submit"
-              className="w-full bg-[#1B8392] hover:opacity-80 "
+              className="w-full bg-[#1B8392] hover:opacity-80"
+              disabled={name.trim() === ''}
             >
-              {isFirstModalOpen ? 'Ajouter une autre établissement' : 'Ajouter'}
+              {name.trim() === '' ? 'Veuillez entrer un nom' : 'Ajouter'}
             </Button>
           </DialogClose>
         </DialogFooter>
+
+        {name.trim() !== '' && (
+          <DialogContent className="sm:max-w-[400px] mt-5">
+            <DialogHeader>
+              <DialogTitle className="text-[#1B8392] text-xl font-medium">
+                Établissement ajouté
+              </DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <div className="flex flex-col items-center justify-center gap-5">
+                <Image
+                  src={'/etudiantajouteravecsucces.svg'}
+                  alt="add student done"
+                  width={150}
+                  height={150}
+                  className=""
+                />
+                <div className="flex bg-[#E1FDEE] text-[#12B76A] items-center gap-4 p-2 pl-10 pr-10 rounded-lg ">
+                  <Image
+                    src={'/establishement-green.svg'}
+                    alt="user"
+                    width={15}
+                    height={15}
+                  />
+                  Établissement ajouté avec succès.
+                </div>
+              </div>
+            </DialogDescription>
+            <DialogFooter>
+              <DialogClose>
+                <Button
+                  onClick={toggleModal}
+                  type="submit"
+                  className="w-full bg-[#1B8392] hover:opacity-80"
+                >
+                  Ajouter une autre établissement
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        )}
       </DialogContent>
     </Dialog>
   );
