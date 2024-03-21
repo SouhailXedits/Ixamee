@@ -1,7 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,7 +14,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
-
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
@@ -27,20 +25,42 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logout } from '@/actions/auth/logout';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { getMe } from '@/actions/examens';
 
-const NavbarProfile = () => {
+type NavbarProfileProps = {
+  etab_id: string;
+};
+
+const NavbarProfile = ({ etab_id }: NavbarProfileProps) => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
-  // const user = queryClient.getQueryData(['user']) as any;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { data: user, isPending: estabPending } = useQuery<any>({
+  const {
+    data: user,
+    isLoading,
+    isError,
+    error,
+  }: UseQueryResult<any, Error> = useQuery<any, Error>({
     queryKey: ['user'],
     queryFn: async () => await getMe(),
+    onError: (error) => console.error(error),
   });
+
+  const handleLogout = useCallback(async () => {
+    await logout();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
 
   if (!user) {
     return null;
@@ -80,52 +100,33 @@ const NavbarProfile = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {/* <DropdownMenuItem> */}
-          {/* <ModifierUnEtudiant> */}
-          {/* <Image
-                  src="/eyesicon.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="cursor-pointer "
-                /> */}
-          {/* <p className="rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-accent ">
-              Modifier
-            </p> */}
-          {/* <DropdownMenuItem>Modifier</DropdownMenuItem> */}
-          {/* </ModifierUnEtudiant> */}
-          <DropdownMenuItem
-            onClick={() => {
-              if (user.role === 'TEACHER' || user.role === 'ADMIN') {
+          {user.role === 'TEACHER' || user.role === 'ADMIN' ? (
+            <DropdownMenuItem
+              onClick={() => {
                 router.push(`/${params.etab_id}/teacher-profile`);
-              } else {
+              }}
+              className="cursor-pointer "
+            >
+              Mon profil
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem
+              onClick={() => {
                 router.push(`/${params.etab_id}/student-profile`);
-              }
-            }}
-            className="cursor-pointer "
-          >
-            Mon profil
-          </DropdownMenuItem>
+              }}
+              className="cursor-pointer "
+            >
+              Mon profil
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
-            onClick={async () => {
-              await logout();
-            }}
+            onClick={handleLogout}
             className="cursor-pointer "
           >
             Se déconnecter
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      {/* <div>
-        <Image
-          alt="arrowDOwn"
-          src="/arrowdown.svg"
-          width={14}
-          height={14}
-          className="cursor-pointer "
-        />
-      </div> */}
     </div>
   );
 };
