@@ -1,21 +1,21 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutationResult, UseQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { createEstablishement as createEstablishementApi } from '@/actions/establishements';
+import { CreateEstablishmentData } from '@/types/establishment';
+import { createEstablishment as createEstablishmentApi } from '@/actions/establishments';
 
-export function useCreateEstab() {
+export function useCreateEstablishment(): UseMutationResult<void, Error, CreateEstablishmentData> {
   const queryClient = useQueryClient();
 
-  const { mutate: createEstablishement, isPending } = useMutation({
-    mutationFn: (name: string) => createEstablishementApi(name),
+  return useMutation({
+    mutationFn: (name: string) => createEstablishmentApi(name),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['estabs'] });
-      toast.success('Établissement creé avec succeé ! ');
+      queryClient.invalidateQueries({ queryKey: ['establishments'] });
+      toast.success('Établissement créé avec succès !');
     },
-    onError: (err) => {
-      toast.error('There was an error creating the esatblishement');
+    onError: (error) => {
+      toast.error('Une erreur est survenue lors de la création de l\'établissement');
+      console.error(error);
     },
     retry: false,
   });
-
-  return { createEstablishement, isPending };
 }
