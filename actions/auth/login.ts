@@ -7,25 +7,33 @@ import { AuthError } from 'next-auth';
 import { getUserByEmail, getUserEstablishmentByUserId } from '@/data/user';
 import { sendVerificationEmail } from '@/lib/mail';
 
-export const login = async (values: z.infer<typeof LoginSchema>, code: number) => {
+export type LoginValues = z.infer<typeof LoginSchema>;
+
+export async function login(values: LoginValues, code: number): Promise<{ error?: string; success?: string; role?: string; password?: string; rememberMe?: boolean }> {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success)
     return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
 
-  const { email, password, rememberMe } = validatedFields?.data;
+  const { email, password, rememberMe } = validatedFields.data;
 
-  const existingUser = await getUserByEmail(email);
-  const userEstablishment = existingUser?.id
-    ? await getUserEstablishmentByUserId(existingUser?.id)
-    : [];
+  let existingUser;
+  try {
+    existingUser = await getUserByEmail(email);
+  } catch (err) {
+    return { error: 'Une erreur est survenue lors de la vérification de l\'adresse e-mail. Veuillez réessayer.' };
+  }
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
   }
 
   if (!existingUser.emailVerified) {
-    await sendVerificationEmail(existingUser.email, code);
+    try {
+      await sendVerificationEmail(existingUser.email, code);
+    } catch (err) {
+      return { error: 'Une erreur est survenue lors de l\'envoi de l\'e-mail de vérification. Veuillez réessayer.' };
+    }
 
     return {
       success: 'Un e-mail a été envoyé ! Veuillez vérifier votre compte.',
@@ -34,28 +42,23 @@ export const login = async (values: z.infer<typeof LoginSchema>, code: number) =
       rememberMe,
     };
   }
+
+  let userEstablishment;
+  try {
+    if (existingUser.id) {
+      userEstablishment = await getUserEstablishmentByUserId(existingUser.id);
+    } else {
+      userEstablishment = [];
+    }
+  } catch (err) {
+    return { error: 'Une erreur est survenue lors de la récupération de l\'établissement de l\'utilisateur. Veuillez réessayer.' };
+  }
+
   if (!userEstablishment.length && existingUser.role === 'TEACHER') {
     return { success: 'Vous étes presque arrivé ! complete votre inscription' };
   }
 
   try {
-    await signIn('credentials', {
+    const signInResult = await signIn('credentials', {
       email,
-      password,
-      rememberMe,
-      redirectTo: `/${userEstablishment[0].id}`,
-    }).then(() => {
-      return { success: 'Bienvenue' };
-    });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return { error: 'Adresse e-mail ou mot de passe incorrect. Veuillez réessayer.' };
-        default:
-          return { error: "Quelque chose s'est mal passé" };
-      }
-    }
-    throw error;
-  }
-};
+      password
