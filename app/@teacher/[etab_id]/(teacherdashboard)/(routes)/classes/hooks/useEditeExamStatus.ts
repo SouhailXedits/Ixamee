@@ -1,24 +1,30 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutationResult, UseQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { editeExamStatus as editeExamStatusApi } from '@/actions/examens';
+import { editExamStatus as editExamStatusApi } from '@/actions/examens';
 
-interface CreateExamCorrectionParams {
-  exam_id: any;
-  user_id: any;
+type CreateExamCorrectionParams = {
+  exam_id: string;
+  user_id: string;
   status: 'notClassified' | 'absent';
-}
+};
 
-export function useEditeExamStatus() {
-  const queryClient = useQueryClient();
-  const { mutate: editeStatus, isPending } = useMutation({
-    mutationFn: ({ exam_id, user_id, status }: CreateExamCorrectionParams) =>
-      editeExamStatusApi({ exam_id, user_id, status }),
+type UseEditeExamStatusResult = {
+  editeStatus: (params: CreateExamCorrectionParams) => Promise<void>;
+  isPending: boolean;
+};
+
+export function useEditeExamStatus(
+  queryClient: UseQueryClient
+): UseEditeExamStatusResult {
+  const { mutate: editeStatus, isPending } = useMutation<void, Error, CreateExamCorrectionParams>({
+    mutationFn: ({ exam_id, user_id, status }) => editExamStatusApi({ exam_id, user_id, status }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userCorrection'] });
-      toast.success("Correction de l'examen ajoutée avec succès.");
+      toast.success('Correction de l\'examen ajoutée avec succès.');
     },
     onError: (err) => {
-      toast.error("Il y a eu une erreur lors de la création de la correction de l'examen.");
+      toast.error('Il y a eu une erreur lors de la création de la correction de l\'examen.');
+      console.error(err);
     },
     retry: false,
   });
