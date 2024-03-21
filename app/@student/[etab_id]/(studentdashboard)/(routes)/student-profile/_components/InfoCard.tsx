@@ -1,8 +1,27 @@
 import React from 'react';
 import Image from 'next/image';
 
+type User = {
+  name: string;
+  email: string;
+  image?: string;
+};
 
-export default function InfoCard({ user, userEstablishment, classe }: any) {
+type Establishment = {
+  name: string;
+};
+
+type Classe = {
+  name: string;
+};
+
+type Props = {
+  user: User;
+  userEstablishment?: Establishment[];
+  classe?: Classe[];
+};
+
+export default function InfoCard({ user, userEstablishment, classe }: Props) {
   const { name, email, image } = user;
 
   return (
@@ -11,8 +30,8 @@ export default function InfoCard({ user, userEstablishment, classe }: any) {
         <div className="flex items-center gap-5 rounded-full">
           <div className="flex w-[100px] h-[100px] rounded-full ">
             <Image
-              src={image || '/defaultUserAvatr.svg'}
-              alt="uplodImage"
+              src={image || '/defaultUserAvatar.svg'}
+              alt="uploadImage"
               width={100}
               height={100}
               className="rounded-full cursor-pointer hover:opacity-75 object-cover"
@@ -20,11 +39,11 @@ export default function InfoCard({ user, userEstablishment, classe }: any) {
           </div>
         </div>
       </div>
-      <div className="text-[#1B8392] text-lg">Informations personnelles</div>
+      <div className="text-[#1B8392] text-lg">Personal Information</div>
       <div className="flex justify-between p-1 rounded-lg border-l-[4px] border-[#99C6D3] items-center ">
         <div className="w-full">
           <p className="text-[#727272] pl-3">
-            Nom et prénom <br />
+            Name <br />
             <span className="text-[#727272] font-light">{name}</span>
           </p>
         </div>
@@ -33,7 +52,7 @@ export default function InfoCard({ user, userEstablishment, classe }: any) {
       <div className="flex justify-between p-1 rounded-lg border-l-[4px] border-[#99C6D3] items-center ">
         <div className="w-full">
           <p className="text-[#727272] pl-3">
-            E-mail <br />
+            Email <br />
             <span className="text-[#727272] font-light">{email}</span>
           </p>
         </div>
@@ -42,11 +61,13 @@ export default function InfoCard({ user, userEstablishment, classe }: any) {
       <div className="flex justify-between p-1 rounded-lg border-l-[4px] border-[#99C6D3] items-center ">
         <div className="w-full">
           <p className="text-[#727272] pl-3">
-            Établissement <br />
+            Establishment <br />
             <span className="text-[#727272] font-light">
               {userEstablishment && userEstablishment.length
-                ? userEstablishment.map((estab: any) => estab?.name)
-                : 'Votre professeur ne choisi pas la classe'}
+                ? userEstablishment.map((estab: Establishment) => (
+                    <span key={estab.name}>{estab.name}</span>
+                  ))
+                : 'Your teacher has not chosen an establishment'}
             </span>
           </p>
         </div>
@@ -54,15 +75,7 @@ export default function InfoCard({ user, userEstablishment, classe }: any) {
       <div className="flex justify-between p-1 rounded-lg border-l-[4px] border-[#99C6D3] items-center ">
         <div className="w-full">
           <p className="text-[#727272] pl-3">
-            Classe (s) <br />
+            Classes <br />
             <span className="text-[#727272] font-light">
               {classe && classe.length
-                ? classe.map((classe: any) => classe?.name)
-                : 'Contactez votre professeur pour vous invitez à une classe'}
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
+                ? classe.map((classe: Classe) => 
