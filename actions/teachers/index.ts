@@ -3,29 +3,26 @@
 import { db } from '@/lib/db';
 import { SubjectInputProps } from '@/types/subjects/subjectTypes';
 
-// export const getAllTeachersByPage = async (page = 1, pageSize = 10) => {
-//   try {
-//     const skip = (page - 1) * pageSize;
-//
-//     const estabs = await db.subject.findMany({
-//       skip,
-//       take: pageSize,
-//     });
-//     const totalCount = await db.subject.count();
-//
+export type User = {
+  id: string;
+  role: 'ADMIN' | 'TEACHER';
+  name?: string;
+  image?: string;
+  emailVerified?: Date;
+  email: string;
+  user_establishment?: {
+    establishment: {
+      name: string;
+    };
+  };
+  subjects?: {
+    subject: {
+      name: string;
+    };
+  }[];
+};
 
-//
-
-//     return { data: { estabs, totalCount }, error: undefined };
-//   } catch (error: any) {
-//     return {
-//       data: undefined as any,
-//       error: 'Failed to get subjects.',
-//     };
-//   }
-// };
-
-export const getUserIdByEmail = async (email: string) => {
+export const getUserIdByEmail = async (email: string): Promise<User | null> => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -34,14 +31,36 @@ export const getUserIdByEmail = async (email: string) => {
       select: {
         id: true,
         role: true,
+        name: true,
+        image: true,
+        emailVerified: true,
+        user_establishment: {
+          select: {
+            establishment: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        subjects: {
+          select: {
+            subject: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
     return user;
-  } catch {
+  } catch (error) {
     return null;
   }
 };
-export const getTeacherName = async (subjectId: number, classeId: number) => {
+
+export const getTeacherName = async (subjectId: number, classeId: number): Promise<User | null> => {
   try {
     const user = await db.user.findFirst({
       where: {
@@ -57,16 +76,17 @@ export const getTeacherName = async (subjectId: number, classeId: number) => {
         },
       },
       select: {
+        id: true,
         name: true,
       },
     });
     return user;
-  } catch {
+  } catch (error) {
     return null;
   }
 };
 
-export const getAllAdminTeachers = async (name: string) => {
+export const getAllAdminTeachers = async (name: string): Promise<{ data: User[]; error: string | null }> => {
   try {
     const teachers = await db.user.findMany({
       where: {
@@ -83,39 +103,41 @@ export const getAllAdminTeachers = async (name: string) => {
         name: true,
         image: true,
         emailVerified: true,
-        user_establishment: {},
-        subjects: {},
+        user_establishment: {
+          select: {
+            establishment: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        subjects: {
+          select: {
+            subject: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      distinct: ['id'],
+      orderBy: {
+        name: 'asc',
       },
     });
 
-    return { data: teachers, error: undefined };
+    return { data: teachers, error: null };
   } catch (error: any) {
     return {
       data: undefined as any,
-      error: 'Failed to get subjects.',
+      error: `Failed to get teachers: ${error.message}`,
     };
   }
 };
 
-// export const editSubject = async (id: number, data: SubjectInputProps) => {
-//   try {
-//
-//     await db.subject.update({
-//       where: {
-//         id: id,
-//       },
-//       data: data
-//     });
-//
-//   } catch (error: any) {
-//
-//     return {
-//       error: 'Failed to edit subject.',
-//     };
-//   }
-// };
-
-export const updateUserToAdmin = async (id: string) => {
+export const updateUserToAdmin = async (id: string): Promise<{ error: string | null }> => {
   try {
     await db.user.update({
       where: {
@@ -127,24 +149,18 @@ export const updateUserToAdmin = async (id: string) => {
     });
   } catch (error: any) {
     return {
-      error: 'Failed to update user.',
+      error: `Failed to update user: ${error.message}`,
     };
   }
+
+  return { error: null };
 };
 
-export const updateAdminToUser = async (id: string) => {
+export const updateAdminToUser = async (id: string): Promise<{ error: string | null }> => {
   try {
     await db.user.update({
       where: {
         id: id,
       },
       data: {
-        role: 'TEACHER',
-      },
-    });
-  } catch (error: any) {
-    return {
-      error: 'Failed to update user.',
-    };
-  }
-};
+        role:
