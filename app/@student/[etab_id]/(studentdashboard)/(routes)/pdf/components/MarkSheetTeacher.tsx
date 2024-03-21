@@ -3,48 +3,49 @@ import data from './fakeMarkSheetsData';
 import StudentRow from './StudentRow';
 import PdfHeader from '@/components/shared-components/PdfHeader';
 
-export const MarkSheetPdfClass = () => {
-  return (
-    <div>
-      <PdfHeader
-        meta={{ estab: 'Lycée Privé Élite Nabeul', heading: 'Bulletin de notes', session: '2023-2024', term : {
-          type: 'Trimester', 
-          number: 2
-        }, classe: 'Bac math 2', studentsNum: 20 }}
-        type="MSTeach"
-      />
-      <div className="flex justify-center">
-        <table className=" text-center w-[700px] border border-black/50 ">
-          <thead className="text-white">
-            <td rowSpan={2} className="bg-[#99C6D3] p-1">
-              Etudiant
-            </td>
-            <th className="border border-black/50 bg-[#99C6D3]" colSpan={2}>
-              DC 1
-            </th>
-            <th className="border border-black/50 bg-[#99C6D3]" colSpan={2}>
-              DC 2
-            </th>
-            <th className="border bg-[#99C6D3] border-black/50" colSpan={2}>
-              DS 1
-            </th>
-          </thead>
-          <tbody>
-            <tr className=" text-[#1B8392]">
-              <td className="bg-[#99C6D3]"></td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">rang</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50">note</td>
-              <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td>
-            </tr>
-            {data.map((student :any, i :number) => (
-              <StudentRow data={student} key={i} />
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
+interface Student {
+  id: number;
+  name: string;
+  dciNote: number;
+  dciRank: number;
+  dci1Note: number;
+  dci1Rank: number;
+  dci2Note: number;
+  dci2Rank: number;
+  dsi1Note: number;
+  dsi1Rank: number;
+  total: number;
+  average: number;
+  grade: string;
+}
+
+const getStudentRank = (students: Student[], subject: 'dci' | 'dci1' | 'dci2' | 'dsi1', score: number) => {
+  return students.filter(student => student[`${subject}Note`] <= score).length;
+}
+
+const getTotal = (students: Student[]): number => {
+  return students.reduce((total, student) => total + student.total, 0);
+}
+
+const getAverage = (students: Student[]): number => {
+  return getTotal(students) / students.length;
+}
+
+const getGrade = (average: number): string => {
+  if (average >= 90) return 'A';
+  if (average >= 80) return 'B';
+  if (average >= 70) return 'C';
+  if (average >= 60) return 'D';
+  return 'F';
+}
+
+const MarkSheetPdfClass: React.FC = () => {
+  const students: Student[] = data.map((student: any) => ({
+    ...student,
+    dciRank: getStudentRank(data, 'dci', student.dciNote),
+    dci1Rank: getStudentRank(data, 'dci1', student.dci1Note),
+    dci2Rank: getStudentRank(data, 'dci2', student.dci2Note),
+    dsi1Rank: getStudentRank(data, 'dsi1', student.dsi1Note),
+    total: student.dciNote + student.dci1Note + student.dci2Note + student.dsi1Note,
+    average: (student.dciNote + student.dci1Note + student.dci2Note + student.dsi1Note) / 4,
+    grade: getGrade((student.dciNote + student.dci
