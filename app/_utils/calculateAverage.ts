@@ -1,19 +1,34 @@
-export function calculateAverageMark(data: any) {
+import { Exam } from './exam.type'; // assuming this type definition exists
+
+interface TermExams {
+  id?: string;
+  exam_id: string;
+  name: string;
+  marksObtained: number;
+  coefficient: number;
+  totalScore: number;
+  overTwnetyMark: number;
+  range: number;
+}
+
+interface GroupedExams {
+  [key: string]: TermExams[];
+}
+
+export function calculateAverageMark(data: TermExams[]): string {
   let totalMarks = 0;
   let totalCoefficients = 0;
 
-  data.forEach((trimestre: any) => {
-    trimestre.exams.forEach((exam: any) => {
-      totalMarks += exam.overTwnetyMark * exam.coefficient;
-      totalCoefficients += exam.coefficient;
-    });
+  data.forEach((exam) => {
+    totalMarks += exam.marksObtained * exam.coefficient;
+    totalCoefficients += exam.coefficient;
   });
 
-  return totalCoefficients !== 0 ? (totalMarks / totalCoefficients).toFixed(2) : 0;
+  return totalCoefficients !== 0 ? totalMarks / totalCoefficients : 0;
 }
 
-export function calculateOverallAverage(data: any) {
-  const groupedExams = data.reduce((result: any, exam: any) => {
+export function calculateOverallAverage(data: Exam[]): string {
+  const groupedExams: GroupedExams = data.reduce((result, exam) => {
     const term = exam.exam?.term;
     if (!result[term]) {
       result[term] = [];
@@ -22,7 +37,6 @@ export function calculateOverallAverage(data: any) {
       id: exam?.id,
       exam_id: exam.exam?.id,
       name: exam.exam?.name,
-      // date: exam.exam?.create_at.toISOString().split('T')[0],
       marksObtained: exam.mark_obtained,
       coefficient: exam.exam?.coefficient,
       totalScore: exam.exam?.total_mark,
@@ -41,11 +55,10 @@ export function calculateOverallAverage(data: any) {
     : ['semestre_1', 'semestre_2'];
 
   const trimesters = terms.map((term) => ({
-    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
-    exams: groupedExams[term] || [], // Check and add empty array if term has no exams
+    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+    exams: groupedExams[term] || [],
   }));
 
-  const averageMark = calculateAverageMark(trimesters);
+  const averageMark = calculateAverageMark(trimesters.flatMap(({ exams }) => exams));
 
-  return averageMark;
-}
+ 
