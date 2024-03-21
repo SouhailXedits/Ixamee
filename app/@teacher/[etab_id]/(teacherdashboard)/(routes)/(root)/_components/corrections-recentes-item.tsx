@@ -9,10 +9,24 @@ import BulletinsStudentList from './bulletins-student-list';
 import Rien from '@/app/@student/[etab_id]/(studentdashboard)/(routes)/(root)/_components/Rien';
 import { AddExameModal } from '@/components/modals/addExamesModal';
 
-const CorrectionsRecentes = ({ data, etabId }: any) => {
+type CorrectionsRecentesProps = {
+  data?: any;
+  etabId: string;
+  isLoading: boolean;
+};
+
+const CorrectionsRecentes = ({ data, etabId, isLoading }: CorrectionsRecentesProps) => {
   return (
     <>
-      {!data ? (
+      {isLoading ? (
+        <div className=" flex flex-col w-full border h-full rounded-xl items-center justify-center p-10">
+          <Rien
+            image="/dashboard/bag.svg"
+            className="flex flex-col gap-6 justify-center"
+            message="Chargement des examens..."
+          />
+        </div>
+      ) : !data ? (
         <div className=" flex flex-col w-full border h-full rounded-xl items-center justify-center p-10">
           <Rien
             image="/dashboard/bag.svg"
@@ -29,25 +43,4 @@ const CorrectionsRecentes = ({ data, etabId }: any) => {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-end gap-3">
-            {/* Devoir */}
-            <Select>
-              <SelectTrigger className=" w-1/4 rounded-xl  text-11">
-                <SelectValue className="text-sm" placeholder="les plus récents" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">les plus récents</SelectItem>
-                <SelectItem value="light">les plus elevée</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="w-full border h-[300px] rounded-xl overflow-auto">
-            <BulletinsStudentList />
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
-
-export default CorrectionsRecentes;
+          <div className="flex items-center justify-end gap-
