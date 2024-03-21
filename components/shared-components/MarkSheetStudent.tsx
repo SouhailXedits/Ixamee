@@ -1,12 +1,66 @@
 import React from 'react';
-// import StudentRow from './StudentRow';
 import PdfHeader from '@/components/shared-components/PdfHeader';
 import { calculateAverageMark } from '@/app/_utils/calculateAverage';
 
-export const MarkSheetStudent = ({ data, meta }: any) => {
-  // const data = {
-  //   terms = [{trimester1: [exams= {}}]
-  // }
+type Term = {
+  name: string;
+  exams: Array<{
+    exam_id: string;
+    name: string;
+    coefficient: number;
+    marksObtained: number;
+    totalScore: number;
+    range: number;
+  }>;
+};
+
+type Meta = {
+  estab: string;
+  heading: string;
+  session: string;
+  term: {
+    type: string;
+    number: number;
+  };
+  subject: string;
+  classe: string;
+  fullName: string;
+  teacherName: string;
+  range: number;
+  average: number;
+};
+
+type Props = {
+  data: Array<Term>;
+  meta: Meta;
+};
+
+export const MarkSheetStudent = ({ data, meta }: Props) => {
+  const calculateAverageMark = (terms: Array<Term>) => {
+    const totalCoefficient = terms.reduce((acc, term) => {
+      return acc + term.exams.reduce((acc, exam) => acc + exam.coefficient, 0);
+    }, 0);
+
+    const totalObtainedMarks = terms.reduce((acc, term) => {
+      return acc + term.exams.reduce((acc, exam) => acc + exam.marksObtained, 0);
+    }, 0);
+
+    const totalPossibleMarks = terms.reduce((acc, term) => {
+      return acc + term.exams.reduce((acc, exam) => acc + exam.totalScore, 0);
+    }, 0);
+
+    return (totalObtainedMarks / totalPossibleMarks) * totalCoefficient;
+  };
+
+  const getRangeColor = (range: number) => {
+    if (range <= 3) {
+      return 'bg-red-500';
+    } else if (range <= 6) {
+      return 'bg-orange-500';
+    } else {
+      return 'bg-green-500';
+    }
+  };
 
   return (
     <div>
@@ -16,28 +70,12 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
           heading: 'Bulletin de notes',
           session: new Date().getFullYear() + '-' + (new Date().getFullYear() + 1),
         }}
-        // meta={{
-        //   estab: 'Lycée Privé Élite Nabeul',
-        //   heading: 'Bulletin de notes',
-        //   session: new Date().getFullYear() + '-' + (new Date().getFullYear() + 1),
-        //   // term: {
-        //   //   type: 'Trimester',
-        //   //   number: 2,
-        //   // },
-        //   subject: "",
-        //   classe: 'Bac math 2',
-        //   fullName: 'souhail brahmi',
-        //   teacherName: 'firas latrach',
-        //   range: 1,
-        //   average: 15.57,
-        // }}
         type="MSStudent"
       />
-      {/* {data.terms.map(term => ())} */}
       <div className="flex justify-center">
         <div className="flex flex-col gap-10 ">
-          {data.map((term: any) => (
-            <div className="flex flex-col gap-5 " key={term}>
+          {data.map((term: Term, index: number) => (
+            <div className="flex flex-col gap-5 " key={index}>
               <h2>{term.name}</h2>
 
               <table className=" text-center w-[700px] border border-black/50 ">
@@ -50,34 +88,13 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                 </thead>
                 <tbody>
                   {term.exams?.map((exam: any) => (
-                    <tr className="" key={exam.exam_id}>
-                      {/* <td className="bg-[#99C6D3]"></td> */}
+                    <tr className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} key={exam.exam_id}>
                       <td className="pb-4 border border-black/50">{exam.name}</td>
                       <td className="pb-4 border border-black/50">{exam.coefficient}</td>
                       <td className="pb-4 border border-black/50">
                         {exam.marksObtained} / {exam.totalScore}
                       </td>
-                      <td className="pb-4 border border-black/50">{exam.range}</td>
-                      <td className="pb-4 border border-black/50">--</td>
-                      {/* <td className="border bg-[#99C6D3]/40 border-black/50 h-8">rang</td> */}
-                    </tr>
-                  ))}
-                  <tr className=" bg-6/50">
-                    <td className="pb-4" colSpan={5}>
-                      Moyenne semestrielle : {calculateAverageMark([term]) || '--'}
-                    </td>
-                    {/* <td colSpan={3}>-</td> */}
-                  </tr>
-
-                  {/* {data.map((student :any, i :number) => (
-              <StudentRow data={student} key={i} />
-            ))} */}
-                </tbody>
-              </table>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+                      <td className={`pb-4 border border-black/50 ${getRangeColor(exam.range)}`}>
+                        {exam.range}
+                      </td>
+                      <td className="pb-4 border
