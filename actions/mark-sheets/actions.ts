@@ -2,9 +2,38 @@
 
 import { db } from "@/lib/db";
 
+type Filters = {
+  term: string;
+  classe_id: number | undefined;
+  subject_id: number | undefined;
+}
 
-export const getMarkSheets = async (filters: {term: string, classe_id: number | undefined, subject_id: number | undefined}) => {
-    if(!filters.term || !filters.classe_id) return
+type MarkSheet = {
+  id: number;
+  mark_obtained: number;
+  exam: {
+    id: number;
+    name: string;
+    total_mark: number;
+    coefficient: number;
+    term: string;
+    create_at: Date;
+  };
+  user: {
+    id: number;
+    name: string;
+    image: string;
+  };
+  rank: number;
+}
+
+type MarkSheetResponse = {
+  data: MarkSheet[] | undefined;
+  error: string | undefined;
+}
+
+export const getMarkSheets = async (filters: Filters): MarkSheetResponse => {
+  if(!filters.term || !filters.classe_id) return { data: undefined, error: 'Missing required filters' };
   try {
     const markSheets = await db.examCorrection.findMany({
       where: {
@@ -47,12 +76,9 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
             image: true,
           },
         },
-
         rank: true,
       },
     });
-
-
 
     return { data: markSheets , error: undefined };
   } catch (error: any) {
@@ -63,26 +89,29 @@ export const getMarkSheets = async (filters: {term: string, classe_id: number | 
   }
 };
 
+type GetMarksheetByUserIdFilters = {
+  classeId: number;
+  userId: string;
+  subject_id: number;
+}
 
+type GetMarksheetByUserIdResponse = MarkSheetResponse;
 
-// getMarksheetByUserId()
-
-export const getMarksheetByUserId = async (classeId: number, userId: string, subject_id: number) => {
-
-  if (!classeId) return;
+export const getMarksheetByUserId = async (filters: GetMarksheetByUserIdFilters): GetMarksheetByUserIdResponse => {
+  if (!filters.classeId) return { data: undefined, error: 'Missing required filter "classeId"' };
   try {
     const markSheets = await db.examCorrection.findMany({
       where: {
         exam: {
           subject: {
-            id: subject_id,
+            id: filters.subject_id,
           },
         },
         user: {
-          id: userId,
+          id: filters.userId,
           classe: {
             some: {
-              id: classeId,
+              id: filters.classeId,
             },
           },
         },
@@ -116,8 +145,6 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
       },
     });
 
-
-
     return { data: markSheets, error: undefined };
   } catch (error: any) {
     return {
@@ -127,33 +154,17 @@ export const getMarksheetByUserId = async (classeId: number, userId: string, sub
   }
 };
 
+type GetCorrectionOfUserFilters = {
+  class_id: string;
+  data: any;
+  exam_id: string;
+}
 
+type GetCorrectionOfUserResponse = {
+  status: string;
+  user_id: number;
+}[] | null;
 
-export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: string) => {
-  if (exam_id === 'undefined') return null;
-  const res = await db.examCorrection.findMany({
-    where: {
-      exam_id: +exam_id,
-      user: {
-        classe: {
-          some: {
-            id: +class_id,
-          },
-        },
-      },
-      user_id: {
-        in: data?.map((el: any) => el.id),
-      },
-    },
-    select: {
-      status: true,
-      user_id: true,
-    },
-  });
-  return res;
-
-  // const res = await db.examCorrection.findMany({
-  //   // relationLoadStrategy: 'join',
-  //   include: {},
-  // });
-};
+export const getCorrectionOfUser = (filters: GetCorrectionOfUserFilters): GetCorrectionOfUserResponse => {
+  @ts-expect-error
+  if (filters.ex
