@@ -18,25 +18,13 @@ export default function RenderSubQuestion({ child, content, setContent }: any) {
       <div>
         {' '}
         {child.children && child.children.length > 0 ? (
-          <Input
-            className="w-[71px] text-black rounded-xl h-[40px] bg-[#D5E9EF] items-center [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield] pb-10  "
-            type="number"
-            step={0.25}
-            min={0}
-            disabled={true}
-            value={handelCalculation(child)}
-          />
+          <span className="w-[71px] text-[#727272] rounded-xl h-[40px] bg-[#D5E9EF] [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]  opacity-50 flex items-center jus-center pl-5">
+            {handelCalculation(child)}
+          </span>
         ) : (
-          <Input
-            className="w-[70px] text-black rounded-xl h-[40px] bg-[#D5E9EF] items-center [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield] pb-10 "
-            type="number"
-            step={0.25}
-            min={0}
-            value={(child?.mark).toFixed(2)}
-            onChange={(e) => {
-              handelUpdate(e);
-            }}
-          />
+          <span className="w-[71px] text-[#727272] rounded-xl h-[40px] bg-[#D5E9EF]  [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]   flex items-center jus-center pl-5">
+            {(child?.mark).toFixed(2)}
+          </span>
         )}
       </div>
     </div>

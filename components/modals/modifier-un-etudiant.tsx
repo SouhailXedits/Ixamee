@@ -174,7 +174,7 @@ export const ModifierUnEtudiant = ({ data, open, setOpen }: ModifierUnEtudiant) 
             </Label>
             <Input
               type="email"
-              placeholder="Entrer l’e-amail de l’étudiant"
+              placeholder="Entrer l’e-mail de l’étudiant"
               value={formatData.email}
               onChange={(e) => handelUpdateSetFormatData('email', e.target.value)}
               className="placeholder:text-[#727272] text-[#727272]"

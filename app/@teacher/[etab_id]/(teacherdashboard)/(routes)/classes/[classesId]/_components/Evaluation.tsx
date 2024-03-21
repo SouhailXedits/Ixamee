@@ -271,7 +271,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
               <td className="p-2  pb-[10px] border border-black/50 bg-[#9DD60026] text-[#4C4C4D]">
                 {/* {result === 0 ? '0%' : ((result / TotalMark) * 100).toFixed(2) + '%'} */}
 
-                {getDetailsOfAllExercice(examCorrection, userCorrections, examContent)}
+                {getDetailsOfAllExercice(examCorrection, userCorrections, obj ,index)}
               </td>
             </tr>
           </>

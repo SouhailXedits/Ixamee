@@ -10,10 +10,10 @@ export function useDeleteExamPlan() {
     mutationFn: (id: number) => deleteExamPlanApi(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
-      toast.success('Établissement supprimé avec succès.');
+      toast.success('Exam planification supprimé avec succès.');
     },
     onError: (err) => {
-      toast.error("Une erreur est survenue lors de la suppression de l'établissement.");
+      toast.error('Une erreur est survenue lors de la suppression de Exam planification.');
     },
     retry: false,
   });

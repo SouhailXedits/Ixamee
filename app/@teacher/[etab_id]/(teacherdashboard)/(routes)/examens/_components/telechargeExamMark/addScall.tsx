@@ -7,6 +7,7 @@ import PdfHeader from './pdfHeader';
 
 export default function AddScall({ exam, examDetails }: any) {
   console.log(examDetails);
+  const copiedData = JSON.parse(JSON.stringify(exam));
 
   const devoirName = examDetails?.name;
   console.log(devoirName);
@@ -16,7 +17,7 @@ export default function AddScall({ exam, examDetails }: any) {
     })
     .join(', ');
   console.log(classeName);
-  const [content, setContent] = useState<any>(exam);
+  const [content, setContent] = useState<any>(copiedData);
 
   return (
     <div className="flex flex-wrap gap-4">
@@ -41,7 +42,7 @@ export default function AddScall({ exam, examDetails }: any) {
             {item.children && (
               <>
                 {/* Render the I) */}
-                <div className="flex flex-col pl-2 gap-[10px] ">
+                <div className="flex flex-col pl-2 gap-[10px] text-black ">
                   {item.children.map((child: any) => (
                     <>
                       <RenderExercice child={child} content={content} setContent={setContent} />

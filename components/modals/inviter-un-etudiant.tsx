@@ -31,9 +31,10 @@ export const InviterUnEtudiant = ({ children, studentEmail }: ArchiveUneClasse) 
             Inviter cet étudiant
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className=" text-neutral-400 text-[15px] font-normal ">
-          Cet élève n&apos;a pas d&apos;adresse e-mail. Ajoutez son e-mail pour pouvoir
-          l&apos;inviter.
+        <DialogDescription className=" text-15 text-[15px] font-normal ">
+          {/* Cet élève n&apos;a pas d&apos;adresse e-mail. Ajoutez son e-mail pour pouvoir
+          l&apos;inviter. */}
+          Êtes-vous sûr de vouloir inviter cet étudiant pour consulter ses résultats?
         </DialogDescription>
 
         <DialogFooter>

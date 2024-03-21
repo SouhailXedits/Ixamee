@@ -27,7 +27,7 @@ const PDFExport = ({ children, pdfName }: any) => {
   return (
     <div>
       <div className="fixed -bottom-[999rem]">
-        {/* <div> */}
+        {/* <div className="h-full overflow-auto"> */}
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>

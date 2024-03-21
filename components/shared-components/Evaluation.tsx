@@ -10,7 +10,10 @@ import {
   getNoteOf,
 } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { calcSumOfMarks } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/[examenId]/_components/sharedFunction';
-import { getDetailsOfAllExercice, getDetailsOfExercice } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/_components/getDetailsOfExam';
+import {
+  getDetailsOfAllExercice,
+  getDetailsOfExercice,
+} from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/_components/getDetailsOfExam';
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
@@ -352,7 +355,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
               <td className="p-2  pb-[10px] border border-black/50 bg-[#9DD60026] text-[#4C4C4D]">
                 {/* {calculateClasseOverallAvg()} */}
                 {/* {result === 0 ? '0%' : ((result / TotalMark) * 100).toFixed(2) + '%'} */}
-                {getDetailsOfAllExercice(examCorrection, userCorrections, examContent)}
+                {getDetailsOfAllExercice(examCorrection, userCorrections, examContent, index)}
               </td>
             </tr>
           </>

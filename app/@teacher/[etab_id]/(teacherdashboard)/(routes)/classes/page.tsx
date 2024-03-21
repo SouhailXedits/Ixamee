@@ -10,7 +10,6 @@ import { useParams } from 'next/navigation';
 import { getMe } from '@/actions/examens';
 import Pagination from '@/components/shared-components/Pagination';
 
-
 export default function Classes() {
   const params = useParams();
   const etab_id = +params.etab_id;
@@ -33,24 +32,21 @@ export default function Classes() {
     retry: true,
   });
 
-  
-  
   const filteredData = data?.data?.filter((classe: any) => {
     const classes = classe.name.toLowerCase();
     return classes.includes(value.toLowerCase());
   });
-  
+
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12; 
+  const pageSize = 12;
 
   const totalPages = Math.ceil(filteredData?.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedData = filteredData?.slice(startIndex, endIndex);
 
-
   return (
-    <main className="flex flex-col gap-6 p-10 h-full">
+    <main className="flex flex-col h-full gap-6 p-10">
       <nav className="flex justify-between w-full max-md:flex-col">
         <div className="flex flex-col gap-4">
           <div className="text-2xl font-semibold text-[#1B8392] ">Classes</div>
@@ -62,13 +58,13 @@ export default function Classes() {
         </div>
 
         <div className="flex gap-3 pt-4 cursor-pointer max-md:flex-wrap h-14">
-          <div className="flex cursor-pointer items-center gap-3 rounded-lg border border-[#99C6D3] max-md:w-full p-2 hover:opacity-80 ">
+          <div className="flex cursor-pointer items-center gap-3 rounded-lg border border-[#1B8392] max-md:w-full p-2 hover:opacity-80 ">
             <Image src="/scoop.svg" alt="icons" width={20} height={20} />
 
             <input
               type="text"
               placeholder="Recherche"
-              className=" text-11 w-24 border-none bg-transparent  text-sm font-semibold  leading-tight placeholder-[#99C6D3] outline-none"
+              className=" text-2 w-24 border-none bg-transparent  text-sm font-semibold  leading-tight placeholder-[#1B8392] outline-none"
               onChange={(e) => setValue(e.target.value)}
               value={value}
             />
@@ -83,7 +79,7 @@ export default function Classes() {
         </div>
       </nav>
 
-      <div className="max-md:pt-10 h-full flex flex-col justify-between gap-6 pb-10">
+      <div className="flex flex-col justify-between h-full gap-6 pb-10 max-md:pt-10">
         <ClasseCardContainer
           data={paginatedData}
           user_id={user?.id}
@@ -91,9 +87,12 @@ export default function Classes() {
           // class_id ={}
           isPending={isPending}
         />
-        <div className=' pb-8'>
-
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+        <div className="pb-8 ">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </main>

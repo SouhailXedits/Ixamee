@@ -46,12 +46,12 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
 export const getAllArchivedClasses = async (id: string, estabId: number, filters?: any) => {
   try {
     const { dateRange } = filters || {};
-    let { text } = filters || undefined;
+    let { text } = filters || {};
 
     const classe = await db.classe.findMany({
       where: {
         name: {
-          startsWith: text.toLowerCase(),
+          contains: text,
         },
         is_archived: true,
         teacher: {
