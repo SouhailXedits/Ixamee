@@ -1,206 +1,170 @@
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
- 
+
 generator client {
   provider = "prisma-client-js"
 }
- 
+
 model User {
   id                 String          @id @default(cuid())
   name               String
-  first_name         String?
-  last_name          String?
+  firstName         String?
+  lastName          String?
   email              String          @unique
   emailVerified      DateTime?
-  password           String? //optional because we want to add singup with Google
-  role               Role? // Consider using an enum for role
-  accounts           Account[] // Many-to-many relationship with Subject
+  password           String?
+  role               Role?
+  accounts           Account[]
   image              String?
-  phone_number       String?
-  classe             Classe[]        @relation("StudentClassToUser")
-  classe_teacher     Classe[]        @relation("ClasseClassTeacherToSubject")
-  subjects           Subject[]       @relation("ClasseTeacherSubjectToSubject")
-  subject_id         Int?
+  phoneNumber        String?
+  classes            Classe[]        @relation(name: "StudentClassToUser")
+  classeTeacher      Classe[]        @relation(name: "ClasseClassTeacherToSubject")
+  subjects           Subject[]       @relation(name: "ClasseTeacherSubjectToSubject")
+  subjectId          Int?
   government         String?
-  user_establishment Establishment[] @relation("UserEstablishmentToUser")
-  exams              Exam[]          @relation("ExamToUser")
+  userEstablishments Establishment[] @relation(name: "UserEstablishmentToUser")
+  exams              Exam[]          @relation(name: "ExamToUser")
   term               Term?
   range              Int?
-  invited_at         DateTime?
+  invitedAt          DateTime?
   createdAt          DateTime?       @default(now())
-  ExamCorrection     ExamCorrection[]
-  examPlans          ExamPlans[]     
+  examCorrections    ExamCorrection[]
+  examPlans          ExamPlans[]
+
+  @@index([email], unique: true)
 }
- 
+
 enum Term {
   TRIMESTRE
   SEMESTRE
   LIBRE
 }
- 
+
 enum Role {
   STUDENT
   TEACHER
   ADMIN
 }
- 
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?  @db.Text
   session_state     String?
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
 }
- 
+
 model VerificationToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
- 
+
   @@unique([email, token])
 }
- 
+
 model PasswordResetToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique
   expires DateTime
- 
+
   @@unique([email, token])
 }
- 
+
 model InvitationToken {
   id            String   @id @default(cuid())
   recieverEmail String
   senderEmail   String
   token         String   @unique
   expires       DateTime
- 
+
   @@unique([recieverEmail, senderEmail, token])
 }
- 
+
 model Establishment {
-  id                 Int      @id @default(autoincrement())
-  name               String
-  user_establishment User[]   @relation("UserEstablishmentToUser")
-  classes            Classe[] @relation("EstablishmentToClasse")
-  exam_plans         ExamPlans[]
+  id          Int      @id @default(autoincrement())
+  name        String
+  userEstablishments User[] @relation(name: "UserEstablishmentToUser")
+  classes     Classe[] @relation(name: "EstablishmentToClasse")
+  examPlans   ExamPlans[]
+
+  @@index([name], unique: true)
 }
-model UserClasseInfos{
-  id            Int @id @default(autoincrement())
-  user_id      String?
-  classe_id    Int?
-  subject_id   Int?
-  average      Float?
-  rankInClasse Int?
+
+model UserClasseInfos {
+  id            Int    @id @default(autoincrement())
+  userId        String?
+  classeId      Int?
+  subjectId     Int?
+  average       Float?
+  rankInClasse  Int?
+
+  @@index([userId, classeId, subjectId], unique: true)
 }
-// Classe Table
+
 model Classe {
   id            Int             @id @default(autoincrement())
   name          String?
-  subject       Subject[]       @relation("ClasseSubjectToSubject")
+  subjects      Subject[]       @relation(name: "ClasseSubjectToSubject")
   range         String?
-  establishment Establishment[] @relation("EstablishmentToClasse")
-  teacher       User[]          @relation("ClasseClassTeacherToSubject")
-  student_class User[]          @relation("StudentClassToUser")
-  is_archived   Boolean?        @default(false)
-  archived_at   DateTime?
-  createdAt          DateTime?       @default(now())
-  exam_classe   Exam[]          @relation("ExamClasseToUser")
-  exam_plans    ExamPlans[]
+  establishment Establishment[] @relation(name: "EstablishmentToClasse")
+  teachers      User[]          @relation(name: "ClasseClassTeacherToSubject")
+  students      User[]          @relation(name: "StudentClassToUser")
+  isArchived    Boolean?        @default(false)
+  archivedAt    DateTime?
+  createdAt     DateTime?       @default(now())
+  examClasses   Exam[]          @relation(name: "ExamClasseToUser")
+  examPlans     ExamPlans[]
+
+  @@index([name], unique: true)
 }
- 
-// Subject Table
+
 model Subject {
   id             Int      @id @default(autoincrement())
   name           String
   coefficient    Float?
   icon           String?
-  teacher        User[]   @relation("ClasseTeacherSubjectToSubject")
+  teachers       User[]   @relation(name: "ClasseTeacherSubjectToSubject")
   exams          Exam[]
-  is_archived    Boolean? @default(false)
-  classe_subject Classe[] @relation("ClasseSubjectToSubject")
-  exam_plans     ExamPlans[]
+  isArchived     Boolean? @default(false)
+  classeSubjects Classe[] @relation(name: "ClasseSubjectToSubject")
+  examPlans      ExamPlans[]
+
+  @@index([name], unique: true)
 }
- 
+
 model Exam {
   id              Int              @id @default(autoincrement())
   name            String
-  total_mark      Float
+  totalMark       Float
   coefficient     Float
-  teacher         User[]           @relation("ExamToUser")
-  teacher_id      String?
-  subject         Subject          @relation(fields: [subject_id], references: [id], onDelete: Cascade, onUpdate: Cascade) // One-to-one relationship with Subject
-  subject_id      Int
+  teachers        User[]           @relation(name: "ExamToUser")
+  teacherId       String?
+  subject         Subject          @relation(name: "ExamToSubject", fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subjectId       Int
   progress        String?          @default("0")
-  term            String?
-  exam_correction ExamCorrection[]
-  is_archived     Boolean?         @default(false)
-  archived_at     DateTime?
-  exam_classess   Classe[]         @relation("ExamClasseToUser")
-  language        Language? // Consider using an enum for style
-  create_at       DateTime?        @default(now())
+  term            Term?
+  examCorrections ExamCorrection[]
+  isArchived      Boolean?         @default(false)
+  archivedAt      DateTime?
+  examClasses     Classe[]         @relation(name: "ExamClasseToUser")
+  language        Language?
+  createdAt       DateTime?        @default(now())
   content         Json?
-}
-enum Language {
-  fr
-  ar
-}
-// ExamCorrection Table
-model ExamCorrection {
-  id            Int   @id @default(autoincrement())
-  exam          Exam? @relation(fields: [exam_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  exam_id       Int
-  mark_obtained Float?
-  user         User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user_id       String?
-  feedback      Json?
-  correction_exam_content Json?
-  status        Status?
-  is_published  Boolean? @default(false)
-  published_at  DateTime?
-  rank          Int?
-}
- 
- 
- 
-enum Status {
-  pending
-  done
-  absent
-  notClassified
-  notCorrected
-}
- 
 
-model ExamPlans {
-  id                  Int             @id @default(autoincrement())
-  name                String?
-  subject             Subject?         @relation(fields: [subject_id], references: [id] )
-  subject_id          Int?
-  establishment       Establishment?         @relation(fields: [estab_id], references: [id] )
-  estab_id            Int?
-  studentVisibility   Boolean?        @default(false)
-  start               DateTime?
-  end                 DateTime?
-  description         String?
-  color               Json?
-  classes             Classe[]     
-  teacher             User            @relation(fields: [teacher_id], references: [id])
-  teacher_id          String
-}
+  @
