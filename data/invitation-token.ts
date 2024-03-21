@@ -1,22 +1,33 @@
 import { db } from '@/lib/db';
-export const getInvitationTokenByToken = async (token: string) => {
-  try {
-    const passwordToken = await db.invitationToken.findUnique({
-      where: { token },
-    });
-    return passwordToken;
-  } catch {
-    return null;
-  }
+
+export const getInvitationTokenBy = {
+  token: async (token: string): Promise<(db.InvitationToken & {
+    user: db.User;
+  }) | null> => {
+    try {
+      return await db.invitationToken.findUnique({
+        where: { token },
+        include: {
+          user: true,
+        },
+      });
+    } catch {
+      return null;
+    }
+  },
+  email: async (recieverEmail: string): Promise<(db.InvitationToken & {
+    user: db.User;
+  }) | null> => {
+    try {
+      return await db.invitationToken.findFirst({
+        where: { recieverEmail },
+        include: {
+          user: true,
+        },
+      });
+    } catch {
+      return null;
+    }
+  },
 };
 
-export const getInvitationTokenByEmail = async (recieverEmail: string) => {
-  try {
-    const passwordToken = await db.invitationToken.findFirst({
-      where: { recieverEmail },
-    });
-    return passwordToken;
-  } catch {
-    return null;
-  }
-};
