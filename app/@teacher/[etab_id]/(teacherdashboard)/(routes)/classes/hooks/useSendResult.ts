@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutationResult, UseQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { sendRankOfUserExam as sendRankOfUserExamBatchApi } from '@/actions/examens';
 
@@ -7,9 +7,10 @@ interface CreateExamCorrectionParams {
   marks: any;
 }
 
-export function useSendExamMark() {
-  const queryClient = useQueryClient();
-  const { mutate: sendExamMark, isPending } = useMutation({
+export function useSendExamMark(
+  queryClient: UseQueryClient
+): UseMutationResult<void, Error, CreateExamCorrectionParams> {
+  return useMutation({
     mutationFn: ({ exam_id, marks }: CreateExamCorrectionParams) =>
       sendRankOfUserExamBatchApi({ exam_id, marks }),
     onSuccess: () => {
@@ -21,6 +22,4 @@ export function useSendExamMark() {
     },
     retry: false,
   });
-
-  return { sendExamMark, isPending };
 }
