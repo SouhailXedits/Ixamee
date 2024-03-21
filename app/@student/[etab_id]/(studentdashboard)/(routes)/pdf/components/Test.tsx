@@ -1,9 +1,9 @@
-function Test() {
+function DisplayName() {
     return (
         <div>
-            soubhail
+            <p>Soubhail</p>
         </div>
     )
 }
 
-export default Test
+export default DisplayName
