@@ -10,11 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import * as z from 'zod';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Select from 'react-select';
-
 import Image from 'next/image';
 import {
   Select as Select2,
@@ -38,9 +36,7 @@ import {
 import { Skeleton } from '../ui/skeleton';
 import { useCreateExam } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/examens/hooks/useCreateExam';
 import { SubjectOutputProps } from '@/types/subjects/subjectTypes';
-interface AjouterUneClasse {
-  children: React.ReactNode;
-}
+
 interface Establishment {
   id: number;
   name: string;
@@ -52,8 +48,8 @@ interface EstablishmentData {
 
 export const AddExameModal = ({ children }: AjouterUneClasse) => {
   const queryClient = useQueryClient();
-  const user: any = queryClient.getQueryData(['user']);
-  const teacherEstab: any = queryClient.getQueryData(['teacherEstab']);
+  const user = queryClient.getQueryData(['user']);
+  const teacherEstab = queryClient.getQueryData(['teacherEstab']);
 
   const user_id = user?.id;
 
@@ -92,43 +88,47 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       .refine((value) => value.value !== 0, {
         message: 'Matière is required',
       }),
-    // totalMarks: z.number().min(1, { message: 'Total Marks is required' }),
-    // coefficient: z.string().min(1, { message: 'Coefficient is required' }),
+    totalMarks: z.number().min(1, { message: 'Total Marks is required' }),
+    coefficient: z.string().min(1, { message: 'Coefficient is required' }),
     style: z.string(),
   });
 
-  const [clickedStyle, setClickedStyle] = useState('fr');
   const [formData, setFormData] = useState({
     establishment: [],
     name: '',
     term: '',
     classes: [],
     subject: '',
-    totalMarks: '',
+    totalMarks: 0,
     coefficient: '',
     style: 'fr',
     user_id: '',
   });
-  console.log(formData);
+
   const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
+
   const handleInputChange = (field: string, value: any) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [field]: value,
     }));
   };
+
   const { data: TeacherClasse, isPending: isPendingTeacherClasse } = useQuery({
     queryKey: ['teacherClasse', formData?.establishment],
     queryFn: async () => await getClasseOfUser(user_id, formData?.establishment),
   });
+
   const { data: Teachersubject, isPending: isPendingSubject } = useQuery({
     queryKey: ['teachersubject', formData?.classes],
     queryFn: async () => await getSubjectOfUser(user_id, formData?.classes),
   });
+
   const { data: Teacherterm, isPending: isPendingTeacherterm } = useQuery({
     queryKey: ['teacherTerm'],
     queryFn: async () => await getTermOfUser(user_id),
   });
+
   const subject = Teachersubject;
   const term = Teacherterm;
   const classe = TeacherClasse;
@@ -139,11 +139,14 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       label: item.name,
     };
   });
+
   const classoption = classe?.map((item: any) => ({
     value: item.id,
     label: item.name,
   }));
-  const { creatExam, isPending } = useCreateExam();
+
+  const { mutate: creatExam, isLoading: isPending } = useCreateExam();
+
   const verfierSchema = () => {
     let ok = false;
     try {
@@ -154,6 +157,7 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
     }
     return ok;
   };
+
   const handleSubmit = async () => {
     try {
       // Validate the form data
@@ -167,330 +171,5 @@ export const AddExameModal = ({ children }: AjouterUneClasse) => {
       setFormErrors(error);
     }
   };
-  const renderFieldError = (fieldName: string) => {
-    if (formErrors) {
-      const fieldError = formErrors?.errors?.find((error) => error.path[0] === fieldName);
 
-      if (fieldError) {
-        return <div className="mt-1 text-sm text-red">{fieldError.message}</div>;
-      }
-    }
-
-    return null;
-  };
-  // const handleEstablishmentChange = (selectedOptions: any) => {
-  //   handleInputChange('establishment', selectedOptions);
-  //   // const { data: TeacherClasse, isPending: isPendingTeacherClasse } = useQuery({
-  //   //   queryKey: ['teacherClasse'],
-  //   //   queryFn: async () => await getClasseOfUser(user_id, formData.establishment),
-  //   // });
-  //
-  //   // queryClient.invalidateQueries({ queryKey: ['teacherClasse'] });
-  // };
-
-  return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="text-[#1B8392] text-xl font-medium ">
-            Ajouter un examen
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-6 placeholder:text-[#727272]">
-          <div className="flex flex-col gap-2">
-            <Label className="text-[#959595]">
-              établissement <span className="text-red">*</span>{' '}
-            </Label>
-
-            <Select
-              isMulti
-              name="estab"
-              options={userEstablishmentoptions}
-              onChange={(selectedOptions) => handleInputChange('establishment', selectedOptions)}
-              placeholder="Sélectionner votre classe"
-              styles={{
-                option: (baseStyles, state) => ({
-                  ...baseStyles,
-                  fontSize: '14px',
-                  borderRadius: 12,
-                }),
-                control: (baseStyles, state) => ({
-                  ...baseStyles,
-                  border: '1/4px solid #727272',
-                  fontSize: '14px',
-                  outline: '#727272',
-                  minWidth: '220px',
-                }),
-              }}
-              theme={(theme) => ({
-                ...theme,
-                borderRadius: 8,
-
-                colors: {
-                  ...theme.colors,
-                  primary: 'none',
-                },
-              })}
-            />
-            {renderFieldError('establishment')}
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label className="text-[#959595]">
-              Nom de l’examen<span className="text-red">*</span>
-            </Label>
-            <Input
-              type="text"
-              name="name"
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              placeholder="Entrer le nom de votre examen"
-              className="placeholder:text-[#727272]"
-            />
-            {renderFieldError('name')}
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label className="text-[#959595]">
-              Trimestre / Semestre <span className="text-red">*</span>
-            </Label>
-
-            {isPendingTeacherterm ? (
-              <Skeleton className="w-full h-[40px]" />
-            ) : (
-              <Select2 onValueChange={(value) => handleInputChange('term', value)}>
-                <SelectTrigger className="w-full placeholder:text-[#727272] text-[#727272]">
-                  <SelectValue placeholder="Sélectionner la trimestre ou semestre" />
-                </SelectTrigger>
-                {term?.term === 'TRIMESTRE' ? (
-                  <SelectContent>
-                    <SelectItem
-                      value="trimestre_1"
-                      onClick={() => handleInputChange('term', 'trimestre_1')}
-                    >
-                      Trimestre 1
-                    </SelectItem>
-                    <SelectItem
-                      value="trimestre_2"
-                      onClick={() => handleInputChange('term', 'trimestre_2')}
-                    >
-                      Trimestre 2
-                    </SelectItem>
-                    <SelectItem
-                      value="trimestre_3"
-                      onClick={() => handleInputChange('term', 'trimestre_3')}
-                    >
-                      Trimestre 3
-                    </SelectItem>
-                  </SelectContent>
-                ) : (
-                  <SelectContent>
-                    <SelectItem
-                      value="semestre_1"
-                      onClick={() => handleInputChange('term', 'semestre_1')}
-                    >
-                      Semestre 1
-                    </SelectItem>
-                    <SelectItem
-                      value="semestre_2"
-                      onClick={() => handleInputChange('term', 'semestre_2')}
-                    >
-                      Semestre 2
-                    </SelectItem>
-                  </SelectContent>
-                )}
-              </Select2>
-            )}
-            {renderFieldError('term')}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div>
-              <Label className="text-[#959595]">
-                Classe(s) <span className="text-red">*</span>
-              </Label>
-              {isPendingTeacherClasse ? (
-                <Skeleton className="w-[220px] h-[40px]" />
-              ) : (
-                <Select
-                  isMulti
-                  options={classoption}
-                  isDisabled={formData.establishment.length == 0}
-                  onChange={(selectedOptions) => handleInputChange('classes', selectedOptions)}
-                  placeholder="Sélectionner votre classe"
-                  styles={{
-                    option: (baseStyles, state) => ({
-                      ...baseStyles,
-                      fontSize: '14px',
-                      borderRadius: 12,
-                    }),
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      border: '1/4px solid #727272',
-                      fontSize: '14px',
-                      outline: '#727272',
-                      minWidth: '220px',
-                    }),
-                  }}
-                  theme={(theme) => ({
-                    ...theme,
-                    borderRadius: 8,
-
-                    colors: {
-                      ...theme.colors,
-                      primary: 'none',
-                    },
-                  })}
-                />
-              )}
-              {renderFieldError('classes')}
-            </div>
-            <div>
-              <Label className="text-[#959595]">
-                Matière <span className="text-red">*</span>
-              </Label>
-              {isPendingSubject ? (
-                <Skeleton className="w-[220px] h-[40px]" />
-              ) : (
-                <Select
-                  isMulti={false}
-                  options={subjectoptions}
-                  isDisabled={formData.classes.length == 0}
-                  placeholder="Sélectionner la matière"
-                  onChange={(selectedOption) => handleInputChange('subject', selectedOption)}
-                  styles={{
-                    option: (baseStyles, state) => ({
-                      ...baseStyles,
-                      fontSize: '14px',
-                      borderRadius: 12,
-                    }),
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      border: '1/4px solid #727272',
-                      fontSize: '14px',
-                      outline: '#727272',
-                      minWidth: '220px',
-                    }),
-                  }}
-                  theme={(theme) => ({
-                    ...theme,
-                    borderRadius: 8,
-
-                    colors: {
-                      ...theme.colors,
-                      primary: 'none',
-                    },
-                  })}
-                />
-              )}
-              {renderFieldError('subject')}
-            </div>
-          </div>
-
-          <div className="flex items-center w-full gap-2">
-            <div className="w-[50%]">
-              <Label className="text-[#959595]">
-                Note totale <span className="text-red">*</span>
-              </Label>
-              <Input
-                type="number"
-                onChange={(e) => {
-                  const value = parseInt(e.target.value, 10); // Parse the input value as an integer
-                  if (value > 0) {
-                    handleInputChange('totalMarks', value); // Call handleInputChange only if value is greater than 0
-                  }
-                }}
-                value={formData.totalMarks}
-                min={1}
-                placeholder="Saisir la note totale"
-                className="placeholder:text-[#727272]"
-              />
-
-              {renderFieldError('totalMarks')}
-            </div>
-            <div className="w-[50%]">
-              <Label className="text-[#959595]">
-                coefficient <span className="text-red">*</span>
-              </Label>
-              <Input
-                type="number"
-                min={1}
-                placeholder="Saisir le coefficient"
-                onChange={(e) =>{
-                
-                
-                
-                  const value = parseInt(e.target.value, 10); // Parse the input value as an integer
-                  if (value > 0) {
-                    
-                    handleInputChange('coefficient', value);
-                  }
-                  }
-                } 
-                  
-                  
-                  
-                value={formData.coefficient}
-                className="placeholder:text-[#727272]"
-              />
-              {renderFieldError('coefficient')}
-            </div>
-          </div>
-          <div>
-            <Label className="text-[#959595]">Style</Label>
-            <div className="flex gap-5">
-              <div
-                className={cn(
-                  'flex items-center  justify-center  gap-9 p-3 border w-[50%]  rounded-xl cursor-pointer ',
-                  formData.style === 'fr' && 'border-[#1B8392] text-[#1B8392] '
-                )}
-                onClick={() => handleInputChange('style', 'fr')}
-              >
-                <Image
-                  src={formData.style === 'fr' ? '/examStyle.svg' : '/examStyleNoClicked.svg'}
-                  alt="examStyle"
-                  width={20}
-                  height={20}
-                />
-                <span className={cn(formData.style != 'fr' && 'text-[#a7a3a3]')}>Français</span>
-              </div>
-              <div
-                className={cn(
-                  'flex items-center  justify-center  gap-9 p-3 border w-[50%]  rounded-xl cursor-pointer',
-                  formData.style === 'ar' && 'border-[#1B8392] text-[#1B8392] '
-                )}
-                onClick={() => handleInputChange('style', 'ar')}
-              >
-                <span className={cn(formData.style === 'fr' && 'text-[#a7a3a3]')}>Arabe</span>
-
-                <Image src={'/arabicStyle.svg'} alt="examStyle" width={20} height={20} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {verfierSchema() ? (
-          <DialogClose>
-            <Button
-              type="submit"
-              className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
-              onClick={handleSubmit}
-            >
-              {' '}
-              Ajouter
-            </Button>
-          </DialogClose>
-        ) : (
-          <Button
-            type="submit"
-            disabled={true}
-            className="w-full bg-[#1B8392] hover:opacity-80 mt-5 "
-            onClick={handleSubmit}
-          >
-            {' '}
-            Ajouter
-          </Button>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-};
+  const renderFieldError = (fieldName: string) =>
