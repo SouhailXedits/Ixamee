@@ -1,29 +1,32 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutationResult, UseQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-hot-toast';
 import { unArchive as unArchiveApi } from '@/actions/archive';
 
-interface paramsProps {
+interface UnarchiveParams {
   id: number;
   table: string;
 }
-export function useUnarchive(table: string) {
+
+export function useUnarchive(table: string): UseMutationResult<void, unknown, UnarchiveParams, unknown> {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  const { mutate: unarchiveField, isPending } = useMutation({
-    mutationFn: (params: paramsProps) => unArchiveApi(params.id, params.table),
+  return useMutation({
+    mutationFn: ({ id, table }: UnarchiveParams) => unArchiveApi(id, table),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`archived_${table}`] });
-      queryClient.invalidateQueries({ queryKey: [`dashArchiveCount`] });
-      toast.success('Restaurer avec succeé.');
-    },
-    onError: (err) => {
+      const archivedQueryKey = [`archived_${table}`];
+      const dashArchiveCountQueryKey = [`dashArchiveCount`];
 
+      queryClient.invalidateQueries(archivedQueryKey);
+      queryClient.invalidateQueries(dashArchiveCountQueryKey);
+
+      toast.success('Restaurer avec succès.');
+    },
+    onError: (error: unknown) => {
       toast.error('Une erreur est survenue lors de la restauration.');
     },
     retry: false,
   });
-
-  return { unarchiveField, isPending };
 }
