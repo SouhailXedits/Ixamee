@@ -1,22 +1,19 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
+import { UseMutationResult, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { deleteEstablishement as deleteEstablishementApi } from '@/actions/establishements';
+import { deleteEstablishment as deleteEstablishmentApi } from '@/actions/establishments';
 
-export function useDeleteEstab() {
+export function useDeleteEstablishment(): UseMutationResult<void, Error, number, unknown> {
   const queryClient = useQueryClient();
 
-  const { mutate: deleteEstablishement, isPending } = useMutation({
-    mutationFn: (id: number) => deleteEstablishementApi(id),
+  return useMutation({
+    mutationFn: (id: number) => deleteEstablishmentApi(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['estabs'] });
+      queryClient.invalidateQueries({ queryKey: ['establishments'] });
       toast.success('Établissement supprimé avec succès.');
     },
-    onError: (err) => {
-      toast.error("Une erreur est survenue lors de la suppression de l'établissement.");
+    onError: (error: Error) => {
+      toast.error(`Une erreur est survenue lors de la suppression de l'établissement: ${error.message}`);
     },
     retry: false,
   });
-
-  return { deleteEstablishement, isPending };
 }
