@@ -36,7 +36,7 @@ const ArchiverCard = ({ data }: { data: itemProps }) => {
         <button
           name="btn"
           onClick={() => {
-            router.push(`/${estabId}/examens/${data.id}`);
+            router.push(`/${estabId}/${isExam ? 'examens' : 'classes'}/${data.id}`);
           }}
         >
           <Image src="/expand-icon.svg" alt="expand icon" height={20} width={20} />

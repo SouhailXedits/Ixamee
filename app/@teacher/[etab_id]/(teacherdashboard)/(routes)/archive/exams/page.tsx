@@ -6,12 +6,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useParams } from 'next/navigation';
 import Pagination from '@/components/shared-components/Pagination';
 import { useState } from 'react';
+import { useSearchQuery } from '@/store/use-search-query';
 
 function ExamsLayout({ filters }: any) {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(['user']);
   const params = useParams();
   const estabId = params.etab_id;
+  const {name} = useSearchQuery()
+  console.log(name)
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
   const {
@@ -19,8 +22,8 @@ function ExamsLayout({ filters }: any) {
     error,
     isPending,
   } = useQuery<any>({
-    queryKey: ['archived_exams', 1],
-    queryFn: async () => await getAllArchivedExams(user.id, +estabId),
+    queryKey: ['archived_exams', estabId, name],
+    queryFn: async () => await getAllArchivedExams(user.id, +estabId, name),
   });
   if (isPending)
     return (

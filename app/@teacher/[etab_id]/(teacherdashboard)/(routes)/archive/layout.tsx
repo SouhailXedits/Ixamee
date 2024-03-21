@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import FiltersModal from './components/FiltersModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchQuery } from '@/store/use-search-query';
 
 const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   const params = useParams();
@@ -13,6 +14,26 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
 
   const [currentTab, setCurrentTab] = useState<string>(currPath);
   const currEtabId = params.etab_id;
+  const [searchTimeout, setSearchTimeout] = useState<any>(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const {setName} = useSearchQuery()
+
+
+  useEffect(() => {
+    setName(searchQuery)
+  }, [searchQuery])
+
+
+
+  const handleSearchChange: any = (e: any) => {
+    const newSearchQuery = e.target.value;
+    clearTimeout(searchTimeout);
+    setSearchTimeout(
+      setTimeout(() => {
+        setSearchQuery(newSearchQuery);
+      }, 500)
+    );
+  };
 
   // const [currentPage, setCurrentPage] = useState(1); // State to track the current page
   //
@@ -45,6 +66,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
             <input
               type="text"
               placeholder="Recherche"
+              onChange={handleSearchChange}
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
             />
           </div>
