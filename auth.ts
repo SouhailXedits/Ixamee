@@ -4,12 +4,7 @@ import { db } from '@/lib/db';
 import authConfig from '@/auth.config';
 import { getUserById } from './data/user';
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
+export const authOptions = {
   pages: {
     signIn: '/login',
     error: '/error',
@@ -48,27 +43,31 @@ export const {
         session.user.role = token.role;
       }
 
-      if (token.role && session.user) {
-        session.user.role = token.role;
-      }
       return session;
     },
-    async jwt({ token }) {
-      if (!token.sub) {
-        return token;
-      }
-      const existingUser = token ? await getUserById(token.sub) : undefined;
+    async jwt({ token, user }) {
+      if (user) {
+        const existingUser = await getUserById(user.id);
 
-      if (!existingUser) {
-        return token;
+        if (existingUser) {
+          token.role = existingUser.role;
+        }
       }
-      token.role = existingUser.role;
+
       return token;
     },
   },
   adapter: PrismaAdapter(db),
   session: { strategy: 'jwt' },
-  // TODO
   trustHost: true,
   ...authConfig,
-});
+};
+
+const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth(authOptions);
+
+export { GET, POST, auth, signIn, signOut };
