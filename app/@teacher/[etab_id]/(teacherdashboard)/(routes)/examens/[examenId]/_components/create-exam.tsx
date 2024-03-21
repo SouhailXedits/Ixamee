@@ -1,37 +1,18 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import { CreateExercice } from './CreateExercice';
-// import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
+import { CreateExerciceProps } from './CreateExercice';
 
-function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
-  // function calculateTotalMark(data: any) {
-  //   let totalMark = 0;
+type CreateExamProps = {
+  data: CreateExerciceProps['data'][];
+  fakeData: CreateExerciceProps['data'][];
+  isArabic: boolean;
+  setFakeData: React.Dispatch<React.SetStateAction<CreateExerciceProps['data'][]>>;
+};
 
-  //   function calculateMarkRecursive(item: any) {
-  //
-  //     totalMark += parseInt(item.mark, 10) || 0; // Convert mark to integer and add to totalMark
-
-  //     if (item.children) {
-  //       item.children.forEach((child) => {
-  //         calculateMarkRecursive(child); // Recursively calculate mark for each child
-  //       });
-  //     }
-  //   }
-
-  //   data.forEach((item) => {
-  //     calculateMarkRecursive(item); // Start the recursive calculation for each item in the data array
-  //   });
-
-  //   return totalMark;
-  // }
-
-  // // Call the function passing the fakeData array to get the total mark
-  // const totalMark = calculateTotalMark(fakeData);
-  //
-
-  const createExercice = (fakeData: any) => {
-    const newExercise = {
+function CreateExam({ data, fakeData, isArabic, setFakeData }: CreateExamProps) {
+  const createExercice = (fakeData: CreateExerciceProps['data']) => {
+    const newExercise: CreateExerciceProps['data'] = {
       id: Math.random().toString(36).substring(7),
       name: isArabic ? ` تمرين ${fakeData.length + 1}` : `Exercice ${fakeData?.length + 1}`,
       mark: 1,
@@ -40,11 +21,50 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
     const newData = [...fakeData, newExercise];
     setFakeData(newData);
   };
-  // if (!data) return;
+
+  const calculateTotalMark = (data: CreateExerciceProps['data'][]): number => {
+    let totalMark = 0;
+
+    const calculateMarkRecursive = (item: CreateExerciceProps['data']): void => {
+      const mark = item.mark;
+
+      if (typeof mark === 'string') {
+        const parsedMark = parseInt(mark, 10);
+
+        if (!isNaN(parsedMark)) {
+          totalMark += parsedMark;
+        } else {
+          console.error(`Invalid mark value: ${mark}`);
+        }
+      } else {
+        console.error(`Invalid mark type: ${typeof mark}`);
+      }
+
+      if (item.children) {
+        item.children.forEach((child) => {
+          if (child) {
+            calculateMarkRecursive(child);
+          }
+        });
+      }
+    };
+
+    data.forEach((item) => {
+      if (item) {
+        calculateMarkRecursive(item);
+      }
+    });
+
+    return totalMark;
+  };
+
+  // Call the function passing the fakeData array to get the total mark
+  const totalMark = calculateTotalMark(fakeData);
+
   return (
     <div dir={!isArabic ? 'ltr' : 'rtl'}>
       <div className="flex flex-col gap-4">
-        {fakeData?.map((item: any, index: number) => (
+        {fakeData?.map((item: CreateExerciceProps['data'], index: number) => (
           <CreateExercice
             allData={fakeData}
             data={item}
@@ -67,14 +87,4 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
             />
           </div>
           {!isArabic ? (
-            <span className="text-[#D9D9D9]">Ajoutez un exercice</span>
-          ) : (
-            <span className="text-[#D9D9D9] ">أضف تمرينا</span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default CreateExam;
+            <span className="text-[#D9D9D
