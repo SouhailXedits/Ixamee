@@ -1,22 +1,22 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { ApexOptions } from 'apexcharts';
+import { PropsWithChildren } from 'react';
+
 interface PieChartItemProps {
   series: number[];
   colors: string[];
   numberOfStudent: number | "-";
 }
-const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStudent }) => {
-  // const series = [11, 11, 13, 8]
-  // const series = [11]
 
-  // const colors = ['#12b76a', '#f04438', '#1b8392', '#f69d16'];
-  // const colors = ['#727272'];
-
-  const options: ApexOptions = {
+const PieChartItem: React.FC<PropsWithChildren<PieChartItemProps>> = ({
+  series,
+  colors,
+  numberOfStudent,
+}) => {
+  const options: ApexCharts.ApexOptions = {
     chart: {
-      width: 380,
       type: 'donut',
+      width: '100%',
     },
     dataLabels: {
       enabled: false,
@@ -53,8 +53,8 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
     annotations: {
       points: [
         {
-          x: 50,
-          y: 50,
+          x: '50%',
+          y: '50%',
           label: {
             text: `${numberOfStudent} Étudiant`,
             textAnchor: 'middle',
@@ -72,7 +72,13 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
     <div>
       <div className="chart-wrap relative">
         <div id="chart">
-          <ReactApexChart options={options} series={series} type="donut" width={230} />
+          <ReactApexChart
+            key={series.join(',')}
+            options={options}
+            series={series}
+            type="donut"
+            width={230}
+          />
         </div>
         <div className="text-center absolute left-[76px] top-[62px] duration-500 ">
           <span className=" text-[#4C4C4D] text-[32.17px] font-medium  leading-[18.56px]">
@@ -88,14 +94,4 @@ const PieChartItem: React.FC<PieChartItemProps> = ({ series, colors, numberOfStu
           </span>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default PieChartItem;
-
-// function PieChartItem() {
-//   return <div>piechart </div>;
-// }
-
-// export default PieChartItem;
+    </div
