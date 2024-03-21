@@ -1,30 +1,47 @@
 'use server'
-import { db } from '@/lib/db';
-export const getUserByEmail = async (email: string) => {
+import { db } from '@/lib/db'
+
+export type User = {
+  id: string
+  email: string
+}
+
+export type Establishment = {
+  id: string
+}
+
+export type Class = {
+  id: string
+  name: string
+}
+
+export const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
     const user = await db.user.findUnique({
       where: {
         email,
       },
-    });
-    return user;
+    })
+    return user
   } catch {
-    return null;
+    return null
   }
-};
-export const getUserById = async (id: string | undefined) => {
+}
+
+export const getUserById = async (id: string): Promise<User | null> => {
   const user = await db.user.findUnique({
     where: {
-      id: id,
+      id,
     },
-    // select: {
-    //   id: true,
-    // },
-  });
-  return user;
-};
+    select: {
+      id: true,
+      email: true,
+    },
+  })
+  return user
+}
 
-export const getUserEstablishmentByUserId = async (id: string) => {
+export const getUserEstablishmentByUserId = async (id: string): Promise<Establishment[]> => {
   try {
     const userEstablishments = await db.establishment.findMany({
       where: {
@@ -34,33 +51,16 @@ export const getUserEstablishmentByUserId = async (id: string) => {
           },
         },
       },
-     });
-    
-    return userEstablishments;
+    })
+    return userEstablishments
   } catch (error) {
-    console.error('Error getting UserEstablishment:', error);
-    throw error;
+    console.error('Error getting UserEstablishment:', error)
+    throw error
   }
-};
+}
 
-
-export const getClassesOfUser = async (user_id: string) => {
+export const getClassesOfUser = async (userId: string): Promise<Class[]> => {
   const data = await db.classe.findMany({
     where: {
       student_class: {
-        some: {
-          id: user_id,
-        },
-      },
-      is_archived: false
-    },
-    select: {
-      id:true,
-      name: true
-    }
-  });
-
-  return data;
-};
-
-
+       
