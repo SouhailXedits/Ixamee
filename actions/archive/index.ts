@@ -1,10 +1,14 @@
 'use server';
 import { db } from '@/lib/db';
 
-export const getAllArchivedExams = async (id: string, estabId: number) => {
+export const getAllArchivedExams = async (id: string, estabId: number, name: string) => {
   try {
     const exams = await db.exam.findMany({
       where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
         is_archived: true,
         // exam_classess: {
         //   some: {
@@ -43,7 +47,13 @@ export const getAllArchivedExams = async (id: string, estabId: number) => {
   }
 };
 
-export const getAllArchivedClasses = async (id: string, estabId: number, filters?: any) => {
+export const getAllArchivedClasses = async (
+  id: string,
+  estabId: number,
+  filters?: any,
+  name?: string
+) => {
+
   try {
     const { dateRange } = filters || {};
     let { text } = filters || {};
@@ -51,7 +61,8 @@ export const getAllArchivedClasses = async (id: string, estabId: number, filters
     const classe = await db.classe.findMany({
       where: {
         name: {
-          contains: text,
+          contains: name, 
+          mode: 'insensitive',
         },
         is_archived: true,
         teacher: {

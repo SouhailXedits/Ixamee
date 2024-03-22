@@ -22,7 +22,7 @@ const ArchiverCard = ({ data }: { data: itemProps }) => {
   const router = useRouter();
 
   return (
-    <div className=" h-full bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] border-[2px] border-[#1B8392] border-dashed hover:shadow-md transition-all ">
+    <div className="bg-[#F3F6F6] pt-3.5 rounded-xl flex flex-col justify-start items-center gap-[15px] border-[2px] border-[#1B8392] border-dashed  ">
       <div className="flex justify-between w-full px-5">
         <HoverCard>
           <HoverCardTrigger asChild>
@@ -48,7 +48,7 @@ const ArchiverCard = ({ data }: { data: itemProps }) => {
         <button
           name="btn"
           onClick={() => {
-            router.push(`/${estabId}/examens/${data.id}`);
+            router.push(`/${estabId}/${isExam ? 'examens' : 'classes'}/${data.id}`);
           }}
         >
           <Image src="/expand-icon.svg" alt="expand icon" height={20} width={20} />

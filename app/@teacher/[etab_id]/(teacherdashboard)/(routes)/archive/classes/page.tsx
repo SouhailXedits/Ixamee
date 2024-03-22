@@ -6,12 +6,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import Pagination from '@/components/shared-components/Pagination';
+import { useSearchQuery } from '@/store/use-search-query';
 
 function ClassesLayout() {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(['user']);
   const params = useParams();
   const estabId = params.etab_id;
+  const { name } = useSearchQuery();
+  console.log(name);
 
   const filters = queryClient.getQueryData(['a-classes-filters']);
   const {
@@ -19,8 +22,8 @@ function ClassesLayout() {
     error,
     isPending,
   } = useQuery<any>({
-    queryKey: ['archived_classes', 1, filters],
-    queryFn: async () => await getAllArchivedClasses(user.id, +estabId, filters),
+    queryKey: ['archived_classes', 1, filters, name],
+    queryFn: async () => await getAllArchivedClasses(user.id, +estabId, filters, name),
   });
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
