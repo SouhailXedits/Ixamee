@@ -75,7 +75,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
             display: 'flex',
             gap: '150px',
             justifyContent: 'center',
-            left: '20px',
+            left: '10px',
             position: 'absolute',
             top: '155px',
             width: '1120px',
@@ -447,7 +447,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
             justifyContent: 'center',
             left: '350px',
             position: 'absolute',
-            top: '66px',
+            top: '80px',
           }}
         >
           <div
@@ -569,7 +569,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
         </div>
         <Image
           style={{
-            height: '30px',
+            height: '50px',
             left: '325px',
             position: 'absolute',
             top: '15px',

@@ -21,6 +21,7 @@ import { getCorrectionOfUser } from '@/actions/mark-sheets/actions';
 import { useConfettiStore } from '@/store/use-confetti-store';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { useFilters } from '@/store/use-filters-params';
+import ExportAllEvaluationPdf from './_components/ExportAllEvaluation';
 
 interface classe {
   id: number;
@@ -33,18 +34,16 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   const queryClient = useQueryClient();
   const confetti = useConfettiStore();
   const { classesId } = params;
-  const etab_id = queryClient.getQueryData(['etab_id']) as number;  //get The list of Id in the classe
+  const etab_id = queryClient.getQueryData(['etab_id']) as number; //get The list of Id in the classe
   const getIdOfUserInTheClasse = queryClient.getQueryData(['getIdOfUserInTheClasse']) as any;
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   const teacherEstabName = teacherEstab?.filter((item: any) => item.id === +etab_id)[0]?.name;
 
-
   const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
-  const {filters, setFilters} = useFilters((state) => state)
-  console.log(filters)
+  const { filters, setFilters } = useFilters((state) => state);
+  console.log(filters);
   // const [filter, setFilter] = useState<any>(filters.filterBy);
   // const [exam, setExam] = useState<string>(filters.exam_id + '');
-
 
   const { data: classe, isPending: isPendingClasse } = useQuery({
     queryKey: ['classe', params.classesId],
@@ -69,6 +68,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryFn: async () =>
       await getCorigeExameContentOfAllUser(filters.exam_id, getIdOfUserInTheClasse),
   });
+  console.log(getCorrigeExamOfUser);
 
   useEffect(() => {
     if (filters.exam_id === 'undefined' || filters.exam_id === '') {
@@ -165,6 +165,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   }
   const userNotCorrected = notCorrected(userCorrection);
   const alphabiticSorted = newData?.sort((a, b) => a.name.localeCompare(b.name));
+  console.log(newData);
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full gap-14 ">
@@ -176,9 +177,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           ) : (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <span className="text-[#1B8392] text-2xl font-semibold ">
-                  {classeName}
-                </span>
+                <span className="text-[#1B8392] text-2xl font-semibold ">{classeName}</span>
                 {/* <div className="text-[#1B8392] text-2xl font-semibold ">{classeName}</div> */}
               </HoverCardTrigger>
               <HoverCardContent className="text-[#727272]  break-words w-[200px] text-md">
@@ -221,6 +220,13 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           />
 
           <AddStudent classesId={classesId} etab_id={etab_id} />
+          {getCorrigeExamOfUser && newData && classesId && filters?.exam_id && (
+            <ExportAllEvaluationPdf
+              newData={newData}
+              classeId={classesId}
+              examId={filters?.exam_id}
+            />
+          )}
         </div>
       </nav>
 

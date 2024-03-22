@@ -20,7 +20,7 @@ export const getMarkSheets = async (filters: {
           name: {
             contains: filters.searchQuery,
             mode: 'insensitive',
-          }
+          },
         },
         exam: {
           term: filters.term,
@@ -72,7 +72,7 @@ export const getMarkSheets = async (filters: {
         rank: true,
       },
     });
-    console.log(markSheets)
+    console.log(markSheets);
 
     const groupedData = markSheets?.reduce((acc: any, item: any) => {
       const userId = item.user.id;
@@ -121,7 +121,7 @@ export const getMarkSheets = async (filters: {
             average: examData.status === 'done' ? average : 0,
             overTwentyAvg: examData.status === 'done' ? overTwentyAvg : 0,
             rank: examData.rank,
-            status: examData.status
+            status: examData.status,
           };
         });
 
@@ -138,14 +138,14 @@ export const getMarkSheets = async (filters: {
           exams: examsInfo,
           average: overallAverage,
           rank: userData[0].rank,
-          status: userData[0].status
+          status: userData[0].status,
         };
       });
     }
     const sortedData = [...resultArray].sort((a, b) => b.average - a.average);
     let currentRank = 1;
-    let previousAvg : number = -1;
-    
+    let previousAvg: number = -1;
+
     const reRankedStudents = sortedData.map((student, index) => {
       if (previousAvg !== -1 && student.average !== previousAvg) {
         currentRank = index + 1;
@@ -154,7 +154,7 @@ export const getMarkSheets = async (filters: {
       return {
         ...student,
         rank: currentRank,
-      }
+      };
       // student.rank = currentRank;
     });
 
@@ -269,6 +269,7 @@ export const getCorrectionOfUser = async (class_id: string, data: any, exam_id: 
     select: {
       status: true,
       user_id: true,
+      feedback: true,
     },
   });
   return res;
