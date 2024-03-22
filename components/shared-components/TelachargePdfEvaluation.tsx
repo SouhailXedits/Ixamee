@@ -11,9 +11,7 @@ export default function TelachargePdfEvaluation({
   user_id,
   userDetails,
 }: any) {
-  console.log(userContent, 'userContent');
-  console.log(user_id, 'userContent');
-  console.log(userDetails, 'userContent');
+  
 
   return (
     <EvaluationPDFExportStudent pdfName="evaluation">

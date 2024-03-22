@@ -30,6 +30,7 @@ function UserExam({ exam, examsData }: any) {
     console.log('dskdskdk');
   }
   //1/acelsss / 16 / students / cls33eyik000040q9bm7811vv / correction / 64;
+
   return (
     <div className="flex items-center justify-between p-2 border-l-2 rounded border-orangeColor/80 gap-14">
       <div className=" basis-[50%]">
@@ -50,19 +51,31 @@ function UserExam({ exam, examsData }: any) {
         {exam?.isPublished ? <p>{exam?.range}</p> : <p>--</p>}
       </div>
       <div className="flex flex-col items-center justify-center gap-0">
-        <Button
-          onClick={handleRedirect}
-          name="bnt"
-          className="flex text-xs  underline items-center gap-2  text-[#1B8392] bg-transparent "
-        >
-          Examen <Image src="/expand-icon-white.svg" alt="expand icon" height={16} width={16} />
-        </Button>
+        {!params.student_id ? (
+          <Button
+            onClick={handleRedirect}
+            name="bnt"
+            className="flex text-xs  underline items-center gap-2  text-[#1B8392] bg-transparent "
+          >
+            Examen <Image src="/expand-icon-white.svg" alt="expand icon" height={16} width={16} />
+          </Button>
+        ) : (
+          <Button
+            onClick={handleRedirect}
+            name="bnt"
+            className="flex items-center gap-2 text-xs text-white bg-transparent bg-2 h-[35px] hover:scale-105 duration-300 "
+          >
+            Examen <Image src="/vector.svg" alt="expand icon" height={12} width={12} />
+          </Button>
+        )}
 
-        <TelachargePdfEvaluation
-          userContent={userContent}
-          user_id={user_id}
-          userDetails={examContent}
-        ></TelachargePdfEvaluation>
+        {!params.student_id && (
+          <TelachargePdfEvaluation
+            userContent={userContent}
+            user_id={user_id}
+            userDetails={examContent}
+          ></TelachargePdfEvaluation>
+        )}
       </div>
     </div>
   );
