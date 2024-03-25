@@ -13,9 +13,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 export function DatePickerWithRange({
   onChange,
   className,
+  name,
+  filters,
 }: {
   className?: React.HTMLAttributes<HTMLDivElement>;
   onChange: (date: any) => void;
+  name?: string;
+  filters?: any;
 }) {
   const [date, setDate] = React.useState<DateRange | undefined>(undefined);
 
@@ -23,9 +27,24 @@ export function DatePickerWithRange({
     setDate(newDates);
 
     // Call the onChange prop with the updated date range
-    onChange({
-      dateRange: newDates,
-    });
+    
+    if(name === 'created_at'){
+      onChange({
+        ...filters,
+        created_at: {
+          from: newDates.from,
+          to: addDays(newDates.to, 1),
+        },
+      });
+    } else {
+      onChange({
+        ...filters,
+        dateRange:{
+          from: newDates.from,
+          to: addDays(newDates.to, 1),
+        },
+      });
+    }
   };
 
   return (

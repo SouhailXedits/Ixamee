@@ -66,7 +66,7 @@ const Student = () => {
 
     queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
   });
-
+  console.log(userClasseInfos);
 
 
   const examsData = marksheet?.data || [];
@@ -109,7 +109,13 @@ const Student = () => {
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
     exams: pregressedTrimesters[term] || [], // Check and add empty array if term has no exams
   }));
+  console.log(trimesters)
 
+  const onlyDoneExamsInTerms = terms.map((term) => ({
+    name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
+    exams: pregressedTrimesters?.[term]?.filter((exam: any) => exam.status === 'done') || [], // Check and add empty array if term has no exams
+  }))
+  console.log(onlyDoneExamsInTerms);
   // const averageMark = calculateAverageMark(trimesters);
 
 
@@ -136,7 +142,7 @@ const Student = () => {
           {/* importer */}
           <PDFExport pdfName="bulletin">
             <MarkSheetStudent
-              data={trimesters}
+              data={onlyDoneExamsInTerms}
               meta={{
                 estab: estabName?.name,
                 subject: subjectName?.name,

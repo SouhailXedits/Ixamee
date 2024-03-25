@@ -78,7 +78,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             left: '52px',
             position: 'absolute',
             top: '155px',
-            width: '1000px',
+            width: '900px',
           }}
         >
           <div
@@ -153,7 +153,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             )}
             {type === 'MSStudent' && (
               <>
-                {meta.average && (
+                {meta.average !== undefined && (
                   <p
                     style={{
                       alignSelf: 'stretch',
@@ -182,7 +182,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                     </span>
                   </p>
                 )}
-                {meta.range && (
+                {meta.range !== undefined&& (
                   <p
                     style={{
                       alignSelf: 'stretch',
@@ -326,7 +326,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
             gap: '5px',
             height: '50px',
             justifyContent: 'center',
-            left: '350px',
+            left: '320px',
             position: 'absolute',
             top: '130px',
           }}
@@ -452,16 +452,14 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
         </div>
         <Image
           style={{
-            height: '60px',
             left: '325px',
             position: 'absolute',
             top: '35px',
-            width: '200px',
           }}
           alt="Layer"
           src="/logo.svg"
-          width={200}
-          height={60}
+          width={150}
+          height={50}
         />
       </div>
     </div>
