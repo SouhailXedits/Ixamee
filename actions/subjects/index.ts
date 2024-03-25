@@ -216,11 +216,8 @@ export const getAllSubjectsByClasseId = async (classeId: number | undefined) => 
           },
         },
       },
-      
     },
   });
-  console.log('🚀 ~ getAllSubjectsByClasseId ~ res:', res);
-  
 
   return res;
 };
