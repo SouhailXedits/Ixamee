@@ -14,7 +14,7 @@ const EvaluationPDFExport = ({ children, pdfName }: any) => {
       pagebreak: {
         mode: ['avoid-all', 'css', 'legacy'],
       },
-      jsPDF: { unit: 'mm', format: [400, 250], orientation: 'landscape' },
+      jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putTotalPages: true },
     };
     html2pdf().set(opt).from(element).save();
   };
@@ -32,8 +32,8 @@ const EvaluationPDFExport = ({ children, pdfName }: any) => {
       /> */}
       <span onClick={exportPDF}>Evaluation</span>
 
-      <div className="fixed -bottom-[999rem]">
-        {/* <div className="w-full overflow-auto"> */}
+      {/* <div className="fixed -bottom-[999rem]"> */}
+      <div className="w-full overflow-auto">
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>
