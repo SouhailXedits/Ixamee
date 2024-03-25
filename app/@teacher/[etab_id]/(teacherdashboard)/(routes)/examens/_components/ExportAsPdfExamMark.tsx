@@ -13,10 +13,10 @@ const PDFExport = ({ children, pdfName }: any) => {
       margin: [0, -0.1, 0, 0],
       filename: `${pdfName}.pdf`,
       // html2canvas: { dpi: 192, letterRendering: true, scale: 3, useCORS: true },
-      // pagebreak: {
-      //   mode: ['avoid-all', 'css', 'legacy'],
-      // },
-      // pagebreak: { avoid: 'tr', mode: 'css', before: '#nextpage1', after: '1cm' },
+      pagebreak: {
+        mode: ['avoid-all', 'css', 'legacy'],
+      },
+
       html2canvas: { scale: 3, useCORS: true, dpi: 192, letterRendering: true },
       jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putTotalPages: true },
     };
@@ -27,7 +27,7 @@ const PDFExport = ({ children, pdfName }: any) => {
   return (
     <div>
       <div className="fixed -bottom-[999rem]">
-        {/* <div> */}
+        {/* <div className="h-full overflow-auto"> */}
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>

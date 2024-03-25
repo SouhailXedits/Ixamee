@@ -164,6 +164,20 @@ export const getExamCorrectionById = async (exam_id: string, classe_id: string) 
     };
   }
 };
+
+export const getObservationOfStudent = async (exam_id: string, user_id: string) => {
+  const data = await db.examCorrection.findMany({
+    where: {
+      exam_id: +exam_id,
+      user_id: user_id,
+    },
+    select: {
+      feedback: true,
+    },
+  });
+  console.log(data[0].feedback, 'data');
+  return data[0].feedback;
+};
 export const getExamCorrectionById2 = async (exam_id: string, classe_id: string) => {
   try {
     console.log(exam_id);

@@ -13,6 +13,9 @@ const EvaluationPDFExportStudent = ({ children, pdfName }: any) => {
       filename: `${pdfName}.pdf`,
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      pagebreak: {
+        mode: ['avoid-all', 'css', 'legacy'],
+      },
     };
     // html2pdf(element).set(opt)
     html2pdf().set(opt).from(element).save();
@@ -29,16 +32,11 @@ const EvaluationPDFExportStudent = ({ children, pdfName }: any) => {
         <Image src="/expand-icon-white.svg" alt="expand icon" height={16} width={16} />
       </Button>
 
-      <div className="fixed -bottom-[999rem]">
-      {/* <div> */}
+      <div className=" hidden -bottom-[999rem]  ">
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>
       </div>
-      {/* <button onClick={exportPDF} className=""> */}
-
-      {/* </button> */}
-      {/* <button>Export as PDF</button> */}
     </>
   );
 };

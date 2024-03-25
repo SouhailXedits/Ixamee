@@ -26,7 +26,6 @@ export const calcAllMark = (fakeData: any) => {
   return sum;
 };
 
-
 export const transferAllMarkToNull = (content: any) => {
   for (const item of content) {
     item.mark = null;
@@ -37,14 +36,22 @@ export const transferAllMarkToNull = (content: any) => {
   console.log(content);
 };
 
-
 export const getMarkOfExerciceWithId = (content: any, id: string): number | null => {
-  for (const item of content) {
-    if (item.id === id) {
-      return item.mark;
+  console.log(content);
+  if (!content) return null;
+  if (Array.isArray(content)) {
+    for (const item of content) {
+      const mark = getMarkOfExerciceWithId(item, id);
+      if (mark !== null) {
+        return mark;
+      }
     }
-    if (item.children) {
-      const mark = getMarkOfExerciceWithId(item.children, id);
+  } else {
+    if (content.id === id) {
+      return content.mark;
+    }
+    if (content.children) {
+      const mark = getMarkOfExerciceWithId(content.children, id);
       if (mark !== null) {
         return mark;
       }
@@ -52,7 +59,6 @@ export const getMarkOfExerciceWithId = (content: any, id: string): number | null
   }
   return null;
 };
-
 
 const hasNullMark = (content: any) => {
   for (const item of content) {
@@ -72,7 +78,6 @@ export const statusOf = (data: any) => {
   const status = hasPending ? 'pending' : 'done';
   return status;
 };
-
 
 export const getNoteOf = (id: string, arr: any[]): any => {
   if (arr === undefined) return 0;

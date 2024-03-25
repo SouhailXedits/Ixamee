@@ -57,6 +57,7 @@ export const getClasseById = async (id: number) => {
     include: {
       exam_classe: {
         where: {
+          is_archived: false,
           is_published: true,
         },
       },
@@ -120,7 +121,6 @@ export const createUserInClasse = async (
   class_id: string,
   establishmentId: number
 ) => {
-  console.log(email);
   const isTeacher = await db.user.findUnique({
     where: {
       email,
@@ -169,7 +169,13 @@ export const createUserInClasse = async (
     },
   });
   if (nameExiste?.length > 0) {
-    throw new Error('Name already exists');
+    return {
+      error: {
+        message: 'Un étudiant avec cet nom déja existe.',
+        status: 'exist_in_classe',
+      },
+    };
+    // throw new Error('Name already exists');
   }
   const data = await db.user.findUnique({
     where: {

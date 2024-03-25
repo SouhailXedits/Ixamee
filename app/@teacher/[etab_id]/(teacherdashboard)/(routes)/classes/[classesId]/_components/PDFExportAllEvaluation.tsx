@@ -2,8 +2,9 @@
 import React, { useRef } from 'react';
 import html2pdf from 'html2pdf.js';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
-const EvaluationPDFExport = ({ children, pdfName }: any) => {
+const PDFExportAllEvaluation = ({ children, pdfName }: any) => {
   const contentRef = useRef(null);
 
   const exportPDF = () => {
@@ -11,39 +12,31 @@ const EvaluationPDFExport = ({ children, pdfName }: any) => {
     const opt = {
       filename: `${pdfName}.pdf`,
       html2canvas: { scale: 2, useCORS: true },
-      pagebreak: {
-        mode: ['avoid-all', 'css', 'legacy'],
-      },
+
+      pagebreak: { mode: 'avoid-all', before: '#nextpage' },
+
       jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putTotalPages: true },
     };
     html2pdf().set(opt).from(element).save();
   };
 
   return (
-    <>
-      {/* <Image
-        src="/evaluationsvg.svg"
-        alt="evaluationsvg"
-        width={20}
-        height={20}
-        aria-disabled={true}
-        className="w-[20px] h-[20px] "
-        onClick={exportPDF}
-      /> */}
-      <span onClick={exportPDF}>Evaluation</span>
-
-      {/* <div className="fixed -bottom-[999rem]"> */}
-      <div className="w-full overflow-auto">
+    <div>
+      <div className="fixed -bottom-[999rem]">
+        {/* <div className="w-full z-14"> */}
         <div ref={contentRef} style={{ padding: '20px', color: 'black' }}>
           {children}
         </div>
       </div>
-      {/* <button onClick={exportPDF} className=""> */}
-
-      {/* </button> */}
+      <Button
+        className=" font-[600] justify-center p-2  rounded-lg cursor-pointer bg-[#1B8392] text-white gap-1 hover:opacity-80 flex items-center"
+        onClick={exportPDF}
+      >
+        Télécharger toutes les évaluations
+      </Button>
       {/* <button>Export as PDF</button> */}
-    </>
+    </div>
   );
 };
 
-export default EvaluationPDFExport;
+export default PDFExportAllEvaluation;

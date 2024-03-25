@@ -37,20 +37,34 @@ export const getDetailsOfExercice = (
 export const getDetailsOfAllExercice = (
   examCorrection: any,
   userCorrections: any,
-  examContent: any
+  examContent: any,
+  exericeNumber: number
 ) => {
+  console.log(examCorrection);
+  console.log(examContent);
+  console.log(userCorrections);
+
   let arrayOfResult = [] as any;
   userCorrections?.map((item: any, index: number) => {
     if (!item.correction_exam_content) {
       return null;
     }
-    const result = calcSumOfMarks(item?.correction_exam_content[0]);
-    const realMark = calcSumOfMarks(examContent[0]);
+    console.log(item.correction_exam_content[exericeNumber]);
 
+    const result = calcSumOfMarks(item?.correction_exam_content[exericeNumber]);
+    const realMark = calcSumOfMarks(examContent);
+    console.log(result);
+
+    console.log(realMark);
+
+    console.log(result > realMark / 2);
     if (result > realMark / 2) {
       arrayOfResult.push(result);
     }
   });
+  console.log(arrayOfResult);
+  console.log(userCorrections);
+
   const porsentageResult =
     ((arrayOfResult.length / userCorrections?.length) * 100).toFixed(2) + '%';
   console.log(arrayOfResult.length);

@@ -1,24 +1,10 @@
 'use client';
 import Image from 'next/image';
-import { AddEstab } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/settings/establishements/_components/AddEstabModal';
-import { getAllEstabs } from '@/actions/establishements';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Children, cloneElement, useEffect, useRef, useState } from 'react';
-import { SearchModal } from '@/components/modals/SearchModal';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@radix-ui/react-select';
-import { Button } from '@/components/ui/button';
-import { DatePickerWithRange } from '@/components/ui/RangeDatePicker';
 import FiltersModal from './components/FiltersModal';
-import { getAllArchivedClasses } from '@/actions/archive';
+import { useEffect, useState } from 'react';
+import { useSearchQuery } from '@/store/use-search-query';
 
 const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   const params = useParams();
@@ -28,7 +14,23 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
 
   const [currentTab, setCurrentTab] = useState<string>(currPath);
   const currEtabId = params.etab_id;
-  const queryClient = useQueryClient();
+  const [searchTimeout, setSearchTimeout] = useState<any>(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const { setName } = useSearchQuery();
+
+  useEffect(() => {
+    setName(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearchChange: any = (e: any) => {
+    const newSearchQuery = e.target.value;
+    clearTimeout(searchTimeout);
+    setSearchTimeout(
+      setTimeout(() => {
+        setSearchQuery(newSearchQuery);
+      }, 500)
+    );
+  };
 
   // const [currentPage, setCurrentPage] = useState(1); // State to track the current page
   //
@@ -36,28 +38,15 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
   //   // Handle the imported data in the external page
   //
   // };
-  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   function handleChangeTab(value: string) {
     setCurrentTab(value);
     router.push(`/${currEtabId}/archive/${value}`);
   }
-  const [data, setData] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setData(value);
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current);
-    }
-    debounceTimer.current = setTimeout(() => {
-      queryClient.setQueryData(['a-classes-filters'], { text: value });
-      queryClient.invalidateQueries({ queryKey: ['archived_classes'] });
-    }, 500);
-  };
   return (
-    <main className="flex flex-col h-full gap-6 p-10">
-      <nav className="flex flex-col justify-between w-full sm:flex-row ">
+    <main className="flex flex-col gap-6 p-10 h-full">
+      <nav className="flex justify-between w-full sm:flex-row flex-col ">
         <div className="flex flex-col gap-4">
           <div className="text-[#1B8392] text-2xl font-semibold ">Archive</div>
           <div className="flex items-center text-[#727272]">
@@ -74,9 +63,8 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
             <input
               type="text"
               placeholder="Recherche"
+              onChange={handleSearchChange}
               className=" w-24 bg-transparent outline-none border-none  text-sm font-semibold  leading-tight placeholder-[#99C6D3]"
-              value={data}
-              onChange={(e) => handleChange(e)}
             />
           </div>
           <FiltersModal />
@@ -94,7 +82,7 @@ const ArchiveLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </nav>
 
-      <div className="border-b border-mainGreen/50 w-fit">
+      <div className=" border-b border-mainGreen/50 w-fit">
         <button
           className={cn(
             ' px-2 text-mainGreen/50',
