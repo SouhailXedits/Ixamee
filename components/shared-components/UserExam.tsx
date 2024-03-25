@@ -29,6 +29,8 @@ function UserExam({ exam, examsData }: any) {
   function handelUplodFicher() {
     console.log('dskdskdk');
   }
+  console.log(exam?.progress);
+  const progress = exam?.progress ;
   //1/acelsss / 16 / students / cls33eyik000040q9bm7811vv / correction / 64;
 
   return (
@@ -38,17 +40,34 @@ function UserExam({ exam, examsData }: any) {
         <p className=" text-black/50">Ajouté le: {exam?.date}</p>
       </div>
       <div className="flex flex-col items-center gap-1 text-mainGreen">
-        {exam?.isPublished && (
+        {exam?.status === 'done' && (
           <p>
             {exam?.marksObtained}/{exam?.totalScore}
           </p>
         )}
 
-        <p>--</p>
+        {
+          <p>
+            {exam?.progress ? (
+              <p className={` ${progress >= 0 ? 'text-[#12B76A]' : 'text-[#F04438]'} flex gap-1 items-center`}>
+                {progress >= 0 ? (
+                  <Image src="/progress-up.svg" alt="arrow icon" height={16} width={16} />
+                ) : (
+                  <Image src="/progress-down.svg" alt="arrow icon" height={16} width={16} />
+                )}
+                <span className=' flex justify-center'>{progress + '%'}{' '}</span>
+              </p>
+            ) : (
+              '--'
+            )}
+          </p>
+        }
+
+        {/* <p>--</p> */}
       </div>
       <div className="flex flex-col items-center gap-1 opacity-50 text-mainGreen">
-        <p>Rang </p>
-        {exam?.isPublished ? <p>{exam?.range}</p> : <p>--</p>}
+        <p>rang </p>
+        {exam?.status === 'done' ? <p>{exam?.range}</p> : <p>--</p>}
       </div>
       <div className="flex flex-col items-center justify-center gap-0">
         {!params.student_id ? (

@@ -990,3 +990,39 @@ export const getUserClasseInfos = async ({
   });
   return data;
 };
+
+
+export const updateExamAttachements = async ({
+  exam_id,
+  attachements,
+}: {
+  exam_id: number;
+  attachements: any;
+}) => {
+  const data = await db.exam.update({
+    where: {
+      id: exam_id,
+    },
+    data: {
+      attachements: attachements,
+    },
+  });
+  return data;
+};
+
+
+export const getExamAttachements = async ({
+  exam_id,
+}: {
+  exam_id: number;
+}) => {
+  const data = await db.exam.findUnique({
+    where: {
+      id: exam_id,
+    },
+    select: {
+      attachements: true,
+    },
+  });
+  return data;
+};

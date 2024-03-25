@@ -6,6 +6,8 @@ import { getMarksheetByUserId } from '@/actions/mark-sheets/actions';
 import { getAllSubjectNameById } from '@/actions/subjects';
 import { getTeacherName } from '@/actions/teachers';
 import PDFExport from '@/app/_utils/ExportAsPdf';
+import { calculateAverageMark } from '@/app/_utils/calculateAverage';
+import { calculateProgress } from '@/app/_utils/calculateProgress';
 import Loading from '@/app/loading';
 import { MarkSheetStudent } from '@/components/shared-components/MarkSheetStudent';
 import TermCard from '@/components/shared-components/TermCard';
@@ -85,6 +87,7 @@ const Student = () => {
 
     return result;
   }, {});
+    const pregressedTrimesters = calculateProgress(groupedExams);
 
   const isTrimester = classeName?.[0].teacher?.[0]?.term === 'TRIMESTRE';
 
@@ -94,7 +97,7 @@ const Student = () => {
 
   const trimesters = terms.map((term) => ({
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
-    exams: groupedExams[term] || [],
+    exams: pregressedTrimesters[term] || [],
   }));
 
   // const averageMark = calculateAverageMark(trimesters);

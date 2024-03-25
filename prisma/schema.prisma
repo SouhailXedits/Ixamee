@@ -137,7 +137,8 @@ model Subject {
   classe_subject Classe[] @relation("ClasseSubjectToSubject")
   exam_plans     ExamPlans[]
 }
- 
+
+
 model Exam {
   id              Int              @id @default(autoincrement())
   name            String
@@ -157,6 +158,7 @@ model Exam {
   create_at       DateTime?        @default(now())
   is_published    Boolean? @default(false)
   content         Json?
+  attachements    Json? 
 }
 enum Language {
   fr

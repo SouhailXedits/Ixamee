@@ -16,6 +16,7 @@ import { getAllSubjectNameById } from '@/actions/subjects';
 import { getTeacherName } from '@/actions/teachers';
 import PDFExport from '@/app/_utils/ExportAsPdf';
 import { MarkSheetStudent } from '@/components/shared-components/MarkSheetStudent';
+import { calculateProgress } from '@/app/_utils/calculateProgress';
 
 
 const Student = () => {
@@ -69,6 +70,7 @@ const Student = () => {
 
 
   const examsData = marksheet?.data || [];
+  console.log('🚀 ~ file: page.tsx:examsData', examsData)
 
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
@@ -83,6 +85,7 @@ const Student = () => {
       name: exam?.exam?.name,
       date: exam?.exam?.create_at.toISOString().split('T')[0],
       marksObtained: exam?.mark_obtained,
+      status: exam?.status,
       coefficient: exam?.exam?.coefficient,
       totalScore: exam?.exam?.total_mark,
       overTwnetyMark: exam?.mark_obtained * (20 / exam?.exam?.total_mark),
@@ -90,8 +93,11 @@ const Student = () => {
     });
     return result;
   }, {});
+  console.log(groupedExams, '✅')
 
-  const isTrimester = Object.keys(groupedExams).some((key) =>
+  const pregressedTrimesters = calculateProgress(groupedExams);
+  console.log(pregressedTrimesters)
+  const isTrimester = Object.keys(pregressedTrimesters).some((key) =>
     key.toLowerCase().includes('trimestre')
   );
 
@@ -101,10 +107,11 @@ const Student = () => {
 
   const trimesters = terms.map((term) => ({
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
-    exams: groupedExams[term] || [], // Check and add empty array if term has no exams
+    exams: pregressedTrimesters[term] || [], // Check and add empty array if term has no exams
   }));
 
-  const averageMark = calculateAverageMark(trimesters);
+  // const averageMark = calculateAverageMark(trimesters);
+
 
   if (isPending || isPendingmMarksheet) return <Loading />;
 
