@@ -4,25 +4,23 @@ import RenderExercice from './renderExercice';
 import RenderQuestion from './renderQuestion';
 import RenderSubQuestion from './renderSubQuestion';
 import PdfHeader from './pdfHeader';
-import PdfHeaderEvatuation from '@/components/shared-components/PdfHeaderEvalution';
 
 export default function AddScall({ exam, examDetails }: any) {
-  console.log(examDetails);
   const copiedData = JSON.parse(JSON.stringify(exam));
 
   const devoirName = examDetails?.name;
-  console.log(devoirName);
+
   const classeName = examDetails.exam_classess
     .map((item: any) => {
       return item.name;
     })
     .join(', ');
-  console.log(classeName);
+
   const [content, setContent] = useState<any>(copiedData);
 
   return (
     <div className="flex flex-wrap gap-4">
-      <PdfHeaderEvatuation
+      <PdfHeader
         meta={{
           estab: devoirName,
 
