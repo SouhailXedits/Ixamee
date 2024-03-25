@@ -17,16 +17,14 @@ import {
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
 
 export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
-
-
   if (!userExamCorectionContent) {
     return null;
   }
 
   const [examCorrection] = userExamCorectionContent[0]?.correction_exam_content;
-  
+
   const params = useParams();
-  
+
   const classe_id = params.etab_id as string;
 
   // Logging for debugging
@@ -36,9 +34,9 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   const teacherEstab = queryClient.getQueryData(['AllEstabOfUser']) as any;
   const user = queryClient.getQueryData(['user']) as any;
   const classeNames = queryClient.getQueryData(['user-classes']) as any;
-  const teacherName = queryClient.getQueryData(['TeacherName', +params.subject_id]) as any;
-  const classeName = classeNames.find((item: any) => item.id === +params.etab_id);
-  const examId = userExamCorectionContent[0].exam_id;
+  const teacherName = queryClient?.getQueryData(['TeacherName', +params.subject_id]) as any;
+  const classeName = classeNames?.find((item: any) => item.id === +params.etab_id);
+  const examId = userExamCorectionContent[0]?.exam_id;
   const [examIdd, setExamIdd] = useState(examId[0]);
   useEffect(() => {
     setExamIdd(examId);
