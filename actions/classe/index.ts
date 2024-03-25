@@ -121,7 +121,6 @@ export const createUserInClasse = async (
   class_id: string,
   establishmentId: number
 ) => {
-  console.log(email);
   const isTeacher = await db.user.findUnique({
     where: {
       email,

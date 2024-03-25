@@ -15,7 +15,7 @@ const PDFExportAllEvaluation = ({ children, pdfName }: any) => {
 
       pagebreak: { mode: 'avoid-all', before: '#nextpage' },
 
-      jsPDF: { unit: 'mm', format: [400, 250], orientation: 'landscape' },
+      jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait', putTotalPages: true },
     };
     html2pdf().set(opt).from(element).save();
   };

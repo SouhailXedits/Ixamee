@@ -1,26 +1,19 @@
 'use client';
-import PdfHeader from '@/components/shared-components/PdfHeader';
 import React from 'react';
-import { calcSumOfMarks } from '../../../examens/[examenId]/_components/sharedFunction';
-import {
-  getMaxDepth,
-  getNoteOf,
-} from '../student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
+import { getMaxDepth } from '../student/[student_id]/correction/[exam_id]/_components/calculateChildrenMarks';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getExamCorrectionById, getObservationOfStudent } from '@/actions/exam-correction';
+import { getExamCorrectionById } from '@/actions/exam-correction';
 import { useParams } from 'next/navigation';
 import Loading from '@/app/loading';
-import { getDetailsOfAllExercice, getDetailsOfExercice } from './getDetailsOfExam';
-import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
+
 import { getNameClasseByClasseId } from '@/actions/classe';
 import PdfHeaderEvatuation from '@/components/shared-components/PdfHeaderEvalution';
 import { renderExericeTable } from './renderExerciceTable';
 
 export default function Evaluation({ userExamCorectionContent, classeId, examId }: any) {
-  
   const queryClient = useQueryClient();
   const params = useParams();
-  
+
   const { data: userCorrections } = useQuery({
     queryKey: ['UserExamEvalaiations', examId, classeId],
     queryFn: async () => getExamCorrectionById(examId, classeId),
@@ -42,46 +35,42 @@ export default function Evaluation({ userExamCorectionContent, classeId, examId 
   const averageMark = (sumOfMarks / CorigeExameContent?.length).toFixed(2);
   const minMoyene = Math.min(...CorigeExameContent?.map((item: any) => item.mark_obtained));
   const maxMoyene = Math.max(...CorigeExameContent?.map((item: any) => item.mark_obtained));
-  const countSupTen = CorigeExameContent?.filter((x: any) => x.mark_obtained > 10).length;
-  const countInfTen = CorigeExameContent?.filter((x: any) => x.mark_obtained < 10).length;
-
+  const countSupTen = CorigeExameContent?.filter((x: any) => x.mark_obtained >= 10).length;
+  const countInfTen = CorigeExameContent?.filter((x: any) => x.mark_obtained <= 10).length;
 
   const estab = teacherEstab?.filter((item: any) => {
     return item.id == params.etab_id;
   });
-
 
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
 
   return (
     <div>
-      {userExamCorectionContent.map((item: any, index: number) => {
-
+      {userExamCorectionContent?.map((item: any, index: number) => {
         const examCorrection = item?.correctionExamOfUser.find(
-          (items: any) => (items.user_id = item.id)
+          (items: any) => items.user_id == item.id
         )?.correction_exam_content;
-      
+
         if (!userCorrections) return null;
 
-      
         const exam = item?.classe.exam_classe.find((items: any) => items.id === +examId);
 
         const examContent = exam?.content;
-  
+
         const maxDepth = getMaxDepth(examContent?.[1]);
 
         if (!examCorrection) {
-          return <Loading />;
+          return null;
         }
 
         const correctionExamOfUser = item.correctionExamOfUser;
 
         const totatlMarl = correctionExamOfUser.find((items: any) => items.user_id == item.id);
-        
+
         const realNote = totatlMarl?.mark_obtained + '/' + totatlMarl?.exam?.total_mark;
         const feedback = totatlMarl?.feedback;
-      
+
         return (
           <div id={index === 0 ? '' : 'nextpage'}>
             <PdfHeaderEvatuation
