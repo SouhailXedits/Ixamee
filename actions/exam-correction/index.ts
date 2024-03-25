@@ -230,7 +230,7 @@ export const getRecentCorrections = async (
   pageSize: number,
   user_id: string,
   subjectId: number | undefined,
-  teacherId: string
+  classe_id: number
 ) => {
   if (!subjectId) {
     subjectId = undefined;
@@ -242,11 +242,14 @@ export const getRecentCorrections = async (
     const res = await db.examCorrection.findMany({
       where: {
         user_id: user_id,
-
         is_published: true,
         exam: {
           subject_id: subjectId,
-          teacher_id: teacherId,
+          exam_classess: {
+            some: {
+              id: classe_id,
+            },
+          },
         },
       },
       select: {
