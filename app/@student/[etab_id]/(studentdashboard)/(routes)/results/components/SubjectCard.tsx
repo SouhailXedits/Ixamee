@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -79,7 +79,7 @@ function SubjectCard({ subject, etab_id }: any) {
           />
           <div>
             <span className="text-[#1B8392] text-lg  leading-[25px] ">Professeur:</span>
-            <p className="w-32 truncate ">{subject.teacher[0]?.name || 'inconnue'}</p>
+            <p>{subject.teacher[0]?.name || 'inconnue'}</p>
           </div>
         </div>
         <Link
