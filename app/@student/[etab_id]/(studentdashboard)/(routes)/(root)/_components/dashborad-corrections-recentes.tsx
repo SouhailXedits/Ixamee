@@ -16,9 +16,11 @@ import { useState } from 'react';
 const DashboradCorrectionsRecentes = ({
   classId,
   subjects,
+  teacherId,
 }: {
   classId: string;
   subjects: any;
+  teacherId: string;
 }) => {
   const [subId, setSubId] = useState<any>();
   const queryClient = useQueryClient();
@@ -26,8 +28,8 @@ const DashboradCorrectionsRecentes = ({
   const userId = user?.id;
 
   const { data, isPending, error } = useQuery({
-    queryKey: ['corrections-recentes', userId, subId],
-    queryFn: async () => getRecentCorrections(3, userId, Number(subId)),
+    queryKey: ['corrections-recentes', userId, subId,teacherId],
+    queryFn: async () => getRecentCorrections(3, userId, Number(subId),teacherId),
   });
   return (
     <div className="flex flex-col gap-4">
