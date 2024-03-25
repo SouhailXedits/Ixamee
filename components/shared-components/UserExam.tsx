@@ -55,7 +55,7 @@ function UserExam({ exam, examsData }: any) {
                 ) : (
                   <Image src="/progress-down.svg" alt="arrow icon" height={16} width={16} />
                 )}
-                <span className=' flex justify-center'>{progress + '%'}{' '}</span>
+                <span className=' flex justify-center'>{progress.toFixed(1) + '%'}{' '}</span>
               </p>
             ) : (
               '--'
