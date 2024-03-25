@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 import { useConfettiStore } from '@/store/use-confetti-store';
 import { haveZeroInfakeData } from './_components/sharedFunction';
+import FilesUploader from '@/components/shared-components/FilesUploader';
 
 export default function Page({ params }: { params: { examenId: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
@@ -139,7 +140,6 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
               Annuler
             </button>
           </div>
-
           <div
             className="flex items-center p-2 border rounded-lg cursor-pointer bg-[#1B8392] text-white gap-3 hover:opacity-80 "
             onClick={handleSaveData}
@@ -149,13 +149,19 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
               Enregister
             </div>
           </div>
+          {/* <FilesUploader/> */}
         </div>
       </nav>
 
       {isPending ? (
         <Skeleton />
       ) : (
-        <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />
+        <>
+          <div>
+            <FilesUploader />
+          </div>
+          <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />
+        </>
       )}
     </div>
   );

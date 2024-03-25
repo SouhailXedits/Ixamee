@@ -214,6 +214,7 @@ export const getMarksheetByUserId = async (
       select: {
         id: true,
         mark_obtained: true,
+        status: true,
         exam: {
           select: {
             id: true,

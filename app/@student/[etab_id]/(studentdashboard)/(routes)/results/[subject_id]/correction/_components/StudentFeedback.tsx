@@ -11,10 +11,14 @@ import { Textarea } from '@/components/ui/textarea';
 
 interface studentFeadback {
   children: React.ReactNode;
-  content: string
+  content: {
+    feedback: string[];
+    description: string;
+  }
 }
 export const StudentFeedback = ({ children, content }: studentFeadback) => {
-
+  console.log(content)
+  const feedback = content?.feedback?.join(' ') 
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -33,13 +37,14 @@ export const StudentFeedback = ({ children, content }: studentFeadback) => {
           </DialogTitle>
         </DialogHeader>
         <div className=" h-[290px] p-1 rounded-lg overflow-scroll">
-          <div className="flex flex-col gap-2"></div>
-          <Textarea
-            className="border-none resize-none  placeholder:text-[#B5B5B5] "
+          <div className="flex flex-col gap-2">
 
-            value={content || "Il n'y a pa des remarques"}
-            disabled
-          />
+            <p className=' font-semibold bg-8 p-1 rounded'>{feedback}</p>
+            <p>{content?.description}</p>
+
+
+          </div>
+          
         </div>
       </DialogContent>
     </Dialog>
