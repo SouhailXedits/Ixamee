@@ -44,27 +44,26 @@ export default function Evaluation({ userExamCorectionContent, classeId, examId 
 
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
-
+  console.log(userExamCorectionContent);
   return (
     <div>
       {userExamCorectionContent?.map((item: any, index: number) => {
+        console.log(item.correctionExamOfUser);
         const examCorrection = item?.correctionExamOfUser.find(
           (items: any) => items.user_id == item.id
         )?.correction_exam_content;
-
+        console.log(examCorrection, 'examCorrection');
         if (!userCorrections) return null;
 
         const exam = item?.classe.exam_classe.find((items: any) => items.id === +examId);
 
         const examContent = exam?.content;
 
-        const maxDepth = getMaxDepth(examContent?.[1]);
-
         if (!examCorrection) {
           return null;
         }
-
-        const correctionExamOfUser = item.correctionExamOfUser;
+        console.log(index, 'index');
+        const correctionExamOfUser = item?.correctionExamOfUser;
 
         const totatlMarl = correctionExamOfUser.find((items: any) => items.user_id == item.id);
 
@@ -72,7 +71,7 @@ export default function Evaluation({ userExamCorectionContent, classeId, examId 
         const feedback = totatlMarl?.feedback;
 
         return (
-          <div id={index === 0 ? '' : 'nextpage'}>
+          <div id={examCorrection ? '' : 'nextpage'}>
             <PdfHeaderEvatuation
               meta={{
                 estab: estab && estab[0]?.name,
