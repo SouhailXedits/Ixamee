@@ -130,6 +130,7 @@ export const CreateSubSubQuestion = ({
       // toast.error('la note ne doit pas etre inferieur a 0');
       return;
     }
+    let subsubId = 0;
     setFakeData((prevData: any) => {
       return prevData.map((item: any) => {
         if (item.id === allData.id) {
@@ -145,6 +146,7 @@ export const CreateSubSubQuestion = ({
                     ...subSubItem,
                     children: subSubItem.children.map((subSubSubItem: any) => {
                       if (subSubSubItem.id === data.id) {
+                        subsubId = subSubItem.id;
                         subSubSubItem.mark = +e.target.value;
                       }
                       return subSubSubItem;
@@ -168,11 +170,17 @@ export const CreateSubSubQuestion = ({
                 ...subItem,
 
                 children: subItem.children.map((subSubItem: any, index: number) => {
-                  return {
-                    ...subSubItem,
+                  if (subsubId === subSubItem.id) {
+                    return {
+                      ...subSubItem,
 
-                    mark: calcSumOfMarks(subSubItem),
-                  };
+                      mark: calcSumOfMarks(subSubItem),
+                    };
+                  } else {
+                    return {
+                      ...subSubItem,
+                    };
+                  }
                 }),
                 // mark: calculerExerciceMark(allData),
               };
@@ -197,10 +205,17 @@ export const CreateSubSubQuestion = ({
                 mark: subItem.children.length > 0 ? calcSumOfMarks(subItem) : subItem.mark,
                 children: subItem.children.map((subSubItem: any) => {
                   // Returning unchanged subsubitems
-                  return {
-                    ...subSubItem,
-                    mark: calcSumOfMarks(subSubItem),
-                  };
+                  if (subsubId === subSubItem.id) {
+                    return {
+                      ...subSubItem,
+
+                      mark: calcSumOfMarks(subSubItem),
+                    };
+                  } else {
+                    return {
+                      ...subSubItem,
+                    };
+                  }
                 }),
               };
             }),
@@ -213,7 +228,7 @@ export const CreateSubSubQuestion = ({
 
     calculerExerciceMark(allData);
   };
-  console.log(data)
+  console.log(data);
 
   return (
     <>
