@@ -7,6 +7,9 @@ import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { DialogTrigger, Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
+import { Button } from '../ui/button';
+import { DownloadIcon, PlusIcon, X } from 'lucide-react';
 
 // const CustomListItemUI = (props: UploadListItemProps) => {
 //   return (
@@ -17,84 +20,81 @@ import { toast } from 'react-hot-toast';
 //     </ul>
 //   );
 // };
-function FilesUploader() {
+function FilesUploader({ editable = true }: { editable?: boolean }) {
   const { updateExamAttachements, isPending } = useUpdateExamAttachements();
   const [files, setFiles] = useState<any>([]);
+  const [allFiles, setAllFiles] = useState<any>([]);
   const params = useParams();
   const { examenId } = params;
-  console.log(examenId);
+  const { correction_id } = params;
+  console.log(correction_id);
   const {
     data: attachements,
     isLoading,
     error,
   } = useQuery({
     queryKey: ['examenAttachements', examenId],
-    queryFn: () => getExamAttachements({ exam_id: +examenId }),
+    queryFn: () => getExamAttachements({ exam_id: +examenId || +correction_id }),
   });
   console.log(attachements?.attachements, 'attachements');
   const attachementsData = attachements?.attachements;
   // attachementsData?.map((item: any) => {
   //   console.log(item);
   // })
+  const handleFileChange = (event: any) => {
+    const fileList = Array.from(event.target.files);
+    console.log(fileList);
+    setFiles(fileList);
+  };
   useEffect(() => {
     if (attachementsData) {
-      setFiles(attachementsData);
+      // setFiles(attachementsData);
+      setAllFiles(attachementsData);
     }
   }, [attachementsData]);
+  useEffect(() => {
+    console.log(files, 'files');
+    if (files.length > 0) handleSubmit();
+  }, [files]);
+  useEffect(() => {
+    console.log(files, 'files');
+    const handleUpdate = async () => {
+      updateExamAttachements({
+        exam_id: +examenId,
+        attachements: allFiles,
+      });
+    };
+    if (allFiles.length > 0 && allFiles !== attachementsData) {
+      handleUpdate();
+    }
+  }, [allFiles, attachementsData]);
 
-  // const oldFiles = JSON.parse(attachements?.attachements || '[]');
-  // console.log(oldFiles)
-  // const downloadFile = async () => {
-  //   try {
-  //     const cloudinaryUrl =
-  //       'https://res.cloudinary.com/dm5d9jmf4/image/upload/v1711106997/emmmsvccr4trjhot16wp.pdf';
-  //     const response = await fetch(cloudinaryUrl);
-  //     const blob = await response.blob();
-
-  //     // Generate a filename based on the public_id or a unique identifier
-  //     const filename = cloudinaryUrl.substring(cloudinaryUrl.lastIndexOf('/') + 1); // Extract filename from URL
-
-  //     const a = document.createElement('a');
-  //     a.href = window.URL.createObjectURL(blob);
-  //     a.download = filename;
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     document.body.removeChild(a);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   // Check if window is available (runs only in the browser)
-  //   if (typeof window !== 'undefined') {
-  //     // Code that relies on browser-specific APIs
-  //     downloadFile();
-  //   }
-  // }, []);
-
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    console.log(files, 'files');
     const data = await handleUpload(files);
     console.log(data);
     if (!data) return;
     const newFiles = data.map((file: any) => {
       return { original_filename: file.original_filename, url: file.url };
     });
-    if (Array.isArray(attachementsData)) {
-      attachementsData.map((item: any) => {
-        newFiles.push(item);
-      });
-    }
-    console.log(newFiles, '🚀')
-    // newFiles.push(...oldFiles);
-    await updateExamAttachements({
-      exam_id: +examenId,
-      attachements: newFiles,
-    });
+
+    console.log(newFiles, 'newFiles');
+    console.log(allFiles, 'newFiles');
+    setAllFiles((prevAllFiles: any) => [...prevAllFiles, ...newFiles]);
+    console.log(allFiles);
+    // if (Array.isArray(attachementsData)) {
+    //   // attachementsData.map((item: any) => {
+    //   // });
+    // }
+    // console.log(newFiles, '🚀');
+    // setAllFiles(newFiles);
+    // // setAllFiles([...allFiles, ...newFiles]);
+    // console.log(allFiles);
+    // // newFiles.push(...oldFiles);
   };
 
   const handleUpload = async (files: any) => {
-    console.log('upload');
+    console.log(files);
     try {
       const form = new FormData();
       let allFiles: any = [];
@@ -130,48 +130,135 @@ function FilesUploader() {
     }
   };
 
-  const handleFileChange = (event: any) => {
-    const fileList = Array.from(event.target.files);
-    console.log(fileList);
-    setFiles(fileList);
+  const downloadFile = async (url: string, name: string) => {
+    try {
+      const cloudinaryUrl = url;
+      const response = await fetch(cloudinaryUrl);
+      const blob = await response.blob();
+
+      // Generate a filename based on the public_id or a unique identifier
+      // const filename = cloudinaryUrl.substring(cloudinaryUrl.lastIndexOf('/') + 1); // Extract filename from URL
+
+      const a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = name || 'file';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDelete = (index: number) => {
+    setAllFiles((prevAllFiles: any) => {
+      const newFiles = [...prevAllFiles];
+      newFiles.splice(index, 1);
+      return newFiles;
+    });
   };
 
   return (
-    <div className=" rounded p-5 mx-12 mt-10 bg-5">
-      <p className=" text-lg mb-5">
-        <Image src="/bulletinsicon.svg" width={24} height={24} alt="pdf" /> Pièces jointes :
-      </p>
-      <label
-        htmlFor="file-input"
-        className="bg-2/50 text-white rounded-md px-4 py-2 cursor-pointer"
-      >
-        Cliquez pour choisir ou faites glisser et déposez le(s) fichier(s) ici
-      </label>
-      <input
-        type="file"
-        id="file-input"
-        className="hidden"
-        onChange={handleFileChange}
-        multiple
-        accept=" .pdf, .docx, .doc, .ppt, .pptx"
-      />
-      <div className="mt-4">
-        {files.map((file: any, index: number) => (
-          <div key={index} className="bg-8/50 px-4 py-2 rounded-md mb-2">
-            {file.name || file.original_filename}
+    <Dialog>
+      <DialogTrigger>
+        {allFiles.length === 0 && editable && (
+          <Button className=" bg-transparent text-2 border border-2 rounded-md p-0">
+            {/* <button className=" border-none bg-2/30 rounded ">
+                  <PlusIcon />
+                </button> */}
+            <label
+              htmlFor="file-input"
+              className=" rounded-md cursor-pointer flex justify-center items-center p-2"
+            >
+              <Image src="/attachement-icon.svg" alt="icons" width={20} height={20} />
+              <span className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
+                {allFiles.length === 0
+                  ? 'Ajouter une pièce jointe'
+                  : `${allFiles.length} pièces jointes`}
+              </span>
+            </label>
+            <input
+              type="file"
+              id="file-input"
+              className="hidden"
+              onChange={handleFileChange}
+              multiple
+              accept=" .pdf, .docx, .doc, .ppt, .pptx"
+              // placeholder='azaf'
+            />
+          </Button>
+        )}
+        {allFiles.length > 0 && (
+          <Button className=" bg-transparent text-2 border border-2 rounded-md">
+            <Image src="/attachement-icon.svg" alt="icons" width={20} height={20} />
+            <span className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
+              {`${allFiles.length} pièces jointes`}
+            </span>
+            {/* <button className=" border-none bg-2/30 rounded ">
+                  <PlusIcon />
+                </button> */}
+            {editable && (
+              <>
+                <label htmlFor="file-input" className="bg-2/30 rounded-md cursor-pointer">
+                  <PlusIcon />
+                </label>
+                <input
+                  type="file"
+                  id="file-input"
+                  className="hidden"
+                  onChange={handleFileChange}
+                  multiple
+                  accept=" .pdf, .docx, .doc, .ppt, .pptx"
+                  // placeholder='azaf'
+                />
+              </>
+            )}
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent>
+        <div className=" rounded">
+          <p className=" text-lg mb-5">
+            Pièces jointes :
+            {/* <Image src="/bulletinsicon.svg" width={24} height={24} alt="pdf" /> Pièces jointes : */}
+          </p>
+
+          <div className="mt-4">
+            {allFiles.map((file: any, index: number) => (
+              <div
+                key={index}
+                className="bg-8/50 px-4 py-2 rounded-md mb-2 flex items-center gap-2 text-2 justify-between"
+              >
+                <div className=" flex items-center gap-4 ">
+                  <p className=" underline">{file.name || file.original_filename}</p>
+                  <button
+                    onClick={() => downloadFile(file.url, file.original_filename)}
+                    className=" text-sm"
+                  >
+                    <DownloadIcon size={20} />
+                  </button>
+                </div>
+                {editable && (
+                  <button onClick={() => handleDelete(index)}>
+                    <X color="red" size={20} />
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <button
+          {/* <button
         className="bg-2 rounded-md px-4 py-2 mt-4 cursor-pointer text-white hover:bg-2/80"
         onClick={handleSubmit}
       >
         Upload
-      </button>
-      {/* <button onClick={downloadFile}>
+      </button> */}
+          {/* <button onClick={downloadFile}>
         download
       </button> */}
-    </div>
+        </div>
+        {/* <FilesUploader /> */}
+      </DialogContent>
+    </Dialog>
   );
 }
 
