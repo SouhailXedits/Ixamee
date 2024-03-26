@@ -44,11 +44,16 @@ export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, is
           <div className="flex items-center gap-3 ">
             <div
               className={cn(
-                'flex w-[100px] pr-[55px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 '
+                'flex w-[100px] pr-[55px] h-[46px] bg-white rounded-[5px] border justify-center items-center gap-2.5 ',
+                isArabic && 'pr-10'
               )}
             >
-              <div className="flex items-center justify-center">
-                <div className="w-[160px]  bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1">
+              <div className={cn('flex items-center justify-center', isArabic && 'pl-[100px]')}>
+                <div
+                  className={cn(
+                    'w-[160px]  bg-12 h-[54px] flex rounded-lg text-white items-center justify-center text-xl gap-1'
+                  )}
+                >
                   <span>
                     <span>{Number(calculerExerciceMark(data)).toFixed(2)}</span>
                   </span>

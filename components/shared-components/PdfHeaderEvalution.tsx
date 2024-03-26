@@ -78,7 +78,7 @@ function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
             left: '10px',
             position: 'absolute',
             top: '155px',
-            width: '950px',
+            width: '930px',
           }}
         >
           <div

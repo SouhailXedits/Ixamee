@@ -15,21 +15,47 @@ import {
   getDetailsOfExercice,
 } from '@/app/@teacher/[etab_id]/(teacherdashboard)/(routes)/classes/[classesId]/_components/getDetailsOfExam';
 import { getMarkOfExerciceWithId } from '@/app/_utils/calculateChildrenMarks';
+import PdfHeaderEvatuation from './PdfHeaderEvalution';
 
-export default function Evaluation({ userExamCorectionContent, userDetails }: any) {
+export default function Evaluation({
+  userExamCorectionContent,
+  userDetails,
+  user_id,
+  examDetails,
+}: any) {
   if (!userExamCorectionContent) {
     return null;
   }
+  console.log(user_id);
+  console.log(examDetails);
 
+  const allExamUserDetails = examDetails?.examCorrection;
+
+  console.log(allExamUserDetails);
   const [examCorrection] = userExamCorectionContent[0]?.correction_exam_content;
-
+  console.log(userExamCorectionContent);
   const params = useParams();
-
+  const sumOfMarks = allExamUserDetails.reduce(
+    (acc: any, item: any) => acc + item.mark_obtained,
+    0
+  );
+  console.log(sumOfMarks);
   const classe_id = params.etab_id as string;
-
+  // Count
+  const averageMark = (sumOfMarks / allExamUserDetails.length).toFixed(2);
+  const minMoyene = Math.min(...allExamUserDetails.map((item: any) => item.mark_obtained));
+  const maxMoyene = Math.max(...allExamUserDetails.map((item: any) => item.mark_obtained));
+  const countSupTen = allExamUserDetails.filter((x: any) => x.mark_obtained > 10).length;
+  const countInfTen = allExamUserDetails.filter((x: any) => x.mark_obtained < 10).length;
   // Logging for debugging
   const queryClient = useQueryClient();
 
+  const totalMark = allExamUserDetails.find((item: any) => item?.user_id === user_id);
+  console.log(totalMark);
+
+  const realNote = totalMark?.mark_obtained + '/' + examDetails?.totalScore;
+
+  console.log(realNote);
   // const etab_id = queryClient.getQueryData(['etab_id']) as any;
   const teacherEstab = queryClient.getQueryData(['AllEstabOfUser']) as any;
   const user = queryClient.getQueryData(['user']) as any;
@@ -37,13 +63,6 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   const teacherName = queryClient?.getQueryData(['TeacherName', +params.subject_id]) as any;
   const classeName = classeNames?.find((item: any) => item.id === +params.etab_id);
   const examId = userExamCorectionContent[0]?.exam_id;
-  const [examIdd, setExamIdd] = useState(examId[0]);
-  useEffect(() => {
-    setExamIdd(examId);
-  }, [examId]);
-
-  // const exam = userDetails?.classe.exam_classe.find((item: any) => item.id === examId);
-  // console.log(exam);
 
   const examContent = userDetails;
   const { data: userCorrections } = useQuery({
@@ -51,28 +70,6 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
     queryFn: async () => getExamCorrectionById2(examId, classe_id),
     retry: true,
   });
-  // const getDetailsOfExercice = (id: string, examCorrection: any, userCorrection: any) => {
-  //   if (!userCorrection) {
-  //     return null;
-  //   }
-  //   let resultOfArray = [] as any;
-
-  //   let realMark = getNoteOf(id, examContent) === null ? 0 : getNoteOf(id, examContent);
-
-  //   const result = userCorrection.map((item: any) => {
-  //     console.log(item.correction_exam_content);
-
-  //     const mark = getNoteOf(id, item.correction_exam_content);
-  //     console.log(mark);
-  //     if (mark > realMark / 2) {
-  //       resultOfArray.push(mark);
-  //     }
-  //   });
-  //   console.log(resultOfArray);
-  //   const porsentageResult =
-  //     ((resultOfArray.length / userCorrection.length) * 100).toFixed(2) + '%';
-  //   return porsentageResult;
-  // };
   const renderExericeTable = (obj: any, depth: number, index: number) => {
     const TotalMark = calcSumOfMarks(obj);
 
@@ -355,7 +352,7 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
   const nextYear = currentYear + 1;
   return (
     <div>
-      <PdfHeader
+      <PdfHeaderEvatuation
         meta={{
           estab: teacherEstab ? teacherEstab[0]?.name : [],
           heading: 'Fiche d évaluation',
@@ -369,9 +366,18 @@ export default function Evaluation({ userExamCorectionContent, userDetails }: an
           teacherName: teacherName?.name,
           // range: 1,
           // average: 15.57,
+          devoir: examDetails?.name,
+          minMoyene: minMoyene,
+          maxMoyene: maxMoyene,
+          countSupTen: countSupTen,
+          countInfTen: countInfTen,
+          noteTotal: realNote,
+          observation: totalMark.feedback,
+          moyendeClasse: averageMark + '/' + examDetails?.totalScore,
         }}
         type="MSStudent"
       />
+
       <div className="flex flex-wrap justify-center gap-12">
         {examContent?.map((exercise: any, i: number) => (
           <div key={i} className="flex flex-col gap-[10px]">

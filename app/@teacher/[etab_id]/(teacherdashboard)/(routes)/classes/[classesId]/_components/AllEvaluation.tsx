@@ -25,7 +25,7 @@ export default function Evaluation({ userExamCorectionContent, classeId, examId 
   const teacherEstab = queryClient.getQueryData(['teacherEstab']) as any;
   const user = queryClient.getQueryData(['user']) as any;
 
-  const CorigeExameContent = queryClient.getQueryData(['CorigeExameContent', '84']) as any;
+  const CorigeExameContent = queryClient.getQueryData(['CorigeExameContent', examId + '']) as any;
 
   if (!CorigeExameContent) return null;
   const sumOfMarks = CorigeExameContent?.reduce(
@@ -44,15 +44,15 @@ export default function Evaluation({ userExamCorectionContent, classeId, examId 
 
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
-  console.log(userExamCorectionContent);
+
   return (
     <div>
       {userExamCorectionContent?.map((item: any, index: number) => {
-        console.log(item.correctionExamOfUser);
+
         const examCorrection = item?.correctionExamOfUser.find(
           (items: any) => items.user_id == item.id
         )?.correction_exam_content;
-        console.log(examCorrection, 'examCorrection');
+
         if (!userCorrections) return null;
 
         const exam = item?.classe.exam_classe.find((items: any) => items.id === +examId);
@@ -62,7 +62,7 @@ export default function Evaluation({ userExamCorectionContent, classeId, examId 
         if (!examCorrection) {
           return null;
         }
-        console.log(index, 'index');
+
         const correctionExamOfUser = item?.correctionExamOfUser;
 
         const totatlMarl = correctionExamOfUser.find((items: any) => items.user_id == item.id);
@@ -71,7 +71,7 @@ export default function Evaluation({ userExamCorectionContent, classeId, examId 
         const feedback = totatlMarl?.feedback;
 
         return (
-          <div id={examCorrection ? '' : 'nextpage'}>
+          <div id={examCorrection && index != 0 ? 'nextpage' : ''}>
             <PdfHeaderEvatuation
               meta={{
                 estab: estab && estab[0]?.name,

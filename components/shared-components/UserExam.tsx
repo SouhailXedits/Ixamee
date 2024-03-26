@@ -7,7 +7,7 @@ import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 function UserExam({ exam, examsData }: any) {
   const params = useParams();
   const user_id = exam?.user?.id;
-
+  console.log();
   const userContent = exam?.examCorrection?.filter((item: any) => {
     return item.user_id === user_id;
   });
@@ -30,7 +30,7 @@ function UserExam({ exam, examsData }: any) {
     console.log('dskdskdk');
   }
   console.log(exam?.progress);
-  const progress = exam?.progress ;
+  const progress = exam?.progress;
   //1/acelsss / 16 / students / cls33eyik000040q9bm7811vv / correction / 64;
 
   return (
@@ -49,13 +49,17 @@ function UserExam({ exam, examsData }: any) {
         {
           <p>
             {exam?.progress ? (
-              <p className={` ${progress >= 0 ? 'text-[#12B76A]' : 'text-[#F04438]'} flex gap-1 items-center`}>
+              <p
+                className={` ${
+                  progress >= 0 ? 'text-[#12B76A]' : 'text-[#F04438]'
+                } flex gap-1 items-center`}
+              >
                 {progress >= 0 ? (
                   <Image src="/progress-up.svg" alt="arrow icon" height={16} width={16} />
                 ) : (
                   <Image src="/progress-down.svg" alt="arrow icon" height={16} width={16} />
                 )}
-                <span className=' flex justify-center'>{progress + '%'}{' '}</span>
+                <span className="flex justify-center ">{progress + '%'} </span>
               </p>
             ) : (
               '--'
@@ -91,6 +95,7 @@ function UserExam({ exam, examsData }: any) {
         {!params.student_id && (
           <TelachargePdfEvaluation
             userContent={userContent}
+            examDetails={exam}
             user_id={user_id}
             userDetails={examContent}
           ></TelachargePdfEvaluation>

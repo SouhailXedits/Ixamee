@@ -57,8 +57,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
 
   const CurrentMark = calcAllMark(examContent);
 
-  const porsentage = (CurrentMark / totalMark) * 100;
-  console.log(exam);
+  const porsentage = ((CurrentMark / totalMark) * 100).toFixed(2);
   return (
     /* Container div for the exam card */
     <div
@@ -135,7 +134,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
         </div>
       </div>
 
-      <Progress value={porsentage} className="w-full h-2 mt-5 bg-white" />
+      <Progress value={+porsentage} className="w-full h-2 mt-5 bg-white" />
       {/* Progress bar */}
     </div>
   );
