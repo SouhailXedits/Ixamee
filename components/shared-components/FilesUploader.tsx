@@ -37,7 +37,7 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
     queryFn: () => getExamAttachements({ exam_id: +examenId || +correction_id }),
   });
   console.log(attachements?.attachements, 'attachements');
-  const attachementsData = attachements?.attachements;
+  const attachementsData = attachements?.attachements as any;
   // attachementsData?.map((item: any) => {
   //   console.log(item);
   // })
@@ -46,8 +46,9 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
     console.log(fileList);
     setFiles(fileList);
   };
+
   useEffect(() => {
-    if (attachementsData) {
+    if (attachementsData?.length > 0) {
       // setFiles(attachementsData);
       setAllFiles(attachementsData);
     }
@@ -64,7 +65,7 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
         attachements: allFiles,
       });
     };
-    if (allFiles.length > 0 && allFiles !== attachementsData) {
+    if (allFiles !== attachementsData && allFiles.length !==0) {
       handleUpdate();
     }
   }, [allFiles, attachementsData]);
@@ -82,15 +83,6 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
     console.log(allFiles, 'newFiles');
     setAllFiles((prevAllFiles: any) => [...prevAllFiles, ...newFiles]);
     console.log(allFiles);
-    // if (Array.isArray(attachementsData)) {
-    //   // attachementsData.map((item: any) => {
-    //   // });
-    // }
-    // console.log(newFiles, '🚀');
-    // setAllFiles(newFiles);
-    // // setAllFiles([...allFiles, ...newFiles]);
-    // console.log(allFiles);
-    // // newFiles.push(...oldFiles);
   };
 
   const handleUpload = async (files: any) => {
@@ -159,106 +151,109 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        {allFiles.length === 0 && editable && (
-          <Button className=" bg-transparent text-2 border border-2 rounded-md p-0">
-            {/* <button className=" border-none bg-2/30 rounded ">
+    <div>
+      {allFiles.length === 0 && editable ? (
+        <Button className=" bg-transparent text-2 border border-2 rounded-md p-0">
+          {/* <button className=" border-none bg-2/30 rounded ">
                   <PlusIcon />
                 </button> */}
-            <label
-              htmlFor="file-input"
-              className=" rounded-md cursor-pointer flex justify-center items-center p-2"
-            >
-              <Image src="/attachement-icon.svg" alt="icons" width={20} height={20} />
-              <span className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-                {allFiles.length === 0
-                  ? 'Ajouter une pièce jointe'
-                  : `${allFiles.length} pièces jointes`}
-              </span>
-            </label>
-            <input
-              type="file"
-              id="file-input"
-              className="hidden"
-              onChange={handleFileChange}
-              multiple
-              accept=" .pdf, .docx, .doc, .ppt, .pptx"
-              // placeholder='azaf'
-            />
-          </Button>
-        )}
-        {allFiles.length > 0 && (
-          <Button className=" bg-transparent text-2 border border-2 rounded-md">
+          <label
+            htmlFor="file-input"
+            className=" rounded-md cursor-pointer flex justify-center items-center p-2"
+          >
             <Image src="/attachement-icon.svg" alt="icons" width={20} height={20} />
             <span className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
-              {`${allFiles.length} pièces jointes`}
+              {allFiles.length === 0
+                ? 'Ajouter une pièce jointe'
+                : `${allFiles.length} pièces jointes`}
             </span>
-            {/* <button className=" border-none bg-2/30 rounded ">
+          </label>
+          <input
+            type="file"
+            id="file-input"
+            className="hidden"
+            onChange={handleFileChange}
+            multiple
+            accept=" .pdf, .docx, .doc, .ppt, .pptx"
+            // placeholder='azaf'
+          />
+        </Button>
+      ) : (
+        <Dialog>
+          <DialogTrigger>
+            {allFiles.length > 0 && (
+              <Button className=" bg-transparent text-2 border border-2 rounded-md">
+                <Image src="/attachement-icon.svg" alt="icons" width={20} height={20} />
+                <span className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
+                  {`${allFiles.length} pièces jointes`}
+                </span>
+                {/* <button className=" border-none bg-2/30 rounded ">
                   <PlusIcon />
                 </button> */}
-            {editable && (
-              <>
-                <label htmlFor="file-input" className="bg-2/30 rounded-md cursor-pointer">
-                  <PlusIcon />
-                </label>
-                <input
-                  type="file"
-                  id="file-input"
-                  className="hidden"
-                  onChange={handleFileChange}
-                  multiple
-                  accept=" .pdf, .docx, .doc, .ppt, .pptx"
-                  // placeholder='azaf'
-                />
-              </>
-            )}
-          </Button>
-        )}
-      </DialogTrigger>
-      <DialogContent>
-        <div className=" rounded">
-          <p className=" text-lg mb-5">
-            Pièces jointes :
-            {/* <Image src="/bulletinsicon.svg" width={24} height={24} alt="pdf" /> Pièces jointes : */}
-          </p>
-
-          <div className="mt-4">
-            {allFiles.map((file: any, index: number) => (
-              <div
-                key={index}
-                className="bg-8/50 px-4 py-2 rounded-md mb-2 flex items-center gap-2 text-2 justify-between"
-              >
-                <div className=" flex items-center gap-4 ">
-                  <p className=" underline">{file.name || file.original_filename}</p>
-                  <button
-                    onClick={() => downloadFile(file.url, file.original_filename)}
-                    className=" text-sm"
-                  >
-                    <DownloadIcon size={20} />
-                  </button>
-                </div>
                 {editable && (
-                  <button onClick={() => handleDelete(index)}>
-                    <X color="red" size={20} />
-                  </button>
+                  <>
+                    <label htmlFor="file-input" className="bg-2/30 rounded-md cursor-pointer">
+                      <PlusIcon />
+                    </label>
+                    <input
+                      type="file"
+                      id="file-input"
+                      className="hidden"
+                      onChange={handleFileChange}
+                      multiple
+                      accept=" .pdf, .docx, .doc, .ppt, .pptx"
+                      // placeholder='azaf'
+                    />
+                  </>
                 )}
+              </Button>
+            )}
+          </DialogTrigger>
+          <DialogContent>
+            <div className=" rounded">
+              <p className=" text-lg mb-5">
+                Pièces jointes :
+                {/* <Image src="/bulletinsicon.svg" width={24} height={24} alt="pdf" /> Pièces jointes : */}
+              </p>
+
+              <div className="mt-4">
+                {allFiles.map((file: any, index: number) => (
+                  <div
+                    key={index}
+                    className="bg-8/50 px-4 py-2 rounded-md mb-2 flex items-center gap-2 text-2 justify-between"
+                  >
+                    <div className=" flex items-center gap-4 ">
+                      <p className=" underline">{file.name || file.original_filename}</p>
+                      <button
+                        onClick={() => downloadFile(file.url, file.original_filename)}
+                        className=" text-sm"
+                      >
+                        <DownloadIcon size={20} />
+                      </button>
+                    </div>
+                    {editable && (
+                      <button onClick={() => handleDelete(index)}>
+                        <X color="red" size={20} />
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          {/* <button
+              {/* <button
         className="bg-2 rounded-md px-4 py-2 mt-4 cursor-pointer text-white hover:bg-2/80"
         onClick={handleSubmit}
       >
         Upload
       </button> */}
-          {/* <button onClick={downloadFile}>
+              {/* <button onClick={downloadFile}>
         download
       </button> */}
-        </div>
-        {/* <FilesUploader /> */}
-      </DialogContent>
-    </Dialog>
+            </div>
+            {/* <FilesUploader /> */}
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
   );
 }
 
