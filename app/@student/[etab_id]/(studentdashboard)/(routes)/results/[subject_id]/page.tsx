@@ -125,7 +125,7 @@ const Student = () => {
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          {/* <PDFExport pdfName="bulletin">
+          <PDFExport pdfName="bulletin">
             <MarkSheetStudent
               data={trimesters}
               meta={{
@@ -139,7 +139,7 @@ const Student = () => {
                 userClasseInfos,
               }}
             />
-          </PDFExport> */}
+          </PDFExport>
         </div>
       </nav>
       <div className="flex items-center gap-3 ml-5 ">

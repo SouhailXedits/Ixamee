@@ -65,7 +65,7 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
         attachements: allFiles,
       });
     };
-    if (allFiles !== attachementsData && allFiles.length !==0) {
+    if (allFiles !== attachementsData && allFiles.length !== 0) {
       handleUpdate();
     }
   }, [allFiles, attachementsData]);
@@ -76,7 +76,7 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
     console.log(data);
     if (!data) return;
     const newFiles = data.map((file: any) => {
-      return { original_filename: file.original_filename, url: file.url };
+      return { original_filename: file.original_filename, url: file.secure_url };
     });
 
     console.log(newFiles, 'newFiles');
