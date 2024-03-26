@@ -69,7 +69,7 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
               );
             })}
             <tr>
-              <td className="bg-6/40 pb-3" colSpan={sortedStudents?.[0]?.exams.length + 3}>
+              <td className="bg-6/40 pb-3" colSpan={sortedStudents?.[0]?.exams.length * 2 + 1 }>
                 Moyenne generale : {overallAverage.toFixed(2)}
               </td>
             </tr>

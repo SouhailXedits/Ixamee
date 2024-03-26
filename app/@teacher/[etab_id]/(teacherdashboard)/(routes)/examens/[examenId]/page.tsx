@@ -14,9 +14,14 @@ import { calcAllMark } from '@/app/_utils/calculateChildrenMarks';
 import { useConfettiStore } from '@/store/use-confetti-store';
 import { haveZeroInfakeData } from './_components/sharedFunction';
 import FilesUploader from '@/components/shared-components/FilesUploader';
+import { Button } from '@/components/ui/button';
+import { PlusIcon, PlusSquare } from 'lucide-react';
+
+import { useUpdateExamAttachements } from '../hooks/useUpdateExamAttachements';
 
 export default function Page({ params }: { params: { examenId: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
+
   const pathname = usePathname();
   const confetti = useConfettiStore();
 
@@ -44,8 +49,6 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   useEffect(() => {
     setSum(calcAllMark(fakeData));
   }, [fakeData]);
-
-
 
   function handleCancel() {
     router.back();
@@ -79,7 +82,8 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
     confetti.onOpen();
   };
   console.log(fakeData);
-  console.log(data)
+  console.log(data);
+
 
 
   return (
@@ -116,6 +120,17 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+          <FilesUploader/>
+          {/* <FilesUploader /> */}
+          {/* <Button className=" bg-transparent text-2 border border-2 rounded-md">
+            <Image src="/attachement-icon.svg" alt="icons" width={20} height={20} />
+            <span className="pl-2 pr-2 text-sm font-semibold leading-tight text-center ">
+              {'Ajouter une pièce jointe' || '3 pièces jointes'}
+            </span>
+            <button className=" border-none bg-2/30 rounded ">
+              <PlusIcon />
+            </button>
+          </Button> */}
           <div
             className={cn(
               'flex items-center w-[109px]  gap-3  border rounded-lg cursor-pointer border-[#F04438]  text-[rgb(240,68,56)] hover:opacity-80',
@@ -157,9 +172,9 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
         <Skeleton />
       ) : (
         <>
-          <div>
+          {/* <div>
             <FilesUploader />
-          </div>
+          </div> */}
           <CreateExam data={data} isArabic={arabic} setFakeData={setFakeData} fakeData={fakeData} />
         </>
       )}

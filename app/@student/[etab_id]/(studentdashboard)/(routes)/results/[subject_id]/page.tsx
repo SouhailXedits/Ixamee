@@ -83,6 +83,7 @@ const Student = () => {
       user: exam?.user,
       examContent: exam?.exam?.content,
       examCorrection: exam?.exam?.exam_correction,
+      status: exam?.status,
     });
 
     return result;
@@ -99,6 +100,8 @@ const Student = () => {
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
     exams: pregressedTrimesters[term] || [],
   }));
+
+  // const onlyDoneExams = examsData.filter((exam: any) => exam.status === 'done');
 
   // const averageMark = calculateAverageMark(trimesters);
 

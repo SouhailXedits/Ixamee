@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import CreateExam from '@/components/shared-components/exam/create-exam';
 import { useUpdateExamPresp } from './hooks/useUpdateStudProsp';
 import { usePathname } from 'next/navigation';
+import FilesUploader from '@/components/shared-components/FilesUploader';
 
 export default function Page({ params }: { params: { correction_id: string; etab_id: string } }) {
   const [sum, setSum] = useState(0);
@@ -133,6 +134,7 @@ export default function Page({ params }: { params: { correction_id: string; etab
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
+          <FilesUploader editable={false}/>
           {isAutoCorrection && (
             <Button className=" bg-2 text-white" onClick={submitPrespectation}>
               <span>Enregistrer</span>

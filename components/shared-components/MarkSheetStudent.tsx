@@ -53,22 +53,22 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                   {term.exams?.map((exam: any) => (
                     <tr className="" key={exam.exam_id}>
                       {/* <td className="bg-[#99C6D3]"></td> */}
-                      <td className="pb-4 border border-black/50">{exam.name}</td>
-                      <td className="pb-4 border border-black/50">{exam.coefficient}</td>
-                      <td className="pb-4 border border-black/50">
+                      <td className="pb-2 border border-black/50">{exam.name}</td>
+                      <td className="pb-2 border border-black/50">{exam.coefficient}</td>
+                      <td className="pb-2 border border-black/50">
                         {exam.marksObtained} / {exam.totalScore}
                       </td>
-                      <td className="pb-4 border border-black/50">{exam.range}</td>
-                      <td className="pb-4 border border-black/50">--</td>
+                      <td className="pb-2 border border-black/50">{exam.range}</td>
+                      <td className="pb-2 border border-black/50">{exam.progress || '--'}</td>
                       {/* <td className="border bg-[#99C6D3]/40 border-black/50 h-8">Rang</td> */}
                     </tr>
                   ))}
-                  <tr className=" bg-6/50">
-                    <td className="pb-4" colSpan={3}>
+                  <tr className=" bg-[#9DD60026]">
+                    <td className="pb-2" colSpan={3}>
                       Moyenne trimestrelle : {calculateAverageMark([term]) || '--'}
                     </td>
-                    <td className="pb-4" colSpan={5}>
-                      range : {term.exams.length > 0 && meta.range || '--'}
+                    <td className="pb-2" colSpan={5}>
+                      range : {(term.exams.length > 0 && meta.range) || '--'}
                     </td>
                     {/* <td colSpan={3}>-</td> */}
                   </tr>

@@ -8,21 +8,23 @@ import Pagination from '@/components/shared-components/Pagination';
 import { useState } from 'react';
 import { useSearchQuery } from '@/store/use-search-query';
 
-function ExamsLayout({ filters }: any) {
+function ExamsLayout() {
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<any>(['user']);
   const params = useParams();
   const estabId = params.etab_id;
-  const {name} = useSearchQuery()
-  console.log(name)
+  const { name } = useSearchQuery();
+  console.log(name);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
+  const filters = queryClient.getQueryData(['a-exams-filters']) as any;
+  console.log(filters);
   const {
     data: exams,
     error,
     isPending,
   } = useQuery<any>({
-    queryKey: ['archived_exams', estabId, name],
+    queryKey: ['archived_exams', estabId, name, filters],
     queryFn: async () => await getAllArchivedExams(user.id, +estabId, name),
   });
   if (isPending)
@@ -44,10 +46,41 @@ function ExamsLayout({ filters }: any) {
       </p>
     );
 
+  console.log(filters?.classe);
+  let filteredData = [];
+
+  if (filters?.classe === 'tous') {
+    filteredData = data;
+  } else {
+    filteredData =
+      (filters?.classe &&
+        data.filter((exam: any) =>
+          exam.exam_classess.some((classe: any) => classe.id === +filters.classe)
+        )) ||
+      data;
+  }
+  console.log(filteredData);
+
+  const filteredByArchivedDateRange = filters?.dateRange
+    ? filteredData.filter((exam: any) => {
+        const examDate = new Date(exam.archived_at);
+        const startDate = new Date(filters.dateRange.from);
+        const endDate = new Date(filters.dateRange.to);
+        return examDate >= startDate && examDate <= endDate;
+      })
+    : filteredData;
+  const filteredByDateRange = filters?.created_at ? filteredByArchivedDateRange.filter((exam: any) => {
+    const examDate = new Date(exam.create_at);
+    const startDate = new Date(filters.created_at.from);
+    const endDate = new Date(filters.created_at.to);
+    return examDate >= startDate && examDate <= endDate;
+  }) : filteredByArchivedDateRange;
+
+  console.log(filteredByDateRange);
   const totalPages = Math.ceil(data?.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = data?.slice(startIndex, endIndex);
+  const paginatedData = filteredByDateRange?.slice(startIndex, endIndex);
   return (
     <div className=" flex flex-col h-full justify-between gap-10">
       <div className="flex flex-wrap gap-7">

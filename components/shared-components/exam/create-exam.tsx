@@ -8,7 +8,6 @@ import FilesRenderer from '../FilesRenderer';
 function CreateExam({ fakeData, isArabic, setFakeData, realExamContetn }: any) {
   return (
     <div dir={!isArabic ? 'ltr' : 'rtl'}>
-      <FilesRenderer/>
       <div className="flex flex-col gap-4 p-10">
         {fakeData?.map((item: any, index: number) => (
           <CreateExercice

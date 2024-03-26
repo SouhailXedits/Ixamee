@@ -29,6 +29,7 @@ export const getAllArchivedExams = async (id: string, estabId: number, name: str
         id: true,
         name: true,
         archived_at: true,
+        create_at: true,
         exam_classess: {
           select: {
             id: true,

@@ -12,10 +12,10 @@ export function useUpdateExamAttachements() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dashExamCount'] });
       queryClient.invalidateQueries({ queryKey: ['examens'] });
-      toast.success('Attachements ajouté avec succès.');
+      toast.success('Attachements modifié avec succès.');
     },
     onError: (err) => {
-      toast.error("Une erreur est survenue lors de la modification de l'examen.");
+      toast.error("Une erreur est survenue lors de la modification de l'attachements.");
     },
     retry: false,
   });

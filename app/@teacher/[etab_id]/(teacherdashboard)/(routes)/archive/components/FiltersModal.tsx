@@ -20,13 +20,14 @@ import {
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaGraduationCap } from 'react-icons/fa';
 
 function FiltersModal() {
-
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
+  const params = useParams();
+  const estabId = params.etab_id;
   // const handleDateRangeChange = (newDateRange: DateRange) => {
 
   //   const [filters, setFilters] = useState({
@@ -53,14 +54,35 @@ function FiltersModal() {
   const [filters, setFilters] = useState<any>({
     // Your other filter properties
     dateRange: undefined,
+    created_at: undefined,
+    classe: undefined,
   });
+  console.log(filters);
 
   // useEffect(() => {
   // }, [filters]);
   function handleSubmitFilters() {
-    queryClient.setQueryData(['a-classes-filters'], filters);
-    queryClient.invalidateQueries({ queryKey: ['archived_classes']});
+    console.log(filters);
+    if (currRoute !== 'exams') {
+      queryClient.setQueryData(['a-classes-filters'], filters);
+      queryClient.invalidateQueries({ queryKey: ['archived_classes'] });
+    } else {
+      queryClient.setQueryData(['a-exams-filters'], filters);
+      queryClient.invalidateQueries({ queryKey: ['archived_exams'] });
+    }
   }
+  const archived = queryClient.getQueryData(['archived_exams', estabId, '', null]) as any;
+  console.log(archived);
+  let classes: any = [];
+  archived?.data?.map((archived: any) => {
+    archived?.exam_classess?.map((classe: any) => {
+      console.log(classe);
+      const isAlreadyExists = classes.find((item: any) => item.id === classe.id);
+      if (!isAlreadyExists) classes.push(classe);
+    });
+  });
+  console.log(classes);
+
   return (
     <Dialog>
       <DialogTrigger className="flex items-center gap-3 p-2 bg-transparent border rounded  border-mainGreen/60 text-mainGreen">
@@ -72,19 +94,19 @@ function FiltersModal() {
         <DialogHeader>
           <DialogTitle>Filtre</DialogTitle>
           <DialogDescription>Archivé le : </DialogDescription>
-          <DatePickerWithRange onChange={setFilters} />
+          <DatePickerWithRange onChange={setFilters} name="archived_at" filters={filters} />
 
           {currRoute === 'exams' && (
             <>
               <div>
                 {' '}
                 <DialogDescription>Creé le : </DialogDescription>
-                <DatePickerWithRange onChange={setFilters} />
+                <DatePickerWithRange onChange={setFilters} name="created_at" filters={filters} />
               </div>
 
               <div>
                 <DialogDescription>Classe : </DialogDescription>
-                <Select>
+                <Select onValueChange={(value) => setFilters({ ...filters, classe: value })}>
                   <SelectTrigger className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer hover:opacity-80 ">
                     <SelectValue
                       placeholder={
@@ -96,19 +118,24 @@ function FiltersModal() {
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="bac_math_2">Bac math 2</SelectItem>
-                    <SelectItem value="bac_info">Bac Info</SelectItem>
+                    <SelectItem value="tous">tous</SelectItem>
+                    {classes?.map((classe: any) => (
+                      <SelectItem key={classe.id} value={classe.id}>
+                        {classe.name}
+                      </SelectItem>
+                    ))}
+                    {/* <SelectItem value="bac_math_2">Bac math 2</SelectItem>
+                    <SelectItem value="bac_info">Bac Info</SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>
-              <div>
+              {/* <div>
                 <DialogDescription>Correction : </DialogDescription>
                 <Select>
                   <SelectTrigger className="flex items-center gap-3 p-2 border rounded-lg cursor-pointer hover:opacity-80 ">
                     <SelectValue
                       placeholder={
                         <div className="flex items-center">
-                          {/* <Image src={'/filterIcon.svg'} className=' grayscale-50' alt="filtericon" width={20} height={20} /> */}
                           <span className="ml-2 text-base text-black/60 ">correction</span>
                         </div>
                       }
@@ -121,12 +148,12 @@ function FiltersModal() {
                     <SelectItem value="corrigé_xl">&gt; 75% ~ 100% corrigé</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
             </>
           )}
         </DialogHeader>
         <DialogClose>
-          <Button className=" bg-mainGreen" onClick={handleSubmitFilters} name='btn'>
+          <Button className=" bg-mainGreen" onClick={handleSubmitFilters} name="btn">
             Appliquer les filtres
           </Button>
         </DialogClose>
