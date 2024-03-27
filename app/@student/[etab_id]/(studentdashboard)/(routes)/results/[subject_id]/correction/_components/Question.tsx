@@ -29,8 +29,7 @@ export const Question = ({ data, isArabic }: any) => {
             <Editor
               editable={false}
               initialContent={data.content}
-              onChange={(e) =>  
-
+              onChange={(e) => console.log('')}
             />
           </div>
           <div className="flex gap-3 item-center">
@@ -41,16 +40,11 @@ export const Question = ({ data, isArabic }: any) => {
               disabled
               value={data.children && data.children.length > 0 ? calculateMark(data) : data.mark}
             />
-
           </div>
         </div>
       </div>
       {data.children.map((item: any) => (
-        <SubQuestion
-        key={item.id}
-          data={item}
-          isArabic={isArabic}
-        />
+        <SubQuestion key={item.id} data={item} isArabic={isArabic} />
       ))}
     </>
   );

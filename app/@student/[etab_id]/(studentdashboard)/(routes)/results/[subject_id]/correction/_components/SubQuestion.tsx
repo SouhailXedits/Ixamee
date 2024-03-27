@@ -13,13 +13,12 @@ export const SubQuestion = ({ data, isArabic }: any) => {
           !isArabic ? 'ml-[6rem]' : 'mr-[6rem]'
         )}
       >
-        
         <div className="flex items-center justify-between w-full gap-3 px-5">
           <div className="w-[80%] flex items-center">
             <span>{data.name}</span>
             <Editor
               editable={false}
-              onChange={(e) =>  
+              onChange={(e) => console.log('')}
               initialContent={data.content}
             />
           </div>
@@ -32,17 +31,12 @@ export const SubQuestion = ({ data, isArabic }: any) => {
               maxLength={5}
               disabled
               value={data.mark !== 0 && data.mark}
-
             />
           </div>
         </div>
       </div>
       {data.children.map((item: any) => (
-        <SubSubQuestion
-          key={item.id}
-          data={item}
-          isArabic={isArabic}
-        />
+        <SubSubQuestion key={item.id} data={item} isArabic={isArabic} />
       ))}
     </>
   );
