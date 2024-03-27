@@ -57,7 +57,7 @@ const ExamCards = ({ exam }: { exam: Exam }) => {
 
   const CurrentMark = calcAllMark(examContent);
 
-  const porsentage = ((CurrentMark / totalMark) * 100).toFixed(2);
+  const porsentage = ((CurrentMark / totalMark) * 100)
   return (
     /* Container div for the exam card */
     <div
