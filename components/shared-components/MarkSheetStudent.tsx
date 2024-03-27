@@ -61,7 +61,7 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                       <td className="pb-2 border border-black/50">{exam.range}</td>
                       <td className="pb-2 border border-black/50">
                         {exam.progress ? (
-                          <div>
+                          <div className=' flex gap-1 items-center'>
                             {exam.progress >= 0 ? (
                               <Image
                                 src="/progress-up.svg"
