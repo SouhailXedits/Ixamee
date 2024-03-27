@@ -1,5 +1,4 @@
 export function calculateCorrectionPercentage(entry: any) {
-  console.log('🚀 ~ calculateCorrectionPercentage ~ entry:', entry);
   if (entry.status === 'absent' || entry.status === 'notClassified') {
     return 0;
   } else if (entry.status === 'done') {

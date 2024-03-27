@@ -30,14 +30,13 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
   //   queryKey: ['user-classes'],
   //   queryFn: async () => await getAllClassesNameAndIdDash({ user_id: userId, etab_id: etabId }),
   // });
-  console.log(filters);
+
   const userClasses = classes;
-  console.log(userClasses);
+
   const classe_id = filters.classe_id;
-  console.log(classe_id, etabId);
 
   const { data: userExams } = useQuery({
-    enabled: filters.classe_id !== '' ,
+    enabled: filters.classe_id !== '',
     queryKey: ['userExams', filters.classe_id, filters.exam_id],
     queryFn: async () =>
       await getAllExamsNameAndId({
@@ -46,7 +45,7 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
         classe_id: filters.classe_id,
       }),
   });
-  console.log(userExams);
+
   // data = ['zegzeg']
   const { data: tableData } = useQuery<any>({
     queryKey: ['users-results', filters],
@@ -88,10 +87,10 @@ const BulletinsDesEtudiants = ({ data, etabId, classes }: any) => {
               </SelectTrigger>
               <SelectContent>
                 {userExams?.map((exam: any) => (
-                    <SelectItem key={exam.id} value={exam.id}>
-                      {exam.name}
-                    </SelectItem>
-                  ))}
+                  <SelectItem key={exam.id} value={exam.id}>
+                    {exam.name}
+                  </SelectItem>
+                ))}
                 {/* <SelectItem value="recent">les plus récents</SelectItem>
                 <SelectItem value="elevé">les plus elevée</SelectItem> */}
               </SelectContent>

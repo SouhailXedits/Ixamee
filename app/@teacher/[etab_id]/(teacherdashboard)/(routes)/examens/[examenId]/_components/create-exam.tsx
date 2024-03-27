@@ -5,7 +5,6 @@ import { CreateExercice } from './CreateExercice';
 // import { calcAllMark, calculateChildrenMarks } from './calculateChildrenMarks';
 
 function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
-  console.log(fakeData);
   // function calculateTotalMark(data: any) {
   //   let totalMark = 0;
 
@@ -34,7 +33,9 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
   const createExercice = (fakeData: any) => {
     const newExercise = {
       id: Math.random().toString(36).substring(7),
-      name: isArabic ? ` تمرين ${fakeData?.length + 1 || 1}` : `Exercice ${fakeData?.length + 1 || 1}`,
+      name: isArabic
+        ? ` تمرين ${fakeData?.length + 1 || 1}`
+        : `Exercice ${fakeData?.length + 1 || 1}`,
       mark: 0,
       children: [],
     };
@@ -44,7 +45,7 @@ function CreateExam({ data, fakeData, isArabic, setFakeData }: any) {
   };
   // if (!data) return;
   return (
-    <div dir={!isArabic ? 'ltr' : 'rtl'} className=' pb-32'> 
+    <div dir={!isArabic ? 'ltr' : 'rtl'} className=" pb-32">
       <div className="flex flex-col gap-4 p-10">
         {fakeData?.map((item: any, index: number) => (
           <CreateExercice

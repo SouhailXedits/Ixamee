@@ -33,23 +33,23 @@ const DashboradStatistiques = ({
   const [disable, setDisable] = useState<boolean>(true);
   const [allStudentOfClasseCount, setAllStudentOfClasseCount] = useState<number>(allStudentCount);
 
-  const {data: classeInfos, isPending} = useQuery({
+  const { data: classeInfos, isPending } = useQuery({
     queryKey: ['classe', classId],
-    queryFn: async () => await getClasseByClassId(+classId)
-  })
+    queryFn: async () => await getClasseByClassId(+classId),
+  });
 
   useEffect(() => {
     setAllStudentOfClasseCount(classeInfos ? classeInfos?.student_class.length : 0);
     setClasse(classeInfos);
-  })
+  });
 
   const { data: correctionsProgress } = useQuery({
     queryKey: ['usersProgress', classId, examId],
     queryFn: async () => await getCorrectionProgressStats(+classId, +examId),
   });
-// const userCorrec = (await getCorrectionOfUser(classId, classe?.student_class, value)) as any;
+  // const userCorrec = (await getCorrectionOfUser(classId, classe?.student_class, value)) as any;
 
-// setUserCorrection(userCorrec);
+  // setUserCorrection(userCorrec);
 
   // const { data: usersProgresse } = useQuery({
   //   queryKey: ['usersProgress', classId, examId],
@@ -83,7 +83,7 @@ const DashboradStatistiques = ({
               setClassId(value);
               // setDisable(false);
             }}
-            disabled={isPendingClasses || !classes?.length }
+            disabled={isPendingClasses || !classes?.length}
           >
             <SelectTrigger className="flex items-center p-2 border w-1/4 rounded-lg cursor-pointer text-[#1B8392]  border-[#99C6D3] gap-3 hover:opacity-80 max-md:w-full">
               <SelectValue placeholder={'classe'} />
@@ -99,7 +99,6 @@ const DashboradStatistiques = ({
           </Select>
           <Select
             onValueChange={async (value) => {
-              console.log(value);
               setExamId(value);
             }}
             disabled={!classeInfos?.exam_classe?.length}

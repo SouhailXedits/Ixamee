@@ -136,8 +136,7 @@ export const AjouterUnEtudiant = ({ children, class_id, etab_id }: AjouterUneCla
     } else setFormErrors(validationResult.error);
   };
   useEffect(() => {
-    if (isOpen && !isPending && !error) { 
-      console.log('isNotPending');
+    if (isOpen && !isPending && !error) {
       toggleDialog();
     }
   }, [isPending]);

@@ -8,8 +8,6 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
   const sortedStudents = StudentsData?.sort((a: any, b: any) => a.rank - b.rank);
   let studentCount = 0;
 
-  console.log(sortedStudents);
-
   const overallAverage =
     StudentsData?.reduce((total: number, student: any) => {
       return total + student?.average;
@@ -69,7 +67,7 @@ export const MarkSheetPdfClass = ({ StudentsData, term, classe, estab }: any) =>
               );
             })}
             <tr>
-              <td className="bg-6/40 pb-3" colSpan={sortedStudents?.[0]?.exams.length * 2 + 1 }>
+              <td className="bg-6/40 pb-3" colSpan={sortedStudents?.[0]?.exams.length * 2 + 1}>
                 Moyenne generale : {overallAverage.toFixed(2)}
               </td>
             </tr>

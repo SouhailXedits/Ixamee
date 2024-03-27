@@ -34,13 +34,13 @@ const Student = () => {
     term: defaultTerm,
     classe_id: undefined,
     subject_id: undefined,
-    searchQuery: ''
+    searchQuery: '',
   });
 
   const [searchTimeout, setSearchTimeout] = useState<any>(0);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearchChange = (e:any) => {
+  const handleSearchChange = (e: any) => {
     const newSearchQuery = e.target.value;
     clearTimeout(searchTimeout);
     setSearchQuery(newSearchQuery);
@@ -51,24 +51,20 @@ const Student = () => {
     );
   };
 
-  
-
   const { data: classes, isPending: isClassesPending } = useQuery<any>({
     queryKey: ['classe', etab_id],
     queryFn: async () => await getAllClasse({ user_id: user?.id, etab_id }),
   });
 
-  console.log(classes);
   const { data: subjects, isPending: isSubjectsPending } = useQuery<any>({
     queryKey: ['teacherSubject', filters.classe_id],
     queryFn: async () => await getAllSubjectsByClasseId(filters.classe_id),
   });
-  console.log(subjects);
+
   const { data: userEstab } = useQuery<any>({
     queryKey: ['user-estab'],
     queryFn: async () => await getNameEstabByClasseId(filters.classe_id),
   });
-  console.log(userEstab);
 
   const defaultSubject = subjects?.length && subjects[0]?.id;
 
@@ -97,8 +93,8 @@ const Student = () => {
     queryFn: async () => await getMarkSheets(filters),
   });
   const markSheets = markSheetsData?.data;
-  // console.log(defaultSubject);
-  // console.log(filters);
+  //
+  //
 
   // if (!markSheets && isPending) return <Loading />;
 

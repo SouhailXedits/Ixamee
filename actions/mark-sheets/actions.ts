@@ -72,7 +72,6 @@ export const getMarkSheets = async (filters: {
         rank: true,
       },
     });
-    console.log(markSheets);
 
     const groupedData = markSheets?.reduce((acc: any, item: any) => {
       const userId = item.user.id;
@@ -158,8 +157,6 @@ export const getMarkSheets = async (filters: {
       // student.rank = currentRank;
     });
 
-    console.log(reRankedStudents);
-
     // const reRankedStudents = sortedData.map((student: any, i: number) => {
     //   if (i === 0) {
     //     return {
@@ -175,7 +172,7 @@ export const getMarkSheets = async (filters: {
     //   }
     //   return student;
     // });
-    // console.log(reRankedStudents);
+    //
 
     // const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
 
@@ -202,7 +199,7 @@ export const getMarksheetByUserId = async (
             id: subject_id,
           },
         },
-        
+
         user: {
           id: userId,
           classe: {

@@ -7,12 +7,9 @@ import { AddQuestion, deleteExercice, hndelChangeExcericeName } from './exericeS
 
 export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) => {
   if (!data) return;
-  console.log(data)
+
   return (
-    <div
-      
-      className="flex flex-col border border-[#D9D9D9] rounded-lg p-2 min-h-[200px] pb-16"
-    >
+    <div className="flex flex-col border border-[#D9D9D9] rounded-lg p-2 min-h-[200px] pb-16">
       <div className="flex items-center justify-between w-full p-3">
         <div className="p-3 flex items-center justify-between bg-[#F0F6F8] w-full rounded-xl">
           <div className="flex items-center gap-8">
@@ -24,8 +21,8 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
               )}
               // defaultValue={data.name || !isArabic ? 'Exercice 1' : 'تمرين 1'}
               // defaultValue={data.name}
-              value={data.name === "Exercice NaN" ? "Exercice1" : data.name }
-              onChange={(e) => hndelChangeExcericeName(e,setFakeData, data )}
+              value={data.name === 'Exercice NaN' ? 'Exercice1' : data.name}
+              onChange={(e) => hndelChangeExcericeName(e, setFakeData, data)}
             />
 
             <Image
@@ -65,7 +62,7 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
               height={20}
               alt="redcloseicon"
               className="cursor-pointer"
-              onClick={() => deleteExercice(data ,setFakeData, allData)}
+              onClick={() => deleteExercice(data, setFakeData, allData)}
             />
           </div>
         </div>
@@ -90,7 +87,7 @@ export const CreateExercice = ({ allData, data, setFakeData, isArabic }: any) =>
         <div className="px-4 pt-4 -mb-10">
           <div
             className="bg-[#1B8392] w-52 flex items-center text-white rounded-lg p-2 cursor-pointer justify-center  "
-            onClick={() => AddQuestion(setFakeData  , data)}
+            onClick={() => AddQuestion(setFakeData, data)}
           >
             <Image src="/plusicon.svg" width={20} height={20} alt="plusicon" />
             {!isArabic ? 'Ajoutez une question' : 'إضافة سؤال'}

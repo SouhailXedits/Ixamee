@@ -18,7 +18,6 @@ import PDFExport from '@/app/_utils/ExportAsPdf';
 import { MarkSheetStudent } from '@/components/shared-components/MarkSheetStudent';
 import { calculateProgress } from '@/app/_utils/calculateProgress';
 
-
 const Student = () => {
   const params = useParams();
   const router = useRouter();
@@ -35,13 +34,10 @@ const Student = () => {
     queryFn: async () => await getUserById(currentId + ''),
   });
 
-
   const { data: marksheet, isPending: isPendingmMarksheet } = useQuery({
     queryKey: ['marksheet', currentId],
     queryFn: async () => getMarksheetByUserId(+classeId, currentId + '', +subjectId),
   });
-
-  console.log("🚀 ~ Student ~ marksheet:", marksheet)
 
   const { data: classeName, isPending: classeNamePending } = useQuery<any>({
     queryKey: ['classeName', classeId],
@@ -60,21 +56,15 @@ const Student = () => {
     queryFn: async () => await getTeacherName(+subjectId, +classeId),
   });
 
-
   const { data: userClasseInfos, isPending: userClasseInfosPending } = useQuery<any>({
     queryKey: ['userClasseInfos', currentId],
 
     queryFn: async () => await getUserClasseInfos({ userId: currentId, classeId, subjectId }),
   });
-  console.log(userClasseInfos);
-
 
   const examsData = marksheet?.data || [];
-  console.log('🚀 ~ file: page.tsx:examsData', examsData)
-
 
   const groupedExams = examsData.reduce((result: any, exam: any) => {
-
     const term = exam?.exam?.term;
     if (!result[term]) {
       result[term] = [];
@@ -93,10 +83,9 @@ const Student = () => {
     });
     return result;
   }, {});
-  console.log(groupedExams, '✅')
 
   const pregressedTrimesters = calculateProgress(groupedExams);
-  console.log(pregressedTrimesters)
+
   const isTrimester = Object.keys(pregressedTrimesters).some((key) =>
     key.toLowerCase().includes('trimestre')
   );
@@ -109,15 +98,13 @@ const Student = () => {
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
     exams: pregressedTrimesters[term] || [], // Check and add empty array if term has no exams
   }));
-  console.log(trimesters)
 
   const onlyDoneExamsInTerms = terms.map((term) => ({
     name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()), // Formatting term name
     exams: pregressedTrimesters?.[term]?.filter((exam: any) => exam.status === 'done') || [], // Check and add empty array if term has no exams
-  }))
-  console.log(onlyDoneExamsInTerms);
-  // const averageMark = calculateAverageMark(trimesters);
+  }));
 
+  // const averageMark = calculateAverageMark(trimesters);
 
   if (isPending || isPendingmMarksheet) return <Loading />;
 

@@ -33,13 +33,11 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
     queryFn: async () =>
       await getAllExamsNameAndId({ user_id: userId, etab_id: etabId, classe_id }),
   });
-  console.log(userExams, '(aezaazfazfazfazfazf')
 
   const { data: userCorrection, isPending: isPendingUser } = useQuery({
     queryKey: ['userCorrection', filters.exam_id, filters.classe_id],
     queryFn: async () => await getCorrectionOfUser(filters.classe_id, data, filters.exam_id),
   });
-  console.log( userCorrection, 'userCorrection✅')
 
   // get the student of classe  : hadi bach tjiblna el student mta3 el classe
   const { data, isPending: isPendingUserOfClasses } = useQuery({
@@ -56,7 +54,7 @@ const CorrectionsRecentes = ({ etabId, classes }: any) => {
       await getCorigeExameContentOfAllUser(filters.exam_id, getIdOfUserInTheClasse),
   });
   const newData = useMemo(() => {
-    if(userCorrection) {
+    if (userCorrection) {
       return data?.map((item: any) => ({
         ...item,
         correctionExamOfUser: getCorrigeExamOfUser,

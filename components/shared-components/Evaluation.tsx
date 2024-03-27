@@ -26,20 +26,17 @@ export default function Evaluation({
   if (!userExamCorectionContent) {
     return null;
   }
-  console.log(user_id);
-  console.log(examDetails);
 
   const allExamUserDetails = examDetails?.examCorrection;
 
-  console.log(allExamUserDetails);
   const [examCorrection] = userExamCorectionContent[0]?.correction_exam_content;
-  console.log(userExamCorectionContent);
+
   const params = useParams();
   const sumOfMarks = allExamUserDetails.reduce(
     (acc: any, item: any) => acc + item.mark_obtained,
     0
   );
-  console.log(sumOfMarks);
+
   const classe_id = params.etab_id as string;
   // Count
   const averageMark = (sumOfMarks / allExamUserDetails.length).toFixed(2);
@@ -51,11 +48,9 @@ export default function Evaluation({
   const queryClient = useQueryClient();
 
   const totalMark = allExamUserDetails.find((item: any) => item?.user_id === user_id);
-  console.log(totalMark);
 
   const realNote = totalMark?.mark_obtained + '/' + examDetails?.totalScore;
 
-  console.log(realNote);
   // const etab_id = queryClient.getQueryData(['etab_id']) as any;
   const teacherEstab = queryClient.getQueryData(['AllEstabOfUser']) as any;
   const user = queryClient.getQueryData(['user']) as any;
@@ -155,173 +150,164 @@ export default function Evaluation({
                     </tr>
                   ))} */}
                 {depth === 2 &&
-                  (item.children?.length === 0
-                    ? (console.log(item),
-                      (
-                        <tr key={index}>
-                          <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
-                          <td className="p-2 pb-[10px] border border-black/50"> </td>
+                  (item.children?.length === 0 ? (
+                    <tr key={index}>
+                      <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                      <td className="p-2 pb-[10px] border border-black/50"> </td>
 
-                          <td className="p-2 pb-[10px] border border-black/50">{item.mark}</td>
-                          <td className="p-2 pb-[10px] border border-black/50">
-                            {getMarkOfExerciceWithId(examCorrection, item.id) === null
-                              ? 0
-                              : getMarkOfExerciceWithId(examCorrection, item.id)}
-                          </td>
-                          <td className="p-2 pb-[10px] border border-black/50">
-                            {getDetailsOfExercice(
-                              item.id,
-                              examCorrection,
-                              userCorrections,
-                              examContent
-                            )}
-                          </td>
-                        </tr>
-                      ))
-                    : item?.children?.map((subItem: any, subIndex: number) => {
-                        if (subItem?.children?.length === 0) {
-                          return (
-                            <tr key={subIndex}>
-                              <td className="p-2 pb-[10px] border border-black/50"></td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {' '}
-                                {subItem.name}
-                              </td>
+                      <td className="p-2 pb-[10px] border border-black/50">{item.mark}</td>
+                      <td className="p-2 pb-[10px] border border-black/50">
+                        {getMarkOfExerciceWithId(examCorrection, item.id) === null
+                          ? 0
+                          : getMarkOfExerciceWithId(examCorrection, item.id)}
+                      </td>
+                      <td className="p-2 pb-[10px] border border-black/50">
+                        {getDetailsOfExercice(
+                          item.id,
+                          examCorrection,
+                          userCorrections,
+                          examContent
+                        )}
+                      </td>
+                    </tr>
+                  ) : (
+                    item?.children?.map((subItem: any, subIndex: number) => {
+                      if (subItem?.children?.length === 0) {
+                        return (
+                          <tr key={subIndex}>
+                            <td className="p-2 pb-[10px] border border-black/50"></td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {' '}
+                              {subItem.name}
+                            </td>
 
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {subItem.mark}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
-                                  ? 0
-                                  : getMarkOfExerciceWithId(examCorrection, subItem.id)}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {getDetailsOfExercice(
-                                  subItem.id,
-                                  examCorrection,
-                                  userCorrections,
-                                  examContent
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        }
-                        // return subItem?.children?.map((subSubItem: any, subSubIndex: number) => {
-                        //   console.log(subSubItem);
-                        //   return (
-                        //     <tr key={subSubIndex}>
-                        //       <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {subItem.name}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {subSubItem.name}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {subSubItem.mark}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {getMarkOfExerciceWithId(examCorrection, subSubItem.id) === null
-                        //           ? 0
-                        //           : getMarkOfExerciceWithId(examCorrection, subSubItem.id)}
-                        //       </td>
-                        //       <td className="p-2 pb-[10px] border border-black/50">
-                        //         {getDetailsOfExercice(
-                        //           subSubItem.id,
-                        //           examCorrection,
-                        //           userCorrections,
-                        //           examContent
-                        //         )}
-                        //       </td>
-                        //     </tr>
-                        //   );
-                        // });
-                      }))}
+                            <td className="p-2 pb-[10px] border border-black/50">{subItem.mark}</td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
+                                ? 0
+                                : getMarkOfExerciceWithId(examCorrection, subItem.id)}
+                            </td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {getDetailsOfExercice(
+                                subItem.id,
+                                examCorrection,
+                                userCorrections,
+                                examContent
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      }
+                      // return subItem?.children?.map((subSubItem: any, subSubIndex: number) => {
+                      //
+                      //   return (
+                      //     <tr key={subSubIndex}>
+                      //       <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                      //       <td className="p-2 pb-[10px] border border-black/50">
+                      //         {subItem.name}
+                      //       </td>
+                      //       <td className="p-2 pb-[10px] border border-black/50">
+                      //         {subSubItem.name}
+                      //       </td>
+                      //       <td className="p-2 pb-[10px] border border-black/50">
+                      //         {subSubItem.mark}
+                      //       </td>
+                      //       <td className="p-2 pb-[10px] border border-black/50">
+                      //         {getMarkOfExerciceWithId(examCorrection, subSubItem.id) === null
+                      //           ? 0
+                      //           : getMarkOfExerciceWithId(examCorrection, subSubItem.id)}
+                      //       </td>
+                      //       <td className="p-2 pb-[10px] border border-black/50">
+                      //         {getDetailsOfExercice(
+                      //           subSubItem.id,
+                      //           examCorrection,
+                      //           userCorrections,
+                      //           examContent
+                      //         )}
+                      //       </td>
+                      //     </tr>
+                      //   );
+                      // });
+                    })
+                  ))}
                 {depth === 3 &&
-                  (item.children?.length === 0
-                    ? (console.log(item),
-                      (
-                        <tr key={index}>
-                          <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
-                          <td className="p-2 pb-[10px] border border-black/50"> </td>
-                          <td className="p-2 pb-[10px] border border-black/50"> </td>
-                          <td className="p-2 pb-[10px] border border-black/50">{item.mark}</td>
-                          <td className="p-2 pb-[10px] border border-black/50">
-                            {getMarkOfExerciceWithId(examCorrection, item.id) === null
-                              ? 0
-                              : getMarkOfExerciceWithId(examCorrection, item.id)}
-                          </td>
-                          <td className="p-2 pb-[10px] border border-black/50">
-                            {getDetailsOfExercice(
-                              item.id,
-                              examCorrection,
-                              userCorrections,
-                              examContent
-                            )}
-                          </td>
-                        </tr>
-                      ))
-                    : item?.children?.map((subItem: any, subIndex: number) => {
-                        if (subItem?.children?.length === 0) {
-                          return (
-                            <tr key={subIndex}>
-                              <td className="p-2 pb-[10px] border border-black/50"></td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {' '}
-                                {subItem.name}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50"> </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {subItem.mark}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
-                                  ? 0
-                                  : getMarkOfExerciceWithId(examCorrection, subItem.id)}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {getDetailsOfExercice(
-                                  subItem.id,
-                                  examCorrection,
-                                  userCorrections,
-                                  examContent
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        }
-                        return subItem?.children?.map((subSubItem: any, subSubIndex: number) => {
-                          console.log(subSubItem);
-                          return (
-                            <tr key={subSubIndex}>
-                              <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {subItem.name}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {subSubItem.name}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {subSubItem.mark}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {getMarkOfExerciceWithId(examCorrection, subSubItem.id) === null
-                                  ? 0
-                                  : getMarkOfExerciceWithId(examCorrection, subSubItem.id)}
-                              </td>
-                              <td className="p-2 pb-[10px] border border-black/50">
-                                {getDetailsOfExercice(
-                                  subSubItem.id,
-                                  examCorrection,
-                                  userCorrections,
-                                  examContent
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        });
-                      }))}
+                  (item.children?.length === 0 ? (
+                    <tr key={index}>
+                      <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                      <td className="p-2 pb-[10px] border border-black/50"> </td>
+                      <td className="p-2 pb-[10px] border border-black/50"> </td>
+                      <td className="p-2 pb-[10px] border border-black/50">{item.mark}</td>
+                      <td className="p-2 pb-[10px] border border-black/50">
+                        {getMarkOfExerciceWithId(examCorrection, item.id) === null
+                          ? 0
+                          : getMarkOfExerciceWithId(examCorrection, item.id)}
+                      </td>
+                      <td className="p-2 pb-[10px] border border-black/50">
+                        {getDetailsOfExercice(
+                          item.id,
+                          examCorrection,
+                          userCorrections,
+                          examContent
+                        )}
+                      </td>
+                    </tr>
+                  ) : (
+                    item?.children?.map((subItem: any, subIndex: number) => {
+                      if (subItem?.children?.length === 0) {
+                        return (
+                          <tr key={subIndex}>
+                            <td className="p-2 pb-[10px] border border-black/50"></td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {' '}
+                              {subItem.name}
+                            </td>
+                            <td className="p-2 pb-[10px] border border-black/50"> </td>
+                            <td className="p-2 pb-[10px] border border-black/50">{subItem.mark}</td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {getMarkOfExerciceWithId(examCorrection, subItem.id) === null
+                                ? 0
+                                : getMarkOfExerciceWithId(examCorrection, subItem.id)}
+                            </td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {getDetailsOfExercice(
+                                subItem.id,
+                                examCorrection,
+                                userCorrections,
+                                examContent
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      }
+                      return subItem?.children?.map((subSubItem: any, subSubIndex: number) => {
+                        return (
+                          <tr key={subSubIndex}>
+                            <td className="p-2 pb-[10px] border border-black/50">{item.name}</td>
+                            <td className="p-2 pb-[10px] border border-black/50">{subItem.name}</td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {subSubItem.name}
+                            </td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {subSubItem.mark}
+                            </td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {getMarkOfExerciceWithId(examCorrection, subSubItem.id) === null
+                                ? 0
+                                : getMarkOfExerciceWithId(examCorrection, subSubItem.id)}
+                            </td>
+                            <td className="p-2 pb-[10px] border border-black/50">
+                              {getDetailsOfExercice(
+                                subSubItem.id,
+                                examCorrection,
+                                userCorrections,
+                                examContent
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })
+                  ))}
               </>
             ))}
             <tr>

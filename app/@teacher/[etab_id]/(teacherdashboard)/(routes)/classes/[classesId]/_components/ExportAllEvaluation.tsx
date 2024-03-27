@@ -6,9 +6,6 @@ import EvaluationPDFExport from '@/app/_utils/CustomExportAsPdf';
 import Evaluation from './Evaluation';
 
 function ExportAllEvaluationPdf({ newData, classeId, examId }: any) {
-  console.log(classeId);
-  console.log(examId);
-
   if (!newData) return;
 
   return (

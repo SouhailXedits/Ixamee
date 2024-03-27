@@ -1,7 +1,4 @@
 function StudentRow({ data }: any) {
-  console.log(data.exams, '🚀');
-  console.log(data.exams.length);
-
   return (
     <tr key={data.id}>
       <td className="pb-4 border border-black/50 ">{data.name}</td>

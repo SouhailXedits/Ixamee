@@ -15,7 +15,6 @@ export const createSubject = async (data: SubjectInputProps) => {
   }
 };
 export const getAllSubjectsByPage = async (page = 1, pageSize = 10, name = '') => {
-  console.log('page', page);
   try {
     const skip = (page - 1) * pageSize;
 

@@ -136,8 +136,6 @@ export const getUserCorrectionBySubjectId = async (
 
 export const getExamCorrectionById = async (exam_id: string, classe_id: string) => {
   try {
-    console.log(exam_id);
-
     const res = await db.examCorrection.findMany({
       where: {
         exam_id: +exam_id,
@@ -155,7 +153,7 @@ export const getExamCorrectionById = async (exam_id: string, classe_id: string) 
         user_id: true,
       },
     });
-    console.log(res);
+
     return res;
   } catch (error: any) {
     return {
@@ -175,13 +173,11 @@ export const getObservationOfStudent = async (exam_id: string, user_id: string) 
       feedback: true,
     },
   });
-  console.log(data[0].feedback, 'data');
+
   return data[0].feedback;
 };
 export const getExamCorrectionById2 = async (exam_id: string, classe_id: string) => {
   try {
-    console.log(exam_id);
-
     const res = await db.examCorrection.findMany({
       where: {
         exam_id: +exam_id,
@@ -199,7 +195,7 @@ export const getExamCorrectionById2 = async (exam_id: string, classe_id: string)
         user_id: true,
       },
     });
-    console.log(res);
+
     return res;
   } catch (error: any) {
     return {
@@ -287,7 +283,7 @@ export const getRecentCorrections = async (
 
 export const getCorrectionProgressStats = async (classe_id: number, exam_id: number) => {
   if (!classe_id || !exam_id) return;
-  console.log(classe_id, exam_id);
+
   const res = await db.examCorrection.findMany({
     where: {
       exam: {
@@ -312,8 +308,8 @@ export const getCorrectionProgressStats = async (classe_id: number, exam_id: num
       mark_obtained: true,
     },
   });
-  console.log('🚀 ~ getCorrectionProgressStats ~ res:', res);
+
   const groupedData = groupByCorrectionProgress(res);
-  console.log(groupedData);
+
   return groupedData;
 };

@@ -2,8 +2,6 @@ import NoResultsFount from './NoResultsFount';
 import UserExam from './UserExam';
 
 function TermCard({ term, examsData }: any) {
-  console.log(examsData, 'examsData');
-  console.log(term, 'term');
   return (
     <div className=" flex flex-col gap-5  min-w-fit min-h-[15rem] h-full ">
       <div className="p-2 font-semibold rounded bg-4/50 text-mainGreen">{term.name}</div>

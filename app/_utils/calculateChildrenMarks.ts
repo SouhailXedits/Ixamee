@@ -33,11 +33,9 @@ export const transferAllMarkToNull = (content: any) => {
       transferAllMarkToNull(item.children);
     }
   }
-  console.log(content);
 };
 
 export const getMarkOfExerciceWithId = (content: any, id: string): number | null => {
-  console.log(content);
   if (!content) return null;
   if (Array.isArray(content)) {
     for (const item of content) {

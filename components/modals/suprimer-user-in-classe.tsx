@@ -26,10 +26,9 @@ export const SupprimerUserInClasse = ({
 
   setOpen,
 }: SupprimerUneClasse) => {
-  console.log(exam_id);
   const { deleteUser } = useDeleteUserInClasse();
   const handelDeleteExa = () => {
-    deleteUser({ user_id, classe_id ,exam_id});
+    deleteUser({ user_id, classe_id, exam_id });
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>

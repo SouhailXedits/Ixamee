@@ -31,9 +31,6 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   studentCountPending,
   correctionsProgress,
 }) => {
-  console.log("🚀 ~ correctionsProgress:", correctionsProgress)
-
-
   const transformedData = useMemo(
     () => correctionsProgress && transformData(correctionsProgress),
     [correctionsProgress]
@@ -71,7 +68,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
 
   const items = useMemo(
     () =>
-      transformedData?.map((item:any) => ({
+      transformedData?.map((item: any) => ({
         color: finalCount || finalCount > 0 ? item.color : '#D0D5DD',
         firstMessage: item.status,
         numExams: item.numExams,
@@ -80,11 +77,11 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
   );
 
   const series = useMemo(
-    () => transformedData?.map((item:any) => item.numExams) || [100],
+    () => transformedData?.map((item: any) => item.numExams) || [100],
     [transformedData]
   );
   const colors = useMemo(
-    () => transformedData?.map((item:any) => item.color) || ['#D9D9D9'],
+    () => transformedData?.map((item: any) => item.color) || ['#D9D9D9'],
     [transformedData]
   );
 
@@ -101,9 +98,7 @@ const StatistiquesItems: React.FC<StatistiquesItemsProps> = ({
                 />
                 <div className="flex flex-col gap-1 pl-4">
                   <span className="text-[#727272]">{item.firstMessage}</span>
-                  <span className="text-10 font-[500] leading-9">
-                    {item.numExams} Etudiant(s)
-                  </span>
+                  <span className="text-10 font-[500] leading-9">{item.numExams} Etudiant(s)</span>
                 </div>
               </div>
             ))

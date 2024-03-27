@@ -14,11 +14,11 @@ function ExamsLayout() {
   const params = useParams();
   const estabId = params.etab_id;
   const { name } = useSearchQuery();
-  console.log(name);
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
   const filters = queryClient.getQueryData(['a-exams-filters']) as any;
-  console.log(filters);
+
   const {
     data: exams,
     error,
@@ -46,7 +46,6 @@ function ExamsLayout() {
       </p>
     );
 
-  console.log(filters?.classe);
   let filteredData = [];
 
   if (filters?.classe === 'tous') {
@@ -59,7 +58,6 @@ function ExamsLayout() {
         )) ||
       data;
   }
-  console.log(filteredData);
 
   const filteredByArchivedDateRange = filters?.dateRange
     ? filteredData.filter((exam: any) => {
@@ -69,14 +67,15 @@ function ExamsLayout() {
         return examDate >= startDate && examDate <= endDate;
       })
     : filteredData;
-  const filteredByDateRange = filters?.created_at ? filteredByArchivedDateRange.filter((exam: any) => {
-    const examDate = new Date(exam.create_at);
-    const startDate = new Date(filters.created_at.from);
-    const endDate = new Date(filters.created_at.to);
-    return examDate >= startDate && examDate <= endDate;
-  }) : filteredByArchivedDateRange;
+  const filteredByDateRange = filters?.created_at
+    ? filteredByArchivedDateRange.filter((exam: any) => {
+        const examDate = new Date(exam.create_at);
+        const startDate = new Date(filters.created_at.from);
+        const endDate = new Date(filters.created_at.to);
+        return examDate >= startDate && examDate <= endDate;
+      })
+    : filteredByArchivedDateRange;
 
-  console.log(filteredByDateRange);
   const totalPages = Math.ceil(data?.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;

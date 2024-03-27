@@ -6,7 +6,6 @@ interface PdfHeaderProps {
 }
 
 function PdfHeader({ type, meta }: PdfHeaderProps) {
-  console.log(meta);
   return (
     <div
       style={{
@@ -182,7 +181,7 @@ function PdfHeader({ type, meta }: PdfHeaderProps) {
                     </span>
                   </p>
                 )}
-                {meta.range !== undefined&& (
+                {meta.range !== undefined && (
                   <p
                     style={{
                       alignSelf: 'stretch',

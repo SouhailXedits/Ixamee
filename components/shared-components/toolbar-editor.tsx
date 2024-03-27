@@ -2,9 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { useTheme } from 'next-themes';
-import {
-  BlockNoteEditor,
-} from '@blocknote/core';
+import { BlockNoteEditor } from '@blocknote/core';
 import { BlockNoteView, useBlockNote } from '@blocknote/react';
 import '@blocknote/core/style.css';
 
@@ -32,7 +30,6 @@ const handleUpload = async (file: File) => {
   }
 };
 const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
-  console.log('mounted')
   const { resolvedTheme } = useTheme();
   const [file, SetFile] = useState('');
   const editor: BlockNoteEditor = useBlockNote({
@@ -95,7 +92,6 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   return (
     <div className="w-full h-full" onPaste={(e) => handlePaste(e)}>
       <BlockNoteView editor={editor} theme={resolvedTheme === 'dark' ? 'dark' : 'light'} />
-    
     </div>
   );
 };

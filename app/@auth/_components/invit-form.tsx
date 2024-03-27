@@ -63,14 +63,12 @@ export default function InvitForm({ email }: any) {
           },
           123456
         ).then(() => {
-          console.log('logged in successfully');
           localStorage.removeItem('new-verification');
           setRegistrationFormSuccessful(true);
         });
       });
     });
   };
-
 
   return (
     <Form {...form}>

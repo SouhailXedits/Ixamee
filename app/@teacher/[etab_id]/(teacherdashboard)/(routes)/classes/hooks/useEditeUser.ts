@@ -15,7 +15,6 @@ export function useUpdateUserInClasse() {
       toast.success('etudiant modifié avec succès.');
     },
     onError: (err) => {
-      console.log();
       if (err.message.includes('email')) {
         toast.error('Email deja utulisé pour un autre étudiant!');
       } else {

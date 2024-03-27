@@ -305,8 +305,6 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
     }
     setItem(undefined);
     setNote(value);
-    console.log('value', item);
-    console.log('note', note)
   };
 
   const { createExamCorrectionn, isPending } = useCreateExamCorrection();
@@ -385,9 +383,14 @@ export const CorrectExam: React.FC<CorrectExamProps> = ({
         <hr className="bg-[#F0F6F8] mb-4" />
         <div className="flex items-center gap-4">
           <span className="text-[#959595]">Marquer comme</span>
-          <RadioGroup value={item} onValueChange={(value) => {
-            setNote('0')
-            setItem(value)}} className="flex">
+          <RadioGroup
+            value={item}
+            onValueChange={(value) => {
+              setNote('0');
+              setItem(value);
+            }}
+            className="flex"
+          >
             <div
               className="flex items-center space-x-2 border border-[#1B8392] p-1 text-[#1B8392] rounded-xl"
               style={item === 'absent' ? { backgroundColor: '#F0F6F8' } : {}}

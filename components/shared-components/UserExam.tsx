@@ -7,7 +7,7 @@ import TelachargePdfEvaluation from './TelachargePdfEvaluation';
 function UserExam({ exam, examsData }: any) {
   const params = useParams();
   const user_id = exam?.user?.id;
-  console.log();
+
   const userContent = exam?.examCorrection?.filter((item: any) => {
     return item.user_id === user_id;
   });
@@ -26,10 +26,8 @@ function UserExam({ exam, examsData }: any) {
     else router.push(`${pathname}/correction/${exam.exam_id}`);
     // else router.push(`/${params.etab_id}/results/${params.classe_id}/correction/${exam.exam_id}`);
   }
-  function handelUplodFicher() {
-    console.log('dskdskdk');
-  }
-  console.log(exam?.progress);
+  function handelUplodFicher() {}
+
   const progress = exam?.progress;
   //1/acelsss / 16 / students / cls33eyik000040q9bm7811vv / correction / 64;
 
@@ -59,7 +57,7 @@ function UserExam({ exam, examsData }: any) {
                 ) : (
                   <Image src="/progress-down.svg" alt="arrow icon" height={16} width={16} />
                 )}
-                <span className='flex justify-center '>{Math.abs(progress) + '%'}{' '}</span>
+                <span className="flex justify-center ">{Math.abs(progress) + '%'} </span>
               </p>
             ) : (
               '--'

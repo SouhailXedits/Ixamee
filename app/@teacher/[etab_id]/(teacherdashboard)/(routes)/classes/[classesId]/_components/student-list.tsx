@@ -128,7 +128,7 @@ export const columns = [
     cell: ({ row }: any) => (
       <div className="w-10 h-[21px] p-2.5 bg-[#D8ECF3] rounded-[10px] border border-[#1B8392] flex-col justify-center items-center gap-2.5 inline-flex">
         <div className="text-center text-[#1B8392] text-sm font-semibold ">
-          {+row.id+1}
+          {+row.id + 1}
           {/* {row.getValue('range')}  */}
         </div>
       </div>
@@ -225,8 +225,6 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
     return null;
   }
 
-  console.log(data, 'data');
-
   const queryClient = useQueryClient();
   const etab_id = queryClient.getQueryData(['etab_id']) as number;
 
@@ -235,7 +233,6 @@ export function StudentList({ data, class_id, isPending, isPendingUserOfClasses 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const { filters, setFilters } = useFilters((state) => state);
-  console.log(filters)
 
   const table = useReactTable<any>({
     data,

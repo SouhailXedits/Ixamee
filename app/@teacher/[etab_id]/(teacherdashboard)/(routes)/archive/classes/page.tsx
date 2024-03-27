@@ -14,7 +14,6 @@ function ClassesLayout() {
   const params = useParams();
   const estabId = params.etab_id;
   const { name } = useSearchQuery();
-  console.log(name);
 
   const filters = queryClient.getQueryData(['a-classes-filters']);
   const {
@@ -60,7 +59,7 @@ function ClassesLayout() {
   const paginatedData = reformedData?.slice(startIndex, endIndex);
 
   return (
-    <div className=' flex flex-col h-full justify-between gap-10'>
+    <div className=" flex flex-col h-full justify-between gap-10">
       <div className="flex flex-wrap gap-7">
         {paginatedData.map((classe: any) => (
           <ArchiverCard data={classe} key={classe.id} />

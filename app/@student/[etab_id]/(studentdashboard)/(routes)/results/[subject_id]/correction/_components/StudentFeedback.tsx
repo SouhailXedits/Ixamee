@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -14,11 +13,10 @@ interface studentFeadback {
   content: {
     feedback: string[];
     description: string;
-  }
+  };
 }
 export const StudentFeedback = ({ children, content }: studentFeadback) => {
-  console.log(content)
-  const feedback = content?.feedback?.join(' ') 
+  const feedback = content?.feedback?.join(' ');
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -38,13 +36,9 @@ export const StudentFeedback = ({ children, content }: studentFeadback) => {
         </DialogHeader>
         <div className=" h-[290px] p-1 rounded-lg overflow-scroll">
           <div className="flex flex-col gap-2">
-
-            <p className=' font-semibold bg-8 p-1 rounded'>{feedback}</p>
+            <p className=" font-semibold bg-8 p-1 rounded">{feedback}</p>
             <p>{content?.description}</p>
-
-
           </div>
-          
         </div>
       </DialogContent>
     </Dialog>

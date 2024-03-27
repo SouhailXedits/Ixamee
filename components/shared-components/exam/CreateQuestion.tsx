@@ -14,8 +14,6 @@ export const CreateQuestion = ({
   isArabic,
   fakeData,
 }: any) => {
-  console.log(allData, 'allData');
-  console.log(data, 'data');
   const onChange = (content: string) => {
     updateContetn(content, data);
   };
@@ -82,7 +80,6 @@ export const CreateQuestion = ({
       return updatedData;
     });
   };
-  console.log(data)
 
   return (
     <>

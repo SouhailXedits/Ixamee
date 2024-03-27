@@ -57,12 +57,10 @@ function FiltersModal() {
     created_at: undefined,
     classe: undefined,
   });
-  console.log(filters);
 
   // useEffect(() => {
   // }, [filters]);
   function handleSubmitFilters() {
-    console.log(filters);
     if (currRoute !== 'exams') {
       queryClient.setQueryData(['a-classes-filters'], filters);
       queryClient.invalidateQueries({ queryKey: ['archived_classes'] });
@@ -72,16 +70,14 @@ function FiltersModal() {
     }
   }
   const archived = queryClient.getQueryData(['archived_exams', estabId, '', null]) as any;
-  console.log(archived);
+
   let classes: any = [];
   archived?.data?.map((archived: any) => {
     archived?.exam_classess?.map((classe: any) => {
-      console.log(classe);
       const isAlreadyExists = classes.find((item: any) => item.id === classe.id);
       if (!isAlreadyExists) classes.push(classe);
     });
   });
-  console.log(classes);
 
   return (
     <Dialog>

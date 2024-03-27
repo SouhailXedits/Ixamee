@@ -9,7 +9,6 @@ import {
 } from '@/app/_utils/calculateChildrenMarks';
 
 export const CreateExercice = ({ allData, data, setFakeData, realExamContetn, isArabic }: any) => {
-  console.log(data?.name, 'data');
   if (!data) return;
 
   return (

@@ -27,7 +27,7 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
   const params = useParams();
   const { examenId } = params;
   const { correction_id } = params;
-  console.log(correction_id);
+
   const {
     data: attachements,
     isLoading,
@@ -36,14 +36,14 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
     queryKey: ['examenAttachements', examenId],
     queryFn: () => getExamAttachements({ exam_id: +examenId || +correction_id }),
   });
-  console.log(attachements?.attachements, 'attachements');
+
   const attachementsData = attachements?.attachements as any;
   // attachementsData?.map((item: any) => {
-  //   console.log(item);
+  //
   // })
   const handleFileChange = (event: any) => {
     const fileList = Array.from(event.target.files);
-    console.log(fileList);
+
     setFiles(fileList);
   };
 
@@ -54,11 +54,9 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
     }
   }, [attachementsData]);
   useEffect(() => {
-    console.log(files, 'files');
     if (files.length > 0) handleSubmit();
   }, [files]);
   useEffect(() => {
-    console.log(files, 'files');
     const handleUpdate = async () => {
       updateExamAttachements({
         exam_id: +examenId,
@@ -71,53 +69,42 @@ function FilesUploader({ editable = true }: { editable?: boolean }) {
   }, [allFiles, attachementsData]);
 
   const handleSubmit = async () => {
-    console.log(files, 'files');
     const data = await handleUpload(files);
-    console.log(data);
+
     if (!data) return;
     const newFiles = data.map((file: any) => {
       return { original_filename: file.original_filename, url: file.secure_url };
     });
 
-    console.log(newFiles, 'newFiles');
-    console.log(allFiles, 'newFiles');
     setAllFiles((prevAllFiles: any) => [...prevAllFiles, ...newFiles]);
-    console.log(allFiles);
   };
 
   const handleUpload = async (files: any) => {
-    console.log(files);
     try {
       const form = new FormData();
       let allFiles: any = [];
       const uploadPromises = files.map(async (file: File) => {
-        console.log(file);
         form.append('file', file);
         form.append('upload_preset', 'firaslatrach');
-        console.log(form);
 
         const response = await fetch('https://api.cloudinary.com/v1_1/dm5d9jmf4/image/upload', {
           method: 'POST',
           body: form,
         });
         const data = await response.json();
-        console.log(data);
 
         if (response.ok) {
           allFiles.push(data);
-          console.log(allFiles);
         } else {
           console.error(await response.json());
           toast.error('File(s) upload failed !');
         }
       });
-      console.log(uploadPromises);
+
       await Promise.all(uploadPromises);
 
-      console.log(allFiles);
       return allFiles;
     } catch (error) {
-      console.log(error);
       console.error(error);
     }
   };

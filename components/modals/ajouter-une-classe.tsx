@@ -63,7 +63,6 @@ export const AjouterUneClasse = ({ children, user_id, estab }: AjouterUneClasseP
 
   const handleSubmitInput = () => {
     try {
-      console.log('🚀 ~ handleSubmitInput ~ formatData:', formatData);
       createClass({
         name: formatData.classe,
         matiere: formatData.matiere,

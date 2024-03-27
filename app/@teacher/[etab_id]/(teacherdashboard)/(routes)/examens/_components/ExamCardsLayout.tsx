@@ -4,7 +4,6 @@ import ExamCards from './ExamCards';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function ExamCardsLayout({ isPending, data }: any) {
-  console.log("🚀 ~ ExamCardsLayout ~ data:", data)
   const exams = data.sort((a: any, b: any) => {
     if (a.term < b.term) return -1;
     if (a.term > b.term) return 1;

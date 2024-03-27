@@ -1,7 +1,5 @@
 export function calculateCorrectionPercentage(entry: any) {
-console.log("🚀 ~ calculateCorrectionPercentage ~ entry:", entry)
-
-  return 0
+  return 0;
 }
 
 export function groupByExamProgress(data: any) {

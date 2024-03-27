@@ -71,7 +71,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
 
     const is_published = sum === data?.total_mark;
     let exam_id = examenId;
-    console.log(fakeData);
+
     editExam({ exam_id, content: fakeData, is_published });
     confetti.onOpen();
 
@@ -81,10 +81,6 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
   const handleConfetti = () => {
     confetti.onOpen();
   };
-  console.log(fakeData);
-  console.log(data);
-
-
 
   return (
     <div className="flex h-[92vh] flex-col gap-6 overflow-auto">
@@ -120,7 +116,7 @@ export default function Page({ params }: { params: { examenId: string; etab_id: 
         </div>
 
         <div className="flex gap-3 pt-4 h-14 cursor-pointe ">
-          <FilesUploader/>
+          <FilesUploader />
           {/* <FilesUploader /> */}
           {/* <Button className=" bg-transparent text-2 border border-2 rounded-md">
             <Image src="/attachement-icon.svg" alt="icons" width={20} height={20} />

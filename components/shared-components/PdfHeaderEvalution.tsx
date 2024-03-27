@@ -6,7 +6,6 @@ interface PdfHeaderProps {
 }
 
 function PdfHeaderEvatuation({ type, meta }: PdfHeaderProps) {
-  console.log(meta);
   return (
     <div
       style={{

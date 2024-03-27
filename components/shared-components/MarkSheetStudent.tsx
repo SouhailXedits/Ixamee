@@ -8,7 +8,6 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
   // const data = {
   //   terms = [{trimester1: [exams= {}}]
   // }
-  console.log(meta)
 
   return (
     <div>

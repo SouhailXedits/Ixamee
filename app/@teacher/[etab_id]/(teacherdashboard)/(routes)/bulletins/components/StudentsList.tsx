@@ -32,8 +32,6 @@ import { cn } from '@/lib/utils';
 import { link } from 'fs';
 import { usePathname, useRouter } from 'next/navigation';
 
-
-
 export type Payment = {
   id: string;
   rang: number;
@@ -66,8 +64,6 @@ export const CorrectionTag = ({
 );
 
 export default function MarkSheetStudentList({ data: realData, filters }: any) {
-  console.log(realData);
-
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -78,13 +74,10 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
   const maxLength = Math.max(...realData?.map((student: any) => student.exams.length));
   const examsArray =
     realData.find((student: any) => student.exams.length === maxLength)?.exams || [];
-  console.log(realData)
-  
 
   // const sortedData = [...realData].sort((a, b) => b.average - a.average);
-  // console.log(sortedData);
+  //
   // const rankedData = sortedData.map((student, index) => ({ ...student, rank: index + 1 }));
-
 
   const columns: ColumnDef<any>[] = [
     // {
@@ -118,7 +111,7 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
       cell: ({ row }) => (
         <div className="flex items-center gap-2 capitalize cursor-pointer">
           <Image
-            src={row.original.image || "/defaultUserAvatr.svg"}
+            src={row.original.image || '/defaultUserAvatr.svg'}
             alt=""
             width={42}
             height={42}
@@ -143,16 +136,16 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
         const examInfos = row.original.exams.find(
           (e: any) => e.name.toLowerCase() === exam.name.toLowerCase()
         );
-        
+
         return (
           <div className="text-[#727272]">
-            {examInfos?.status === 'done'&& `${examInfos?.average || '--'}${' '} / ${examInfos.totalMarks}`}
+            {examInfos?.status === 'done' &&
+              `${examInfos?.average || '--'}${' '} / ${examInfos.totalMarks}`}
             {examInfos?.status === 'notClassified' && 'Non classé'}
             {examInfos?.status === 'absent' && 'Absent'}
           </div>
         );
-      }
-        ,
+      },
     })),
     {
       accessorKey: 'average',
@@ -170,22 +163,19 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
       },
       cell: ({ row }) => {
         const average = row.original.average as number;
-        console.log(row)
-
-
 
         return (
           <div className={cn('flex justify-center items-center')}>
-              <p
-                className={cn(
-                  'text-[#727272] rounded-full px-2',
-                  average > 15 && 'text-[#12B76A] bg-[#12B76A]/30',
-                  average <= 15 && average >= 10 && 'text-[#FBB800]  bg-[#FBB800]/30 ',
-                  average < 10 && 'text-[#F04438]  bg-[#F04438]/30'
-                )}
-              >
-                {average.toFixed(2)} / 20
-              </p>
+            <p
+              className={cn(
+                'text-[#727272] rounded-full px-2',
+                average > 15 && 'text-[#12B76A] bg-[#12B76A]/30',
+                average <= 15 && average >= 10 && 'text-[#FBB800]  bg-[#FBB800]/30 ',
+                average < 10 && 'text-[#F04438]  bg-[#F04438]/30'
+              )}
+            >
+              {average.toFixed(2)} / 20
+            </p>
           </div>
         );
       },
@@ -232,10 +222,6 @@ export default function MarkSheetStudentList({ data: realData, filters }: any) {
       `${currPath}/classe/${filters.classe_id}/subject/${filters.subject_id}/student/${id}`
     );
   }
-
-
-
-
 
   if (realData.length === 0) return <p>Pas de bulletins à afficher.</p>;
   return (

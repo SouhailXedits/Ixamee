@@ -41,7 +41,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
 
   const { sendExamMark, isPending: isPendingSend } = useSendExamMark();
   const { filters, setFilters } = useFilters((state) => state);
-  console.log(filters);
+
   // const [filter, setFilter] = useState<any>(filters.filterBy);
   // const [exam, setExam] = useState<string>(filters.exam_id + '');
 
@@ -62,13 +62,12 @@ const Student = ({ params }: { params: { classesId: string } }) => {
     queryKey: ['userOfClasses', classesId],
     queryFn: async () => await getStudentOfClasse(+classesId),
   });
-  console.log(data);
+
   const { data: getCorrigeExamOfUser, isPending: isPendingCorrige } = useQuery<any>({
     queryKey: ['CorigeExameContent', filters.exam_id],
     queryFn: async () =>
       await getCorigeExameContentOfAllUser(filters.exam_id, getIdOfUserInTheClasse),
   });
-  console.log(getCorrigeExamOfUser);
 
   useEffect(() => {
     if (filters.exam_id === 'undefined' || filters.exam_id === '') {
@@ -116,8 +115,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
           filters.exam_id,
           // user?.user_id,
         ]) as any;
-        console.log(userExamContent);
-        console.log(user?.user_id);
+
         const markObtin = userExamContent.filter((item: any) => item.user_id === user?.user_id)[0]
           .mark_obtained;
         return {
@@ -165,7 +163,7 @@ const Student = ({ params }: { params: { classesId: string } }) => {
   }
   const userNotCorrected = notCorrected(userCorrection);
   const alphabiticSorted = newData?.sort((a, b) => a.name.localeCompare(b.name));
-  console.log(newData);
+
   return (
     <main className="flex flex-col gap-6 p-10">
       <nav className="flex items-center justify-between w-full gap-14 ">

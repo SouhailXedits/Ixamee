@@ -102,8 +102,8 @@ export const getAllExamsNameAndId = async ({
   etab_id: number;
   classe_id: string;
 }) => {
-  console.log('user_id', user_id, 'etab_id', etab_id);
-  console.log('classe_id', classe_id);
+   
+   
   const exams = await db.exam.findMany({
     where: {
       teacher: {
@@ -150,7 +150,7 @@ export const createExamCorrection = async (
   correction_exam_content: any,
   status: any
 ) => {
-  console.log(
+   
     exam_id,
     mark_obtained,
     user_id,
@@ -205,7 +205,7 @@ export const createExamCorrection = async (
         user_id: user_id,
       },
     });
-    console.log(correction_exam_content);
+     
     return examCorrection;
   }
 };
@@ -563,7 +563,7 @@ export const createNoteExamCorrectio = async ({
 
 export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; marks: any[] }) => {
   const classe_id = marks?.[0].classesId;
-  console.log(classe_id);
+   
   const subject = await db.subject.findMany({
     select: {
       id: true,
@@ -576,7 +576,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
       },
     },
   });
-  console.log(subject?.[0].id);
+   
 
   try {
     const updatedExamCorrectionBatch = await Promise.all(
@@ -595,7 +595,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
         });
       })
     );
-    console.log(updatedExamCorrectionBatch);
+     
 
     await Promise.all(
       marks.map(async (item: any) => {
@@ -649,7 +649,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
             rank: true,
           },
         });
-        console.log(markSheets);
+         
         const groupedExams = markSheets.reduce((result: any, exam: any) => {
           const term = exam?.exam?.term;
           if (!result[term]) {
@@ -670,7 +670,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           });
           return result;
         }, {});
-        console.log(groupedExams);
+         
 
         const isTrimester = Object.keys(groupedExams).some((key) =>
           key.toLowerCase().includes('trimestre')
@@ -684,10 +684,10 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           name: term.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
           exams: groupedExams[term] || [],
         }));
-        console.log(trimesters);
+         
 
         const averageMark = calculateAverageMark(trimesters);
-        console.log(averageMark);
+         
 
         const infos = await db.userClasseInfos.findMany({
           where: {
@@ -700,9 +700,9 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           },
         });
 
-        console.log(infos);
+         
         const existingInfo = infos.length !== 0;
-        console.log(existingInfo);
+         
 
         if (!existingInfo) {
           try {
@@ -715,7 +715,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
               },
             });
           } catch (err) {
-            console.log(err);
+             
           }
         }
 
@@ -727,7 +727,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
         })) as any;
 
         const sorted = allClasseInfos.sort((a: any, b: any) => +b.average - +a.average);
-        console.log(sorted);
+         
         const ranked = sorted.map((el: any, index: number) => {
           return {
             ...el,
@@ -742,13 +742,13 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
             };
           } else {
             const sameAverageAsPrevious = index > 0 && el.average === array[index - 1].average;
-            console.log(sameAverageAsPrevious);
-            // console.log(array);
-            console.log(index);
-            console.log(array[index - 1]?.rankInClasse, index + 1);
+             
+            //  
+             
+             
             // const rank = index + 1;
             const rank = sameAverageAsPrevious ? array[index - 1].rankInClasse : index + 1;
-            console.log(el, rank);
+             
 
             if (el.user_id === item.user_id) {
               return {
@@ -763,13 +763,13 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
             };
           }
         });
-        console.log(reRanked);
+         
 
         for (const item of reRanked) {
           const { user_id, average, classe_id, rankInClasse, subject_id } = item;
-          console.log(item);
-          console.log(user_id, rankInClasse);
-          console.log(item);
+           
+           
+           
           await db.userClasseInfos.updateMany({
             where: {
               user_id,
@@ -783,7 +783,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           });
 
           // if (!existingInfo) {
-          //   console.log(item);
+          //    
           //   await db.userClasseInfos.create({
           //     data: {
           //       user_id,
@@ -794,7 +794,7 @@ export const sendRankOfUserExam = async ({ exam_id, marks }: { exam_id: string; 
           //     },
           //   });
           // } else {
-          //   console.log(item);
+          //    
           //   await db.userClasseInfos.updateMany({
           //     where: {
           //       user_id,

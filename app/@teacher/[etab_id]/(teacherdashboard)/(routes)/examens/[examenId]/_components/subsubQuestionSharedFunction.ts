@@ -229,7 +229,7 @@ export const updateSubSubQuestion = (e: any, data: any, setFakeData: any, allDat
 
               children: subItem.children.map((subSubItem: any) => {
                 // Returning unchanged subsubitems
-                console.log(subSubItem);
+
                 if (subSubItem === 'czl37r') {
                   return {
                     ...subSubItem,

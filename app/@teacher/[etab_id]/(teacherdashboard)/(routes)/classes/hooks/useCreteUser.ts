@@ -22,8 +22,9 @@ export function useCreateUserInClasse() {
     mutationFn: ({ image, name, email, term, class_id, establishmentId }: CreateClasseParams) =>
       createUserInClasseApi(image, name, email, term, class_id, establishmentId),
     onSuccess: (data: any) => {
-      if(data.error && data.error.status === 'already_teacher') toast.error(data.error.message);
-      else if (data.error && data.error.status === 'exist_in_classe') toast.error(data.error.message);
+      if (data.error && data.error.status === 'already_teacher') toast.error(data.error.message);
+      else if (data.error && data.error.status === 'exist_in_classe')
+        toast.error(data.error.message);
       else {
         queryClient.invalidateQueries({ queryKey: ['userOfClasses'] });
         queryClient.invalidateQueries({ queryKey: ['dashStudentClasses'] });
@@ -31,8 +32,7 @@ export function useCreateUserInClasse() {
       }
     },
     onError: (err: any) => {
-      console.log(err)
-      const message = err.message
+      const message = err.message;
       if (message.includes('Unique constraint failed'))
         toast.error('Un étudiant avec cet email déja existe');
       else if (message.includes('enseignant')) toast.error(message);

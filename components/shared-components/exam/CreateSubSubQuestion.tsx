@@ -13,8 +13,6 @@ export const CreateSubSubQuestion = ({
   realExamContetn,
   allData,
 }: any) => {
-  console.log(allData, 'allData');
-  console.log(data, 'data');
   const onChange = (content: string) => {
     updateContentSubSubQuestion(content, data);
   };
@@ -228,7 +226,6 @@ export const CreateSubSubQuestion = ({
 
     calculerExerciceMark(allData);
   };
-  console.log(data);
 
   return (
     <>
