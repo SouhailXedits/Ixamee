@@ -2,6 +2,7 @@ import React from 'react';
 // import StudentRow from './StudentRow';
 import PdfHeader from '@/components/shared-components/PdfHeader';
 import { calculateAverageMark } from '@/app/_utils/calculateAverage';
+import Image from 'next/image';
 
 export const MarkSheetStudent = ({ data, meta }: any) => {
   // const data = {
@@ -59,7 +60,32 @@ export const MarkSheetStudent = ({ data, meta }: any) => {
                         {exam.marksObtained} / {exam.totalScore}
                       </td>
                       <td className="pb-2 border border-black/50">{exam.range}</td>
-                      <td className="pb-2 border border-black/50">{exam.progress || '--'}</td>
+                      <td className="pb-2 border border-black/50">
+                        {exam.progress ? (
+                          <div>
+                            {exam.progress >= 0 ? (
+                              <Image
+                                src="/progress-up.svg"
+                                alt="arrow icon"
+                                height={16}
+                                width={16}
+                              />
+                            ) : (
+                              <Image
+                                src="/progress-down.svg"
+                                alt="arrow icon"
+                                height={16}
+                                width={16}
+                              />
+                            )}
+                            <span className="flex justify-center ">
+                              {Math.abs(exam.progress) + '%'}{' '}
+                            </span>
+                          </div>
+                        ) : (
+                          '--'
+                        )}
+                      </td>
                       {/* <td className="border bg-[#99C6D3]/40 border-black/50 h-8">Rang</td> */}
                     </tr>
                   ))}
